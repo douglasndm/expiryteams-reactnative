@@ -1,13 +1,12 @@
-google-services.json
-appcenter-config.json
 .env
 
-firebase.json
+# google-services.json
+# firebase.json
+# sentry.properties
 
 java_pid24724.hprof
 .hprof
 
-sentry.properties
 
 # OSX
 #
