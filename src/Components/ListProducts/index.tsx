@@ -1,12 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import ProductItem from '../ProductItem';
 import GenericButton from '../Button';
 
 import {
     Container,
+    ProBanner,
+    ProText,
     CategoryDetails,
     CategoryDetailsText,
     EmptyListText,
@@ -23,6 +27,8 @@ const ListProducts: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
+    const { userPreferences } = useContext(PreferencesContext);
+
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
     }, [navigate]);
@@ -31,9 +37,19 @@ const ListProducts: React.FC<RequestProps> = ({
         navigate('AddProduct');
     }, [navigate]);
 
+    const handleNavigateProPage = useCallback(() => {
+        navigate('PremiumSubscription');
+    }, [navigate]);
+
     const ListHeader = useCallback(() => {
         return (
             <View>
+                {userPreferences.isUserPremium !== true && (
+                    <ProBanner onPress={handleNavigateProPage}>
+                        <ProText>CONHEÇA AS VANTAGENS DO PRO</ProText>
+                    </ProBanner>
+                )}
+
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
                     <CategoryDetails>
@@ -44,7 +60,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [products]);
+    }, [products, handleNavigateProPage, userPreferences.isUserPremium]);
 
     const EmptyList = useCallback(() => {
         return (

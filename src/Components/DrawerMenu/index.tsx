@@ -75,7 +75,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 icon={() => (
                                     <Icons name="analytics-outline" size={22} />
                                 )}
-                                label="Seja Premium"
+                                label="Seja PRO"
                                 onPress={() => {
                                     navigation.navigate('PremiumSubscription');
                                 }}

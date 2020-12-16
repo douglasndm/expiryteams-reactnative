@@ -1,7 +1,22 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
     flex: 1;
+`;
+
+export const ProBanner = styled(RectButton)`
+    background-color: ${(props) => props.theme.colors.accent};
+    border-radius: 12px;
+    margin: 0 10px 5px;
+`;
+
+export const ProText = styled.Text`
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    margin: 15px;
 `;
 
 export const CategoryDetails = styled.View`
