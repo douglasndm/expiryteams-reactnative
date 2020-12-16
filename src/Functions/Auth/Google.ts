@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import EnvConfig from 'react-native-config';
+import { setUserId } from '../User';
 
 interface GoogleUser {
     displayName: string | null;
@@ -60,6 +61,7 @@ export async function signOutGoogle(): Promise<void> {
 
         if (isSignedIn) {
             await GoogleSignin.signOut();
+            await setUserId('');
         }
     } catch (err) {
         throw new Error(err);
