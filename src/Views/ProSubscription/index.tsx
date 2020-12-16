@@ -126,7 +126,7 @@ const PremiumSubscription: React.FC = () => {
                     <TitleContainer>
                         <IntroductionText>Conheça o</IntroductionText>
                         <AppNameTitle>Controle de validade</AppNameTitle>
-                        <PremiumTitle>Premium</PremiumTitle>
+                        <PremiumTitle>PRO</PremiumTitle>
                     </TitleContainer>
                 </HeaderContainer>
 
@@ -134,10 +134,17 @@ const PremiumSubscription: React.FC = () => {
                     <AdvantageContainer>
                         <AdvantageText>SEM ANÚNCIOS</AdvantageText>
                     </AdvantageContainer>
+
                     <AdvantageContainer>
                         <AdvantageText>
-                            OPÇÃO PARA SALVAR SEU BANCO DE DADOS EM CASO DE
-                            FORMATAÇÃO OU PERDA DO TELEFONE
+                            SALVE SEUS PRODUTOS EM ARQUIVOS EXCEL
+                        </AdvantageText>
+                    </AdvantageContainer>
+
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            OPÇÃO PARA SALVAR SEUS DADOS EM CASO DE FORMATAÇÃO
+                            OU PERDA DO TELEFONE
                         </AdvantageText>
                     </AdvantageContainer>
                     <AdvantageContainer>
@@ -155,7 +162,7 @@ const PremiumSubscription: React.FC = () => {
                         {alreadyPremium ? (
                             <ButtonSubscription>
                                 <TextSubscription>
-                                    VOCÊ JÁ É PREMIUM
+                                    VOCÊ JÁ É PRO
                                 </TextSubscription>
                             </ButtonSubscription>
                         ) : (
