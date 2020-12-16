@@ -7,10 +7,13 @@ import {
 import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
+import PreferencesContext from '../../Contexts/PreferencesContext';
+
+import UserInfo from './UserInfo';
+
 import Logo from '../../Assets/Logo.png';
 
 import { Container, MenuHeader, LogoImage, MenuItem, Icons } from './styles';
-import PreferencesContext from '../../Contexts/PreferencesContext';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
@@ -24,9 +27,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         <Container>
             <DrawerContentScrollView {...props}>
                 <View>
-                    <MenuHeader>
-                        <LogoImage resizeMode="center" source={Logo} />
-                    </MenuHeader>
+                    {userPreferences.isUserSignedIn ? (
+                        <UserInfo />
+                    ) : (
+                        <MenuHeader>
+                            <LogoImage resizeMode="center" source={Logo} />
+                        </MenuHeader>
+                    )}
 
                     <Drawer.Section>
                         <MenuItem
