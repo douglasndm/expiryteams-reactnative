@@ -16,3 +16,8 @@ export const ButtonText = styled.Text`
     color: #fff;
     text-align: center;
 `;
+
+export const Loading = styled.ActivityIndicator.attrs(() => ({
+    size: 48,
+    color: '#fff',
+}))``;
