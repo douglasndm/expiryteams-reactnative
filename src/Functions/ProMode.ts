@@ -12,6 +12,10 @@ export async function isSubscriptionActive(): Promise<boolean> {
     try {
         const userId = await getUserId();
 
+        if (!userId) {
+            throw new Error('User is not signed');
+        }
+
         const purchaserInfo = await Purchases.identify(userId);
         // access latest purchaserInfo
 
