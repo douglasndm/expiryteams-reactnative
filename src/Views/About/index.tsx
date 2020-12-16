@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getVersion } from 'react-native-device-info';
 
 import BackButton from '../../Components/BackButton';
 
@@ -10,6 +11,7 @@ import {
     Container,
     Content,
     PageTitle,
+    ApplicationVersion,
     AboutSection,
     ApplicationName,
     UserId,
@@ -48,7 +50,8 @@ const About: React.FC = () => {
 
             <AboutSection>
                 <ApplicationName>Controle de Validade</ApplicationName>
-                <UserId>Usuário: {userId}</UserId>
+                <UserId>UID: {userId}</UserId>
+                <ApplicationVersion>{getVersion()}</ApplicationVersion>
             </AboutSection>
 
             <AboutSection>

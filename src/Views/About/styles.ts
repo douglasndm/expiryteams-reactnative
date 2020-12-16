@@ -22,13 +22,13 @@ export const AboutSection = styled.View`
 `;
 
 export const ApplicationName = styled.Text`
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: ${(props) => props.theme.colors.text};
 `;
 
 export const UserId = styled.Text`
-    margin-top: 10px;
+    margin-top: 5px;
     color: ${(props) => props.theme.colors.text};
 `;
 
