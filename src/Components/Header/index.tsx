@@ -33,7 +33,7 @@ const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
                 <TextLogo style={{ fontSize: titleFontSize }}>
                     {userPreferences.isUserPremium
                         ? 'Premium'
-                        : 'Controle de validade'}
+                        : 'Controle de Validade'}
                 </TextLogo>
             )}
         </HeaderContainer>

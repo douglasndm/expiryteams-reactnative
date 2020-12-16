@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
+import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
@@ -67,4 +68,9 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+const codePushOptions: CodePushOptions = {
+    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+    mandatoryInstallMode: CodePush.InstallMode.ON_NEXT_RESUME,
+};
+
+export default CodePush(codePushOptions)(App);

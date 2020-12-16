@@ -86,6 +86,7 @@ project.ext.react = [
 
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -124,6 +125,9 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+def codePushStagingDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_STAGING_DEPLOYMENTKEY") +'"'
+def codePushProductionDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_PRODUCTION_DEPLOYMENTKEY") +'"'
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -137,8 +141,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 70
-        versionName "1.5.0.0"
+        versionCode 71
+        versionName "1.5.1"
 
         missingDimensionStrategy 'react-native-camera', 'mlkit'
     }
@@ -169,8 +173,19 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+
+            // Note: CodePush updates shouldn't be tested in Debug mode as they're overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
+            resValue "string", "CodePushDeploymentKey", '""'
+        }
+        releaseStaging {
+            resValue "string", "CodePushDeploymentKey", codePushStagingDeploymentKey
+            // Note: It's a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
+            // Add the following line if not already there
+            matchingFallbacks = ['release']
         }
         release {
+            resValue "string", "CodePushDeploymentKey", codePushProductionDeploymentKey
+
             /* Add the firebaseCrashlytics extension (by default,
             * it's disabled to improve build speeds) and set
             * nativeSymbolUploadEnabled to true. */

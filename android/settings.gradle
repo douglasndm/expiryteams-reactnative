@@ -1,8 +1,8 @@
 rootProject.name = 'controledevalidade'
-include ':react-native-purchases'
-project(':react-native-purchases').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-purchases/android')
-apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
-include ':app'
 
-include ':react-native-camera'
+include ':app', ':react-native-code-push', ':react-native-camera', ':react-native-purchases'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+
 project(':react-native-camera').projectDir = new File(rootProject.projectDir,     '../node_modules/react-native-camera/android')
+project(':react-native-purchases').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-purchases/android')
+project(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')
