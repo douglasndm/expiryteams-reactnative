@@ -1,6 +1,8 @@
 import { DefaultTheme } from 'styled-components';
 
 const Light: DefaultTheme = {
+    name: 'Claro',
+
     colors: {
         primary: '#14d48f',
         accent: '#14d48f',

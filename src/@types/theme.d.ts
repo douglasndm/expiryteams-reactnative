@@ -2,6 +2,8 @@ import 'styled-components';
 
 declare module 'styled-components' {
     export interface DefaultTheme {
+        name: string;
+
         colors: {
             primary: string;
             accent: string;
@@ -23,8 +25,7 @@ declare module 'styled-components' {
 }
 
 interface ITheme {
-    dark: boolean;
-    mode: 'exact' | 'adaptive';
+    name: string;
 
     colors: {
         primary: string;

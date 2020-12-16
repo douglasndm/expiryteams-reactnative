@@ -2,6 +2,8 @@ import { darken } from 'polished';
 import { DefaultTheme } from 'styled-components';
 
 const UltraViolet: DefaultTheme = {
+    name: 'Ultra violeta',
+
     colors: {
         primary: darken(0.1, '#7b00ba'),
         accent: darken(0.1, '#7b00ba'),

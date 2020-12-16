@@ -1,6 +1,8 @@
 import { DefaultTheme } from 'styled-components';
 
 const HappyPink: DefaultTheme = {
+    name: 'Happy Pink',
+
     colors: {
         primary: '#f772b7',
         accent: '#f772b7',

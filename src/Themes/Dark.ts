@@ -2,6 +2,8 @@ import { darken } from 'polished';
 import { DefaultTheme } from 'styled-components';
 
 const Dark: DefaultTheme = {
+    name: 'Escuro',
+
     colors: {
         primary: darken(0.1, '#14d48f'),
         accent: darken(0.1, '#14d48f'),

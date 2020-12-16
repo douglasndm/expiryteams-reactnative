@@ -1,6 +1,8 @@
 import { DefaultTheme } from 'styled-components';
 
 const OceanBlue: DefaultTheme = {
+    name: 'Ocean Blue',
+
     colors: {
         primary: '#69dafa',
         accent: '#69dafa',

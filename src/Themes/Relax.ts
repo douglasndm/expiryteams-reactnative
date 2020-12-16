@@ -1,6 +1,8 @@
 import { DefaultTheme } from 'styled-components';
 
 const Relax: DefaultTheme = {
+    name: 'Relax',
+
     colors: {
         primary: '#99e1d9',
         accent: '#99e1d9',
