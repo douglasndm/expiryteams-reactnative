@@ -63,19 +63,34 @@ export function removeAllLotesTratadosFromAllProduts(
 
 interface getAllProductsProps {
     removeProductsWithoutBatches?: boolean;
+    removeTreatedBatch?: boolean;
     sortProductsByExpDate?: boolean;
     limit?: number;
 }
 
 export async function getAllProducts({
     removeProductsWithoutBatches,
+    removeTreatedBatch,
     sortProductsByExpDate,
     limit,
 }: getAllProductsProps): Promise<Array<IProduct>> {
     const realm = await Realm();
 
     try {
-        const allProducts = realm.objects<IProduct>('Product').slice();
+        let allProducts = realm.objects<IProduct>('Product').slice();
+
+        if (removeTreatedBatch) {
+            allProducts = allProducts.filter((product) => {
+                const batches = product.lotes.filter(
+                    (batch) => batch.status !== 'Tratado'
+                );
+
+                if (batches.length > 0) {
+                    return true;
+                }
+                return false;
+            });
+        }
 
         if (removeProductsWithoutBatches && sortProductsByExpDate) {
             const productsWithBatches = allProducts.filter(

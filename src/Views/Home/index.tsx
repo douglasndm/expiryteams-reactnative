@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import {
-    removeAllLotesTratadosFromAllProduts,
     searchForAProductInAList,
     GetAllProducts,
     getAllProducts,
@@ -40,14 +39,11 @@ const Home: React.FC = () => {
             const allProducts = await getAllProducts({
                 limit: 20,
                 removeProductsWithoutBatches: true,
+                removeTreatedBatch: true,
                 sortProductsByExpDate: true,
             });
 
-            // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
-            // ESSA FUNÇÃO REMOVE QUALQUER VESTIGIO DE LOTES TRATADOS
-            const results = removeAllLotesTratadosFromAllProduts(allProducts);
-
-            setProducts(results);
+            setProducts(allProducts);
         } catch (err) {
             setError(err.message);
         } finally {
