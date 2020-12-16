@@ -12,7 +12,11 @@ import {
     DefaultUserPhoto,
 } from './styles';
 
-const UserInfo: React.FC = () => {
+interface Props {
+    isUserPro?: boolean;
+}
+
+const UserInfo: React.FC<Props> = ({ isUserPro }: Props) => {
     const [user, setUser] = useState<IGoogleUser | null>(null);
 
     const loadData = useCallback(async () => {
@@ -36,7 +40,7 @@ const UserInfo: React.FC = () => {
             <TextContainer>
                 <UserName>{user?.name}</UserName>
                 <UserEmail>{user?.email}</UserEmail>
-                <UserLabel>USUÁRIO PRO</UserLabel>
+                {isUserPro && <UserLabel>USUÁRIO PRO</UserLabel>}
             </TextContainer>
         </Container>
     );

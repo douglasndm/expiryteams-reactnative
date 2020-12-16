@@ -28,7 +28,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             <DrawerContentScrollView {...props}>
                 <View>
                     {userPreferences.isUserSignedIn ? (
-                        <UserInfo />
+                        <UserInfo isUserPro={userPreferences.isUserPremium} />
                     ) : (
                         <MenuHeader>
                             <LogoImage resizeMode="center" source={Logo} />
