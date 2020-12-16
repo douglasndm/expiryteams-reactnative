@@ -46,12 +46,14 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                     ) > batch.exp_date;
 
                 const expiredOrNext = !!(expired || nextToExp);
+                const treated = batch.status === 'Tratado';
 
                 return (
                     <TableRow
                         key={batch.id}
                         expired={expired}
                         nextToExp={nextToExp}
+                        treated={treated}
                         onPress={() => {
                             navigate('EditLote', {
                                 productId,

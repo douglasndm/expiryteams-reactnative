@@ -14,11 +14,19 @@ export const Table = styled(DataTable)`
 
 export const TableHeader = styled(DataTable.Header)``;
 
-export const TableTitle = styled(DataTable.Title)`
+export const TableTitle = styled(DataTable.Title).attrs((props) => ({
+    theme: props.theme,
+}))`
     color: rgba(255, 255, 255, 1);
 `;
 
-export const TableRow = styled(DataTable.Row)<IProduct>`
+interface TableRowProps {
+    expired?: boolean;
+    nextToExp?: boolean;
+    treated?: boolean;
+}
+
+export const TableRow = styled(DataTable.Row)<TableRowProps>`
     background: ${({ theme }) => theme.colors.productBackground};
 
     ${(props) =>
@@ -32,6 +40,12 @@ export const TableRow = styled(DataTable.Row)<IProduct>`
         props.expired &&
         css`
             background: ${({ theme }) => theme.colors.productExpiredBackground};
+        `}
+
+    ${(props) =>
+        props.treated === true &&
+        css`
+            background-color: #47c914;
         `}
 `;
 
