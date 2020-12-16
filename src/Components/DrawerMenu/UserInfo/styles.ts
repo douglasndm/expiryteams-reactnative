@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled(RectButton)`
     flex-direction: row;
-    margin: 10px;
+    padding: 10px;
 `;
 
 export const TextContainer = styled.View``;

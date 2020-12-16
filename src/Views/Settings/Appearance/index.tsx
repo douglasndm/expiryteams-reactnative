@@ -89,6 +89,14 @@ const Appearance: React.FC = () => {
                                 value="relax"
                             />
                         ))}
+
+                    {userPreferences.isUserPremium ||
+                        (__DEV__ && (
+                            <Picker.Item
+                                label="Floresta (Premium)"
+                                value="florest"
+                            />
+                        ))}
                 </Picker>
             </PickerContainer>
         </CategoryOptions>

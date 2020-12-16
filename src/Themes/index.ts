@@ -8,6 +8,7 @@ import DarkGreen from './DarkGreen';
 import HappyPink from './HappyPink';
 import OceanBlue from './OceanBlue';
 import Relax from './Relax';
+import Florest from './Florest';
 
 import { getAppTheme } from '../Functions/Settings';
 
@@ -19,6 +20,7 @@ export default {
     HappyPink,
     OceanBlue,
     Relax,
+    Florest,
 };
 
 export function getThemeByName(themeName: string): DefaultTheme {
@@ -46,6 +48,8 @@ export function getThemeByName(themeName: string): DefaultTheme {
             return OceanBlue;
         case 'relax':
             return Relax;
+        case 'florest':
+            return Florest;
         default:
             return Light;
     }
