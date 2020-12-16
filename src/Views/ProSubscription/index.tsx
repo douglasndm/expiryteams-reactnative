@@ -92,6 +92,9 @@ const PremiumSubscription: React.FC = () => {
 
             navigate('Home');
         } catch (err) {
+            if (err.message === 'User cancel payment') {
+                return;
+            }
             setError(err.message);
         } finally {
             setIsLoadingMakeSubscription(false);

@@ -68,6 +68,9 @@ export async function makeSubscription(): Promise<void> {
             await setEnableProVersion(true);
         }
     } catch (e) {
+        if (e.userCancelled) {
+            throw new Error('User cancel payment');
+        }
         if (!e.userCancelled) {
             throw new Error(e);
         }
