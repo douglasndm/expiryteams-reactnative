@@ -6,4 +6,5 @@ interface IUserPreferences {
     appTheme: DefaultTheme;
     multiplesStores: boolean;
     enableNotifications: boolean;
+    isUserSignedIn: boolean;
 }

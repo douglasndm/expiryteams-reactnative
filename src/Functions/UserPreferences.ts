@@ -1,5 +1,7 @@
 import { IUserPreferences } from '../@types/userPreference';
 import { getThemeByName } from '../Themes';
+
+import { isUserSignedIn } from './Auth/Google';
 import {
     getAppTheme,
     getEnableMultipleStoresMode,
@@ -15,6 +17,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
         const settingNotification = await getEnableNotifications();
         const settingMultipleStores = await getEnableMultipleStoresMode();
         const settingProMode = await getEnableProVersion();
+        const signedUser = await isUserSignedIn();
 
         const settings: IUserPreferences = {
             howManyDaysToBeNextToExpire: settingDay,
@@ -22,6 +25,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
             enableNotifications: settingNotification,
             isUserPremium: settingProMode,
             multiplesStores: settingMultipleStores,
+            isUserSignedIn: signedUser,
         };
 
         return settings;

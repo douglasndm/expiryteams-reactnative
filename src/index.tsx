@@ -35,6 +35,7 @@ const App: React.FC = () => {
         appTheme: Themes.Light,
         multiplesStores: false,
         enableNotifications: true,
+        isUserSignedIn: false,
     });
 
     useEffect(() => {

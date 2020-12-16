@@ -3,15 +3,6 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import EnvConfig from 'react-native-config';
 import { setUserId } from '../User';
 
-interface GoogleUser {
-    displayName: string | null;
-    email: string | null;
-    emailVerified: boolean;
-    photoURL: string | null;
-    providerId: string;
-    uid: string;
-}
-
 GoogleSignin.configure({
     webClientId: EnvConfig.GOOGLE_SIGNIN_CLIENT_ID,
 });
@@ -24,7 +15,29 @@ export async function isUserSignedIn(): Promise<boolean> {
     }
 }
 
-export async function signInWithGoogle(): Promise<GoogleUser> {
+export async function getUser(): Promise<IGoogleUser> {
+    const isUserSigned = await isUserSignedIn();
+
+    if (!isUserSigned) {
+        throw new Error('User is not signed');
+    }
+
+    const googleUser = await GoogleSignin.getCurrentUser();
+
+    if (!googleUser) {
+        throw new Error('An error occured when getting user');
+    }
+
+    const returnedUser: IGoogleUser = {
+        name: googleUser.user.name || '',
+        email: googleUser.user.email,
+        photo: googleUser.user.photo,
+    };
+
+    return returnedUser;
+}
+
+export async function signInWithGoogle(): Promise<IUser> {
     try {
         const isSignedIn = await GoogleSignin.isSignedIn();
 
@@ -41,7 +54,7 @@ export async function signInWithGoogle(): Promise<GoogleUser> {
         // Sign-in the user with the credential
         const authResult = await auth().signInWithCredential(googleCredential);
 
-        const user: GoogleUser = {
+        const user: IUser = {
             displayName: authResult.user.displayName,
             email: authResult.user.email,
             emailVerified: authResult.user.emailVerified,

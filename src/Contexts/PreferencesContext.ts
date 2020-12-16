@@ -8,6 +8,7 @@ const PreferencesContext = createContext({
         appTheme: Themes.Light,
         multiplesStores: false,
         enableNotifications: true,
+        isUserSignedIn: false,
     },
     setUserPreferences: ({
         howManyDaysToBeNextToExpire,
@@ -15,6 +16,7 @@ const PreferencesContext = createContext({
         appTheme,
         multiplesStores,
         enableNotifications,
+        isUserSignedIn,
     }: IUserPreferences) => {},
 });
 
