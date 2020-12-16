@@ -92,7 +92,3 @@ export const ButtonCancelText = styled.Text`
     font-size: 13px;
     color: #fff;
 `;
-
-export const Text = styled.Text`
-    color: ${(props) => props.theme.colors.text};
-`;

@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { View, ScrollView, Linking } from 'react-native';
 import { Switch } from 'react-native-paper';
-import { useTheme } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { Picker } from '@react-native-community/picker';
 
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
+import Appearance from './Appearance';
+
 import {
     setHowManyDaysToBeNextExp,
-    setAppTheme,
     setEnableNotifications,
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
 import { exportToExcel } from '../../Functions/Excel';
 import { isSubscriptionActive } from '../../Functions/ProMode';
-import { getActualAppTheme } from '../../Themes';
+import { isUserSignedIn, signOutGoogle } from '../../Functions/Auth/Google';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -39,12 +38,10 @@ import {
     ButtonPremiumText,
     ButtonCancel,
     ButtonCancelText,
-    Text,
 } from './styles';
 
 const Settings: React.FC = () => {
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
-    const [selectedTheme, setSelectedTheme] = useState<string>('system');
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
@@ -52,10 +49,9 @@ const Settings: React.FC = () => {
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
     );
+    const [userSigned, setUserSigned] = useState<boolean>(false);
 
     const { navigate, goBack, reset } = useNavigation();
-
-    const theme = useTheme();
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
@@ -96,27 +92,19 @@ const Settings: React.FC = () => {
         });
     }, [multipleStoresState, setUserPreferences, userPreferences]);
 
-    const handleThemeChange = useCallback(
-        async (themeName: string) => {
-            setSelectedTheme(themeName);
-            await setAppTheme(themeName);
-
-            const changeToTheme = await getActualAppTheme();
-
-            setUserPreferences({
-                ...userPreferences,
-                appTheme: changeToTheme,
-            });
-        },
-        [setUserPreferences, userPreferences]
-    );
+    const loadData = useCallback(async () => {
+        const isSigned = await isUserSignedIn();
+        setUserSigned(isSigned);
+    }, []);
 
     useEffect(() => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
         setUserIsPremium(userPreferences.isUserPremium);
         setMultipleStoresState(userPreferences.multiplesStores);
         setIsNotificationsEnabled(userPreferences.enableNotifications);
-    }, [userPreferences]);
+
+        loadData();
+    }, [userPreferences, loadData]);
 
     useEffect(() => {
         async function SetNewDays() {
@@ -158,6 +146,10 @@ const Settings: React.FC = () => {
 
     const migrateData = useCallback(async () => {
         await migrateAllDataFromSQLiteToRealm();
+    }, []);
+
+    const handleLogout = useCallback(async () => {
+        await signOutGoogle();
     }, []);
 
     return (
@@ -216,74 +208,7 @@ const Settings: React.FC = () => {
                             </SettingContainer>
                         </CategoryOptions>
 
-                        <CategoryOptions>
-                            <CategoryTitle>Aparência</CategoryTitle>
-
-                            <View
-                                style={{
-                                    marginTop: 10,
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Text>Tema do aplicativo</Text>
-
-                                <Picker
-                                    style={{
-                                        color: theme.colors.text,
-                                    }}
-                                    mode="dropdown"
-                                    selectedValue={selectedTheme}
-                                    onValueChange={(value) => {
-                                        handleThemeChange(String(value));
-                                    }}
-                                >
-                                    <Picker.Item
-                                        label="Baseado no sistema (Padrão)"
-                                        value="system"
-                                    />
-                                    <Picker.Item label="Claro" value="light" />
-                                    <Picker.Item label="Escuro" value="dark" />
-                                    {userIsPremium || __DEV__ ? (
-                                        <Picker.Item
-                                            label="Ultra violeta (Premium)"
-                                            value="ultraviolet"
-                                        />
-                                    ) : null}
-
-                                    {
-                                        // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
-                                        userIsPremium || __DEV__ ? (
-                                            <Picker.Item
-                                                label="Dark Green (Premium)"
-                                                value="darkgreen"
-                                            />
-                                        ) : null
-                                    }
-
-                                    {userIsPremium || __DEV__ ? (
-                                        <Picker.Item
-                                            label="Happy Pink (Premium)"
-                                            value="happypink"
-                                        />
-                                    ) : null}
-
-                                    {userIsPremium || __DEV__ ? (
-                                        <Picker.Item
-                                            label="Ocean Blue (Premium)"
-                                            value="oceanblue"
-                                        />
-                                    ) : null}
-
-                                    {userIsPremium ||
-                                        (__DEV__ && (
-                                            <Picker.Item
-                                                label="Relax (Premium)"
-                                                value="relax"
-                                            />
-                                        ))}
-                                </Picker>
-                            </View>
-                        </CategoryOptions>
+                        <Appearance />
                     </Category>
 
                     <Category>
@@ -360,6 +285,21 @@ const Settings: React.FC = () => {
                             onPress={migrateData}
                         />
                     </Category>
+
+                    {userSigned && (
+                        <Category>
+                            <CategoryTitle>Conta</CategoryTitle>
+
+                            <SettingDescription>
+                                Gerencie sua conta vinculada ao aplicativo.
+                            </SettingDescription>
+
+                            <GenericButton
+                                text="Sair da conta"
+                                onPress={handleLogout}
+                            />
+                        </Category>
+                    )}
                 </SettingsContent>
             </ScrollView>
         </Container>
