@@ -114,7 +114,9 @@ def enableProguardInReleaseBuilds = false
  * give correct results when using with locales other than en-US.  Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'org.webkit:android-jsc:+'
+// def jscFlavor = 'org.webkit:android-jsc:+'
+
+def useIntlJsc = false
 
 /**
  * Whether to enable the Hermes VM.
@@ -141,8 +143,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 71
-        versionName "1.5.1"
+        versionCode 72
+        versionName "1.5.2"
 
         missingDimensionStrategy 'react-native-camera', 'mlkit'
     }
@@ -247,7 +249,13 @@ dependencies {
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
-        implementation jscFlavor
+        // implementation jscFlavor
+
+         if (useIntlJsc) {
+            implementation 'org.webkit:android-jsc-intl:+'
+        } else {
+            implementation 'org.webkit:android-jsc:+'
+        }
     }
 }
 
@@ -266,4 +274,3 @@ project.ext.vectoricons = [
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-apply plugin: 'com.google.gms.google-services'
