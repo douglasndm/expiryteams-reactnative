@@ -8,7 +8,6 @@ Purchases.setDebugLogsEnabled(true);
 Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
 export async function isSubscriptionActive(): Promise<boolean> {
-    await Purchases.reset();
     try {
         const userId = await getUserId();
 
