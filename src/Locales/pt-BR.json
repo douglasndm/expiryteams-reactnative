@@ -198,6 +198,18 @@
     "View_Success_ProductUpdatedDescription": "O produto foi atualizado.",
     "View_Success_BatchDeletedDescription": "O lote foi deletado.",
     "View_Success_ProductDeletedDescription": "O produto foi deletado.",
-    "View_Success_Button_GoToHome": "Voltar para o início"
+    "View_Success_Button_GoToHome": "Voltar para o início",
+
+    "Function_StoreGroup_NoStore": "Sem loja",
+
+    "Function_Share_SaveFileTitle": "Salvar arquivo",
+    "Functions_Share_SaveFileDescription": "Escolha um lugar para salvar o arquivo",
+
+    "Function_Notification_ItOnlyHasProductsNextToExpTitle": "Você tem produtos próximo ao vencimento.",
+    "Function_Notification_ItOnlyHasExpiredProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS!",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS E PRÓXIMOS AO VENCIMENTO!",
+    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "Você tem {NUMBER} lotes próximo ao vencimento.",
+    "Function_Notification_ItOnlyHasExpiredProductsMessage": "VOCÊ TEM {NUMBER} LOTES NÃO TRATADOS VENCIDOS.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "VOCÊ TEM {EXPIREDNUMBER} LOTES NÃO TRATADOS VENCIDOS E {NEXTBATCHES} PRÓXIMOS AO VENCIMENTO."
 }
 

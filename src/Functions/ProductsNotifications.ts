@@ -2,6 +2,8 @@ import { Notifications } from 'react-native-notifications';
 import { addDays, isPast } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 
+import { translate } from '../Locales';
+
 import { getHowManyDaysToBeNextExp, getEnableNotifications } from './Settings';
 import {
     getAllProducts,
@@ -74,15 +76,28 @@ export async function getAllProductsNextToExp(): Promise<void> {
         let NotificationMessage;
 
         if (productsNextToExpCount > 0 && productsVencidosCount === 0) {
-            NotificationTitle = 'Você tem produtos próximo ao vencimento.';
-            NotificationMessage = `Você tem atualmente ${productsNextToExpCount} lotes próximos ao vencimento.`;
+            NotificationTitle = translate(
+                'Function_Notification_ItOnlyHasProductsNextToExpTitle'
+            );
+            NotificationMessage = translate(
+                'Function_Notification_ItOnlyHasProductsNextToExpMessage'
+            ).replace('{NUMBER}', String(productsNextToExpCount));
         } else if (productsNextToExpCount === 0 && productsVencidosCount > 0) {
-            NotificationTitle = 'VOCÊ TEM PRODUTOS VENCIDOS!';
-            NotificationMessage = `VOCÊ TEM ${productsVencidosCount} LOTES VENCIDOS SEM TRATAMENTOS.`;
+            NotificationTitle = translate(
+                'Function_Notification_ItOnlyHasExpiredProductsTitle'
+            );
+            NotificationMessage = translate(
+                'Function_Notification_ItOnlyHasExpiredProductsMessage'
+            ).replace('{NUMBER}', String(productsVencidosCount));
         } else if (productsNextToExpCount > 0 && productsVencidosCount > 0) {
-            NotificationTitle =
-                'VOCÊ TEM PRODUTOS VENCIDOS E PRÓXIMOS AO VENCIMENTO!';
-            NotificationMessage = `Você tem ${productsVencidosCount} lotes vencidos e ${productsNextToExpCount} lotes próximos ao vencimento`;
+            NotificationTitle = translate(
+                'Function_Notification_ItHasExpiredAndNextToExpireProductsTitle'
+            );
+            NotificationMessage = translate(
+                'Function_Notification_ItHasExpiredAndNextToExpireProductsMessage'
+            )
+                .replace('{EXPIREDNUMBER}', String(productsVencidosCount))
+                .replace('{NEXTBATCHES}', String(productsNextToExpCount));
         }
 
         if (!!NotificationTitle && !!NotificationMessage) {

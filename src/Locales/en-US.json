@@ -2,7 +2,6 @@
     "AppName": "Expiration checker",
     "AppName_ProVersion": "Premium",
 
-
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",
@@ -198,5 +197,17 @@
     "View_Success_ProductUpdatedDescription": "The product has been updated",
     "View_Success_BatchDeletedDescription": "Batch was deleted",
     "View_Success_ProductDeletedDescription": "Product was deleted",
-    "View_Success_Button_GoToHome": "Go to home"
+    "View_Success_Button_GoToHome": "Go to home",
+
+    "Function_StoreGroup_NoStore": "No store",
+
+    "Function_Share_SaveFileTitle": "Save file",
+    "Function_Share_SaveFileDescription": "Choose a place to save the file",
+
+    "Function_Notification_ItOnlyHasProductsNextToExpTitle": "You have products close to expire.",
+    "Function_Notification_ItOnlyHasExpiredProductsTitle": "YOU HAVE EXPIRED PRODUCTS!",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "YOU HAVE EXPIRED PRODUCTS AND PRODUCTS CLOSE TO EXPIRE!",
+    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "You have {NUMBER} batches close to expire.",
+    "Function_Notification_ItOnlyHasExpiredProductsMessage": "YOU HAVE {NUMBER} NO TREATED EXPIRED BATCHES.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "YOU HAVE {EXPIREDNUMBER} NO TREATED EXPIRED BATCHES AND {NEXTBATCHES} CLOSE TO EXPIRE BATCHES."
 }

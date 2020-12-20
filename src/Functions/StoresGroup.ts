@@ -4,6 +4,8 @@ import {
     getAllStores,
 } from './Store';
 
+import { translate } from '../Locales';
+
 interface RequestProps {
     limit?: number;
 }
@@ -27,7 +29,7 @@ export async function GetAllProductsOrderedByStore({
     const productsWithoutStore = await getAllProductsWithoutStore();
 
     storeGroup.push({
-        name: 'Sem loja',
+        name: translate('Function_StoreGroup_NoStore'),
         products: limit
             ? productsWithoutStore.slice(0, limit)
             : productsWithoutStore,
