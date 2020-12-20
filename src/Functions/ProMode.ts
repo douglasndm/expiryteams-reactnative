@@ -9,13 +9,13 @@ Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
 export async function isSubscriptionActive(): Promise<boolean> {
     try {
-        const userId = await getUserId();
+        const localUserId = await getUserId();
 
-        if (!userId) {
+        if (!localUserId) {
             throw new Error('User is not signed');
         }
 
-        const purchaserInfo = await Purchases.identify(userId);
+        const purchaserInfo = await Purchases.identify(localUserId);
         // access latest purchaserInfo
 
         if (purchaserInfo.activeSubscriptions.length > 0) {

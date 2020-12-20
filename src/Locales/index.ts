@@ -13,7 +13,7 @@ export const translate = memoize(
 );
 
 const setI18nConfig = () => {
-    const fallback = { languageTag: 'pt' };
+    const fallback = { languageTag: 'en' };
 
     const { languageTag } =
         RNLocalize.findBestAvailableLanguage(

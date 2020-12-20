@@ -53,11 +53,19 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const { productId } = route.params;
     const { reset, goBack } = useNavigation();
 
-    const [locale, setLocale] = useState(() => {
+    const [locale] = useState(() => {
         if (getCountry() === 'US') {
             return 'en-US';
         }
         return 'pt-BR';
+    });
+
+    const [currency] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'USD';
+        }
+
+        return 'BRL';
     });
 
     const { userPreferences } = useContext(PreferencesContext);
@@ -209,7 +217,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                         <NumericInputField
                             type="currency"
                             locale="pt-BR"
-                            currency="BRL"
+                            currency={currency}
                             value={price}
                             onUpdate={(value: number) => setPrice(value)}
                             placeholder={translate(
