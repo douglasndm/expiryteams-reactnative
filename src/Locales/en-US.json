@@ -1,5 +1,5 @@
 {
-    "AppName": "Expiration check",
+    "AppName": "Expiration checker",
     "AppName_ProVersion": "Premium",
 
 
@@ -34,8 +34,8 @@
     "ProductCardComponent_ProductStore": "Store",
     "ProductCardComponent_ProductAmount": "Amount",
     "ProductCardComponent_ProductPrice": "Total price",
-    "ProductCardComponent_ProductExpireIn": "Expire in",
-    "ProductCardComponent_ProductExpiredIn": "Expired in",
+    "ProductCardComponent_ProductExpireIn": "Expire",
+    "ProductCardComponent_ProductExpiredIn": "Expired",
 
     "StoreGroupComponent_Button_ShowAllProductFromStore": "Show all products from store",
 
@@ -141,11 +141,11 @@
 
     "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",
-    "View_ProPage_AdvantageOne": "No ads",
-    "View_ProPage_AdvantageTwo": "Save your products into excel format",
-    "View_ProPage_AdvantageThree": "Save your data to keep it save if you need to reset or change your phone",
-    "View_ProPage_AdvantageFour": "Exclusives themes",
-    "View_ProPage_AdvantageFive": "Small price, great advantages",
+    "View_ProPage_AdvantageOne": "NO ADS.",
+    "View_ProPage_AdvantageTwo": "SAVE YOUR PRODUCTS INTO EXCEL FORMAT.",
+    "View_ProPage_AdvantageThree": "SAVE YOUR DATA TO KEEP IT SAVE IF YOU NEED TO RESET OR CHANGE YOUR PHONE.",
+    "View_ProPage_AdvantageFour": "EXCLUSIVES THEMES.",
+    "View_ProPage_AdvantageFive": "SMALL PRICE, GREAT ADVANTAGES.",
     "View_ProPage_UserAlreadyPro": "You are already PRO",
     "View_ProPage_SubscribeFor": "SUBSCRIBE FOR ONLY",
     "View_ProPage_SubscribePeriod_Quarterly": "QUARTERLY",
