@@ -1,8 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
 import br from 'date-fns/locale/pt-BR'; //eslint-disable-line
+import en from 'date-fns/locale/en-US'; //eslint-disable-line
+import { getCountry } from 'react-native-localize';
 import NumberFormat from 'react-number-format';
+
+import { translate } from '../../../Locales';
 
 import PreferencesContext from '../../../Contexts/PreferencesContext';
 
@@ -28,13 +32,50 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
 
     const { navigate } = useNavigation();
 
+    const [languageCode] = useState(() => {
+        if (getCountry() === 'US') {
+            return en;
+        }
+        return br;
+    });
+
+    const [dateFormat] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    });
+    const [currencyPrefix] = useState(() => {
+        if (getCountry() === 'US') {
+            return '$';
+        }
+
+        return 'R$';
+    });
+
     return (
         <Table>
             <TableHeader>
-                <TableTitle>LOTE</TableTitle>
-                <TableTitle>VENCIMENTO</TableTitle>
-                <TableTitle>QUANTIDADE</TableTitle>
-                <TableTitle>PREÇO</TableTitle>
+                <TableTitle>
+                    {translate(
+                        'View_ProductDetails_TableComponent_BatchNameColumnTitle'
+                    )}
+                </TableTitle>
+                <TableTitle>
+                    {translate(
+                        'View_ProductDetails_TableComponent_BatchExpInColumnTitle'
+                    )}
+                </TableTitle>
+                <TableTitle>
+                    {translate(
+                        'View_ProductDetails_TableComponent_BatchAmountColumnTitle'
+                    )}
+                </TableTitle>
+                <TableTitle>
+                    {translate(
+                        'View_ProductDetails_TableComponent_BatchPriceColumnTitle'
+                    )}
+                </TableTitle>
             </TableHeader>
 
             {batches.map((batch) => {
@@ -68,8 +109,8 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         </TableCell>
                         <TableCell>
                             <Text expiredOrNext={expiredOrNext}>
-                                {format(batch.exp_date, 'dd/MM/yyyy', {
-                                    locale: br,
+                                {format(batch.exp_date, dateFormat, {
+                                    locale: languageCode,
                                 })}
                             </Text>
                         </TableCell>
@@ -85,7 +126,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                                         value={batch.amount * batch.price}
                                         displayType="text"
                                         thousandSeparator
-                                        prefix="R$"
+                                        prefix={currencyPrefix}
                                         renderText={(value) => value}
                                         decimalScale={2}
                                     />

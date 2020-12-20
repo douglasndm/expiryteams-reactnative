@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
+import { translate } from '../../Locales';
+
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import BarCodeReader from '../../Components/BarCodeReader';
@@ -56,7 +58,9 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
             const product = await getProductById(productId);
 
             if (!product) {
-                throw new Error('Produto não encontrado');
+                throw new Error(
+                    translate('View_EditProduct_Error_ProductNotFound')
+                );
             }
 
             setName(product.name);
@@ -70,7 +74,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     async function updateProd() {
         if (!name || name.trim() === '') {
-            setError('Digite o nome do produto');
+            setError(translate('View_EditProduct_Error_EmptyProductName'));
             return;
         }
 
@@ -116,14 +120,20 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 <Container>
                     <PageHeader>
                         <BackButton handleOnPress={goBack} />
-                        <PageTitle>Editar produto</PageTitle>
+                        <PageTitle>
+                            {translate('View_EditProduct_PageTitle')}
+                        </PageTitle>
                     </PageHeader>
 
                     <PageContent>
                         <InputContainer>
                             <InputText
-                                placeholder="Nome do produto"
-                                accessibilityLabel="Campo de texto para nome do produto"
+                                placeholder={translate(
+                                    'View_EditProduct_InputPlacehoder_Name'
+                                )}
+                                accessibilityLabel={translate(
+                                    'View_EditProduct_InputAccessibility_Name'
+                                )}
                                 value={name}
                                 onChangeText={(value) => {
                                     setName(value);
@@ -135,8 +145,12 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
                             <InputCodeTextContainer>
                                 <InputCodeText
-                                    placeholder="Código do produto"
-                                    accessibilityLabel="Campo de texto para código de barras do produto"
+                                    placeholder={translate(
+                                        'View_EditProduct_InputPlacehoder_Code'
+                                    )}
+                                    accessibilityLabel={translate(
+                                        'View_EditProduct_InputAccessibility_Code'
+                                    )}
                                     value={code}
                                     onChangeText={(value) => setCode(value)}
                                 />
@@ -149,8 +163,12 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
                             {userPreferences.multiplesStores && (
                                 <InputText
-                                    placeholder="Loja do produto"
-                                    accessibilityLabel="Campo de texto para loja do produto"
+                                    placeholder={translate(
+                                        'View_EditProduct_InputPlacehoder_Store'
+                                    )}
+                                    accessibilityLabel={translate(
+                                        'View_EditProduct_InputAccessibility_Store'
+                                    )}
                                     value={store}
                                     onChangeText={(value) => {
                                         setStore(value);
@@ -168,7 +186,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     )}
                                     onPress={updateProd}
                                 >
-                                    Salvar
+                                    {translate('View_EditProduct_Button_Save')}
                                 </ButtonPaper>
                                 <ButtonPaper
                                     icon={() => (
@@ -176,7 +194,9 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     )}
                                     onPress={goBack}
                                 >
-                                    Cancelar
+                                    {translate(
+                                        'View_EditProduct_Button_Cancel'
+                                    )}
                                 </ButtonPaper>
                             </SaveCancelButtonsContainer>
                         </InputContainer>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { ScrollView, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getCountry } from 'react-native-localize';
 import { useTheme } from 'styled-components';
 import { Button as ButtonPaper, Dialog } from 'react-native-paper';
 import EnvConfig from 'react-native-config';
@@ -9,6 +10,8 @@ import {
     AdEventType,
     TestIds,
 } from '@react-native-firebase/admob';
+
+import { translate } from '../../Locales';
 
 import {
     checkIfProductAlreadyExistsByCode,
@@ -53,6 +56,20 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 const AddProduct: React.FC = () => {
     const { goBack, navigate, reset } = useNavigation();
 
+    const [locale] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'en-US';
+        }
+        return 'pt-BR';
+    });
+    const [currency] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'USD';
+        }
+
+        return 'BRL';
+    });
+
     const { userPreferences } = useContext(PreferencesContext);
 
     const theme = useTheme();
@@ -74,7 +91,7 @@ const AddProduct: React.FC = () => {
 
     async function handleSave() {
         if (!name || name.trim() === '') {
-            setError('Digite o nome do produto');
+            setError(translate('View_AddProduct_AlertTypeProductName'));
             return;
         }
 
@@ -202,14 +219,20 @@ const AddProduct: React.FC = () => {
                     <ScrollView>
                         <PageHeader>
                             <BackButton handleOnPress={goBack} />
-                            <PageTitle>Novo produto</PageTitle>
+                            <PageTitle>
+                                {translate('View_AddProduct_PageTitle')}
+                            </PageTitle>
                         </PageHeader>
 
                         <PageContent>
                             <InputContainer>
                                 <InputText
-                                    placeholder="Nome do produto"
-                                    accessibilityLabel="Campo de texto para nome do produto"
+                                    placeholder={translate(
+                                        'View_AddProduct_InputPlacehoder_Name'
+                                    )}
+                                    accessibilityLabel={translate(
+                                        'View_AddProduct_InputAccessibility_Name'
+                                    )}
                                     value={name}
                                     onChangeText={(value) => {
                                         setName(value);
@@ -221,8 +244,12 @@ const AddProduct: React.FC = () => {
 
                                 <InputCodeTextContainer>
                                     <InputCodeText
-                                        placeholder="Código do produto"
-                                        accessibilityLabel="Campo de texto para código de barras do produto"
+                                        placeholder={translate(
+                                            'View_AddProduct_InputPlacehoder_Code'
+                                        )}
+                                        accessibilityLabel={translate(
+                                            'View_AddProduct_InputAccessibility_Code'
+                                        )}
                                         value={code}
                                         onChangeText={(value) => setCode(value)}
                                     />
@@ -239,8 +266,12 @@ const AddProduct: React.FC = () => {
                                             flex: 5,
                                             marginRight: 5,
                                         }}
-                                        placeholder="Lote"
-                                        accessibilityLabel="Campo de texto para lote do produto"
+                                        placeholder={translate(
+                                            'View_AddProduct_InputPlacehoder_Batch'
+                                        )}
+                                        accessibilityLabel={translate(
+                                            'View_AddProduct_InputAccessibility_Batch'
+                                        )}
                                         value={lote}
                                         onChangeText={(value) => setLote(value)}
                                         onFocus={() => {
@@ -251,8 +282,12 @@ const AddProduct: React.FC = () => {
                                         style={{
                                             flex: 4,
                                         }}
-                                        placeholder="Quantidade"
-                                        accessibilityLabel="Campo de texto para quantidade do produto"
+                                        placeholder={translate(
+                                            'View_AddProduct_InputPlacehoder_Amount'
+                                        )}
+                                        accessibilityLabel={translate(
+                                            'View_AddProduct_InputAccessibility_Amount'
+                                        )}
                                         keyboardType="numeric"
                                         value={String(amount)}
                                         onChangeText={handleAmountChange}
@@ -264,19 +299,23 @@ const AddProduct: React.FC = () => {
 
                                 <NumericInputField
                                     type="currency"
-                                    locale="pt-BR"
-                                    currency="BRL"
+                                    locale={locale}
+                                    currency={currency}
                                     value={price}
                                     onUpdate={(value: number) =>
                                         setPrice(value)
                                     }
-                                    placeholder="Valor unitário"
+                                    placeholder={translate(
+                                        'View_AddProduct_InputPlacehoder_UnitPrice'
+                                    )}
                                 />
 
                                 {userPreferences.multiplesStores && (
                                     <MoreInformationsContainer>
                                         <MoreInformationsTitle>
-                                            Mais informações
+                                            {translate(
+                                                'View_AddProduct_MoreInformation_Label'
+                                            )}
                                         </MoreInformationsTitle>
 
                                         <InputGroup>
@@ -284,8 +323,12 @@ const AddProduct: React.FC = () => {
                                                 style={{
                                                     flex: 1,
                                                 }}
-                                                placeholder="Loja"
-                                                accessibilityLabel="Campo de texto para loja de onde o produto está cadastrado"
+                                                placeholder={translate(
+                                                    'View_AddProduct_InputPlacehoder_Store'
+                                                )}
+                                                accessibilityLabel={translate(
+                                                    'View_AddProduct_InputAccessibility_Store'
+                                                )}
                                                 onFocus={() => {
                                                     setCameraEnebled(false);
                                                 }}
@@ -300,25 +343,31 @@ const AddProduct: React.FC = () => {
 
                                 <ExpDateGroup>
                                     <ExpDateLabel>
-                                        Data de vencimento
+                                        {translate(
+                                            'View_AddProduct_CalendarTitle'
+                                        )}
                                     </ExpDateLabel>
 
                                     <CustomDatePicker
-                                        accessibilityLabel="Campo de seleção da data de vencimento do produto"
+                                        accessibilityLabel={translate(
+                                            'View_AddProduct_CalendarAccessibilityDescription'
+                                        )}
                                         date={expDate}
                                         onDateChange={(value) => {
                                             setExpDate(value);
                                         }}
                                         fadeToColor="none"
                                         mode="date"
-                                        locale="pt-br"
+                                        locale={locale}
                                     />
                                 </ExpDateGroup>
                             </InputContainer>
 
                             <GenericButton
-                                text="Salvar"
-                                accessibilityLabel="Botão para salvar o novo produto"
+                                text={translate('View_AddProduct_Button_Save')}
+                                accessibilityLabel={translate(
+                                    'View_AddProduct_Button_Save_AccessibilityDescription'
+                                )}
                                 onPress={handleSave}
                             />
                         </PageContent>
@@ -340,13 +389,16 @@ const AddProduct: React.FC = () => {
                 }}
                 style={{ backgroundColor: theme.colors.background }}
             >
-                <Dialog.Title>Produto duplicado</Dialog.Title>
+                <Dialog.Title>
+                    {translate(
+                        'View_AddProduct_DuplicateProductNotificationTitle'
+                    )}
+                </Dialog.Title>
                 <Dialog.Content>
                     <Text style={{ color: theme.colors.text }}>
-                        Não é possível adicionar este produto pois já existe um
-                        mesmo com esse código. Você pode editar o produto
-                        existente adicionando um novo lote a ele ou trocar o
-                        código do produto que está tentando adicionar.
+                        {translate(
+                            'View_AddProduct_DuplicateProductNotificationDescription'
+                        )}
                     </Text>
                 </Dialog.Content>
                 <Dialog.Actions>
@@ -354,7 +406,9 @@ const AddProduct: React.FC = () => {
                         color={theme.colors.accent}
                         onPress={handleNavigateToExistProduct}
                     >
-                        Editar produto existente
+                        {translate(
+                            'View_AddProduct_DuplicateProductNotificationButtonEditProdct'
+                        )}
                     </ButtonPaper>
                     <ButtonPaper
                         color={theme.colors.accent}
@@ -362,7 +416,9 @@ const AddProduct: React.FC = () => {
                             setProductAlreadyExists(false);
                         }}
                     >
-                        Fechar
+                        {translate(
+                            'View_AddProduct_DuplicateProductNotificationButtonClose'
+                        )}
                     </ButtonPaper>
                 </Dialog.Actions>
             </Dialog>

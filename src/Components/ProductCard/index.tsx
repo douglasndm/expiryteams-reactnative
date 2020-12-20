@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getCountry } from 'react-native-localize';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
 import br from 'date-fns/locale/pt-BR' // eslint-disable-line
+import en from 'date-fns/locale/en-US' // eslint-disable-line
 import NumberFormat from 'react-number-format';
+
+import { translate } from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -38,6 +42,18 @@ const Product = ({ product, expired, nextToExp }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [totalPrice, setTotalPrice] = useState(0);
+    const [languageCode] = useState(() => {
+        if (getCountry() === 'US') {
+            return en;
+        }
+        return br;
+    });
+    const [dateFormat] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    });
 
     const exp_date = useMemo(() => {
         if (product.lotes[0]) {
@@ -74,20 +90,22 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                         </ProductName>
                         {!!product.code && (
                             <ProductCode expiredOrNext={expiredOrNext}>
-                                Código: {product.code}
+                                {translate('ProductCardComponent_ProductCode')}:
+                                {product.code}
                             </ProductCode>
                         )}
 
-                        {product.lotes.length > 0 &&
-                            !!product.lotes[0].lote && (
-                                <ProductLote expiredOrNext={expiredOrNext}>
-                                    Lote: {product.lotes[0].lote}
-                                </ProductLote>
-                            )}
+                        {product.lotes.length > 0 && !!product.lotes[0].lote && (
+                            <ProductLote expiredOrNext={expiredOrNext}>
+                                {translate('ProductCardComponent_ProductBatch')}
+                                : {product.lotes[0].lote}
+                            </ProductLote>
+                        )}
 
                         {userPreferences.multiplesStores && !!product.store && (
                             <ProductStore expiredOrNext={expiredOrNext}>
-                                Loja: {product.store}
+                                {translate('ProductCardComponent_ProductStore')}
+                                : {product.store}
                             </ProductStore>
                         )}
                     </ProductDetailsContainer>
@@ -98,7 +116,9 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                 <AmountContainerText
                                     expiredOrNext={expiredOrNext}
                                 >
-                                    Quantidade
+                                    {translate(
+                                        'ProductCardComponent_ProductAmount'
+                                    )}
                                 </AmountContainerText>
                                 <Amount expiredOrNext={expiredOrNext}>
                                     {product.lotes[0].amount}
@@ -110,7 +130,9 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                     <PriceContainerText
                                         expiredOrNext={expiredOrNext}
                                     >
-                                        Preço total
+                                        {translate(
+                                            'ProductCardComponent_ProductPrice'
+                                        )}
                                     </PriceContainerText>
                                     <Price expiredOrNext={expiredOrNext}>
                                         <NumberFormat
@@ -130,13 +152,15 @@ const Product = ({ product, expired, nextToExp }: Request) => {
 
                 {!!exp_date && (
                     <ProductExpDate expiredOrNext={expiredOrNext}>
-                        {expired ? 'Venceu ' : 'Vence '}
-                        {formatDistanceToNow(exp_date, {
+                        {expired
+                            ? translate('ProductCardComponent_ProductExpiredIn')
+                            : translate('ProductCardComponent_ProductExpireIn')}
+                        {` ${formatDistanceToNow(exp_date, {
                             addSuffix: true,
-                            locale: br,
-                        })}
-                        {format(exp_date, ', EEEE, dd/MM/yyyy', {
-                            locale: br,
+                            locale: languageCode,
+                        })}`}
+                        {format(exp_date, `, EEEE, ${dateFormat}`, {
+                            locale: languageCode,
                         })}
                     </ProductExpDate>
                 )}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { translate } from '../../Locales';
+
 import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
@@ -108,12 +110,16 @@ const AllProducts: React.FC = () => {
             ) : (
                 <>
                     <Container>
-                        <Header title="Todos os produtos" />
+                        <Header
+                            title={translate('View_AllProducts_PageTitle')}
+                        />
 
                         {products.length > 0 && (
                             <InputTextContainer>
                                 <InputSearch
-                                    placeholder="Pesquisar por um produto"
+                                    placeholder={translate(
+                                        'View_AllProducts_SearchPlaceholder'
+                                    )}
                                     value={searchString}
                                     onChangeText={handleSearchChange}
                                 />

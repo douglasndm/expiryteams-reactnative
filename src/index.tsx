@@ -7,6 +7,8 @@ import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
+import './Locales';
+
 import './Services/Admob';
 import './Services/BackgroundJobs';
 

@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useContext } from 'react';
 
+import { translate } from '../../../Locales';
+
 import { setAppTheme } from '../../../Functions/Settings';
 
 import { getActualAppTheme } from '../../../Themes';
@@ -33,10 +35,12 @@ const Appearance: React.FC = () => {
 
     return (
         <CategoryOptions>
-            <CategoryTitle>Aparência</CategoryTitle>
+            <CategoryTitle>
+                {translate('View_Settings_CategoryName_Appearance')}
+            </CategoryTitle>
 
             <PickerContainer>
-                <Text>Tema do aplicativo</Text>
+                <Text>{translate('View_Settings_SettingName_AppTheme')}</Text>
 
                 <Picker
                     mode="dropdown"
@@ -46,14 +50,26 @@ const Appearance: React.FC = () => {
                     }}
                 >
                     <Picker.Item
-                        label="Baseado no sistema (Padrão)"
+                        label={translate(
+                            'View_Settings_Appearance_Theme_System'
+                        )}
                         value="system"
                     />
-                    <Picker.Item label="Claro" value="light" />
-                    <Picker.Item label="Escuro" value="dark" />
+                    <Picker.Item
+                        label={translate(
+                            'View_Settings_Appearance_Theme_Light'
+                        )}
+                        value="light"
+                    />
+                    <Picker.Item
+                        label={translate('View_Settings_Appearance_Theme_Dark')}
+                        value="dark"
+                    />
                     {userPreferences.isUserPremium || __DEV__ ? (
                         <Picker.Item
-                            label="Ultra violeta (Premium)"
+                            label={translate(
+                                'View_Settings_Appearance_Theme_UltraViolet'
+                            )}
                             value="ultraviolet"
                         />
                     ) : null}
@@ -62,7 +78,9 @@ const Appearance: React.FC = () => {
                         // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
                         userPreferences.isUserPremium || __DEV__ ? (
                             <Picker.Item
-                                label="Dark Green (Premium)"
+                                label={translate(
+                                    'View_Settings_Appearance_Theme_DarkGreen'
+                                )}
                                 value="darkgreen"
                             />
                         ) : null
@@ -70,14 +88,18 @@ const Appearance: React.FC = () => {
 
                     {userPreferences.isUserPremium || __DEV__ ? (
                         <Picker.Item
-                            label="Happy Pink (Premium)"
+                            label={translate(
+                                'View_Settings_Appearance_Theme_HappyPink'
+                            )}
                             value="happypink"
                         />
                     ) : null}
 
                     {userPreferences.isUserPremium || __DEV__ ? (
                         <Picker.Item
-                            label="Ocean Blue (Premium)"
+                            label={translate(
+                                'View_Settings_Appearance_Theme_OceanBlue'
+                            )}
                             value="oceanblue"
                         />
                     ) : null}
@@ -85,7 +107,9 @@ const Appearance: React.FC = () => {
                     {userPreferences.isUserPremium ||
                         (__DEV__ && (
                             <Picker.Item
-                                label="Relax (Premium)"
+                                label={translate(
+                                    'View_Settings_Appearance_Theme_Relax'
+                                )}
                                 value="relax"
                             />
                         ))}
@@ -93,7 +117,9 @@ const Appearance: React.FC = () => {
                     {userPreferences.isUserPremium ||
                         (__DEV__ && (
                             <Picker.Item
-                                label="Floresta (Premium)"
+                                label={translate(
+                                    'View_Settings_Appearance_Theme_Florest'
+                                )}
                                 value="florest"
                             />
                         ))}

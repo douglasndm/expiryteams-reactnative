@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
+import { translate } from '../../../Locales';
+
 import { setUserId } from '../../../Functions/User';
 import { signInWithGoogle } from '../../../Functions/Auth/Google';
 
@@ -48,31 +50,33 @@ const SignIn: React.FC = () => {
 
     return (
         <Container>
-            <Header title="Identifique-se" />
+            <Header title={translate('View_Auth_SignIn_PageTitle')} />
             <TextsContainer>
                 <FirstText>
-                    A autenticação com uma conta do Google é necessária para
-                    continuar.
+                    {translate('View_Auth_SignIn_Text_LoginRequired')}
                 </FirstText>
 
                 <SecondText>
-                    O aplicativo precisa de uma forma de identificar você caso
-                    troque de telefone ou restaure este, por isso pedimos que
-                    faça login com sua conta do Google.
+                    {translate('View_Auth_SignIn_Text_WhyLogin')}
                 </SecondText>
 
                 <ThirdText>
-                    Desta forma podemos restaurar sua conta PRO sem a
-                    necessidade de realizar uma nova assinatura
+                    {translate('View_Auth_SignIn_Text_Benefits')}
                 </ThirdText>
             </TextsContainer>
 
-            <LoginText>{completed ? 'Tudo certo' : 'Fazer login'}</LoginText>
+            <LoginText>
+                {completed
+                    ? translate('View_Auth_SignIn_Text_AllDone')
+                    : translate('View_Auth_SignIn_Text_Login')}
+            </LoginText>
             {!completed && <GoogleButton onPress={handleGoogleButtonPressed} />}
 
             {completed && (
                 <GenericButton
-                    text="Continuar para a assinatura"
+                    text={translate(
+                        'View_Auth_SignIn_Button_ContinueToSubscription'
+                    )}
                     onPress={handleToGoProPage}
                 />
             )}

@@ -1,6 +1,8 @@
 import React, { useCallback, useRef } from 'react';
 import { RNCamera } from 'react-native-camera';
 
+import { translate } from '../../Locales';
+
 import GenericButton from '../Button';
 
 import { Container, BarCodeTitle, CameraContainer, Camera } from './styles';
@@ -22,7 +24,7 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
 
     return (
         <Container>
-            <BarCodeTitle>Leitor de código de barra</BarCodeTitle>
+            <BarCodeTitle>{translate('BarCodeReader_PageTitle')}</BarCodeTitle>
             <CameraContainer>
                 <Camera
                     ref={CameraRef}
@@ -44,7 +46,10 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
                 />
             </CameraContainer>
 
-            <GenericButton text="Fechar" onPress={onClose} />
+            <GenericButton
+                text={translate('BarCodeReader_CloseButton')}
+                onPress={onClose}
+            />
         </Container>
     );
 };

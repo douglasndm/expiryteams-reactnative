@@ -7,6 +7,8 @@ import {
 import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
+import { translate } from '../../Locales';
+
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import UserInfo from './UserInfo';
@@ -38,7 +40,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <Drawer.Section>
                         <MenuItem
                             icon={() => <Icons name="home-outline" size={22} />}
-                            label="Início"
+                            label={translate('Menu_Button_GoToHome')}
                             onPress={() => navigation.navigate('Home')}
                         />
                         <MenuItem
@@ -49,12 +51,12 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                     size={22}
                                 />
                             )}
-                            label="Adicionar produto"
+                            label={translate('Menu_Button_GoToAddProduct')}
                             onPress={() => navigation.navigate('AddProduct')}
                         />
                         <MenuItem
                             icon={() => <Icons name="apps-outline" size={22} />}
-                            label="Todos os produtos"
+                            label={translate('Menu_Button_GoToAllProducts')}
                             onPress={() => navigation.navigate('AllProducts')}
                         />
 
@@ -63,7 +65,9 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 icon={() => (
                                     <Icons name="list-outline" size={22} />
                                 )}
-                                label="Produtos por loja"
+                                label={translate(
+                                    'Menu_Button_GoToAllProductsByStore'
+                                )}
                                 onPress={() =>
                                     navigation.navigate('AllProductsByStore')
                                 }
@@ -75,7 +79,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 icon={() => (
                                     <Icons name="analytics-outline" size={22} />
                                 )}
-                                label="Seja PRO"
+                                label={translate('Menu_Button_GoToProPage')}
                                 onPress={() => {
                                     navigation.navigate('PremiumSubscription');
                                 }}
@@ -88,19 +92,19 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             <Drawer.Section>
                 <MenuItem
                     icon={() => <Icons name="settings-outline" size={22} />}
-                    label="Configurações"
+                    label={translate('Menu_Button_GoToSettings')}
                     onPress={() => navigation.navigate('Settings')}
                 />
                 <MenuItem
                     icon={() => <Icons name="help-circle-outline" size={22} />}
-                    label="Sobre"
+                    label={translate('Menu_Button_GoToAbout')}
                     onPress={() => navigation.navigate('About')}
                 />
 
                 {__DEV__ && (
                     <MenuItem
                         icon={() => <Icons name="bug-outline" size={22} />}
-                        label="Test"
+                        label={translate('Menu_Button_GoToTest')}
                         onPress={() => navigation.navigate('Test')}
                     />
                 )}

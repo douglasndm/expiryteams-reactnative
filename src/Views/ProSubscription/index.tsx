@@ -3,6 +3,8 @@ import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PurchasesPackage } from 'react-native-purchases';
 
+import { translate } from '../../Locales';
+
 import {
     getSubscriptionDetails,
     makeSubscription,
@@ -124,35 +126,42 @@ const PremiumSubscription: React.FC = () => {
             <ScrollView>
                 <HeaderContainer>
                     <TitleContainer>
-                        <IntroductionText>Conheça o</IntroductionText>
-                        <AppNameTitle>Controle de validade</AppNameTitle>
-                        <PremiumTitle>PRO</PremiumTitle>
+                        <IntroductionText>
+                            {translate('View_ProPage_MeetPRO')}
+                        </IntroductionText>
+                        <AppNameTitle>{translate('AppName')}</AppNameTitle>
+                        <PremiumTitle>
+                            {translate('View_ProPage_ProLabel')}
+                        </PremiumTitle>
                     </TitleContainer>
                 </HeaderContainer>
 
                 <AdvantagesGroup>
                     <AdvantageContainer>
-                        <AdvantageText>SEM ANÚNCIOS</AdvantageText>
-                    </AdvantageContainer>
-
-                    <AdvantageContainer>
                         <AdvantageText>
-                            SALVE SEUS PRODUTOS EM ARQUIVOS EXCEL
+                            {translate('View_ProPage_AdvantageOne')}
                         </AdvantageText>
                     </AdvantageContainer>
 
                     <AdvantageContainer>
                         <AdvantageText>
-                            OPÇÃO PARA SALVAR SEUS DADOS EM CASO DE FORMATAÇÃO
-                            OU PERDA DO TELEFONE
+                            {translate('View_ProPage_AdvantageTwo')}
+                        </AdvantageText>
+                    </AdvantageContainer>
+
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageThree')}
                         </AdvantageText>
                     </AdvantageContainer>
                     <AdvantageContainer>
-                        <AdvantageText>TEMAS EXCLUSIVOS</AdvantageText>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageFour')}
+                        </AdvantageText>
                     </AdvantageContainer>
                     <AdvantageContainer>
                         <AdvantageText>
-                            PEQUENO VALOR A CADA TRÊS MESES
+                            {translate('View_ProPage_AdvantageFive')}
                         </AdvantageText>
                     </AdvantageContainer>
                 </AdvantagesGroup>
@@ -162,7 +171,7 @@ const PremiumSubscription: React.FC = () => {
                         {alreadyPremium ? (
                             <ButtonSubscription>
                                 <TextSubscription>
-                                    VOCÊ JÁ É PRO
+                                    {translate('View_ProPage_UserAlreadyPro')}
                                 </TextSubscription>
                             </ButtonSubscription>
                         ) : (
@@ -176,10 +185,17 @@ const PremiumSubscription: React.FC = () => {
                                 {!isLoadingMakeSubscription && (
                                     <>
                                         <TextSubscription>
-                                            ASSINAR POR
+                                            {translate(
+                                                'View_ProPage_SubscribeFor'
+                                            )}
                                         </TextSubscription>
                                         <TextSubscription>
-                                            {`${packageSubscription?.product.price_string} TRIMESTRAIS`}
+                                            {`${
+                                                packageSubscription?.product
+                                                    .price_string
+                                            } ${translate(
+                                                'View_ProPage_SubscribePeriod_Quarterly'
+                                            )}`}
                                         </TextSubscription>
                                     </>
                                 )}
@@ -190,17 +206,19 @@ const PremiumSubscription: React.FC = () => {
                     <>
                         <ButtonSubscription onPress={handleNavigateToSignIn}>
                             <TextSubscription>
-                                Você precisar entrar com sua conta primeiro.
+                                {translate('View_ProPage_UserNeedToSignIn')}
                             </TextSubscription>
                             <TextSubscription>
-                                Clique aqui para entrar.
+                                {translate('View_ProPage_Button_ClickToSignIn')}
                             </TextSubscription>
                         </ButtonSubscription>
                     </>
                 )}
 
                 <ButtonSubscription onPress={handleNavigateHome}>
-                    <TextSubscription>Voltar ao início</TextSubscription>
+                    <TextSubscription>
+                        {translate('View_ProPage_Button_GoBackToHome')}
+                    </TextSubscription>
                 </ButtonSubscription>
             </ScrollView>
 

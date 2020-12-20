@@ -1,8 +1,10 @@
 import React, { useCallback, useContext } from 'react';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import { useNavigation } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
-import { useNavigation } from '@react-navigation/native';
+import { translate } from '../../Locales';
+
 import ProductItem from '../ProductItem';
 
 import {
@@ -48,7 +50,9 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
 
             {products.length >= 5 && (
                 <Button
-                    text="Mostrar todos os produtos da loja"
+                    text={translate(
+                        'StoreGroupComponent_Button_ShowAllProductFromStore'
+                    )}
                     onPress={handleStoreDetails}
                 />
             )}

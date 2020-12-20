@@ -2,6 +2,8 @@ import React, { useCallback, useContext } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { translate } from '../../Locales';
+
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import ProductItem from '../ProductItem';
@@ -46,7 +48,11 @@ const ListProducts: React.FC<RequestProps> = ({
             <View>
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>CONHEÇA AS VANTAGENS DO PRO</ProText>
+                        <ProText>
+                            {translate(
+                                'ListProductsComponent_PROBanner_message'
+                            )}
+                        </ProText>
                     </ProBanner>
                 )}
 
@@ -54,7 +60,9 @@ const ListProducts: React.FC<RequestProps> = ({
                 {products.length > 0 && (
                     <CategoryDetails>
                         <CategoryDetailsText>
-                            Produtos próximos ao vencimento
+                            {translate(
+                                'ListProductsComponent_Title_ProductsNextToExp'
+                            )}
                         </CategoryDetailsText>
                     </CategoryDetails>
                 )}
@@ -65,7 +73,7 @@ const ListProducts: React.FC<RequestProps> = ({
     const EmptyList = useCallback(() => {
         return (
             <EmptyListText>
-                Não há nenhum produto cadastrado ainda...
+                {translate('ListProductsComponent_Title_NoProductsInList')}
             </EmptyListText>
         );
     }, []);
@@ -74,7 +82,9 @@ const ListProducts: React.FC<RequestProps> = ({
         if (products.length > 5 && isHome) {
             return (
                 <GenericButton
-                    text="Mostrar todos os produtos"
+                    text={translate(
+                        'ListProductsComponent_Button_ShowAllProducts'
+                    )}
                     onPress={handleNavigateToAllProducts}
                 />
             );
@@ -82,7 +92,7 @@ const ListProducts: React.FC<RequestProps> = ({
 
         return (
             <GenericButton
-                text="Cadastrar um produto"
+                text={translate('ListProductsComponent_Button_AddNewProduct')}
                 onPress={handleNavigateAddNewProduct}
             />
         );

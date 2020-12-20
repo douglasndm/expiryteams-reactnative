@@ -2,6 +2,8 @@ import React, { useCallback, useContext } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { translate } from '../../Locales';
+
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import { HeaderContainer, TextLogo, MenuIcon, MenuButton } from './styles';
@@ -32,8 +34,8 @@ const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
             ) : (
                 <TextLogo style={{ fontSize: titleFontSize }}>
                     {userPreferences.isUserPremium
-                        ? 'Premium'
-                        : 'Controle de Validade'}
+                        ? translate('AppNameProVersion')
+                        : translate('AppName')}
                 </TextLogo>
             )}
         </HeaderContainer>

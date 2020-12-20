@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { translate } from '../../Locales';
+
 import { Container, Title, Description } from './styles';
 
 interface NotificationProps {
@@ -16,8 +18,10 @@ const Notification: React.FC<NotificationProps> = ({
     return (
         <Container NotificationType={NotificationType} onPress={onPress}>
             <Title>
-                {NotificationType === 'error' ? 'Erro' : 'Notificação'} | Toque
-                para fechar
+                {NotificationType === 'error'
+                    ? translate('NotificationComponent_NotificationTypeError')
+                    : translate('NotificationComponent_NotificationTypeSimple')}
+                | {translate('NotificationComponent_NotificationCloseText')}
             </Title>
             <Description>{NotificationMessage}</Description>
         </Container>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 
+import { translate } from '../../Locales';
+
 import { GetAllProductsOrderedByStore } from '../../Functions/StoresGroup';
 
 import Loading from '../../Components/Loading';
@@ -32,7 +34,9 @@ const AllProductsByStore: React.FC = () => {
     ) : (
         <Container>
             <ScrollView>
-                <Header title="Produtos por loja" />
+                <Header
+                    title={translate('View_AllProductsByStore_PageTitle')}
+                />
                 {allProducts.map((storeGroup) => (
                     <StoreGroup
                         key={storeGroup.name}

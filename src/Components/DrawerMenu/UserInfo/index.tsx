@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { translate } from '../../../Locales';
+
 import { getUser } from '../../../Functions/Auth/Google';
 
 import {
@@ -40,7 +42,9 @@ const UserInfo: React.FC<Props> = ({ isUserPro }: Props) => {
             <TextContainer>
                 <UserName>{user?.name}</UserName>
                 <UserEmail>{user?.email}</UserEmail>
-                {isUserPro && <UserLabel>USUÁRIO PRO</UserLabel>}
+                {isUserPro && (
+                    <UserLabel>{translate('Menu_UserProfile_Label')}</UserLabel>
+                )}
             </TextContainer>
         </Container>
     );
