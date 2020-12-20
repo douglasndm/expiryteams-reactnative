@@ -9,13 +9,13 @@ Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
 export async function isSubscriptionActive(): Promise<boolean> {
     try {
-        const userId = await getUserId();
+        const localUserId = await getUserId();
 
-        if (!userId) {
+        if (!localUserId) {
             throw new Error('User is not signed');
         }
 
-        const purchaserInfo = await Purchases.identify(userId);
+        const purchaserInfo = await Purchases.identify(localUserId);
         // access latest purchaserInfo
 
         if (purchaserInfo.activeSubscriptions.length > 0) {
@@ -78,4 +78,6 @@ export async function makeSubscription(): Promise<void> {
 
 // Chama a função para verificar se usuário tem inscrição ativa (como o arquivo é importado
 // na home ele verifica e já marca nas configurações a resposta)
-isSubscriptionActive().then(() => console.log('Subscription checked'));
+isSubscriptionActive()
+    .then(() => console.log('Subscription checked'))
+    .catch(() => console.log('User is not signed in'));

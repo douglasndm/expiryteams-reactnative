@@ -13,6 +13,8 @@ import { Button } from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { translate } from '../../Locales';
+
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
@@ -156,18 +158,26 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         <ProductDetailsContainer>
                             <PageTitleContent>
                                 <BackButton handleOnPress={goBack} />
-                                <PageTitle>Detalhes</PageTitle>
+                                <PageTitle>
+                                    {translate('View_ProductDetails_PageTitle')}
+                                </PageTitle>
                             </PageTitleContent>
 
                             <ProductInformationContent>
                                 <ProductName>{name}</ProductName>
                                 {!!code && (
-                                    <ProductCode>Código: {code}</ProductCode>
+                                    <ProductCode>
+                                        {translate('View_ProductDetails_Code')}:{' '}
+                                        {code}
+                                    </ProductCode>
                                 )}
                                 {userPreferences.multiplesStores &&
                                     !!product?.store && (
                                         <ProductStore>
-                                            Loja: {product.store}
+                                            {translate(
+                                                'View_ProductDetails_Store'
+                                            )}
+                                            : {product.store}
                                         </ProductStore>
                                     )}
                             </ProductInformationContent>
@@ -180,7 +190,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 )}
                                 onPress={() => handleEdit()}
                             >
-                                Editar
+                                {translate(
+                                    'View_ProductDetails_Button_UpdateProduct'
+                                )}
                             </ButtonPaper>
                             <ButtonPaper
                                 icon={() => (
@@ -190,7 +202,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     setDeleteComponentVisible(true);
                                 }}
                             >
-                                Apagar
+                                {translate(
+                                    'View_ProductDetails_Button_DeleteProduct'
+                                )}
                             </ButtonPaper>
                         </View>
                     </PageHeader>
@@ -200,7 +214,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <TableContainer>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        Todos os lotes ainda não tratados
+                                        {translate(
+                                            'View_ProductDetails_TableTitle_NotTreatedBatches'
+                                        )}
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
@@ -215,7 +231,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        Todos os lotes tratados
+                                        {translate(
+                                            'View_ProductDetails_TableTitle_TreatedBatches'
+                                        )}
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
@@ -227,7 +245,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         )}
 
                         <GenericButton
-                            text="Cadastrar novo lote"
+                            text={translate(
+                                'View_ProductDetails_Button_AddNewBatch'
+                            )}
                             onPress={() => {
                                 navigate('AddLote', {
                                     productId,
@@ -250,7 +270,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     <Ionicons name="add-outline" color="white" size={22} />
                 )}
                 small
-                label="Adicionar lote"
+                label={translate('View_ProductDetails_FloatButton_AddNewBatch')}
                 onPress={addNewLote}
             />
 
@@ -261,17 +281,18 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                 }}
             >
                 <DialogPaper.Title style={{ color: theme.colors.text }}>
-                    Você tem certeza?
+                    {translate('View_ProductDetails_WarningDelete_Title')}
                 </DialogPaper.Title>
                 <DialogPaper.Content>
                     <Text style={{ color: theme.colors.text }}>
-                        Se continuar você irá apagar o produto e todos os seus
-                        lotes
+                        {translate('View_ProductDetails_WarningDelete_Message')}
                     </Text>
                 </DialogPaper.Content>
                 <DialogPaper.Actions>
                     <Button color="red" onPress={handleDeleteProduct}>
-                        APAGAR
+                        {translate(
+                            'View_ProductDetails_WarningDelete_Button_Confirm'
+                        )}
                     </Button>
                     <Button
                         color={theme.colors.accent}
@@ -279,7 +300,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             setDeleteComponentVisible(false);
                         }}
                     >
-                        MANTER
+                        {translate(
+                            'View_ProductDetails_WarningDelete_Button_Cancel'
+                        )}
                     </Button>
                 </DialogPaper.Actions>
             </DialogPaper>

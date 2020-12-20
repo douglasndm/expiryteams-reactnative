@@ -143,10 +143,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 72
-        versionName "1.5.2"
-
-        missingDimensionStrategy 'react-native-camera', 'mlkit'
+        versionCode 73
+        versionName "1.6.0"
     }
     splits {
         abi {
@@ -193,6 +191,9 @@ android {
             * nativeSymbolUploadEnabled to true. */
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
+
+                unstrippedNativeLibsDir "build/intermediates/merged_native_libs/release/out/lib/"
+                strippedNativeLibsDir "build/intermediates/stripped_native_libs/release/out/lib/"
             }
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
@@ -228,8 +229,6 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
 
     implementation 'androidx.multidex:multidex:2.0.1'
-
-    implementation project(':react-native-camera')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

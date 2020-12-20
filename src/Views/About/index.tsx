@@ -3,6 +3,8 @@ import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
 
+import { translate } from '../../Locales';
+
 import BackButton from '../../Components/BackButton';
 
 import { getUserId } from '../../Functions/User';
@@ -45,22 +47,26 @@ const About: React.FC = () => {
         <Container>
             <Content>
                 <BackButton handleOnPress={goBack} />
-                <PageTitle>Sobre</PageTitle>
+                <PageTitle>{translate('View_About_PageTitle')}</PageTitle>
             </Content>
 
             <AboutSection>
-                <ApplicationName>Controle de Validade</ApplicationName>
-                <UserId>UID: {userId}</UserId>
-                <ApplicationVersion>{getVersion()}</ApplicationVersion>
+                <ApplicationName>{translate('AppName')}</ApplicationName>
+                <UserId>
+                    {translate('View_About_UID')} {userId}
+                </UserId>
+                <ApplicationVersion>
+                    {translate('View_About_AppVersion') + getVersion()}
+                </ApplicationVersion>
             </AboutSection>
 
             <AboutSection>
-                <Text>Desenvolvido por Douglas Nunes de Mattos</Text>
+                <Text>{translate('View_About_DevelopedBy')}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
             </AboutSection>
 
             <AboutSection>
-                <Text>Logo só possível por</Text>
+                <Text>{translate('View_About_LogoMadeBy')}</Text>
 
                 <View>
                     <Link onPress={handleFlatIconPress}>

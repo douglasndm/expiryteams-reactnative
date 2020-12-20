@@ -1,6 +1,8 @@
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
+import { translate } from '../Locales';
+
 interface shareFileProps {
     fileAsString: string;
     fileName: string;
@@ -26,8 +28,8 @@ export async function shareFile({
         await RNFS.writeFile(path, fileAsString, encoding);
 
         await Share.open({
-            title: 'Salvar',
-            message: 'Escolha um local para salvar o arquivo',
+            title: translate('Function_Share_SaveFileTitle'),
+            message: translate('Function_Share_SaveFileDescription'),
             url: `file://${path}`,
         });
     } catch (err) {

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { translate } from '../../Locales';
+
 import {
     searchForAProductInAList,
     GetAllProducts,
@@ -117,7 +119,7 @@ const Home: React.FC = () => {
                     {products.length > 0 && (
                         <InputTextContainer>
                             <InputSearch
-                                placeholder="Pesquisar por um produto"
+                                placeholder={translate('View_Home_SearchText')}
                                 value={searchString}
                                 onChangeText={handleSearchChange}
                             />

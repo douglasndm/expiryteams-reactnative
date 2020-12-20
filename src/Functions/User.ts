@@ -5,7 +5,7 @@ export async function getUserId(): Promise<string> {
         const id = await AsyncStorage.getItem('UserId');
 
         if (!id) {
-            throw new Error('User ID was not found. Are you signed in?');
+            return '';
         }
 
         return id;

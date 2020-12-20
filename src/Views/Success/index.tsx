@@ -4,6 +4,8 @@ import LottieView from 'lottie-react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
+import { translate } from '../../Locales';
+
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import Button from '../../Components/Button';
@@ -92,40 +94,58 @@ const Success: React.FC = () => {
                     style={{ width: 180, height: 180 }}
                 />
 
-                {type === 'create_batch' && <Title>Lote cadastrado</Title>}
-                {type === 'create_product' && <Title>Produto cadastrado</Title>}
-                {type === 'edit_batch' && <Title>Lote atualizado</Title>}
-                {type === 'edit_product' && <Title>Produto atualizado</Title>}
-                {type === 'delete_batch' && <Title>Lote apagado</Title>}
-                {type === 'delete_product' && <Title>Produto apagado</Title>}
+                {type === 'create_batch' && (
+                    <Title>{translate('View_Success_BatchCreated')}</Title>
+                )}
+                {type === 'create_product' && (
+                    <Title>{translate('View_Success_ProductCreated')}</Title>
+                )}
+                {type === 'edit_batch' && (
+                    <Title>{translate('View_Success_BatchUpdated')}</Title>
+                )}
+                {type === 'edit_product' && (
+                    <Title>{translate('View_Success_ProductUpdated')}</Title>
+                )}
+                {type === 'delete_batch' && (
+                    <Title>{translate('View_Success_BatchDeleted')}</Title>
+                )}
+                {type === 'delete_product' && (
+                    <Title>{translate('View_Success_ProductDeleted')}</Title>
+                )}
 
                 {type === 'create_batch' && (
                     <Description>
-                        Seu lote foi cadastrado com sucesso.
+                        {translate('View_Success_BatchCreatedDescription')}
                     </Description>
                 )}
                 {type === 'create_product' && (
                     <Description>
-                        Seu produto foi cadastrado com sucesso.
+                        {translate('View_Success_ProductCreatedDescription')}
                     </Description>
                 )}
                 {type === 'edit_batch' && (
-                    <Description>O lote foi atualizado.</Description>
+                    <Description>
+                        {translate('View_Success_BatchUpdatedDescription')}
+                    </Description>
                 )}
                 {type === 'edit_product' && (
-                    <Description>O produto foi atualizado.</Description>
+                    <Description>
+                        {translate('View_Success_ProductUpdatedDescription')}
+                    </Description>
                 )}
                 {type === 'delete_batch' && (
-                    <Description>Seu lote foi apagado com sucesso.</Description>
+                    <Description>
+                        {translate('View_Success_BatchDeletedDescription')}
+                    </Description>
                 )}
                 {type === 'delete_product' && (
                     <Description>
-                        Seu produto foi apagado com sucesso.
+                        {translate('View_Success_ProductDeletedDescription')}
                     </Description>
                 )}
 
                 <Button
-                    text="Voltar ao início"
+                    text={translate('View_Success_Button_GoToHome')}
                     onPress={handleNavigateToHome}
                 />
 

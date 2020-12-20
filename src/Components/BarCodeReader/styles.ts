@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { RNCamera } from 'react-native-camera';
+import { CameraKitCameraScreen } from 'react-native-camera-kit';
 
 export const Container = styled.View`
     flex: 1;
@@ -13,15 +13,10 @@ export const BarCodeTitle = styled.Text`
 `;
 
 export const CameraContainer = styled.View`
-    justify-content: center;
     flex: 1;
 `;
 
-export const Camera = styled(RNCamera)`
-    flex: 1;
-    align-self: center;
-    margin-top: 50px;
-    margin-bottom: 10px;
-    width: 100%;
-    height: 5%;
-`;
+export const Camera = styled(CameraKitCameraScreen).attrs((props) => ({
+    frameColor: props.theme.colors.accent,
+    laserColor: props.theme.colors.accent,
+}))``;

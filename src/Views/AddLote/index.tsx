@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getCountry } from 'react-native-localize';
 import crashlytics from '@react-native-firebase/crashlytics';
 import EnvConfig from 'react-native-config';
 import {
@@ -8,6 +9,8 @@ import {
     AdEventType,
     TestIds,
 } from '@react-native-firebase/admob';
+
+import { translate } from '../../Locales';
 
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
@@ -50,6 +53,21 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const { productId } = route.params;
     const { reset, goBack } = useNavigation();
 
+    const [locale] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'en-US';
+        }
+        return 'pt-BR';
+    });
+
+    const [currency] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'USD';
+        }
+
+        return 'BRL';
+    });
+
     const { userPreferences } = useContext(PreferencesContext);
 
     const [notification, setNotification] = useState<string>();
@@ -66,7 +84,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
 
     const handleSave = useCallback(async () => {
         if (!lote || lote.trim() === '') {
-            Alert.alert('Digite o nome do lote');
+            Alert.alert(translate('View_AddBatch_AlertTypeBatchName'));
             return;
         }
         try {
@@ -159,7 +177,9 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
             <ScrollView>
                 <PageHeader>
                     <BackButton handleOnPress={goBack} />
-                    <PageTitle>Adicionar um lote</PageTitle>
+                    <PageTitle>
+                        {translate('View_AddBatch_PageTitle')}
+                    </PageTitle>
                 </PageHeader>
 
                 <PageContent>
@@ -175,7 +195,9 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                                     flex: 5,
                                     marginRight: 5,
                                 }}
-                                placeholder="Lote"
+                                placeholder={translate(
+                                    'View_AddBatch_InputPlacehoder_Batch'
+                                )}
                                 value={lote}
                                 onChangeText={(value) => setLote(value)}
                             />
@@ -183,7 +205,9 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                                 style={{
                                     flex: 4,
                                 }}
-                                placeholder="Quantidade"
+                                placeholder={translate(
+                                    'View_AddBatch_InputPlacehoder_Amount'
+                                )}
                                 keyboardType="numeric"
                                 value={amount}
                                 onChangeText={handleAmountChange}
@@ -193,14 +217,18 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                         <NumericInputField
                             type="currency"
                             locale="pt-BR"
-                            currency="BRL"
+                            currency={currency}
                             value={price}
                             onUpdate={(value: number) => setPrice(value)}
-                            placeholder="Valor unitário"
+                            placeholder={translate(
+                                'View_AddBatch_InputPlacehoder_UnitPrice'
+                            )}
                         />
 
                         <ExpDateGroup>
-                            <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                            <ExpDateLabel>
+                                {translate('View_AddBatch_CalendarTitle')}
+                            </ExpDateLabel>
                             <CustomDatePicker
                                 date={expDate}
                                 onDateChange={(value) => {
@@ -208,12 +236,15 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                                 }}
                                 fadeToColor="none"
                                 mode="date"
-                                locale="pt-br"
+                                locale={locale}
                             />
                         </ExpDateGroup>
                     </InputContainer>
 
-                    <GenericButton text="Salvar" onPress={handleSave} />
+                    <GenericButton
+                        text={translate('View_AddBatch_Button_Save')}
+                        onPress={handleSave}
+                    />
                 </PageContent>
             </ScrollView>
 

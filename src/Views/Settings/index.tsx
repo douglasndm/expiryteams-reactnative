@@ -3,6 +3,8 @@ import { View, ScrollView, Linking } from 'react-native';
 import { Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
+import { translate } from '../../Locales';
+
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
@@ -19,8 +21,6 @@ import { isSubscriptionActive } from '../../Functions/ProMode';
 import { isUserSignedIn, signOutGoogle } from '../../Functions/Auth/Google';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
-
-import { migrateAllDataFromSQLiteToRealm } from '../../typeorm/MigrateTypeormData';
 
 import {
     Container,
@@ -41,6 +41,8 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
+    const [error, setError] = useState<string>('');
+
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
@@ -50,6 +52,7 @@ const Settings: React.FC = () => {
         PreferencesContext
     );
     const [userSigned, setUserSigned] = useState<boolean>(false);
+    const [isOnLogout, setIsOnLogout] = useState<boolean>(false);
 
     const { navigate, goBack, reset } = useNavigation();
 
@@ -144,13 +147,21 @@ const Settings: React.FC = () => {
         await exportToExcel();
     }, []);
 
-    const migrateData = useCallback(async () => {
-        await migrateAllDataFromSQLiteToRealm();
-    }, []);
-
     const handleLogout = useCallback(async () => {
-        await signOutGoogle();
-    }, []);
+        try {
+            setIsOnLogout(true);
+            await signOutGoogle();
+
+            setUserPreferences({
+                ...userPreferences,
+                isUserSignedIn: false,
+            });
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsOnLogout(false);
+        }
+    }, [setUserPreferences, userPreferences]);
 
     return (
         <Container>
@@ -158,17 +169,22 @@ const Settings: React.FC = () => {
                 <PageHeader>
                     <BackButton handleOnPress={goBack} />
 
-                    <PageTitle>Configurações</PageTitle>
+                    <PageTitle>
+                        {translate('View_Settings_PageTitle')}
+                    </PageTitle>
                 </PageHeader>
 
                 <SettingsContent>
                     <Category>
-                        <CategoryTitle>Geral</CategoryTitle>
+                        <CategoryTitle>
+                            {translate('View_Settings_CategoryName_General')}
+                        </CategoryTitle>
 
                         <CategoryOptions>
                             <SettingDescription>
-                                Quantos dias para produto ser considerado
-                                próximo
+                                {translate(
+                                    'View_Settings_SettingName_HowManyDaysToBeNextToExp'
+                                )}
                             </SettingDescription>
                             <InputSetting
                                 keyboardType="numeric"
@@ -185,7 +201,9 @@ const Settings: React.FC = () => {
 
                             <SettingContainer>
                                 <SettingDescription>
-                                    Notificações habilitadas?
+                                    {translate(
+                                        'View_Settings_SettingName_EnableNotification'
+                                    )}
                                 </SettingDescription>
                                 <Switch
                                     value={isNotificationsEnabled}
@@ -197,7 +215,9 @@ const Settings: React.FC = () => {
 
                             <SettingContainer>
                                 <SettingDescription>
-                                    Habilitar modo de múltiplas lojas
+                                    {translate(
+                                        'View_Settings_SettingName_EnableMultiplesStores'
+                                    )}
                                 </SettingDescription>
                                 <Switch
                                     value={userPreferences.multiplesStores}
@@ -212,11 +232,15 @@ const Settings: React.FC = () => {
                     </Category>
 
                     <Category>
-                        <CategoryTitle>Premium</CategoryTitle>
+                        <CategoryTitle>
+                            {translate('View_Settings_CategoryName_Pro')}
+                        </CategoryTitle>
 
                         {!userIsPremium && (
                             <GenericButton
-                                text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
+                                text={translate(
+                                    'View_Settings_Button_BecobeProToUnlockNewFeatures'
+                                )}
                                 onPress={navigateToPremiumView}
                             />
                         )}
@@ -224,11 +248,9 @@ const Settings: React.FC = () => {
                         <CategoryOptions notPremium={!userIsPremium}>
                             <View>
                                 <SettingDescription>
-                                    Com a função de importar e exportar você
-                                    consegue salvar todos os seus produtos
-                                    externamente em um cartão de memória por
-                                    exemplo e depois importar em outro telefone
-                                    ou depois de formatar este.
+                                    {translate(
+                                        'View_Settings_SettingName_ExportAndInmport'
+                                    )}
                                 </SettingDescription>
 
                                 <PremiumButtonsContainer>
@@ -237,7 +259,9 @@ const Settings: React.FC = () => {
                                         onPress={handleImportBackup}
                                     >
                                         <ButtonPremiumText>
-                                            Importar
+                                            {translate(
+                                                'View_Settings_Button_ImportFile'
+                                            )}
                                         </ButtonPremiumText>
                                     </ButtonPremium>
                                     <ButtonPremium
@@ -245,7 +269,9 @@ const Settings: React.FC = () => {
                                         onPress={handleExportBackup}
                                     >
                                         <ButtonPremiumText>
-                                            Exportar
+                                            {translate(
+                                                'View_Settings_Button_ExportFile'
+                                            )}
                                         </ButtonPremiumText>
                                     </ButtonPremium>
 
@@ -254,7 +280,9 @@ const Settings: React.FC = () => {
                                         onPress={handleExportToExcel}
                                     >
                                         <ButtonPremiumText>
-                                            Exportar para Excel (EM TESTES)
+                                            {translate(
+                                                'View_Settings_Button_ExportToExcel'
+                                            )}
                                         </ButtonPremiumText>
                                     </ButtonPremium>
                                 </PremiumButtonsContainer>
@@ -264,39 +292,30 @@ const Settings: React.FC = () => {
                         {userIsPremium && (
                             <ButtonCancel onPress={handleCancel}>
                                 <ButtonCancelText>
-                                    Cancelar assinatura
+                                    {translate(
+                                        'View_Settings_Button_CancelSubscribe'
+                                    )}
                                 </ButtonCancelText>
                             </ButtonCancel>
                         )}
                     </Category>
 
-                    <Category>
-                        <CategoryTitle>Banco de dados de testes</CategoryTitle>
-
-                        <SettingDescription>
-                            Se você atualizou o aplicativo recentemente e não
-                            consegue ver seus dados utilize este botão para
-                            copiar todos os dados antigos para a nova
-                            atualização
-                        </SettingDescription>
-
-                        <GenericButton
-                            text="Migrar dados"
-                            onPress={migrateData}
-                        />
-                    </Category>
-
                     {userSigned && (
                         <Category>
-                            <CategoryTitle>Conta</CategoryTitle>
+                            <CategoryTitle>
+                                {translate(
+                                    'View_Settings_CategoryName_Account'
+                                )}
+                            </CategoryTitle>
 
                             <SettingDescription>
-                                Gerencie sua conta vinculada ao aplicativo.
+                                {translate('View_Settings_AccountDescription')}
                             </SettingDescription>
 
                             <GenericButton
-                                text="Sair da conta"
+                                text={translate('View_Settings_Button_SignOut')}
                                 onPress={handleLogout}
+                                isLoading={isOnLogout}
                             />
                         </Category>
                     )}

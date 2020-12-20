@@ -1,5 +1,6 @@
-import React, { useCallback, useRef } from 'react';
-import { RNCamera } from 'react-native-camera';
+import React, { useCallback } from 'react';
+
+import { translate } from '../../Locales';
 
 import GenericButton from '../Button';
 
@@ -11,40 +12,33 @@ interface Props {
 }
 
 const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
-    const CameraRef = useRef<RNCamera>(null);
-
     const handleCodeRead = useCallback(
-        ({ data }) => {
-            onCodeRead(data);
+        ({ nativeEvent }) => {
+            const readedCode = nativeEvent.codeStringValue;
+            onCodeRead(readedCode);
         },
         [onCodeRead]
     );
 
     return (
         <Container>
-            <BarCodeTitle>Leitor de código de barra</BarCodeTitle>
+            <BarCodeTitle>{translate('BarCodeReader_PageTitle')}</BarCodeTitle>
             <CameraContainer>
                 <Camera
-                    ref={CameraRef}
-                    captureAudio={false}
-                    type="back"
-                    autoFocus="on"
-                    flashMode="auto"
-                    ratio="4:3"
-                    googleVisionBarcodeType={
-                        Camera.Constants.GoogleVisionBarcodeDetection
-                            .BarcodeType.EAN_13
-                    }
-                    googleVisionBarcodeMode={
-                        Camera.Constants.GoogleVisionBarcodeDetection
-                            .BarcodeMode.ALTERNATE
-                    }
-                    barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                    onBarCodeRead={handleCodeRead}
+                    scanBarcode
+                    onReadCode={handleCodeRead} // optional
+                    hideControls // (default false) optional, hide buttons and additional controls on top and bottom of screen
+                    showFrame // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
+                    offsetForScannerFrame={10} // (default 30) optional, offset from left and right side of the screen
+                    heightForScannerFrame={300} // (default 200) optional, change height of the scanner frame
+                    colorForScannerFrame="red" // (default white) optional, change colot of the scanner frame
                 />
             </CameraContainer>
 
-            <GenericButton text="Fechar" onPress={onClose} />
+            <GenericButton
+                text={translate('BarCodeReader_CloseButton')}
+                onPress={onClose}
+            />
         </Container>
     );
 };

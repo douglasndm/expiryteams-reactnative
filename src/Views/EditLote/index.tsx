@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { getCountry } from 'react-native-localize';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
+
+import { translate } from '../../Locales';
 
 import { updateLote, deleteLote } from '../../Functions/Lotes';
 import { getProductById } from '../../Functions/Product';
@@ -49,6 +52,20 @@ const EditLote: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
+    const [locale] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'en-US';
+        }
+        return 'pt-BR';
+    });
+    const [currency] = useState(() => {
+        if (getCountry() === 'US') {
+            return 'USD';
+        }
+
+        return 'BRL';
+    });
+
     const [product, setProduct] = useState<IProduct | null>(null);
 
     const productId = useMemo(() => {
@@ -82,7 +99,7 @@ const EditLote: React.FC = () => {
             const loteResult = response.lotes.find((l) => l.id === loteId);
 
             if (!loteResult) {
-                setError('Lote não encontrado');
+                setError(translate('View_EditBatch_Error_BatchDidntFound'));
                 return;
             }
 
@@ -102,7 +119,7 @@ const EditLote: React.FC = () => {
 
     async function handleSave() {
         if (!lote || lote.trim() === '') {
-            Alert.alert('Digite o nome do lote');
+            Alert.alert(translate('View_EditBatch_Error_BatchWithNoName'));
             return;
         }
 
@@ -116,7 +133,7 @@ const EditLote: React.FC = () => {
                 status: tratado ? 'Tratado' : 'Não tratado',
             });
 
-            Alert.alert('Lote editado!');
+            Alert.alert(translate('View_EditBatch_Success_BatchUpdated'));
             reset({
                 index: 1,
                 routes: [
@@ -166,7 +183,9 @@ const EditLote: React.FC = () => {
                     <PageHeader>
                         <PageTitleContainer>
                             <BackButton handleOnPress={goBack} />
-                            <PageTitle>Editar lote</PageTitle>
+                            <PageTitle>
+                                {translate('View_EditBatch_PageTitle')}
+                            </PageTitle>
                         </PageTitleContainer>
 
                         <Button
@@ -177,7 +196,7 @@ const EditLote: React.FC = () => {
                                 setDeleteComponentVisible(true);
                             }}
                         >
-                            Apagar
+                            {translate('View_EditBatch_Button_DeleteBatch')}
                         </Button>
                     </PageHeader>
 
@@ -198,7 +217,9 @@ const EditLote: React.FC = () => {
                                         flex: 5,
                                         marginRight: 5,
                                     }}
-                                    placeholder="Lote"
+                                    placeholder={translate(
+                                        'View_EditBatch_InputPlacehoder_Batch'
+                                    )}
                                     value={lote}
                                     onChangeText={(value) => setLote(value)}
                                 />
@@ -206,7 +227,9 @@ const EditLote: React.FC = () => {
                                     style={{
                                         flex: 4,
                                     }}
-                                    placeholder="Quantidade"
+                                    placeholder={translate(
+                                        'View_EditBatch_InputPlacehoder_Amount'
+                                    )}
                                     keyboardType="numeric"
                                     value={String(amount)}
                                     onChangeText={handleAmountChange}
@@ -216,10 +239,12 @@ const EditLote: React.FC = () => {
                             <NumericInputField
                                 type="currency"
                                 locale="pt-BR"
-                                currency="BRL"
+                                currency={currency}
                                 value={price}
                                 onUpdate={(value: number) => setPrice(value)}
-                                placeholder="Valor unitário"
+                                placeholder={translate(
+                                    'View_EditBatch_InputPlacehoder_UnitPrice'
+                                )}
                             />
 
                             <View
@@ -243,7 +268,11 @@ const EditLote: React.FC = () => {
                                         }
                                         onPress={() => setTratado(true)}
                                     />
-                                    <RadioButtonText>Tratado</RadioButtonText>
+                                    <RadioButtonText>
+                                        {translate(
+                                            'View_EditBatch_RadioButton_Treated'
+                                        )}
+                                    </RadioButtonText>
                                 </View>
                                 <View
                                     style={{
@@ -261,13 +290,17 @@ const EditLote: React.FC = () => {
                                         onPress={() => setTratado(false)}
                                     />
                                     <RadioButtonText>
-                                        Não tratado
+                                        {translate(
+                                            'View_EditBatch_RadioButton_NotTreated'
+                                        )}
                                     </RadioButtonText>
                                 </View>
                             </View>
 
                             <ExpDateGroup>
-                                <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                                <ExpDateLabel>
+                                    {translate('View_EditBatch_CalendarTitle')}
+                                </ExpDateLabel>
                                 <CustomDatePicker
                                     date={expDate}
                                     onDateChange={(value) => {
@@ -275,12 +308,15 @@ const EditLote: React.FC = () => {
                                     }}
                                     fadeToColor="none"
                                     mode="date"
-                                    locale="pt-br"
+                                    locale={locale}
                                 />
                             </ExpDateGroup>
                         </InputContainer>
 
-                        <GenericButton text="Salvar" onPress={handleSave} />
+                        <GenericButton
+                            text={translate('View_EditBatch_Button_Save')}
+                            onPress={handleSave}
+                        />
                     </PageContent>
                 </ScrollView>
 
@@ -300,15 +336,19 @@ const EditLote: React.FC = () => {
                 }}
                 style={{ backgroundColor: theme.colors.productBackground }}
             >
-                <Dialog.Title>Você tem certeza?</Dialog.Title>
+                <Dialog.Title>
+                    {translate('View_EditBatch_WarningDelete_Title')}
+                </Dialog.Title>
                 <Dialog.Content>
                     <Text style={{ color: theme.colors.text }}>
-                        Se continuar você irá apagar este lote
+                        {translate('View_EditBatch_WarningDelete_Message')}
                     </Text>
                 </Dialog.Content>
                 <Dialog.Actions>
                     <Button color="red" onPress={handleDelete}>
-                        APAGAR
+                        {translate(
+                            'View_EditBatch_WarningDelete_Button_Confirm'
+                        )}
                     </Button>
                     <Button
                         color={theme.colors.accent}
@@ -316,7 +356,9 @@ const EditLote: React.FC = () => {
                             setDeleteComponentVisible(false);
                         }}
                     >
-                        MANTER
+                        {translate(
+                            'View_EditBatch_WarningDelete_Button_Cancel'
+                        )}
                     </Button>
                 </Dialog.Actions>
             </Dialog>
