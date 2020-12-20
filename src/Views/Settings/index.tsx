@@ -41,6 +41,8 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
+    const [error, setError] = useState<string>('');
+
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
@@ -50,6 +52,7 @@ const Settings: React.FC = () => {
         PreferencesContext
     );
     const [userSigned, setUserSigned] = useState<boolean>(false);
+    const [isOnLogout, setIsOnLogout] = useState<boolean>(false);
 
     const { navigate, goBack, reset } = useNavigation();
 
@@ -145,8 +148,20 @@ const Settings: React.FC = () => {
     }, []);
 
     const handleLogout = useCallback(async () => {
-        await signOutGoogle();
-    }, []);
+        try {
+            setIsOnLogout(true);
+            await signOutGoogle();
+
+            setUserPreferences({
+                ...userPreferences,
+                isUserSignedIn: false,
+            });
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsOnLogout(false);
+        }
+    }, [setUserPreferences, userPreferences]);
 
     return (
         <Container>
@@ -300,6 +315,7 @@ const Settings: React.FC = () => {
                             <GenericButton
                                 text={translate('View_Settings_Button_SignOut')}
                                 onPress={handleLogout}
+                                isLoading={isOnLogout}
                             />
                         </Category>
                     )}

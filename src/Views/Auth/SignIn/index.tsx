@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../../Locales';
 
 import { setUserId } from '../../../Functions/User';
 import { signInWithGoogle } from '../../../Functions/Auth/Google';
+
+import PreferencesContext from '../../../Contexts/PreferencesContext';
 
 import Header from '../../../Components/Header';
 import GenericButton from '../../../Components/Button';
@@ -24,7 +26,11 @@ const SignIn: React.FC = () => {
     const [completed, setCompleted] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
-    const { navigate } = useNavigation();
+    const { reset } = useNavigation();
+
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
 
     const handleGoogleButtonPressed = useCallback(async () => {
         try {
@@ -34,15 +40,22 @@ const SignIn: React.FC = () => {
 
             await setUserId(user.uid);
 
+            setUserPreferences({
+                ...userPreferences,
+                isUserSignedIn: true,
+            });
+
             setCompleted(true);
         } catch (err) {
             setError(err.message);
         }
-    }, []);
+    }, [userPreferences, setUserPreferences]);
 
     const handleToGoProPage = useCallback(() => {
-        navigate('PremiumSubscription');
-    }, [navigate]);
+        reset({
+            routes: [{ name: 'Home' }, { name: 'PremiumSubscription' }],
+        });
+    }, [reset]);
 
     const handleDimissNotification = useCallback(() => {
         setError('');

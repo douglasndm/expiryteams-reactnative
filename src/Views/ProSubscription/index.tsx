@@ -36,10 +36,6 @@ const PremiumSubscription: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
-    const [isUserAlreadySignedIn, setIsUserAlreadySignedIn] = useState<boolean>(
-        false
-    );
-
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
     );
@@ -62,7 +58,7 @@ const PremiumSubscription: React.FC = () => {
             setIsLoading(true);
             const alreaderSignedIn = await isUserSignedIn();
 
-            setIsUserAlreadySignedIn(alreaderSignedIn);
+            if (alreaderSignedIn !== true) return;
 
             const alreadyProUser = await isSubscriptionActive();
             setAlreadyPremium(alreadyProUser);
@@ -166,7 +162,7 @@ const PremiumSubscription: React.FC = () => {
                     </AdvantageContainer>
                 </AdvantagesGroup>
 
-                {isUserAlreadySignedIn ? (
+                {userPreferences.isUserSignedIn ? (
                     <>
                         {alreadyPremium ? (
                             <ButtonSubscription>
