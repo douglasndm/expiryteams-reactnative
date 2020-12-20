@@ -191,6 +191,9 @@ android {
             * nativeSymbolUploadEnabled to true. */
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
+
+                unstrippedNativeLibsDir "build/intermediates/merged_native_libs/release/out/lib/"
+                strippedNativeLibsDir "build/intermediates/stripped_native_libs/release/out/lib/"
             }
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
