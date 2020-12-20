@@ -22,8 +22,6 @@ import { isUserSignedIn, signOutGoogle } from '../../Functions/Auth/Google';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
-import { migrateAllDataFromSQLiteToRealm } from '../../typeorm/MigrateTypeormData';
-
 import {
     Container,
     PageHeader,
@@ -144,10 +142,6 @@ const Settings: React.FC = () => {
 
     const handleExportToExcel = useCallback(async () => {
         await exportToExcel();
-    }, []);
-
-    const migrateData = useCallback(async () => {
-        await migrateAllDataFromSQLiteToRealm();
     }, []);
 
     const handleLogout = useCallback(async () => {
