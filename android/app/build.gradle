@@ -145,8 +145,6 @@ android {
         multiDexEnabled true
         versionCode 72
         versionName "1.5.2"
-
-        missingDimensionStrategy 'react-native-camera', 'mlkit'
     }
     splits {
         abi {
@@ -228,8 +226,6 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
 
     implementation 'androidx.multidex:multidex:2.0.1'
-
-    implementation project(':react-native-camera')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
