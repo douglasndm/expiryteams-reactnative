@@ -56,7 +56,6 @@
     "react-native-safe-area-context": "^3.0.7",
     "react-native-screens": "^2.10.1",
     "react-native-share": "^3.7.0",
-    "react-native-text-input-mask": "^2.0.0",
     "react-native-vector-icons": "^7.0.0",
     "react-number-format": "^4.4.1",
     "realm": "^6.0.5",
@@ -95,7 +94,6 @@
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.0.5",
     "react-native-clean-project": "^3.4.0",
-    "react-native-typescript-transformer": "^1.2.13",
     "react-test-renderer": "16.13.1",
     "typescript": "^4.0.2"
   },
