@@ -12,7 +12,7 @@ export const InputTextContainer = styled.View`
     justify-content: space-between;
     align-items: center;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 10px 10px;
+    margin: 10px 10px 0 10px;
     border-radius: 12px;
     background-color: ${({ theme }) => theme.colors.inputBackground};
     padding-right: 10px;
