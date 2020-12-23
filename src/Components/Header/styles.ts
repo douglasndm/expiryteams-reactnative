@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
+import { Platform } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
 export const HeaderContainer = styled.View`
     width: 100%;
-    padding: 15px 30px 15px 0px;
+    padding: ${Platform.OS === 'ios' ? 45 : 15}px 30px 15px 0px;
 
     justify-content: flex-start;
     align-items: center;
