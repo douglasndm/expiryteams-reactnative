@@ -78,11 +78,6 @@ target 'controledevalidade' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
 
-  # React Native Camera
-  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [
-    'BarcodeDetectorMLKit'
-    ]
-
   pod 'RNPurchases', :path => '../node_modules/react-native-purchases'
 
   target 'controledevalidadeTests' do
