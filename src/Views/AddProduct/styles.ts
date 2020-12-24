@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
+import { Platform } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import NumericInput from '@wwdrew/react-native-numeric-textinput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     flex-direction: column;
     background: ${({ theme }) => theme.colors.background};
@@ -12,7 +13,7 @@ export const Container = styled.View`
 
 export const PageHeader = styled.View`
     flex-direction: row;
-    margin-top: 15px;
+    margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
 `;
 
 export const PageTitle = styled.Text`

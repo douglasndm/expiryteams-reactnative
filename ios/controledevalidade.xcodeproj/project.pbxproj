@@ -55,6 +55,8 @@
 		2D02E4901E0B4A5D006451C7 /* controledevalidade-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "controledevalidade-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DF92D2B80F8CE39181CCF73 /* Pods-controledevalidade-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-tvOS.release.xcconfig"; path = "Target Support Files/Pods-controledevalidade-tvOS/Pods-controledevalidade-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		4F8EEDFD259401AA0072C20A /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		4F8EEF42259416390072C20A /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		4F8EEF43259418130072C20A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-controledevalidadeTests.release.xcconfig"; path = "Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests.release.xcconfig"; sourceTree = "<group>"; };
 		53E595662963FA744842CB02 /* libPods-controledevalidade-controledevalidadeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-controledevalidadeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +158,8 @@
 		4F8EEDFC2594013E0072C20A /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				4F8EEF43259418130072C20A /* MaterialCommunityIcons.ttf */,
+				4F8EEF42259416390072C20A /* MaterialIcons.ttf */,
 				4F8EEDFD259401AA0072C20A /* Ionicons.ttf */,
 			);
 			name = Fonts;
