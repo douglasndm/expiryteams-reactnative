@@ -306,8 +306,6 @@ const EditLote: React.FC = () => {
                                     onDateChange={(value) => {
                                         setExpDate(value);
                                     }}
-                                    fadeToColor="none"
-                                    mode="date"
                                     locale={locale}
                                 />
                             </ExpDateGroup>

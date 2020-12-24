@@ -234,8 +234,6 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                                 onDateChange={(value) => {
                                     setExpDate(value);
                                 }}
-                                fadeToColor="none"
-                                mode="date"
                                 locale={locale}
                             />
                         </ExpDateGroup>

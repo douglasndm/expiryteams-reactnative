@@ -108,6 +108,8 @@ export const ExpDateLabel = styled.Text`
 
 export const CustomDatePicker = styled(DatePicker).attrs((props) => ({
     textColor: props.theme.colors.inputText,
+    fadeToColor: 'none',
+    mode: 'date',
 }))`
     background: ${({ theme }) => theme.colors.productBackground};
     z-index: 1;
