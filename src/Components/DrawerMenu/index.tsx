@@ -4,7 +4,6 @@ import {
     DrawerContentOptions,
     DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
 import { translate } from '../../Locales';
@@ -15,7 +14,14 @@ import UserInfo from './UserInfo';
 
 import Logo from '../../Assets/Logo.png';
 
-import { Container, MenuHeader, LogoImage, MenuItem, Icons } from './styles';
+import {
+    Container,
+    MenuHeader,
+    LogoImage,
+    MenuItem,
+    Icons,
+    DrawerSection,
+} from './styles';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
@@ -37,7 +43,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </MenuHeader>
                     )}
 
-                    <Drawer.Section>
+                    <DrawerSection>
                         <MenuItem
                             icon={() => <Icons name="home-outline" size={22} />}
                             label={translate('Menu_Button_GoToHome')}
@@ -85,11 +91,11 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 }}
                             />
                         )}
-                    </Drawer.Section>
+                    </DrawerSection>
                 </View>
             </DrawerContentScrollView>
 
-            <Drawer.Section>
+            <DrawerSection>
                 <MenuItem
                     icon={() => <Icons name="settings-outline" size={22} />}
                     label={translate('Menu_Button_GoToSettings')}
@@ -108,7 +114,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         onPress={() => navigation.navigate('Test')}
                     />
                 )}
-            </Drawer.Section>
+            </DrawerSection>
         </Container>
     );
 };
