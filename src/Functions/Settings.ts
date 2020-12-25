@@ -97,8 +97,8 @@ export async function getAppTheme(): Promise<string> {
 export async function getEnableNotifications(): Promise<boolean> {
     const setting = await getSetting({ type: 'EnableNotifications' });
 
-    if (setting === 'true') return true;
-    return false;
+    if (setting === 'false') return false;
+    return true;
 }
 
 export async function getEnableMultipleStoresMode(): Promise<boolean> {
