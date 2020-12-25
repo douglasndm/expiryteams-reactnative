@@ -15,6 +15,9 @@
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
+    "BarCodeReader_PermissionRequired": "We need your permission to access the device's camera to user barcode reader.",
+    "BarCodeReader_PermissionBlocked": "Camera access is blocked. If you want to use barcode reader you need to unblock it on your device settings.",
+    "BarCodeReader_Button_RequestPermission": "Authorize camera",
 
     "ListProductsComponent_PROBanner_message": "Discover the benefits of PRO",
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",

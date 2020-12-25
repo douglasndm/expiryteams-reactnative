@@ -16,6 +16,9 @@
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",
+    "BarCodeReader_PermissionRequired": "Precisamos da sua permissão para acessar a câmera do seu dispostivo para habilitar o leitor de código de barras.",
+    "BarCodeReader_PermissionBlocked": "O Acesso a câmera do dispositivo foi bloqueado, para usar o leitor de códigos de barras você precisar desbloquear a permissão do aplicativo para usar a câmera nas configurações do dispositivo.",
+    "BarCodeReader_Button_RequestPermission": "Autorizar câmera",
 
     "ListProductsComponent_PROBanner_message": "Conheça as vantagens do PRO",
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",

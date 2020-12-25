@@ -51,6 +51,7 @@
     "react-native-localize": "^2.0.1",
     "react-native-notifications": "3.2.2",
     "react-native-paper": "^4.2.0",
+    "react-native-permissions": "^3.0.0",
     "react-native-purchases": "^3.4.3",
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.7",
