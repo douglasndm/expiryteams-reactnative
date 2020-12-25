@@ -113,16 +113,6 @@ const Appearance: React.FC = () => {
                                 value="relax"
                             />
                         ))}
-
-                    {userPreferences.isUserPremium ||
-                        (__DEV__ && (
-                            <Picker.Item
-                                label={translate(
-                                    'View_Settings_Appearance_Theme_Florest'
-                                )}
-                                value="florest"
-                            />
-                        ))}
                 </Picker>
             </PickerContainer>
         </CategoryOptions>
