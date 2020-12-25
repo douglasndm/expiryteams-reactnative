@@ -13,9 +13,9 @@ const DarkGreen: DefaultTheme = {
         textAccent: '#33e860',
 
         inputText: '#ffffff',
-        inputBackground: '#565657',
+        inputBackground: '#373737',
 
-        productBackground: '#565657',
+        productBackground: '#373737',
 
         productExpiredBackground: darken(0.1, '#e01010'),
         productNextToExpBackground: darken(0.1, '#eded1f'),
