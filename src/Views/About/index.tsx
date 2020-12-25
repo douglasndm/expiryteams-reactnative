@@ -29,6 +29,12 @@ const About: React.FC = () => {
         await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
     }, []);
 
+    const handleDonatePress = useCallback(async () => {
+        await Linking.openURL(
+            'https://www.paypal.com/donate?hosted_button_id=L68N3E8YGSTW2'
+        );
+    }, []);
+
     const handleFlatIconPress = useCallback(async () => {
         await Linking.openURL('https://www.flaticon.com/authors/srip');
     }, []);
@@ -63,6 +69,13 @@ const About: React.FC = () => {
             <AboutSection>
                 <Text>{translate('View_About_DevelopedBy')}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
+            </AboutSection>
+
+            <AboutSection>
+                <Text>{translate('View_About_DonateDescription')}</Text>
+                <Link onPress={handleDonatePress}>
+                    {translate('View_About_Button_Donate')}
+                </Link>
             </AboutSection>
 
             <AboutSection>
