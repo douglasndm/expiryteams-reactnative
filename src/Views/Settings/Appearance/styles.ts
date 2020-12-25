@@ -10,6 +10,10 @@ export const PickerContainer = styled.View`
     justify-content: space-between;
 `;
 
-export const Picker = styled(ReactPicker)`
+export const Picker = styled(ReactPicker).attrs((props) => ({
+    itemStyle: {
+        color: props.theme.colors.text,
+    },
+}))`
     color: ${(props) => props.theme.colors.text};
 `;
