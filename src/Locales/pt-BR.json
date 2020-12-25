@@ -1,7 +1,6 @@
 {
-    "AppName": "Controle de validade",
+    "AppName": "Controle de Validade",
     "AppName_ProVersion": "Premium",
-
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
@@ -12,6 +11,7 @@
     "Menu_Button_GoToAbout": "Sobre",
     "Menu_Button_GoToTest": "Teste",
 
+    "Menu_UserProfile_Button_login": "Entrar",
     "Menu_UserProfile_Label": "USUÁRIO PRO",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",

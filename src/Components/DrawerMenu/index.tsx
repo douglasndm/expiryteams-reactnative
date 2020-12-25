@@ -12,16 +12,7 @@ import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import UserInfo from './UserInfo';
 
-import Logo from '../../Assets/Logo.png';
-
-import {
-    Container,
-    MenuHeader,
-    LogoImage,
-    MenuItem,
-    Icons,
-    DrawerSection,
-} from './styles';
+import { Container, MenuItem, Icons, DrawerSection } from './styles';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
@@ -35,13 +26,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         <Container>
             <DrawerContentScrollView {...props}>
                 <View>
-                    {userPreferences.isUserSignedIn ? (
-                        <UserInfo isUserPro={userPreferences.isUserPremium} />
-                    ) : (
-                        <MenuHeader>
-                            <LogoImage resizeMode="center" source={Logo} />
-                        </MenuHeader>
-                    )}
+                    <UserInfo
+                        isUserPro={userPreferences.isUserPremium}
+                        navigate={navigation.navigate}
+                    />
 
                     <DrawerSection>
                         <MenuItem
