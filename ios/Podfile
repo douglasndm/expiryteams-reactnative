@@ -8,8 +8,6 @@ target 'controledevalidade' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
-
   target 'controledevalidadeTests' do
     inherit! :complete
     # Pods for testing
@@ -22,14 +20,5 @@ target 'controledevalidade' do
   use_flipper!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'controledevalidade-tvOS' do
-  # Pods for controledevalidade-tvOS
-
-  target 'controledevalidade-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end
