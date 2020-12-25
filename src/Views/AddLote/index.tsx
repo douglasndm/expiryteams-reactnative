@@ -12,6 +12,7 @@ import {
 
 import { translate } from '../../Locales';
 
+import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 import Notification from '../../Components/Notification';
@@ -174,6 +175,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
 
     return (
         <Container>
+            <StatusBar />
             <ScrollView>
                 <PageHeader>
                     <BackButton handleOnPress={goBack} />

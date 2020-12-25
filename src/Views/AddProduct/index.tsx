@@ -20,6 +20,7 @@ import {
 } from '../../Functions/Product';
 import { createLote } from '../../Functions/Lotes';
 
+import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 import BarCodeReader from '../../Components/BarCodeReader';
@@ -216,6 +217,7 @@ const AddProduct: React.FC = () => {
                 />
             ) : (
                 <Container>
+                    <StatusBar />
                     <ScrollView>
                         <PageHeader>
                             <BackButton handleOnPress={goBack} />

@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../Locales';
 
+import StatusBar from '../../Components/StatusBar';
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import BarCodeReader from '../../Components/BarCodeReader';
@@ -118,6 +119,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 />
             ) : (
                 <Container>
+                    <StatusBar />
                     <PageHeader>
                         <BackButton handleOnPress={goBack} />
                         <PageTitle>

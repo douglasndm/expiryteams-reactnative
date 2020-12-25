@@ -5,6 +5,7 @@ import { getVersion } from 'react-native-device-info';
 
 import { translate } from '../../Locales';
 
+import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 
 import { getUserId } from '../../Functions/User';
@@ -51,6 +52,7 @@ const About: React.FC = () => {
 
     return (
         <Container>
+            <StatusBar />
             <Content>
                 <BackButton handleOnPress={goBack} />
                 <PageTitle>{translate('View_About_PageTitle')}</PageTitle>

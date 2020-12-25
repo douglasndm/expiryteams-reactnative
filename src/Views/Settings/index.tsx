@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../Locales';
 
+import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
@@ -165,6 +166,7 @@ const Settings: React.FC = () => {
 
     return (
         <Container>
+            <StatusBar />
             <ScrollView>
                 <PageHeader>
                     <BackButton handleOnPress={goBack} />

@@ -10,6 +10,7 @@ import { translate } from '../../Locales';
 import { updateLote, deleteLote } from '../../Functions/Lotes';
 import { getProductById } from '../../Functions/Product';
 
+import StatusBar from '../../Components/StatusBar';
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
@@ -179,6 +180,7 @@ const EditLote: React.FC = () => {
     ) : (
         <>
             <Container>
+                <StatusBar />
                 <ScrollView>
                     <PageHeader>
                         <PageTitleContainer>

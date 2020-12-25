@@ -6,6 +6,8 @@ import { translate } from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
+import StatusBar from '../StatusBar';
+
 import { HeaderContainer, TextLogo, MenuIcon, MenuButton } from './styles';
 
 interface RequestProps {
@@ -24,21 +26,27 @@ const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
     }, [navigation]);
 
     return (
-        <HeaderContainer>
-            <MenuButton onPress={handleOpenMenu}>
-                <MenuIcon />
-            </MenuButton>
+        <>
+            <StatusBar forceWhiteTextIOS />
 
-            {title ? (
-                <TextLogo style={{ fontSize: titleFontSize }}>{title}</TextLogo>
-            ) : (
-                <TextLogo style={{ fontSize: titleFontSize }}>
-                    {userPreferences.isUserPremium
-                        ? translate('AppNameProVersion')
-                        : translate('AppName')}
-                </TextLogo>
-            )}
-        </HeaderContainer>
+            <HeaderContainer>
+                <MenuButton onPress={handleOpenMenu}>
+                    <MenuIcon />
+                </MenuButton>
+
+                {title ? (
+                    <TextLogo style={{ fontSize: titleFontSize }}>
+                        {title}
+                    </TextLogo>
+                ) : (
+                    <TextLogo style={{ fontSize: titleFontSize }}>
+                        {userPreferences.isUserPremium
+                            ? translate('AppNameProVersion')
+                            : translate('AppName')}
+                    </TextLogo>
+                )}
+            </HeaderContainer>
+        </>
     );
 };
 
