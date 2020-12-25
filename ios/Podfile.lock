@@ -442,7 +442,7 @@ PODS:
   - RealmJS (6.1.5):
     - GCDWebServer
     - React
-  - RNCAsyncStorage (1.11.0):
+  - RNCAsyncStorage (1.13.2):
     - React
   - RNCMaskedView (0.1.10):
     - React
@@ -562,7 +562,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeCameraKit (from `../node_modules/react-native-camera-kit`)
   - RealmJS (from `../node_modules/realm`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-community/picker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -703,7 +703,7 @@ EXTERNAL SOURCES:
   RealmJS:
     :path: "../node_modules/realm"
   RNCAsyncStorage:
-    :path: "../node_modules/@react-native-community/async-storage"
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPicker:
@@ -820,7 +820,7 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   ReactNativeCameraKit: 5026c5884617eab92b096b62262eec2bbf9eb647
   RealmJS: efb0b7b52759192752ef8b6f061e2c3dd0ea14cd
-  RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
+  RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 55b9b4240d0a9eba8733d02616775d4040de2e7d
   RNDeviceInfo: 6ecb1d1c87d20e4c62354be0348de23362824dcd
