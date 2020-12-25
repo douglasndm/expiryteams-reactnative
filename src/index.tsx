@@ -10,6 +10,7 @@ import EnvConfig from 'react-native-config';
 import './Locales';
 
 import './Services/Admob';
+import './Services/Analytics';
 import './Services/BackgroundJobs';
 
 import './Functions/ProMode';
