@@ -19,6 +19,7 @@ export const CameraContainer = styled.View`
 export const Camera = styled(CameraKitCameraScreen).attrs((props) => ({
     frameColor: props.theme.colors.accent,
     laserColor: props.theme.colors.accent,
+    colorForScannerFrame: props.theme.colors.accent,
 }))``;
 
 export const AuthorizationCameraContainer = styled.View`
