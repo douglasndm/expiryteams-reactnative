@@ -1,6 +1,7 @@
 import Purchases, { PurchasesOffering } from 'react-native-purchases';
 import EnvConfig from 'react-native-config';
 
+import { isUserSignedIn } from './Auth/Google';
 import { getUserId } from './User';
 import { setEnableProVersion } from './Settings';
 
@@ -8,6 +9,12 @@ Purchases.setDebugLogsEnabled(true);
 Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
 export async function isSubscriptionActive(): Promise<boolean> {
+    const userSigned = await isUserSignedIn();
+
+    if (!userSigned) {
+        return false;
+    }
+
     try {
         const localUserId = await getUserId();
 
@@ -30,6 +37,12 @@ export async function isSubscriptionActive(): Promise<boolean> {
 }
 
 export async function getSubscriptionDetails(): Promise<PurchasesOffering> {
+    const userSigned = await isUserSignedIn();
+
+    if (!userSigned) {
+        throw new Error('User is not logged');
+    }
+
     try {
         const userId = await getUserId();
         await Purchases.identify(userId);
@@ -49,6 +62,12 @@ export async function getSubscriptionDetails(): Promise<PurchasesOffering> {
 }
 
 export async function makeSubscription(): Promise<void> {
+    const userSigned = await isUserSignedIn();
+
+    if (!userSigned) {
+        throw new Error('User is not logged');
+    }
+
     try {
         const userId = await getUserId();
         await Purchases.identify(userId);
