@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useContext } from 'react';
+import { View, Linking } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
@@ -21,6 +21,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const theme = useTheme();
 
     const { userPreferences } = useContext(PreferencesContext);
+
+    const handleNavigateToSite = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev');
+    }, []);
 
     return (
         <Container>
@@ -88,6 +92,11 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     icon={() => <Icons name="settings-outline" size={22} />}
                     label={translate('Menu_Button_GoToSettings')}
                     onPress={() => navigation.navigate('Settings')}
+                />
+                <MenuItem
+                    icon={() => <Icons name="globe-outline" size={22} />}
+                    label={translate('Menu_Button_KnowOthersApps')}
+                    onPress={handleNavigateToSite}
                 />
                 <MenuItem
                     icon={() => <Icons name="help-circle-outline" size={22} />}
