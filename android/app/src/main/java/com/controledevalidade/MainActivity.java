@@ -2,6 +2,9 @@ package com.controledevalidade;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
+import com.google.android.ads.mediationtestsuite.MediationTestSuite;
+
+
 
 public class MainActivity extends ReactActivity {
 
@@ -21,5 +24,9 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstance){
         // super.onCreate(savedInstance);
         super.onCreate(null);
+
+        // RUN MEDIATION TEST SUITE. JUST UNCOMENT
+        // String appId = ""; // APP ID FROM ADMOB
+        // MediationTestSuite.launch(MainActivity.this, appId);
   }
 }
