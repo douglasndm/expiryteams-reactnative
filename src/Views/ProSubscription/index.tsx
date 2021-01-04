@@ -65,12 +65,12 @@ const PremiumSubscription: React.FC = () => {
 
             const response = await getSubscriptionDetails();
 
-            if (!response.availablePackages[0]) {
+            if (!response) {
                 setPackageSubscription(null);
                 return;
             }
 
-            setPackageSubscription(response.availablePackages[0]);
+            setPackageSubscription(response);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -186,16 +186,18 @@ const PremiumSubscription: React.FC = () => {
                                 {!isLoadingMakeSubscription && (
                                     <>
                                         <TextSubscription>
-                                            {translate(
-                                                'View_ProPage_SubscribeFor'
-                                            )}
-                                        </TextSubscription>
-                                        <TextSubscription>
-                                            {`${
+                                            {`${translate(
+                                                'View_ProPage_BeforeIntroPrice'
+                                            )} ${
                                                 packageSubscription?.product
-                                                    .price_string
+                                                    ?.intro_price_string
                                             } ${translate(
-                                                'View_ProPage_SubscribePeriod_Quarterly'
+                                                'View_ProPage_AfterIntroPrice'
+                                            )} ${
+                                                packageSubscription?.product
+                                                    ?.price_string
+                                            } ${translate(
+                                                'View_ProPage_SubscribePeriod_Monthly'
                                             )}`}
                                         </TextSubscription>
                                     </>

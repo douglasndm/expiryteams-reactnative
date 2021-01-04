@@ -1,4 +1,4 @@
-import Purchases, { PurchasesOffering } from 'react-native-purchases';
+import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import EnvConfig from 'react-native-config';
 
 import { isUserSignedIn } from './Auth/Google';
@@ -36,7 +36,7 @@ export async function isSubscriptionActive(): Promise<boolean> {
     }
 }
 
-export async function getSubscriptionDetails(): Promise<PurchasesOffering> {
+export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
     const userSigned = await isUserSignedIn();
 
     if (!userSigned) {
@@ -49,11 +49,8 @@ export async function getSubscriptionDetails(): Promise<PurchasesOffering> {
 
         const offerings = await Purchases.getOfferings();
 
-        if (
-            offerings.current !== null &&
-            offerings.current.availablePackages.length !== 0
-        ) {
-            return offerings.current;
+        if (offerings.current && offerings.current.monthly !== null) {
+            return offerings.current.monthly;
         }
         throw new Error('We didt find any offers');
     } catch (err) {
@@ -73,12 +70,11 @@ export async function makeSubscription(): Promise<void> {
         await Purchases.identify(userId);
 
         const offerings = await getSubscriptionDetails();
-        const packageSub = offerings.availablePackages[0];
 
         const {
             purchaserInfo,
             // productIdentifier,
-        } = await Purchases.purchasePackage(packageSub);
+        } = await Purchases.purchasePackage(offerings);
 
         // console.log(productIdentifier);
         // console.log(purchaserInfo);
