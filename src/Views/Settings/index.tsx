@@ -215,19 +215,21 @@ const Settings: React.FC = () => {
                                 />
                             </SettingContainer>
 
-                            <SettingContainer>
-                                <SettingDescription>
-                                    {translate(
-                                        'View_Settings_SettingName_EnableMultiplesStores'
-                                    )}
-                                </SettingDescription>
-                                <Switch
-                                    value={userPreferences.multiplesStores}
-                                    onValueChange={
-                                        handleMultiStoresEnableSwitch
-                                    }
-                                />
-                            </SettingContainer>
+                            {userPreferences.isUserPremium && (
+                                <SettingContainer>
+                                    <SettingDescription>
+                                        {translate(
+                                            'View_Settings_SettingName_EnableMultiplesStores'
+                                        )}
+                                    </SettingDescription>
+                                    <Switch
+                                        value={userPreferences.multiplesStores}
+                                        onValueChange={
+                                            handleMultiStoresEnableSwitch
+                                        }
+                                    />
+                                </SettingContainer>
+                            )}
                         </CategoryOptions>
 
                         <Appearance />
