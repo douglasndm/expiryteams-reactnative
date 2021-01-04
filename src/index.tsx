@@ -13,6 +13,7 @@ import './Services/Admob';
 import './Services/Analytics';
 import './Services/BackgroundJobs';
 
+import './Functions/MultiplesStoresLegacyUsers';
 import './Functions/ProMode';
 import { getAllUserPreferences } from './Functions/UserPreferences';
 

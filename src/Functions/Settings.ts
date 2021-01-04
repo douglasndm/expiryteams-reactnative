@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { getMultiplesStoresForLegacyUsers } from './MultiplesStoresLegacyUsers';
+
 interface ISetSettingProps {
     type:
         | 'HowManyDaysToBeNextExp'
@@ -101,18 +103,29 @@ export async function getEnableNotifications(): Promise<boolean> {
     return true;
 }
 
-export async function getEnableMultipleStoresMode(): Promise<boolean> {
-    const setting = await getSetting({ type: 'EnableMultipleStores' });
-
-    if (setting === 'true') return true;
-    return false;
-}
-
 export async function getEnableProVersion(): Promise<boolean> {
     const setting = await getSetting({ type: 'EnableProVersion' });
 
     if (setting === 'true') {
         return true;
     }
+    return false;
+}
+
+export async function getEnableMultipleStoresMode(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableMultipleStores' });
+
+    const legacyUser = await getMultiplesStoresForLegacyUsers();
+
+    if (legacyUser) {
+        if (setting === 'true') return true;
+        return false;
+    }
+
+    if (await getEnableProVersion()) {
+        if (setting === 'true') return true;
+        return false;
+    }
+
     return false;
 }

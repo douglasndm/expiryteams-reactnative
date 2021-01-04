@@ -157,6 +157,11 @@ const PremiumSubscription: React.FC = () => {
                     </AdvantageContainer>
                     <AdvantageContainer>
                         <AdvantageText>
+                            {translate('View_ProPage_AdvantageSix')}
+                        </AdvantageText>
+                    </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>
                             {translate('View_ProPage_AdvantageFive')}
                         </AdvantageText>
                     </AdvantageContainer>
