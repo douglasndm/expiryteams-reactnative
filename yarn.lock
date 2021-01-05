@@ -1139,6 +1139,13 @@
   dependencies:
     deep-assign "^3.0.0"
 
+"@react-native-community/async-storage@^1.6.1":
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
+  integrity sha512-70WGaH3PKYASi4BThuEEKMkyAgE9k7VytBqmgPRx3MzJx9/MkspwqJGmn3QLCgHLIFUgF1pit2mWICbRJ3T3lg==
+  dependencies:
+    deep-assign "^3.0.0"
+
 "@react-native-community/cli-debugger-ui@^4.13.1":
   version "4.13.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.13.1.tgz#07de6d4dab80ec49231de1f1fbf658b4ad39b32c"
@@ -5866,15 +5873,15 @@ lodash.throttle@^4.1.1:
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
-lodash@^4.14.2, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.3.0:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
-
 lodash@^4.17.10:
   version "4.17.19"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
   integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+
+lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.3.0:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-symbols@^2.2.0:
   version "2.2.0"
@@ -7406,12 +7413,12 @@ react-native-background-job@^2.3.1:
   resolved "https://registry.yarnpkg.com/react-native-background-job/-/react-native-background-job-2.3.1.tgz#c9aa299d9ffb40b84a3156dec5fa40a604a9462b"
   integrity sha512-6R0krrH+zDNolauCyxjotiSK3X2YIJIP9+YX4HVVLFd/coAUnQKn1oy0fCqQzK4zhcggLN6D27wVOkjl5IjPaw==
 
-react-native-camera-kit@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera-kit/-/react-native-camera-kit-10.0.0.tgz#bac51f1955c77557e9e98020660904087f50ff3c"
-  integrity sha512-9Bhiin5KFwTT1XBk6n8FGcOV6MickTxZr7dI+2pxlThDiVDl9oLhAwVn6FmQABo/UpYMmYrA5siym4q7Feih7g==
+react-native-camera@^3.40.0:
+  version "3.40.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.40.0.tgz#69845991e46b0892cc2b50322d49b18f292c3202"
+  integrity sha512-Ur0hZqZcl3SntTVMB9GxuiLYpQxqwgzhQVb+7EGae4WjfDzQEwlGF0bJ7UpZyeUTb1oZmsiSib58xUckn11XMw==
   dependencies:
-    lodash "^4.14.2"
+    prop-types "^15.6.2"
 
 react-native-clean-project@^3.4.0:
   version "3.4.0"
@@ -7500,6 +7507,11 @@ react-native-paper@^4.2.0:
     color "^3.1.2"
     react-native-safe-area-view "^0.14.9"
 
+react-native-permissions@^2.0.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-2.2.2.tgz#3d2a63f6b7d6be52fc86e30f77412a9566283028"
+  integrity sha512-ihf4shQDSX5Oo9ChQXb9kr13mmyyNem5MaEvOpr3dCjhBOBWyEMztXm9/uPK1Qg5PsNpaYLa1KpcPZDCw87LXg==
+
 react-native-permissions@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.0.0.tgz#d9d107700741d41f8392f202f35a61f481fb0e68"
@@ -7509,6 +7521,15 @@ react-native-purchases@^3.4.3:
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-3.4.3.tgz#f263fddb47d00a53fd6e317781d086634dcdbd09"
   integrity sha512-wbK1CcMDX2iW66LMBh5yE7gMViAxCswTH+clWQXg5rm5zZBCAOX0pf+NE7nB0XMIgIyeeO5U0j1Gjtotkkv4MQ==
+
+react-native-qrcode-scanner@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-qrcode-scanner/-/react-native-qrcode-scanner-1.5.1.tgz#06afa47811c9907a2d256fb528495f450f98852b"
+  integrity sha512-HbsNQoE0qcyWAE1qJNAIvCVRG49QFu3CQJHEXTsQA9dg3sMi7w/l6bDxBUmp8bdT/YI+PvHx72Jy7MBcEoT0Vg==
+  dependencies:
+    "@react-native-community/async-storage" "^1.6.1"
+    prop-types "^15.5.10"
+    react-native-permissions "^2.0.2"
 
 react-native-reanimated@^1.9.0:
   version "1.13.0"

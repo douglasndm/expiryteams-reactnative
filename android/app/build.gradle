@@ -143,8 +143,11 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 78
-        versionName "1.6.5"
+        versionCode 80
+        versionName "1.6.7"
+
+        // FOR REACT NATIVE CAMERA
+        missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
         abi {

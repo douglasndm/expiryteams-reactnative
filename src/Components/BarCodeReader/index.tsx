@@ -69,9 +69,8 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
     }, [checkIfCameraIsAllow]);
 
     const handleCodeRead = useCallback(
-        ({ nativeEvent }) => {
-            const readedCode = nativeEvent.codeStringValue;
-            onCodeRead(readedCode);
+        ({ data }) => {
+            onCodeRead(data);
         },
         [onCodeRead]
     );
@@ -85,14 +84,7 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
             <BarCodeTitle>{translate('BarCodeReader_PageTitle')}</BarCodeTitle>
             {cameraAllowed ? (
                 <CameraContainer>
-                    <Camera
-                        scanBarcode
-                        onReadCode={handleCodeRead} // optional
-                        hideControls // (default false) optional, hide buttons and additional controls on top and bottom of screen
-                        showFrame // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
-                        offsetForScannerFrame={0} // (default 30) optional, offset from left and right side of the screen
-                        heightForScannerFrame={250} // (default 200) optional, change height of the scanner frame
-                    />
+                    <Camera onRead={handleCodeRead} />
                 </CameraContainer>
             ) : (
                 <AuthorizationCameraContainer>
