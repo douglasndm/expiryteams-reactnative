@@ -1,4 +1,5 @@
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
+import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
 
 import { isUserSignedIn } from './Auth/Google';
@@ -50,8 +51,11 @@ export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
         const offerings = await Purchases.getOfferings();
 
         if (offerings.current && offerings.current.monthly !== null) {
+            await Analytics().logEvent('user_get_subscription_offerings');
+
             return offerings.current.monthly;
         }
+        await Analytics().logEvent('app_didnt_show_any_offerings');
         throw new Error('We didt find any offers');
     } catch (err) {
         throw new Error(err);
@@ -59,14 +63,21 @@ export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
 }
 
 export async function makeSubscription(): Promise<void> {
+    await Analytics().logEvent('started_susbscription_process');
+
     const userSigned = await isUserSignedIn();
 
     if (!userSigned) {
+        await Analytics().logEvent(
+            'started_susbscription_process_but_user_not_signed'
+        );
+
         throw new Error('User is not logged');
     }
 
     try {
         const userId = await getUserId();
+
         await Purchases.identify(userId);
 
         const offerings = await getSubscriptionDetails();
@@ -79,13 +90,17 @@ export async function makeSubscription(): Promise<void> {
         // console.log(productIdentifier);
         // console.log(purchaserInfo);
         if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
+            await Analytics().logEvent('user_subscribed_successfully');
+
             await setEnableProVersion(true);
         }
     } catch (e) {
         if (e.userCancelled) {
+            await Analytics().logEvent('user_cancel_subscribe_process');
             throw new Error('User cancel payment');
         }
         if (!e.userCancelled) {
+            await Analytics().logEvent('error_in_subscribe_process');
             throw new Error(e);
         }
     }
