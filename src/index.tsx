@@ -1,11 +1,15 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+    NavigationContainer,
+    getFocusedRouteNameFromRoute,
+} from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
+import Analyticts from '@react-native-firebase/analytics';
 
 import './Locales';
 
@@ -33,6 +37,8 @@ if (!__DEV__) {
 }
 
 const App: React.FC = () => {
+    const [previousRoute, setPreviousRoute] = useState('Home');
+
     const [preferences, setPreferences] = useState({
         howManyDaysToBeNextToExpire: 30,
         isUserPremium: false,
@@ -52,6 +58,27 @@ const App: React.FC = () => {
         getData();
     }, []);
 
+    const handleOnScreenChange = useCallback(
+        async (state) => {
+            const route = state.routes[0] || 'undefined';
+            const focusedRouteName = getFocusedRouteNameFromRoute(route);
+
+            if (focusedRouteName) {
+                if (previousRoute !== focusedRouteName) {
+                    setPreviousRoute(focusedRouteName);
+
+                    if (!__DEV__) {
+                        await Analyticts().logScreenView({
+                            screen_name: focusedRouteName,
+                            screen_class: focusedRouteName,
+                        });
+                    }
+                }
+            }
+        },
+        [previousRoute]
+    );
+
     return (
         <PreferencesContext.Provider
             value={{
@@ -62,7 +89,9 @@ const App: React.FC = () => {
             <ThemeProvider theme={preferences.appTheme}>
                 <PaperProvider>
                     <Portal>
-                        <NavigationContainer>
+                        <NavigationContainer
+                            onStateChange={handleOnScreenChange}
+                        >
                             <StatusBar />
                             <Routes />
                         </NavigationContainer>
