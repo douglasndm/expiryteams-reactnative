@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useContext,
+    useMemo,
+} from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PurchasesPackage } from 'react-native-purchases';
@@ -115,6 +121,25 @@ const PremiumSubscription: React.FC = () => {
         setError('');
     }, []);
 
+    const subscribeButtonString = useMemo(() => {
+        const period =
+            packageSubscription?.packageType === 'THREE_MONTH'
+                ? translate('View_ProPage_SubscribePeriod_Quarterly')
+                : translate('View_ProPage_SubscribePeriod_Monthly');
+
+        if (!packageSubscription?.product.intro_price_string) {
+            return `${translate('View_ProPage_BeforeIntroPrice')} ${
+                packageSubscription?.product.price_string
+            } ${period}`;
+        }
+
+        return `${translate('View_ProPage_BeforeIntroPrice')} ${
+            packageSubscription.product.intro_price_string
+        } ${translate('View_ProPage_AfterIntroPrice')} ${
+            packageSubscription?.product?.price_string
+        } ${period}`;
+    }, [packageSubscription]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -186,19 +211,7 @@ const PremiumSubscription: React.FC = () => {
                                 {!isLoadingMakeSubscription && (
                                     <>
                                         <TextSubscription>
-                                            {`${translate(
-                                                'View_ProPage_BeforeIntroPrice'
-                                            )} ${
-                                                packageSubscription?.product
-                                                    ?.intro_price_string
-                                            } ${translate(
-                                                'View_ProPage_AfterIntroPrice'
-                                            )} ${
-                                                packageSubscription?.product
-                                                    ?.price_string
-                                            } ${translate(
-                                                'View_ProPage_SubscribePeriod_Monthly'
-                                            )}`}
+                                            {subscribeButtonString}
                                         </TextSubscription>
                                     </>
                                 )}

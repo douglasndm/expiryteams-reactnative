@@ -51,10 +51,17 @@ export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
         const offerings = await Purchases.getOfferings();
 
         if (offerings.current && offerings.current.monthly !== null) {
-            await Analytics().logEvent('user_get_subscription_offerings');
+            await Analytics().logEvent('user_get_offerings_monthly');
 
             return offerings.current.monthly;
         }
+
+        if (offerings.current && offerings.current.threeMonth !== null) {
+            await Analytics().logEvent('user_get_offerings_three_month');
+
+            return offerings.current.threeMonth;
+        }
+
         await Analytics().logEvent('app_didnt_show_any_offerings');
         throw new Error('We didt find any offers');
     } catch (err) {
