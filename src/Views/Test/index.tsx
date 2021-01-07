@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { addDays } from 'date-fns';
-import BackgroundJob from 'react-native-background-job';
 
 import { useTheme } from 'styled-components/native';
 
@@ -15,26 +14,12 @@ import {
 } from '../../Functions/Settings';
 // import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
-import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
+import { throwNotificationAllProductsCloseToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
 
 const Test: React.FC = () => {
-    function setBackgroundJob() {
-        const backgroundSchedule = {
-            jobKey: 'backgroundNotification',
-        };
-
-        BackgroundJob.schedule(backgroundSchedule)
-            .then(() => console.log('Success'))
-            .catch((err) => {
-                if (__DEV__) {
-                    console.warn(err);
-                }
-            });
-    }
-
     function note() {
-        getAllProductsNextToExp();
+        throwNotificationAllProductsCloseToExp();
     }
 
     async function sampleData() {
@@ -137,11 +122,6 @@ const Test: React.FC = () => {
                         onPress={() => {
                             deleteProducts();
                         }}
-                    />
-
-                    <Button
-                        text="Background job"
-                        onPress={() => setBackgroundJob()}
                     />
 
                     <Button
