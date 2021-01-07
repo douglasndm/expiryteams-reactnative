@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getCountry } from 'react-native-localize';
+import { getLocales } from 'react-native-localize';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
@@ -54,13 +54,13 @@ const EditLote: React.FC = () => {
     const [error, setError] = useState<string>('');
 
     const [locale] = useState(() => {
-        if (getCountry() === 'US') {
+        if (getLocales()[0].languageCode === 'en') {
             return 'en-US';
         }
         return 'pt-BR';
     });
     const [currency] = useState(() => {
-        if (getCountry() === 'US') {
+        if (getLocales()[0].languageCode === 'en') {
             return 'USD';
         }
 
