@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
-import { View } from 'react-native';
+import React, { useCallback, useContext } from 'react';
+import { View, Linking } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
 import { translate } from '../../Locales';
@@ -13,9 +12,7 @@ import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import UserInfo from './UserInfo';
 
-import Logo from '../../Assets/Logo.png';
-
-import { Container, MenuHeader, LogoImage, MenuItem, Icons } from './styles';
+import { Container, MenuItem, Icons, DrawerSection } from './styles';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
@@ -25,19 +22,20 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
     const { userPreferences } = useContext(PreferencesContext);
 
+    const handleNavigateToSite = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev');
+    }, []);
+
     return (
         <Container>
             <DrawerContentScrollView {...props}>
                 <View>
-                    {userPreferences.isUserSignedIn ? (
-                        <UserInfo isUserPro={userPreferences.isUserPremium} />
-                    ) : (
-                        <MenuHeader>
-                            <LogoImage resizeMode="center" source={Logo} />
-                        </MenuHeader>
-                    )}
+                    <UserInfo
+                        isUserPro={userPreferences.isUserPremium}
+                        navigate={navigation.navigate}
+                    />
 
-                    <Drawer.Section>
+                    <DrawerSection>
                         <MenuItem
                             icon={() => <Icons name="home-outline" size={22} />}
                             label={translate('Menu_Button_GoToHome')}
@@ -85,15 +83,20 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 }}
                             />
                         )}
-                    </Drawer.Section>
+                    </DrawerSection>
                 </View>
             </DrawerContentScrollView>
 
-            <Drawer.Section>
+            <DrawerSection>
                 <MenuItem
                     icon={() => <Icons name="settings-outline" size={22} />}
                     label={translate('Menu_Button_GoToSettings')}
                     onPress={() => navigation.navigate('Settings')}
+                />
+                <MenuItem
+                    icon={() => <Icons name="globe-outline" size={22} />}
+                    label={translate('Menu_Button_KnowOthersApps')}
+                    onPress={handleNavigateToSite}
                 />
                 <MenuItem
                     icon={() => <Icons name="help-circle-outline" size={22} />}
@@ -108,7 +111,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         onPress={() => navigation.navigate('Test')}
                     />
                 )}
-            </Drawer.Section>
+            </DrawerSection>
         </Container>
     );
 };

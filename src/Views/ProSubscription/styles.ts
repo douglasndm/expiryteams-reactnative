@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { Platform } from 'react-native';
 
 export const Container = styled.View`
     flex: 1;
@@ -9,6 +10,7 @@ export const HeaderContainer = styled.View`
     background-color: ${(props) => props.theme.colors.accent};
     margin-left: -16px;
     margin-top: -22px;
+    padding-top: ${Platform.OS === 'ios' ? 40 : 0}px;
     width: 120%;
     transform: rotate(-4deg);
 `;

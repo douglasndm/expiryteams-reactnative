@@ -1,15 +1,16 @@
 import styled from 'styled-components/native';
+import { Platform } from 'react-native';
 
 interface Request {
     notPremium?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     background: ${(props) => props.theme.colors.background};
 `;
 export const PageHeader = styled.View`
-    margin-top: 15px;
+    margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
     flex-direction: row;
     align-items: center;
 `;

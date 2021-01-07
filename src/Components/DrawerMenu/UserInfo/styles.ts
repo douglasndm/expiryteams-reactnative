@@ -39,3 +39,14 @@ export const DefaultUserPhoto = styled(Ionicons).attrs((props) => ({
     name: 'person-circle-outline',
     color: props.theme.colors.text,
 }))``;
+
+export const LoginContainer = styled.View`
+    flex: 1;
+    justify-content: center;
+    margin: 0 10px;
+`;
+
+export const LoginText = styled.Text`
+    color: ${(props) => props.theme.colors.text};
+    font-size: 15px;
+`;

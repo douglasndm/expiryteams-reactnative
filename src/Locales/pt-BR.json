@@ -1,7 +1,6 @@
 {
-    "AppName": "Controle de validade",
+    "AppName": "Controle de Validade",
     "AppName_ProVersion": "Premium",
-
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
@@ -10,12 +9,17 @@
     "Menu_Button_GoToProPage": "SEJA PRO",
     "Menu_Button_GoToSettings": "Configurações",
     "Menu_Button_GoToAbout": "Sobre",
+    "Menu_Button_KnowOthersApps": "Conheça mais apps",
     "Menu_Button_GoToTest": "Teste",
 
+    "Menu_UserProfile_Button_login": "Entrar",
     "Menu_UserProfile_Label": "USUÁRIO PRO",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",
+    "BarCodeReader_PermissionRequired": "Precisamos da sua permissão para acessar a câmera do seu dispostivo para habilitar o leitor de código de barras.",
+    "BarCodeReader_PermissionBlocked": "O Acesso a câmera do dispositivo foi bloqueado, para usar o leitor de códigos de barras você precisar desbloquear a permissão do aplicativo para usar a câmera nas configurações do dispositivo.",
+    "BarCodeReader_Button_RequestPermission": "Autorizar câmera",
 
     "ListProductsComponent_PROBanner_message": "Conheça as vantagens do PRO",
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
@@ -44,6 +48,8 @@
     "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Criado por Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo feito por",
+    "View_About_DonateDescription": "Gostou deste aplicativo? Ele é útil para você? Contribua com qualquer valor e ajude a mante-lo e na adição futuras grandes atualizações como a versão para iPhone.",
+    "View_About_Button_Donate": "Doar",
 
     "View_AddBatch_AlertTypeBatchName": "Digite o nome do lote",
     "View_AddBatch_PageTitle": "Adicionar lote",
@@ -146,9 +152,12 @@
     "View_ProPage_AdvantageThree": "SAVE SEUS DADOS PARA MANTE-LOS SEGUROS CASO VOCÊ PRECISE FORMATAR O TELEFONE OU TROCAR ELE.",
     "View_ProPage_AdvantageFour": "TEMAS EXCLUSIVOS",
     "View_ProPage_AdvantageFive": "PEQUENO PREÇO, GRANDES VANTANGENS",
+    "View_ProPage_AdvantageSix": "SALVE PRODUTOS DE VÁRIAS LOJAS.",
     "View_ProPage_UserAlreadyPro": "Você já é PRO",
-    "View_ProPage_SubscribeFor": "ASSINAR POR APENAS",
+    "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
+    "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
     "View_ProPage_SubscribePeriod_Quarterly": "TRIMESTRAIS",
+    "View_ProPage_SubscribePeriod_Monthly": "MENSAIS",
     "View_ProPage_UserNeedToSignIn": "Você precisa entrar com sua conta primeiro.",
     "View_ProPage_Button_ClickToSignIn": "Clique aqui para entrar.",
     "View_ProPage_Button_GoBackToHome": "Voltar para o início",

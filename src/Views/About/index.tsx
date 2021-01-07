@@ -5,6 +5,7 @@ import { getVersion } from 'react-native-device-info';
 
 import { translate } from '../../Locales';
 
+import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 
 import { getUserId } from '../../Functions/User';
@@ -29,6 +30,12 @@ const About: React.FC = () => {
         await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
     }, []);
 
+    const handleDonatePress = useCallback(async () => {
+        await Linking.openURL(
+            'https://www.paypal.com/donate?hosted_button_id=L68N3E8YGSTW2'
+        );
+    }, []);
+
     const handleFlatIconPress = useCallback(async () => {
         await Linking.openURL('https://www.flaticon.com/authors/srip');
     }, []);
@@ -45,6 +52,7 @@ const About: React.FC = () => {
 
     return (
         <Container>
+            <StatusBar />
             <Content>
                 <BackButton handleOnPress={goBack} />
                 <PageTitle>{translate('View_About_PageTitle')}</PageTitle>
@@ -63,6 +71,13 @@ const About: React.FC = () => {
             <AboutSection>
                 <Text>{translate('View_About_DevelopedBy')}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
+            </AboutSection>
+
+            <AboutSection>
+                <Text>{translate('View_About_DonateDescription')}</Text>
+                <Link onPress={handleDonatePress}>
+                    {translate('View_About_Button_Donate')}
+                </Link>
             </AboutSection>
 
             <AboutSection>

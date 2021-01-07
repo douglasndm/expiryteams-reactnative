@@ -7,6 +7,9 @@
 java_pid24724.hprof
 .hprof
 
+# react-native-config codegen
+ios/tmp.xcconfig
+
 
 # OSX
 #

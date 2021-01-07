@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { Platform } from 'react-native';
 import { Button, Dialog, FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -8,7 +9,7 @@ interface IProduct {
     expiredOrNext?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     background: ${({ theme }) => theme.colors.background};
 `;
@@ -17,7 +18,7 @@ export const PageHeader = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 5px 10px 5px;
+    padding: ${Platform.OS === 'ios' ? 0 : 15}px 5px 10px 5px;
 `;
 
 export const ProductDetailsContainer = styled.View`

@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { translate } from '../../Locales';
 
+import StatusBar from '../../Components/StatusBar';
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
@@ -153,6 +154,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     ) : (
         <>
             <Container>
+                <StatusBar />
                 <ScrollView>
                     <PageHeader>
                         <ProductDetailsContainer>

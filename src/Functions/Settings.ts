@@ -1,4 +1,6 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { getMultiplesStoresForLegacyUsers } from './MultiplesStoresLegacyUsers';
 
 interface ISetSettingProps {
     type:
@@ -97,15 +99,8 @@ export async function getAppTheme(): Promise<string> {
 export async function getEnableNotifications(): Promise<boolean> {
     const setting = await getSetting({ type: 'EnableNotifications' });
 
-    if (setting === 'true') return true;
-    return false;
-}
-
-export async function getEnableMultipleStoresMode(): Promise<boolean> {
-    const setting = await getSetting({ type: 'EnableMultipleStores' });
-
-    if (setting === 'true') return true;
-    return false;
+    if (setting === 'false') return false;
+    return true;
 }
 
 export async function getEnableProVersion(): Promise<boolean> {
@@ -114,5 +109,23 @@ export async function getEnableProVersion(): Promise<boolean> {
     if (setting === 'true') {
         return true;
     }
+    return false;
+}
+
+export async function getEnableMultipleStoresMode(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableMultipleStores' });
+
+    const legacyUser = await getMultiplesStoresForLegacyUsers();
+
+    if (legacyUser) {
+        if (setting === 'true') return true;
+        return false;
+    }
+
+    if (await getEnableProVersion()) {
+        if (setting === 'true') return true;
+        return false;
+    }
+
     return false;
 }

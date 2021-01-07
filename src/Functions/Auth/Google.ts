@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import Analytics from '@react-native-firebase/analytics';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import EnvConfig from 'react-native-config';
 import { setUserId } from '../User';
@@ -39,6 +40,8 @@ export async function getUser(): Promise<IGoogleUser> {
 
 export async function signInWithGoogle(): Promise<IUser> {
     try {
+        await Analytics().logEvent('user_started_signin_process');
+
         const isSignedIn = await GoogleSignin.isSignedIn();
 
         if (isSignedIn) {
@@ -54,6 +57,8 @@ export async function signInWithGoogle(): Promise<IUser> {
         // Sign-in the user with the credential
         const authResult = await auth().signInWithCredential(googleCredential);
 
+        await Analytics().logEvent('user_is_now_signed');
+
         const user: IUser = {
             displayName: authResult.user.displayName,
             email: authResult.user.email,
@@ -65,6 +70,7 @@ export async function signInWithGoogle(): Promise<IUser> {
 
         return user;
     } catch (err) {
+        await Analytics().logEvent('error_while_signing_user');
         throw new Error(err);
     }
 }
@@ -75,6 +81,8 @@ export async function signOutGoogle(): Promise<void> {
         if (isSignedIn) {
             await GoogleSignin.signOut();
             await setUserId('');
+
+            await Analytics().logEvent('user_is_now_signout');
         }
     } catch (err) {
         throw new Error(err);

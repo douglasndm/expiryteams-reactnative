@@ -8,6 +8,7 @@ import { translate } from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
+import StatusBar from '../../Components/StatusBar';
 import Button from '../../Components/Button';
 
 import {
@@ -86,6 +87,8 @@ const Success: React.FC = () => {
 
     return (
         <Container>
+            <StatusBar />
+
             <SuccessMessageContainer>
                 <LottieView
                     source={animation}
