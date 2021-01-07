@@ -13,6 +13,7 @@ const DrawerContainer: React.FC = () => {
             drawerType="slide"
             openByDefault={false}
             keyboardDismissMode="on-drag"
+            initialRouteName="Home"
             drawerContent={(props) => <DrawerMenu {...props} />}
         >
             <Drawer.Screen name="HomePage" component={Routes} />
