@@ -23,10 +23,10 @@ export async function getUser(): Promise<IGoogleUser> {
         throw new Error('User is not signed');
     }
 
-    const googleUser = await GoogleSignin.getCurrentUser();
+    let googleUser = await GoogleSignin.getCurrentUser();
 
     if (!googleUser) {
-        throw new Error('An error occured when getting user');
+        googleUser = await GoogleSignin.signInSilently();
     }
 
     const returnedUser: IGoogleUser = {
