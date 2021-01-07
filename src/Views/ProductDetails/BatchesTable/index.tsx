@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { getLocales } from 'react-native-localize';
 import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
-import br from 'date-fns/locale/pt-BR'; //eslint-disable-line
-import en from 'date-fns/locale/en-US'; //eslint-disable-line
-import { getCountry } from 'react-native-localize';
+import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
 import { translate } from '../../../Locales';
@@ -33,20 +32,20 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
     const { navigate } = useNavigation();
 
     const [languageCode] = useState(() => {
-        if (getCountry() === 'US') {
-            return en;
+        if (getLocales()[0].languageCode === 'en') {
+            return enUS;
         }
-        return br;
+        return ptBR;
     });
 
     const [dateFormat] = useState(() => {
-        if (getCountry() === 'US') {
+        if (getLocales()[0].languageCode === 'en') {
             return 'MM/dd/yyyy';
         }
         return 'dd/MM/yyyy';
     });
     const [currencyPrefix] = useState(() => {
-        if (getCountry() === 'US') {
+        if (getLocales()[0].languageCode === 'en') {
             return '$';
         }
 

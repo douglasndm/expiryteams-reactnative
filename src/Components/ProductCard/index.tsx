@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getCountry } from 'react-native-localize';
+import { getLocales } from 'react-native-localize';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
-import br from 'date-fns/locale/pt-BR' // eslint-disable-line
-import en from 'date-fns/locale/en-US' // eslint-disable-line
+import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
+
 import NumberFormat from 'react-number-format';
 
 import { translate } from '../../Locales';
@@ -43,13 +43,13 @@ const Product = ({ product, expired, nextToExp }: Request) => {
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [languageCode] = useState(() => {
-        if (getCountry() === 'US') {
-            return en;
+        if (getLocales()[0].languageCode === 'en') {
+            return enUS;
         }
-        return br;
+        return ptBR;
     });
     const [dateFormat] = useState(() => {
-        if (getCountry() === 'US') {
+        if (getLocales()[0].languageCode === 'en') {
             return 'MM/dd/yyyy';
         }
         return 'dd/MM/yyyy';
