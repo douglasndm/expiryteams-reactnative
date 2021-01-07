@@ -78,7 +78,7 @@ const PremiumSubscription: React.FC = () => {
 
             setPackageSubscription(response);
         } catch (err) {
-            setError(err.message);
+            // setError(err.message);
         } finally {
             setIsLoading(false);
         }
@@ -201,21 +201,33 @@ const PremiumSubscription: React.FC = () => {
                                 </TextSubscription>
                             </ButtonSubscription>
                         ) : (
-                            <ButtonSubscription
-                                onPress={handleMakeSubscription}
-                                disabled={isLoadingMakeSubscription}
-                            >
-                                {isLoadingMakeSubscription && (
-                                    <LoadingIndicator />
-                                )}
-                                {!isLoadingMakeSubscription && (
-                                    <>
+                            <>
+                                {packageSubscription ? (
+                                    <ButtonSubscription
+                                        onPress={handleMakeSubscription}
+                                        disabled={isLoadingMakeSubscription}
+                                    >
+                                        {isLoadingMakeSubscription && (
+                                            <LoadingIndicator />
+                                        )}
+                                        {!isLoadingMakeSubscription && (
+                                            <>
+                                                <TextSubscription>
+                                                    {subscribeButtonString}
+                                                </TextSubscription>
+                                            </>
+                                        )}
+                                    </ButtonSubscription>
+                                ) : (
+                                    <ButtonSubscription disabled>
                                         <TextSubscription>
-                                            {subscribeButtonString}
+                                            {translate(
+                                                'View_ProPage_SubscriptionNotAvailable'
+                                            )}
                                         </TextSubscription>
-                                    </>
+                                    </ButtonSubscription>
                                 )}
-                            </ButtonSubscription>
+                            </>
                         )}
                     </>
                 ) : (
