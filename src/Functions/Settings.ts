@@ -9,8 +9,16 @@ interface ISetSettingProps {
         | 'EnableNotifications'
         | 'EnableMultipleStores'
         | 'EnableProVersion'
-        | 'MigrationStatus';
+        | 'NotificationCadency';
     value: string;
+}
+
+export enum NotificationCadency {
+    Hour = 'Hour',
+    Day = 'Day',
+    Week = 'Week',
+    Month = 'Month',
+    Never = 'Never',
 }
 
 async function setSetting({ type, value }: ISetSettingProps): Promise<void> {
@@ -41,6 +49,15 @@ export async function setEnableNotifications(enable: boolean): Promise<void> {
     await setSetting({
         type: 'EnableNotifications',
         value: String(enable),
+    });
+}
+
+export async function setNotificationCadency(
+    cadency: NotificationCadency
+): Promise<void> {
+    await setSetting({
+        type: 'NotificationCadency',
+        value: cadency,
     });
 }
 
@@ -101,6 +118,28 @@ export async function getEnableNotifications(): Promise<boolean> {
 
     if (setting === 'false') return false;
     return true;
+}
+
+export async function getNotificationCadency(): Promise<NotificationCadency> {
+    const setting = await getSetting({ type: 'NotificationCadency' });
+
+    if (setting) {
+        switch (setting) {
+            case 'Month':
+                return NotificationCadency.Month;
+            case 'Week':
+                return NotificationCadency.Week;
+            case 'Day':
+                return NotificationCadency.Day;
+            case 'Hour':
+                return NotificationCadency.Hour;
+            case 'Never':
+                return NotificationCadency.Never;
+            default:
+                return NotificationCadency.Day;
+        }
+    }
+    return NotificationCadency.Day;
 }
 
 export async function getEnableProVersion(): Promise<boolean> {

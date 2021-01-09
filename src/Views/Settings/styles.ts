@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
+import DropDown from 'react-native-dropdown-picker';
 
 interface Request {
     notPremium?: boolean;
@@ -53,11 +54,28 @@ export const SettingDescription = styled.Text`
     color: ${(props) => props.theme.colors.text};
 `;
 
+export const Dropdown = styled(DropDown).attrs((props) => ({
+    dropDownStyle: {
+        backgroundColor: props.theme.colors.productBackground,
+    },
+    labelStyle: {
+        color: props.theme.colors.text,
+    },
+    activeLabelStyle: {
+        color: props.theme.colors.accent,
+    },
+    itemStyle: {
+        justifyContent: 'flex-start',
+    },
+}))`
+    background: ${(props) => props.theme.colors.productBackground};
+`;
+
 export const InputSetting = styled.TextInput.attrs((props) => ({
     placeholderTextColor: props.theme.colors.text,
 }))`
     border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    border-radius: 4px;
     margin-top: 8px;
     padding: 10px;
     color: ${(props) => props.theme.colors.text};

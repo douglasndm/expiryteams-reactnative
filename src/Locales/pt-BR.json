@@ -192,6 +192,13 @@
     "View_Settings_Appearance_Theme_Relax": "Relaxado (PRO)",
     "View_Settings_Appearance_Theme_Florest": "Floresta (PRO)",
 
+    "View_Settings_Notifications_Title": "Frequência das notificações",
+    "View_Settings_Notifications_Cadency_Hour": "A cada hora",
+    "View_Settings_Notifications_Cadency_Day": "Diariamente",
+    "View_Settings_Notifications_Cadency_Week": "Semanalmente",
+    "View_Settings_Notifications_Cadency_Month": "Mensalmente",
+    "View_Settings_Notifications_Cadency_Never": "Nunca",
+
     "View_AllProductByStore_BeforeStoreName": "Todos os produtos por loja",
     "View_AllProductByStore_NoStore": "sem loja",
 

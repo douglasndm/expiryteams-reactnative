@@ -9,11 +9,11 @@ import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
-import Appearance from './Appearance';
+import Appearance from './Components/Appearance';
+import Notifications from './Components/Notifications';
 
 import {
     setHowManyDaysToBeNextExp,
-    setEnableNotifications,
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
@@ -46,7 +46,6 @@ const Settings: React.FC = () => {
 
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [userIsPremium, setUserIsPremium] = useState(false);
-    const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const { userPreferences, setUserPreferences } = useContext(
@@ -81,12 +80,6 @@ const Settings: React.FC = () => {
         }
     }, [reset]);
 
-    const handleNotificationEnabledSwitch = useCallback(async () => {
-        await setEnableNotifications(!isNotificationsEnabled);
-
-        setIsNotificationsEnabled(!isNotificationsEnabled);
-    }, [isNotificationsEnabled]);
-
     const handleMultiStoresEnableSwitch = useCallback(async () => {
         await setEnableMultipleStoresMode(!multipleStoresState);
 
@@ -105,7 +98,6 @@ const Settings: React.FC = () => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
         setUserIsPremium(userPreferences.isUserPremium);
         setMultipleStoresState(userPreferences.multiplesStores);
-        setIsNotificationsEnabled(userPreferences.enableNotifications);
 
         loadData();
     }, [userPreferences, loadData]);
@@ -201,19 +193,7 @@ const Settings: React.FC = () => {
                                 }}
                             />
 
-                            <SettingContainer>
-                                <SettingDescription>
-                                    {translate(
-                                        'View_Settings_SettingName_EnableNotification'
-                                    )}
-                                </SettingDescription>
-                                <Switch
-                                    value={isNotificationsEnabled}
-                                    onValueChange={
-                                        handleNotificationEnabledSwitch
-                                    }
-                                />
-                            </SettingContainer>
+                            <Notifications />
 
                             {userPreferences.isUserPremium && (
                                 <SettingContainer>

@@ -1,14 +1,14 @@
 import React, { useState, useCallback, useContext } from 'react';
 
-import { translate } from '../../../Locales';
+import { translate } from '../../../../Locales';
 
-import { setAppTheme } from '../../../Functions/Settings';
+import { setAppTheme } from '../../../../Functions/Settings';
 
-import { getActualAppTheme } from '../../../Themes';
+import { getActualAppTheme } from '../../../../Themes';
 
-import PreferencesContext from '../../../Contexts/PreferencesContext';
+import PreferencesContext from '../../../../Contexts/PreferencesContext';
 
-import { CategoryOptions, CategoryTitle } from '../styles';
+import { CategoryOptions, CategoryTitle } from '../../styles';
 import { Text, PickerContainer, Picker } from './styles';
 
 const Appearance: React.FC = () => {

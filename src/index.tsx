@@ -19,6 +19,7 @@ import './Services/Analytics';
 import './Functions/MultiplesStoresLegacyUsers';
 import './Functions/ProMode';
 import { getAllUserPreferences } from './Functions/UserPreferences';
+import { NotificationCadency } from './Functions/Settings';
 
 import Themes from './Themes';
 
@@ -44,6 +45,7 @@ const App: React.FC = () => {
         appTheme: Themes.Light,
         multiplesStores: false,
         enableNotifications: true,
+        notificationCadency: NotificationCadency.Day,
         isUserSignedIn: false,
     });
 

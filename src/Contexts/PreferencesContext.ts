@@ -1,4 +1,6 @@
 import { createContext } from 'react';
+
+import { NotificationCadency } from '../Functions/Settings';
 import Themes from '../Themes';
 
 const PreferencesContext = createContext({
@@ -8,6 +10,7 @@ const PreferencesContext = createContext({
         appTheme: Themes.Light,
         multiplesStores: false,
         enableNotifications: true,
+        notificationCadency: NotificationCadency.Day,
         isUserSignedIn: false,
     },
     setUserPreferences: ({
@@ -16,6 +19,7 @@ const PreferencesContext = createContext({
         appTheme,
         multiplesStores,
         enableNotifications,
+        notificationCadency,
         isUserSignedIn,
     }: IUserPreferences) => {},
 });
