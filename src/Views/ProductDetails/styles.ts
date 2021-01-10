@@ -1,14 +1,8 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { Platform } from 'react-native';
-import { Button, Dialog, FAB } from 'react-native-paper';
+import { Button, FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
-
-interface IProduct {
-    expired?: boolean;
-    nextToExp?: boolean;
-    expiredOrNext?: boolean;
-}
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -21,8 +15,6 @@ export const PageHeader = styled.View`
 
     padding: ${Platform.OS === 'ios' ? 0 : 15}px 5px 10px 5px;
 `;
-
-export const ProductDetailsContainer = styled.View``;
 
 export const PageTitleContent = styled.View`
     flex-direction: row;
@@ -37,35 +29,31 @@ export const PageTitle = styled.Text`
 
 export const ProductContainer = styled.View`
     flex-direction: row;
-
-    margin: 20px 10px 10px;
+    align-items: center;
+    margin: 15px 10px 10px;
 `;
 
 export const ProductInformationContent = styled.View`
-    padding: 0 10px;
+    flex: 1;
 `;
 
 export const ProductName = styled.Text`
-    font-size: 24px;
-    margin-left: 5px;
+    font-size: 20px;
+    margin-left: 15px;
 
     color: ${({ theme }) => theme.colors.text};
 `;
 
 export const ProductCode = styled.Text`
-    font-size: 18px;
-    margin-left: 5px;
-
-    margin-bottom: 7px;
+    font-size: 14px;
+    margin: 5px 15px;
 
     color: ${({ theme }) => theme.colors.text};
 `;
 
 export const ProductStore = styled.Text`
-    font-size: 18px;
-    margin-left: 5px;
-
-    margin-bottom: 7px;
+    font-size: 14px;
+    margin-left: 15px;
 
     color: ${({ theme }) => theme.colors.text};
 `;
@@ -82,14 +70,12 @@ export const ActionsButtonContainer = styled.View`
     flex-direction: row;
 `;
 
+export const ActionButton = styled(Button).attrs((props) => ({
+    color: props.theme.colors.accent,
+}))``;
+
 export const PageContent = styled.View`
     padding: 0 16px 16px 16px;
-`;
-
-export const ButtonPaper = styled(Button).attrs((props) => ({
-    color: props.theme.colors.accent,
-}))`
-    color: ${({ theme }) => theme.colors.text};
 `;
 
 export const Icons = styled(Ionicons)`
@@ -109,20 +95,6 @@ export const CategoryDetailsText = styled.Text`
 `;
 
 export const TableContainer = styled.View``;
-
-export const Text = styled.Text<IProduct>`
-    color: ${(props) => props.theme.colors.text};
-
-    ${(props) =>
-        props.expiredOrNext &&
-        css`
-            color: white;
-        `}
-`;
-
-export const DialogPaper = styled(Dialog)`
-    background: ${(props) => props.theme.colors.productBackground};
-`;
 
 export const FloatButton = styled(FAB).attrs(() => ({
     color: 'white',

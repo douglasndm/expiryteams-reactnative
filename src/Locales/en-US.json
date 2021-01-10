@@ -128,7 +128,7 @@
     "View_EditProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
-    "View_EditProduct_Button_Save": "Update Product",
+    "View_EditProduct_Button_Save": "Save",
     "View_EditProduct_Button_Cancel": "Cancel",
 
     "View_Home_SearchText": "Search for a product",

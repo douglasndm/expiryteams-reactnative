@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { Button } from 'react-native-paper';
+import { useTheme } from 'styled-components/native';
 
 import { exists } from 'react-native-fs';
 import { translate } from '../../Locales';
@@ -11,7 +13,11 @@ import Camera from '../../Components/Camera';
 import BarCodeReader from '../../Components/BarCodeReader';
 import Notification from '../../Components/Notification';
 
-import { getProductById, updateProduct } from '../../Functions/Product';
+import {
+    getProductById,
+    updateProduct,
+    deleteProduct,
+} from '../../Functions/Product';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -34,7 +40,13 @@ import {
     ProductImageContainer,
 } from '../AddProduct/styles';
 
-import { ButtonPaper, Icons, SaveCancelButtonsContainer } from './styles';
+import {
+    ButtonPaper,
+    Icons,
+    ActionsButtonContainer,
+    DialogPaper,
+    Text,
+} from './styles';
 
 interface RequestParams {
     route: {
@@ -50,9 +62,11 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { productId } = route.params;
 
     const { reset, goBack } = useNavigation();
+    const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+    const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -152,6 +166,22 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         [handleDisableCamera]
     );
 
+    const handleDeleteProduct = useCallback(async () => {
+        try {
+            await deleteProduct(productId);
+
+            reset({
+                index: 1,
+                routes: [
+                    { name: 'Home' },
+                    { name: 'Success', params: { type: 'delete_product' } },
+                ],
+            });
+        } catch (err) {
+            setError(err.message);
+        }
+    }, [productId, reset]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -169,127 +199,192 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                             onClose={handleDisableBarCodeReader}
                         />
                     ) : (
-                        <Container>
-                            <StatusBar />
-                            <PageHeader>
-                                <BackButton handleOnPress={goBack} />
-                                <PageTitle>
-                                    {translate('View_EditProduct_PageTitle')}
-                                </PageTitle>
-                            </PageHeader>
+                        <>
+                            <Container>
+                                <StatusBar />
+                                <PageHeader>
+                                    <BackButton handleOnPress={goBack} />
+                                    <PageTitle>
+                                        {translate(
+                                            'View_EditProduct_PageTitle'
+                                        )}
+                                    </PageTitle>
+                                </PageHeader>
 
-                            <PageContent>
-                                {!!photoPath && userPreferences.isUserPremium && (
-                                    <ProductImageContainer
-                                        onPress={handleEnableCamera}
-                                    >
-                                        <ProductImage
-                                            source={{
-                                                uri: `file://${photoPath}`,
-                                            }}
-                                        />
-                                    </ProductImageContainer>
-                                )}
-                                <InputContainer>
-                                    <InputGroup>
-                                        <InputTextContainer>
-                                            <InputText
-                                                placeholder={translate(
-                                                    'View_EditProduct_InputPlacehoder_Name'
-                                                )}
-                                                accessibilityLabel={translate(
-                                                    'View_EditProduct_InputAccessibility_Name'
-                                                )}
-                                                value={name}
-                                                onChangeText={(value) => {
-                                                    setName(value);
-                                                }}
-                                            />
-                                        </InputTextContainer>
-
-                                        {userPreferences.isUserPremium && (
-                                            <CameraButtonContainer
+                                <PageContent>
+                                    {!!photoPath &&
+                                        userPreferences.isUserPremium && (
+                                            <ProductImageContainer
                                                 onPress={handleEnableCamera}
                                             >
-                                                <CameraButtonIcon />
-                                            </CameraButtonContainer>
+                                                <ProductImage
+                                                    source={{
+                                                        uri: `file://${photoPath}`,
+                                                    }}
+                                                />
+                                            </ProductImageContainer>
                                         )}
-                                    </InputGroup>
+                                    <InputContainer>
+                                        <InputGroup>
+                                            <InputTextContainer>
+                                                <InputText
+                                                    placeholder={translate(
+                                                        'View_EditProduct_InputPlacehoder_Name'
+                                                    )}
+                                                    accessibilityLabel={translate(
+                                                        'View_EditProduct_InputAccessibility_Name'
+                                                    )}
+                                                    value={name}
+                                                    onChangeText={(value) => {
+                                                        setName(value);
+                                                    }}
+                                                />
+                                            </InputTextContainer>
 
-                                    <InputCodeTextContainer>
-                                        <InputCodeText
-                                            placeholder={translate(
-                                                'View_EditProduct_InputPlacehoder_Code'
+                                            {userPreferences.isUserPremium && (
+                                                <CameraButtonContainer
+                                                    onPress={handleEnableCamera}
+                                                >
+                                                    <CameraButtonIcon />
+                                                </CameraButtonContainer>
                                             )}
-                                            accessibilityLabel={translate(
-                                                'View_EditProduct_InputAccessibility_Code'
-                                            )}
-                                            value={code}
-                                            onChangeText={(value) =>
-                                                setCode(value)
-                                            }
-                                        />
-                                        <InputTextIconContainer
-                                            onPress={handleEnableBarCodeReader}
-                                        >
-                                            <InputCodeTextIcon />
-                                        </InputTextIconContainer>
-                                    </InputCodeTextContainer>
+                                        </InputGroup>
 
-                                    {userPreferences.multiplesStores && (
-                                        <InputText
-                                            placeholder={translate(
-                                                'View_EditProduct_InputPlacehoder_Store'
-                                            )}
-                                            accessibilityLabel={translate(
-                                                'View_EditProduct_InputAccessibility_Store'
-                                            )}
-                                            value={store}
-                                            onChangeText={(value) => {
-                                                setStore(value);
-                                            }}
-                                        />
+                                        <InputCodeTextContainer>
+                                            <InputCodeText
+                                                placeholder={translate(
+                                                    'View_EditProduct_InputPlacehoder_Code'
+                                                )}
+                                                accessibilityLabel={translate(
+                                                    'View_EditProduct_InputAccessibility_Code'
+                                                )}
+                                                value={code}
+                                                onChangeText={(value) =>
+                                                    setCode(value)
+                                                }
+                                            />
+                                            <InputTextIconContainer
+                                                onPress={
+                                                    handleEnableBarCodeReader
+                                                }
+                                            >
+                                                <InputCodeTextIcon />
+                                            </InputTextIconContainer>
+                                        </InputCodeTextContainer>
+
+                                        {userPreferences.multiplesStores && (
+                                            <InputText
+                                                placeholder={translate(
+                                                    'View_EditProduct_InputPlacehoder_Store'
+                                                )}
+                                                accessibilityLabel={translate(
+                                                    'View_EditProduct_InputAccessibility_Store'
+                                                )}
+                                                value={store}
+                                                onChangeText={(value) => {
+                                                    setStore(value);
+                                                }}
+                                            />
+                                        )}
+
+                                        <ActionsButtonContainer>
+                                            <ButtonPaper
+                                                icon={() => (
+                                                    <Icons
+                                                        name="save-outline"
+                                                        size={22}
+                                                    />
+                                                )}
+                                                onPress={updateProd}
+                                            >
+                                                {translate(
+                                                    'View_EditProduct_Button_Save'
+                                                )}
+                                            </ButtonPaper>
+                                            <ButtonPaper
+                                                icon={() => (
+                                                    <Icons
+                                                        name="trash-outline"
+                                                        size={22}
+                                                    />
+                                                )}
+                                                onPress={() => {
+                                                    setDeleteComponentVisible(
+                                                        true
+                                                    );
+                                                }}
+                                            >
+                                                {translate(
+                                                    'View_ProductDetails_Button_DeleteProduct'
+                                                )}
+                                            </ButtonPaper>
+                                            <ButtonPaper
+                                                icon={() => (
+                                                    <Icons
+                                                        name="exit-outline"
+                                                        size={22}
+                                                    />
+                                                )}
+                                                onPress={goBack}
+                                            >
+                                                {translate(
+                                                    'View_EditProduct_Button_Cancel'
+                                                )}
+                                            </ButtonPaper>
+                                        </ActionsButtonContainer>
+                                    </InputContainer>
+                                </PageContent>
+
+                                {!!error && (
+                                    <Notification
+                                        NotificationMessage={error}
+                                        NotificationType="error"
+                                        onPress={handleDimissNotification}
+                                    />
+                                )}
+                            </Container>
+                            <DialogPaper
+                                visible={deleteComponentVisible}
+                                onDismiss={() => {
+                                    setDeleteComponentVisible(false);
+                                }}
+                            >
+                                <DialogPaper.Title
+                                    style={{ color: theme.colors.text }}
+                                >
+                                    {translate(
+                                        'View_ProductDetails_WarningDelete_Title'
                                     )}
-
-                                    <SaveCancelButtonsContainer>
-                                        <ButtonPaper
-                                            icon={() => (
-                                                <Icons
-                                                    name="save-outline"
-                                                    size={22}
-                                                />
-                                            )}
-                                            onPress={updateProd}
-                                        >
-                                            {translate(
-                                                'View_EditProduct_Button_Save'
-                                            )}
-                                        </ButtonPaper>
-                                        <ButtonPaper
-                                            icon={() => (
-                                                <Icons
-                                                    name="exit-outline"
-                                                    size={22}
-                                                />
-                                            )}
-                                            onPress={goBack}
-                                        >
-                                            {translate(
-                                                'View_EditProduct_Button_Cancel'
-                                            )}
-                                        </ButtonPaper>
-                                    </SaveCancelButtonsContainer>
-                                </InputContainer>
-                            </PageContent>
-
-                            {!!error && (
-                                <Notification
-                                    NotificationMessage={error}
-                                    NotificationType="error"
-                                    onPress={handleDimissNotification}
-                                />
-                            )}
-                        </Container>
+                                </DialogPaper.Title>
+                                <DialogPaper.Content>
+                                    <Text>
+                                        {translate(
+                                            'View_ProductDetails_WarningDelete_Message'
+                                        )}
+                                    </Text>
+                                </DialogPaper.Content>
+                                <DialogPaper.Actions>
+                                    <Button
+                                        color="red"
+                                        onPress={handleDeleteProduct}
+                                    >
+                                        {translate(
+                                            'View_ProductDetails_WarningDelete_Button_Confirm'
+                                        )}
+                                    </Button>
+                                    <Button
+                                        color={theme.colors.accent}
+                                        onPress={() => {
+                                            setDeleteComponentVisible(false);
+                                        }}
+                                    >
+                                        {translate(
+                                            'View_ProductDetails_WarningDelete_Button_Cancel'
+                                        )}
+                                    </Button>
+                                </DialogPaper.Actions>
+                            </DialogPaper>
+                        </>
                     )}
                 </>
             )}

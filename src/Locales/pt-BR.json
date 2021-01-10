@@ -128,7 +128,7 @@
     "View_EditProduct_InputAccessibility_Name": "Campo de texto para digitar o nome do produto",
     "View_EditProduct_InputAccessibility_Code": "Campo de texto para digitar o código do produto",
     "View_EditProduct_InputAccessibility_Store": "Campo de texto para digitar a loja do produto",
-    "View_EditProduct_Button_Save": "Atualizar produto",
+    "View_EditProduct_Button_Save": "Salvar",
     "View_EditProduct_Button_Cancel": "Cancelar",
 
     "View_Home_SearchText": "Procurar por um produto",
