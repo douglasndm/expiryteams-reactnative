@@ -117,7 +117,6 @@ const ListProducts: React.FC<RequestProps> = ({
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
                 initialNumToRender={10}
-                removeClippedSubviews
             />
         </Container>
     );
