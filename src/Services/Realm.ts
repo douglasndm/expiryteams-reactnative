@@ -7,7 +7,7 @@ import SettingSchema from '../Schemas/SettingSchema';
 export default async function RealmInstance(): Promise<Realm> {
     const realm = await Realm.open({
         schema: [ProductSchema, LoteSchema, SettingSchema],
-        schemaVersion: 3,
+        schemaVersion: 4,
     });
 
     return realm;

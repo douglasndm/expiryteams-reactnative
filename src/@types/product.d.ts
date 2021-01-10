@@ -3,5 +3,6 @@ interface IProduct {
     name: string;
     code?: string;
     store?: string;
+    photo?: string;
     lotes: Array<ILote>;
 }

@@ -5,11 +5,12 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { View, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useTheme } from 'styled-components';
 import { Button } from 'react-native-paper';
+import RNFS, { exists } from 'react-native-fs';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -28,12 +29,16 @@ import {
     Container,
     PageHeader,
     ProductDetailsContainer,
+    ProductContainer,
     PageTitleContent,
     PageTitle,
     ProductInformationContent,
     ProductName,
     ProductCode,
     ProductStore,
+    ProductImageContainer,
+    ProductImage,
+    ActionsButtonContainer,
     PageContent,
     ButtonPaper,
     Icons,
@@ -47,7 +52,7 @@ import {
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
-import BatchTable from './BatchesTable';
+import BatchTable from './Components/BatchesTable';
 
 interface Request {
     route: {
@@ -73,6 +78,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+    const [photo, setPhoto] = useState<string | null>(null);
     const [product, setProduct] = useState<IProduct>();
 
     const [lotes, setLotes] = useState<Array<ILote>>([]);
@@ -85,6 +91,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         setIsLoading(true);
         try {
             const result = await getProductById(productId);
+
+            if (result.photo) {
+                const pathExists = await exists(result.photo);
+
+                if (pathExists) {
+                    setPhoto(`file://${result.photo}`);
+                }
+            }
 
             if (!result || result === null) {
                 goBack();
@@ -149,6 +163,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         setError('');
     }, []);
 
+    const handleOnPhotoPress = useCallback(() => {
+        if (product && product.photo) {
+            navigate('PhotoView', {
+                photoPath: product.photo,
+            });
+        }
+    }, [navigate, product]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -165,27 +187,42 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 </PageTitle>
                             </PageTitleContent>
 
-                            <ProductInformationContent>
-                                <ProductName>{name}</ProductName>
-                                {!!code && (
-                                    <ProductCode>
-                                        {translate('View_ProductDetails_Code')}:{' '}
-                                        {code}
-                                    </ProductCode>
+                            <ProductContainer>
+                                {photo && (
+                                    <ProductImageContainer
+                                        onPress={handleOnPhotoPress}
+                                    >
+                                        <ProductImage
+                                            source={{
+                                                uri: photo,
+                                            }}
+                                        />
+                                    </ProductImageContainer>
                                 )}
-                                {userPreferences.multiplesStores &&
-                                    !!product?.store && (
-                                        <ProductStore>
+                                <ProductInformationContent>
+                                    <ProductName>{name}</ProductName>
+                                    {!!code && (
+                                        <ProductCode>
                                             {translate(
-                                                'View_ProductDetails_Store'
+                                                'View_ProductDetails_Code'
                                             )}
-                                            : {product.store}
-                                        </ProductStore>
+                                            : {code}
+                                        </ProductCode>
                                     )}
-                            </ProductInformationContent>
+                                    {userPreferences.multiplesStores &&
+                                        !!product?.store && (
+                                            <ProductStore>
+                                                {translate(
+                                                    'View_ProductDetails_Store'
+                                                )}
+                                                : {product.store}
+                                            </ProductStore>
+                                        )}
+                                </ProductInformationContent>
+                            </ProductContainer>
                         </ProductDetailsContainer>
 
-                        <View>
+                        <ActionsButtonContainer>
                             <ButtonPaper
                                 icon={() => (
                                     <Icons name="create-outline" size={22} />
@@ -208,7 +245,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     'View_ProductDetails_Button_DeleteProduct'
                                 )}
                             </ButtonPaper>
-                        </View>
+                        </ActionsButtonContainer>
                     </PageHeader>
 
                     <PageContent>

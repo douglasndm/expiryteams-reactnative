@@ -14,6 +14,7 @@ import Settings from '../Views/Settings';
 import About from '../Views/About';
 import ProSubscription from '../Views/ProSubscription';
 import Success from '../Views/Success';
+import PhotoView from '../Views/PhotoView';
 
 import SignIn from '../Views/Auth/SignIn';
 
@@ -44,6 +45,7 @@ const Routes: React.FC = () => {
                 component={ProSubscription}
             />
             <Stack.Screen name="Success" component={Success} />
+            <Stack.Screen name="PhotoView" component={PhotoView} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
         </Stack.Navigator>

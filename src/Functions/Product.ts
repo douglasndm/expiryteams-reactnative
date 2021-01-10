@@ -118,6 +118,7 @@ export async function createProduct({
                 id: nextProductId,
                 name: product.name,
                 code: product.code,
+                photo: product.photo,
                 store: product.store,
                 lotes: [],
             });
@@ -141,6 +142,7 @@ interface updateProductProps {
     name?: string;
     code?: string;
     store?: string;
+    photo?: string;
     lotes?: Array<ILote>;
 }
 

@@ -21,6 +21,12 @@
     "BarCodeReader_PermissionBlocked": "O Acesso a câmera do dispositivo foi bloqueado, para usar o leitor de códigos de barras você precisar desbloquear a permissão do aplicativo para usar a câmera nas configurações do dispositivo.",
     "BarCodeReader_Button_RequestPermission": "Autorizar câmera",
 
+    "Component_Camera_PageTitle": "Tirar foto do produto",
+    "Component_Camera_PageTitle_OnPreview": "Gostou da foto?",
+    "Component_Camera_Button_TakePicture": "Tirar foto",
+    "Component_Camera_Button_TakeAnotherPicture": "Tirar outra foto",
+    "Component_Camera_Button_SavePicture": "Ficou boa",
+
     "ListProductsComponent_PROBanner_message": "Conheça as vantagens do PRO",
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
@@ -216,6 +222,9 @@
     "View_Success_BatchDeletedDescription": "O lote foi deletado.",
     "View_Success_ProductDeletedDescription": "O produto foi deletado.",
     "View_Success_Button_GoToHome": "Voltar para o início",
+
+    "View_PhotoView_PageTitle": "Visualizar foto",
+    "View_PhotoView_Button_Back": "Voltar",
 
     "Function_StoreGroup_NoStore": "Sem loja",
 

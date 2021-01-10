@@ -21,6 +21,12 @@
     "BarCodeReader_PermissionBlocked": "Camera access is blocked. If you want to use barcode reader you need to unblock it on your device settings.",
     "BarCodeReader_Button_RequestPermission": "Authorize camera",
 
+    "Component_Camera_PageTitle": "Take a product photo",
+    "Component_Camera_PageTitle_OnPreview": "Did you like the photo?",
+    "Component_Camera_Button_TakePicture": "Take picture",
+    "Component_Camera_Button_TakeAnotherPicture": "Take another picture",
+    "Component_Camera_Button_SavePicture": "Looks good",
+
     "ListProductsComponent_PROBanner_message": "Discover the benefits of PRO",
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
@@ -216,6 +222,9 @@
     "View_Success_BatchDeletedDescription": "Batch was deleted",
     "View_Success_ProductDeletedDescription": "Product was deleted",
     "View_Success_Button_GoToHome": "Go to home",
+
+    "View_PhotoView_PageTitle": "Photo View",
+    "View_PhotoView_Button_Back": "Go back",
 
     "Function_StoreGroup_NoStore": "No store",
 

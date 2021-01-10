@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
 import { Button, Dialog, FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { RectButton } from 'react-native-gesture-handler';
 
 interface IProduct {
     expired?: boolean;
@@ -15,15 +16,13 @@ export const Container = styled.SafeAreaView`
 `;
 
 export const PageHeader = styled.View`
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+
     padding: ${Platform.OS === 'ios' ? 0 : 15}px 5px 10px 5px;
 `;
 
-export const ProductDetailsContainer = styled.View`
-    max-width: 60%;
-`;
+export const ProductDetailsContainer = styled.View``;
 
 export const PageTitleContent = styled.View`
     flex-direction: row;
@@ -34,6 +33,12 @@ export const PageTitle = styled.Text`
     font-weight: bold;
 
     color: ${({ theme }) => theme.colors.text};
+`;
+
+export const ProductContainer = styled.View`
+    flex-direction: row;
+
+    margin: 20px 10px 10px;
 `;
 
 export const ProductInformationContent = styled.View`
@@ -63,6 +68,18 @@ export const ProductStore = styled.Text`
     margin-bottom: 7px;
 
     color: ${({ theme }) => theme.colors.text};
+`;
+
+export const ProductImageContainer = styled(RectButton)``;
+
+export const ProductImage = styled.Image`
+    width: 75px;
+    height: 75px;
+    border-radius: 37px;
+`;
+
+export const ActionsButtonContainer = styled.View`
+    flex-direction: row;
 `;
 
 export const PageContent = styled.View`

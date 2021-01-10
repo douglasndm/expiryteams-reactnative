@@ -5,9 +5,9 @@ import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
-import { translate } from '../../../Locales';
+import { translate } from '../../../../Locales';
 
-import PreferencesContext from '../../../Contexts/PreferencesContext';
+import PreferencesContext from '../../../../Contexts/PreferencesContext';
 
 import {
     Table,

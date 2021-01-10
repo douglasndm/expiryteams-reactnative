@@ -23,6 +23,7 @@ import { createLote } from '../../Functions/Lotes';
 import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
+import Camera from '../../Components/Camera';
 import BarCodeReader from '../../Components/BarCodeReader';
 import Notification from '../../Components/Notification';
 
@@ -34,7 +35,10 @@ import {
     PageTitle,
     PageContent,
     InputContainer,
+    InputTextContainer,
     InputText,
+    CameraButtonContainer,
+    CameraButtonIcon,
     NumericInputField,
     InputGroup,
     MoreInformationsContainer,
@@ -79,6 +83,7 @@ const AddProduct: React.FC = () => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+    const [photoPath, setPhotoPath] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
     const [price, setPrice] = useState(0);
@@ -86,7 +91,8 @@ const AddProduct: React.FC = () => {
 
     const [expDate, setExpDate] = useState(new Date());
 
-    const [cameraEnabled, setCameraEnebled] = useState(false);
+    const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+    const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
     const [productAlreadyExists, setProductAlreadyExists] = useState(false);
     const [erro, setError] = useState<string>('');
 
@@ -123,6 +129,7 @@ const AddProduct: React.FC = () => {
                 name,
                 code,
                 store,
+                photo: photoPath,
                 lotes: [],
             };
 
@@ -193,7 +200,7 @@ const AddProduct: React.FC = () => {
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
-        setCameraEnebled(false);
+        setIsBarCodeEnabled(false);
     }, []);
 
     const handleNavigateToExistProduct = useCallback(async () => {
@@ -208,220 +215,290 @@ const AddProduct: React.FC = () => {
         setError('');
     }, []);
 
+    const handleEnableCamera = useCallback(() => {
+        setIsBarCodeEnabled(false);
+        setIsCameraEnabled(true);
+    }, []);
+
+    const handleDisableCamera = useCallback(() => {
+        setIsCameraEnabled(false);
+    }, []);
+
+    const handleEnableBarCodeReader = useCallback(() => {
+        setIsCameraEnabled(false);
+        setIsBarCodeEnabled(true);
+    }, []);
+
+    const handleDisableBarCodeReader = useCallback(() => {
+        setIsBarCodeEnabled(false);
+    }, []);
+
+    const onPhotoTaked = useCallback(
+        (path: string) => {
+            setPhotoPath(path);
+            handleDisableCamera();
+        },
+        [handleDisableCamera]
+    );
+
     return (
         <>
-            {cameraEnabled ? (
-                <BarCodeReader
-                    onCodeRead={handleOnCodeRead}
-                    onClose={() => setCameraEnebled(false)}
-                />
+            {isCameraEnabled ? (
+                <Camera onPhotoTaked={onPhotoTaked} />
             ) : (
-                <Container>
-                    <StatusBar />
-                    <ScrollView>
-                        <PageHeader>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {translate('View_AddProduct_PageTitle')}
-                            </PageTitle>
-                        </PageHeader>
+                <>
+                    {isBarCodeEnabled ? (
+                        <BarCodeReader
+                            onCodeRead={handleOnCodeRead}
+                            onClose={handleDisableBarCodeReader}
+                        />
+                    ) : (
+                        <Container>
+                            <StatusBar />
+                            <ScrollView>
+                                <PageHeader>
+                                    <BackButton handleOnPress={goBack} />
+                                    <PageTitle>
+                                        {translate('View_AddProduct_PageTitle')}
+                                    </PageTitle>
+                                </PageHeader>
 
-                        <PageContent>
-                            <InputContainer>
-                                <InputText
-                                    placeholder={translate(
-                                        'View_AddProduct_InputPlacehoder_Name'
-                                    )}
-                                    accessibilityLabel={translate(
-                                        'View_AddProduct_InputAccessibility_Name'
-                                    )}
-                                    value={name}
-                                    onChangeText={(value) => {
-                                        setName(value);
-                                    }}
-                                    onFocus={() => {
-                                        setCameraEnebled(false);
-                                    }}
-                                />
-
-                                <InputCodeTextContainer>
-                                    <InputCodeText
-                                        placeholder={translate(
-                                            'View_AddProduct_InputPlacehoder_Code'
-                                        )}
-                                        accessibilityLabel={translate(
-                                            'View_AddProduct_InputAccessibility_Code'
-                                        )}
-                                        value={code}
-                                        onChangeText={(value) => setCode(value)}
-                                    />
-                                    <InputTextIconContainer
-                                        onPress={() => setCameraEnebled(true)}
-                                    >
-                                        <InputCodeTextIcon />
-                                    </InputTextIconContainer>
-                                </InputCodeTextContainer>
-
-                                <InputGroup>
-                                    <InputText
-                                        style={{
-                                            flex: 5,
-                                            marginRight: 5,
-                                        }}
-                                        placeholder={translate(
-                                            'View_AddProduct_InputPlacehoder_Batch'
-                                        )}
-                                        accessibilityLabel={translate(
-                                            'View_AddProduct_InputAccessibility_Batch'
-                                        )}
-                                        value={lote}
-                                        onChangeText={(value) => setLote(value)}
-                                        onFocus={() => {
-                                            setCameraEnebled(false);
-                                        }}
-                                    />
-                                    <InputText
-                                        style={{
-                                            flex: 4,
-                                        }}
-                                        placeholder={translate(
-                                            'View_AddProduct_InputPlacehoder_Amount'
-                                        )}
-                                        accessibilityLabel={translate(
-                                            'View_AddProduct_InputAccessibility_Amount'
-                                        )}
-                                        keyboardType="numeric"
-                                        value={String(amount)}
-                                        onChangeText={handleAmountChange}
-                                        onFocus={() => {
-                                            setCameraEnebled(false);
-                                        }}
-                                    />
-                                </InputGroup>
-
-                                <NumericInputField
-                                    type="currency"
-                                    locale={locale}
-                                    currency={currency}
-                                    value={price}
-                                    onUpdate={(value: number) =>
-                                        setPrice(value)
-                                    }
-                                    placeholder={translate(
-                                        'View_AddProduct_InputPlacehoder_UnitPrice'
-                                    )}
-                                />
-
-                                {userPreferences.multiplesStores && (
-                                    <MoreInformationsContainer>
-                                        <MoreInformationsTitle>
-                                            {translate(
-                                                'View_AddProduct_MoreInformation_Label'
-                                            )}
-                                        </MoreInformationsTitle>
-
+                                <PageContent>
+                                    <InputContainer>
                                         <InputGroup>
-                                            <InputText
-                                                style={{
-                                                    flex: 1,
-                                                }}
+                                            <InputTextContainer>
+                                                <InputText
+                                                    placeholder={translate(
+                                                        'View_AddProduct_InputPlacehoder_Name'
+                                                    )}
+                                                    accessibilityLabel={translate(
+                                                        'View_AddProduct_InputAccessibility_Name'
+                                                    )}
+                                                    value={name}
+                                                    onChangeText={(value) => {
+                                                        setName(value);
+                                                    }}
+                                                    onFocus={() => {
+                                                        setIsBarCodeEnabled(
+                                                            false
+                                                        );
+                                                    }}
+                                                />
+                                            </InputTextContainer>
+                                            {userPreferences.isUserPremium && (
+                                                <CameraButtonContainer
+                                                    onPress={handleEnableCamera}
+                                                >
+                                                    <CameraButtonIcon />
+                                                </CameraButtonContainer>
+                                            )}
+                                        </InputGroup>
+
+                                        <InputCodeTextContainer>
+                                            <InputCodeText
                                                 placeholder={translate(
-                                                    'View_AddProduct_InputPlacehoder_Store'
+                                                    'View_AddProduct_InputPlacehoder_Code'
                                                 )}
                                                 accessibilityLabel={translate(
-                                                    'View_AddProduct_InputAccessibility_Store'
+                                                    'View_AddProduct_InputAccessibility_Code'
                                                 )}
-                                                onFocus={() => {
-                                                    setCameraEnebled(false);
-                                                }}
-                                                value={store}
+                                                value={code}
                                                 onChangeText={(value) =>
-                                                    setStore(value)
+                                                    setCode(value)
                                                 }
                                             />
+                                            <InputTextIconContainer
+                                                onPress={
+                                                    handleEnableBarCodeReader
+                                                }
+                                            >
+                                                <InputCodeTextIcon />
+                                            </InputTextIconContainer>
+                                        </InputCodeTextContainer>
+
+                                        <InputGroup>
+                                            <InputTextContainer
+                                                style={{
+                                                    flex: 5,
+                                                    marginRight: 10,
+                                                }}
+                                            >
+                                                <InputText
+                                                    placeholder={translate(
+                                                        'View_AddProduct_InputPlacehoder_Batch'
+                                                    )}
+                                                    accessibilityLabel={translate(
+                                                        'View_AddProduct_InputAccessibility_Batch'
+                                                    )}
+                                                    value={lote}
+                                                    onChangeText={(value) =>
+                                                        setLote(value)
+                                                    }
+                                                    onFocus={() => {
+                                                        setIsBarCodeEnabled(
+                                                            false
+                                                        );
+                                                    }}
+                                                />
+                                            </InputTextContainer>
+                                            <InputTextContainer>
+                                                <InputText
+                                                    style={{
+                                                        flex: 4,
+                                                    }}
+                                                    placeholder={translate(
+                                                        'View_AddProduct_InputPlacehoder_Amount'
+                                                    )}
+                                                    accessibilityLabel={translate(
+                                                        'View_AddProduct_InputAccessibility_Amount'
+                                                    )}
+                                                    keyboardType="numeric"
+                                                    value={String(amount)}
+                                                    onChangeText={
+                                                        handleAmountChange
+                                                    }
+                                                    onFocus={() => {
+                                                        setIsBarCodeEnabled(
+                                                            false
+                                                        );
+                                                    }}
+                                                />
+                                            </InputTextContainer>
                                         </InputGroup>
-                                    </MoreInformationsContainer>
-                                )}
 
-                                <ExpDateGroup>
-                                    <ExpDateLabel>
-                                        {translate(
-                                            'View_AddProduct_CalendarTitle'
+                                        <NumericInputField
+                                            type="currency"
+                                            locale={locale}
+                                            currency={currency}
+                                            value={price}
+                                            onUpdate={(value: number) =>
+                                                setPrice(value)
+                                            }
+                                            placeholder={translate(
+                                                'View_AddProduct_InputPlacehoder_UnitPrice'
+                                            )}
+                                        />
+
+                                        {userPreferences.multiplesStores && (
+                                            <MoreInformationsContainer>
+                                                <MoreInformationsTitle>
+                                                    {translate(
+                                                        'View_AddProduct_MoreInformation_Label'
+                                                    )}
+                                                </MoreInformationsTitle>
+
+                                                <InputGroup>
+                                                    <InputTextContainer>
+                                                        <InputText
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
+                                                            placeholder={translate(
+                                                                'View_AddProduct_InputPlacehoder_Store'
+                                                            )}
+                                                            accessibilityLabel={translate(
+                                                                'View_AddProduct_InputAccessibility_Store'
+                                                            )}
+                                                            onFocus={() => {
+                                                                setIsBarCodeEnabled(
+                                                                    false
+                                                                );
+                                                            }}
+                                                            value={store}
+                                                            onChangeText={(
+                                                                value
+                                                            ) =>
+                                                                setStore(value)
+                                                            }
+                                                        />
+                                                    </InputTextContainer>
+                                                </InputGroup>
+                                            </MoreInformationsContainer>
                                         )}
-                                    </ExpDateLabel>
 
-                                    <CustomDatePicker
+                                        <ExpDateGroup>
+                                            <ExpDateLabel>
+                                                {translate(
+                                                    'View_AddProduct_CalendarTitle'
+                                                )}
+                                            </ExpDateLabel>
+
+                                            <CustomDatePicker
+                                                accessibilityLabel={translate(
+                                                    'View_AddProduct_CalendarAccessibilityDescription'
+                                                )}
+                                                date={expDate}
+                                                onDateChange={(value) => {
+                                                    setExpDate(value);
+                                                }}
+                                                locale={locale}
+                                            />
+                                        </ExpDateGroup>
+                                    </InputContainer>
+
+                                    <GenericButton
+                                        text={translate(
+                                            'View_AddProduct_Button_Save'
+                                        )}
                                         accessibilityLabel={translate(
-                                            'View_AddProduct_CalendarAccessibilityDescription'
+                                            'View_AddProduct_Button_Save_AccessibilityDescription'
                                         )}
-                                        date={expDate}
-                                        onDateChange={(value) => {
-                                            setExpDate(value);
-                                        }}
-                                        locale={locale}
+                                        onPress={handleSave}
                                     />
-                                </ExpDateGroup>
-                            </InputContainer>
-
-                            <GenericButton
-                                text={translate('View_AddProduct_Button_Save')}
-                                accessibilityLabel={translate(
-                                    'View_AddProduct_Button_Save_AccessibilityDescription'
-                                )}
-                                onPress={handleSave}
-                            />
-                        </PageContent>
-                    </ScrollView>
-                    {!!erro && (
-                        <Notification
-                            NotificationType="error"
-                            NotificationMessage={erro}
-                            onPress={handleDimissNotification}
-                        />
+                                </PageContent>
+                            </ScrollView>
+                            {!!erro && (
+                                <Notification
+                                    NotificationType="error"
+                                    NotificationMessage={erro}
+                                    onPress={handleDimissNotification}
+                                />
+                            )}
+                        </Container>
                     )}
-                </Container>
-            )}
 
-            <Dialog
-                visible={productAlreadyExists}
-                onDismiss={() => {
-                    setProductAlreadyExists(false);
-                }}
-                style={{ backgroundColor: theme.colors.background }}
-            >
-                <Dialog.Title>
-                    {translate(
-                        'View_AddProduct_DuplicateProductNotificationTitle'
-                    )}
-                </Dialog.Title>
-                <Dialog.Content>
-                    <Text style={{ color: theme.colors.text }}>
-                        {translate(
-                            'View_AddProduct_DuplicateProductNotificationDescription'
-                        )}
-                    </Text>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <ButtonPaper
-                        color={theme.colors.accent}
-                        onPress={handleNavigateToExistProduct}
-                    >
-                        {translate(
-                            'View_AddProduct_DuplicateProductNotificationButtonEditProdct'
-                        )}
-                    </ButtonPaper>
-                    <ButtonPaper
-                        color={theme.colors.accent}
-                        onPress={() => {
+                    <Dialog
+                        visible={productAlreadyExists}
+                        onDismiss={() => {
                             setProductAlreadyExists(false);
                         }}
+                        style={{ backgroundColor: theme.colors.background }}
                     >
-                        {translate(
-                            'View_AddProduct_DuplicateProductNotificationButtonClose'
-                        )}
-                    </ButtonPaper>
-                </Dialog.Actions>
-            </Dialog>
+                        <Dialog.Title>
+                            {translate(
+                                'View_AddProduct_DuplicateProductNotificationTitle'
+                            )}
+                        </Dialog.Title>
+                        <Dialog.Content>
+                            <Text style={{ color: theme.colors.text }}>
+                                {translate(
+                                    'View_AddProduct_DuplicateProductNotificationDescription'
+                                )}
+                            </Text>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <ButtonPaper
+                                color={theme.colors.accent}
+                                onPress={handleNavigateToExistProduct}
+                            >
+                                {translate(
+                                    'View_AddProduct_DuplicateProductNotificationButtonEditProdct'
+                                )}
+                            </ButtonPaper>
+                            <ButtonPaper
+                                color={theme.colors.accent}
+                                onPress={() => {
+                                    setProductAlreadyExists(false);
+                                }}
+                            >
+                                {translate(
+                                    'View_AddProduct_DuplicateProductNotificationButtonClose'
+                                )}
+                            </ButtonPaper>
+                        </Dialog.Actions>
+                    </Dialog>
+                </>
+            )}
         </>
     );
 };
