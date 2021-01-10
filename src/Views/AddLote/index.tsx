@@ -28,6 +28,7 @@ import {
     PageTitle,
     PageContent,
     InputContainer,
+    InputTextContainer,
     InputText,
     NumericInputField,
     InputGroup,
@@ -192,28 +193,34 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                         </ProductHeader>
 
                         <InputGroup>
-                            <InputText
+                            <InputTextContainer
                                 style={{
                                     flex: 5,
                                     marginRight: 5,
                                 }}
-                                placeholder={translate(
-                                    'View_AddBatch_InputPlacehoder_Batch'
-                                )}
-                                value={lote}
-                                onChangeText={(value) => setLote(value)}
-                            />
-                            <InputText
+                            >
+                                <InputText
+                                    placeholder={translate(
+                                        'View_AddBatch_InputPlacehoder_Batch'
+                                    )}
+                                    value={lote}
+                                    onChangeText={(value) => setLote(value)}
+                                />
+                            </InputTextContainer>
+                            <InputTextContainer
                                 style={{
                                     flex: 4,
                                 }}
-                                placeholder={translate(
-                                    'View_AddBatch_InputPlacehoder_Amount'
-                                )}
-                                keyboardType="numeric"
-                                value={amount}
-                                onChangeText={handleAmountChange}
-                            />
+                            >
+                                <InputText
+                                    placeholder={translate(
+                                        'View_AddBatch_InputPlacehoder_Amount'
+                                    )}
+                                    keyboardType="numeric"
+                                    value={amount}
+                                    onChangeText={handleAmountChange}
+                                />
+                            </InputTextContainer>
                         </InputGroup>
 
                         <NumericInputField
