@@ -10,17 +10,17 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { translate } from '../../Locales';
+import { translate } from '../../../Locales';
 
-import StatusBar from '../../Components/StatusBar';
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-import Notification from '../../Components/Notification';
+import StatusBar from '../../../Components/StatusBar';
+import BackButton from '../../../Components/BackButton';
+import GenericButton from '../../../Components/Button';
+import Notification from '../../../Components/Notification';
 
-import { createLote } from '../../Functions/Lotes';
-import { getProductById } from '../../Functions/Product';
+import { createLote } from '../../../Functions/Lotes';
+import { getProductById } from '../../../Functions/Product';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '../../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -35,10 +35,10 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-} from '../AddProduct/styles';
+} from '../../AddProduct/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
-interface AddLoteParams {
+interface Props {
     route: {
         params: {
             productId: number;
@@ -51,7 +51,7 @@ const adUnitID = __DEV__
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
-const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
+const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
     const { reset, goBack } = useNavigation();
 
@@ -266,4 +266,4 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     );
 };
 
-export default AddLote;
+export default AddBatch;

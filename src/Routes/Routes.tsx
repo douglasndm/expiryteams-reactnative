@@ -3,9 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from '../Views/Home';
 import AddProduct from '../Views/AddProduct';
-import AddLote from '../Views/AddLote';
+import AddLote from '../Views/Batch/Add';
 import EditProduct from '../Views/EditProduct';
-import EditLote from '../Views/EditLote';
+import EditLote from '../Views/Batch/Edit';
 import ProductDetails from '../Views/ProductDetails';
 import AllProducts from '../Views/AllProducts';
 import AllProductsByStore from '../Views/AllProductsByStore';

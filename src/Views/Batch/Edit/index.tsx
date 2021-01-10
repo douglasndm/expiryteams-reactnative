@@ -5,16 +5,16 @@ import { getLocales } from 'react-native-localize';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
-import { translate } from '../../Locales';
+import { translate } from '../../../Locales';
 
-import { updateLote, deleteLote } from '../../Functions/Lotes';
-import { getProductById } from '../../Functions/Product';
+import { updateLote, deleteLote } from '../../../Functions/Lotes';
+import { getProductById } from '../../../Functions/Product';
 
-import StatusBar from '../../Components/StatusBar';
-import Loading from '../../Components/Loading';
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-import Notification from '../../Components/Notification';
+import StatusBar from '../../../Components/StatusBar';
+import Loading from '../../../Components/Loading';
+import BackButton from '../../../Components/BackButton';
+import GenericButton from '../../../Components/Button';
+import Notification from '../../../Components/Notification';
 
 import {
     Container,
@@ -28,8 +28,8 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-} from '../AddProduct/styles';
-import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
+} from '../../AddProduct/styles';
+import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
     PageHeader,
@@ -40,16 +40,16 @@ import {
     RadioButtonText,
 } from './styles';
 
-interface EditLoteProps {
+interface Props {
     productId: number;
     loteId: number;
 }
 
-const EditLote: React.FC = () => {
+const EditBatch: React.FC = () => {
     const route = useRoute();
     const { reset, goBack } = useNavigation();
 
-    const routeParams = route.params as EditLoteProps;
+    const routeParams = route.params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
@@ -373,4 +373,4 @@ const EditLote: React.FC = () => {
     );
 };
 
-export default EditLote;
+export default EditBatch;
