@@ -273,18 +273,24 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </InputCodeTextContainer>
 
                                         {userPreferences.multiplesStores && (
-                                            <InputText
-                                                placeholder={translate(
-                                                    'View_EditProduct_InputPlacehoder_Store'
-                                                )}
-                                                accessibilityLabel={translate(
-                                                    'View_EditProduct_InputAccessibility_Store'
-                                                )}
-                                                value={store}
-                                                onChangeText={(value) => {
-                                                    setStore(value);
-                                                }}
-                                            />
+                                            <InputGroup>
+                                                <InputTextContainer>
+                                                    <InputText
+                                                        placeholder={translate(
+                                                            'View_EditProduct_InputPlacehoder_Store'
+                                                        )}
+                                                        accessibilityLabel={translate(
+                                                            'View_EditProduct_InputAccessibility_Store'
+                                                        )}
+                                                        value={store}
+                                                        onChangeText={(
+                                                            value
+                                                        ) => {
+                                                            setStore(value);
+                                                        }}
+                                                    />
+                                                </InputTextContainer>
+                                            </InputGroup>
                                         )}
 
                                         <ActionsButtonContainer>
