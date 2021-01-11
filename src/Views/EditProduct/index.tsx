@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
-import { exists } from 'react-native-fs';
+import { exists, unlink } from 'react-native-fs';
 import { translate } from '../../Locales';
 
 import StatusBar from '../../Components/StatusBar';
@@ -160,10 +160,24 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         async (path: string) => {
             if (await exists(path)) {
                 setPhotoPath(path);
+
+                const product = await getProductById(productId);
+
+                if (product.photo) {
+                    if (await exists(product.photo)) {
+                        await unlink(product.photo);
+                    }
+                }
+
+                await updateProduct({
+                    ...product,
+                    id: productId,
+                    photo: path,
+                });
             }
             handleDisableCamera();
         },
-        [handleDisableCamera]
+        [handleDisableCamera, productId]
     );
 
     const handleDeleteProduct = useCallback(async () => {
