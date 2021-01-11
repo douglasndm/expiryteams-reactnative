@@ -54,30 +54,8 @@ const Success: React.FC = () => {
     const adUnitId = useMemo(() => {
         if (__DEV__) return TestIds.BANNER;
 
-        switch (type) {
-            case 'create_batch':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDABATCH;
-
-            case 'create_product':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
-
-            case 'edit_batch':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTEREDITABATCH;
-
-            case 'edit_product':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTEREDITAPRODUCT;
-
-            case 'delete_batch':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEABATCH;
-
-            case 'delete_product':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEAPRODUCT;
-
-            default: {
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
-            }
-        }
-    }, [type]);
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
+    }, []);
 
     const handleNavigateToHome = useCallback(() => {
         reset({
