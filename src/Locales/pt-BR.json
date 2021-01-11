@@ -27,7 +27,9 @@
     "Component_Camera_Button_TakeAnotherPicture": "Tirar outra foto",
     "Component_Camera_Button_SavePicture": "Ficou boa",
 
-    "ListProductsComponent_PROBanner_message": "Conheça as vantagens do PRO",
+    "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
+    "ProBanner_Text2": "Conheça as vantagens do PRO",
+
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",

@@ -48,11 +48,7 @@ const ListProducts: React.FC<RequestProps> = ({
             <View>
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>
-                            {translate(
-                                'ListProductsComponent_PROBanner_message'
-                            )}
-                        </ProText>
+                        <ProText>{translate('ProBanner_Text1')}</ProText>
                     </ProBanner>
                 )}
 

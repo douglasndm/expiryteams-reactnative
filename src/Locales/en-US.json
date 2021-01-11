@@ -27,7 +27,9 @@
     "Component_Camera_Button_TakeAnotherPicture": "Take another picture",
     "Component_Camera_Button_SavePicture": "Looks good",
 
-    "ListProductsComponent_PROBanner_message": "Discover the benefits of PRO",
+    "ProBanner_Text1": "PRO users can take photos of products, do you want more?",
+    "ProBanner_Text2": "Discover the benefits of PRO",
+
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_ShowAllProducts": "Show all products",
@@ -166,7 +168,7 @@
     "View_ProPage_SubscribePeriod_Monthly": "MONTHLY",
     "View_ProPage_UserNeedToSignIn": "You need to sign in first.",
     "View_ProPage_Button_ClickToSignIn": "Click here to sign in.",
-    "View_ProPage_Button_GoBackToHome": "Go to home",
+    "View_ProPage_Button_GoBackToHome": "Go home",
     "View_ProPage_SubscriptionNotAvailable": "Subscription is not available now, check you internet connection.",
 
 
