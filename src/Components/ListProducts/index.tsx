@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -43,12 +43,18 @@ const ListProducts: React.FC<RequestProps> = ({
         navigate('PremiumSubscription');
     }, [navigate]);
 
+    const choosenAdText = useMemo(() => {
+        return Math.floor(Math.random() * 3) + 1;
+    }, []);
+
     const ListHeader = useCallback(() => {
         return (
             <View>
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>{translate('ProBanner_Text1')}</ProText>
+                        <ProText>
+                            {translate(`ProBanner_Text${choosenAdText}`)}
+                        </ProText>
                     </ProBanner>
                 )}
 
