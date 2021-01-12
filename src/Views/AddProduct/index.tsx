@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getCountry } from 'react-native-localize';
 import { useTheme } from 'styled-components';
@@ -52,11 +52,15 @@ import {
     InputTextIconContainer,
 } from './styles';
 
-const adUnitID = __DEV__
-    ? TestIds.INTERSTITIAL
-    : EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
+let adUnit = TestIds.INTERSTITIAL;
 
-const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
+if (Platform.OS === 'ios' && !__DEV__) {
+    adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_PRODUCT;
+} else if (Platform.OS === 'android' && !__DEV__) {
+    adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
+}
+
+const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 const AddProduct: React.FC = () => {
     const { goBack, navigate, reset } = useNavigation();

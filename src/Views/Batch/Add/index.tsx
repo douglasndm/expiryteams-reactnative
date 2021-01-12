@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { Alert, ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getCountry } from 'react-native-localize';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -45,11 +45,16 @@ interface Props {
         };
     };
 }
-const adUnitID = __DEV__
-    ? TestIds.INTERSTITIAL
-    : EnvConfig.ANDROID_ADMOB_ADUNITID_ADDLOTE;
 
-const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
+let adUnit = TestIds.INTERSTITIAL;
+
+if (Platform.OS === 'ios' && !__DEV__) {
+    adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_BATCH;
+} else if (Platform.OS === 'android' && !__DEV__) {
+    adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDLOTE;
+}
+
+const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
@@ -102,7 +107,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
             });
 
             if (!userPreferences.isUserPremium && adReady) {
-                interstitialAd.show();
+                await interstitialAd.show();
             }
 
             reset({
