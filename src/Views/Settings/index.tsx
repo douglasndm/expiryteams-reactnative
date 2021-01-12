@@ -8,6 +8,7 @@ import { translate } from '../../Locales';
 import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
+import NotificationError from '../../Components/Notification';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -129,15 +130,27 @@ const Settings: React.FC = () => {
     }, [navigate]);
 
     const handleImportBackup = useCallback(async () => {
-        await ImportBackupFile();
+        try {
+            await ImportBackupFile();
+        } catch (err) {
+            setError(err.message);
+        }
     }, []);
 
     const handleExportBackup = useCallback(async () => {
-        await ExportBackupFile();
+        try {
+            await ExportBackupFile();
+        } catch (err) {
+            setError(err.message);
+        }
     }, []);
 
     const handleExportToExcel = useCallback(async () => {
-        await exportToExcel();
+        try {
+            await exportToExcel();
+        } catch (err) {
+            setError(err.message);
+        }
     }, []);
 
     const handleLogout = useCallback(async () => {
@@ -156,156 +169,177 @@ const Settings: React.FC = () => {
         }
     }, [setUserPreferences, userPreferences]);
 
+    const onDimissError = useCallback(() => {
+        setError('');
+    }, []);
+
     return (
-        <Container>
-            <StatusBar />
-            <ScrollView>
-                <PageHeader>
-                    <BackButton handleOnPress={goBack} />
+        <>
+            <Container>
+                <StatusBar />
+                <ScrollView>
+                    <PageHeader>
+                        <BackButton handleOnPress={goBack} />
 
-                    <PageTitle>
-                        {translate('View_Settings_PageTitle')}
-                    </PageTitle>
-                </PageHeader>
+                        <PageTitle>
+                            {translate('View_Settings_PageTitle')}
+                        </PageTitle>
+                    </PageHeader>
 
-                <SettingsContent>
-                    <Category>
-                        <CategoryTitle>
-                            {translate('View_Settings_CategoryName_General')}
-                        </CategoryTitle>
-
-                        <CategoryOptions>
-                            <SettingDescription>
-                                {translate(
-                                    'View_Settings_SettingName_HowManyDaysToBeNextToExp'
-                                )}
-                            </SettingDescription>
-                            <InputSetting
-                                keyboardType="numeric"
-                                placeholder="Quantidade de dias"
-                                value={daysToBeNext}
-                                onChangeText={(v) => {
-                                    const regex = /^[0-9\b]+$/;
-
-                                    if (v === '' || regex.test(v)) {
-                                        setDaysToBeNext(v);
-                                    }
-                                }}
-                            />
-
-                            <Notifications />
-
-                            {userPreferences.isUserPremium && (
-                                <SettingContainer>
-                                    <SettingDescription>
-                                        {translate(
-                                            'View_Settings_SettingName_EnableMultiplesStores'
-                                        )}
-                                    </SettingDescription>
-                                    <Switch
-                                        value={userPreferences.multiplesStores}
-                                        onValueChange={
-                                            handleMultiStoresEnableSwitch
-                                        }
-                                    />
-                                </SettingContainer>
-                            )}
-                        </CategoryOptions>
-
-                        <Appearance />
-                    </Category>
-
-                    <Category>
-                        <CategoryTitle>
-                            {translate('View_Settings_CategoryName_Pro')}
-                        </CategoryTitle>
-
-                        {!userIsPremium && (
-                            <GenericButton
-                                text={translate(
-                                    'View_Settings_Button_BecobeProToUnlockNewFeatures'
-                                )}
-                                onPress={navigateToPremiumView}
-                            />
-                        )}
-
-                        <CategoryOptions notPremium={!userIsPremium}>
-                            <View>
-                                <SettingDescription>
-                                    {translate(
-                                        'View_Settings_SettingName_ExportAndInmport'
-                                    )}
-                                </SettingDescription>
-
-                                <PremiumButtonsContainer>
-                                    <ButtonPremium
-                                        disabled={!userIsPremium}
-                                        onPress={handleImportBackup}
-                                    >
-                                        <ButtonPremiumText>
-                                            {translate(
-                                                'View_Settings_Button_ImportFile'
-                                            )}
-                                        </ButtonPremiumText>
-                                    </ButtonPremium>
-                                    <ButtonPremium
-                                        disabled={!userIsPremium}
-                                        onPress={handleExportBackup}
-                                    >
-                                        <ButtonPremiumText>
-                                            {translate(
-                                                'View_Settings_Button_ExportFile'
-                                            )}
-                                        </ButtonPremiumText>
-                                    </ButtonPremium>
-
-                                    <ButtonPremium
-                                        disabled={!userIsPremium}
-                                        onPress={handleExportToExcel}
-                                    >
-                                        <ButtonPremiumText>
-                                            {translate(
-                                                'View_Settings_Button_ExportToExcel'
-                                            )}
-                                        </ButtonPremiumText>
-                                    </ButtonPremium>
-                                </PremiumButtonsContainer>
-                            </View>
-                        </CategoryOptions>
-
-                        {userIsPremium && (
-                            <ButtonCancel onPress={handleCancel}>
-                                <ButtonCancelText>
-                                    {translate(
-                                        'View_Settings_Button_CancelSubscribe'
-                                    )}
-                                </ButtonCancelText>
-                            </ButtonCancel>
-                        )}
-                    </Category>
-
-                    {userSigned && (
+                    <SettingsContent>
                         <Category>
                             <CategoryTitle>
                                 {translate(
-                                    'View_Settings_CategoryName_Account'
+                                    'View_Settings_CategoryName_General'
                                 )}
                             </CategoryTitle>
 
-                            <SettingDescription>
-                                {translate('View_Settings_AccountDescription')}
-                            </SettingDescription>
+                            <CategoryOptions>
+                                <SettingDescription>
+                                    {translate(
+                                        'View_Settings_SettingName_HowManyDaysToBeNextToExp'
+                                    )}
+                                </SettingDescription>
+                                <InputSetting
+                                    keyboardType="numeric"
+                                    placeholder="Quantidade de dias"
+                                    value={daysToBeNext}
+                                    onChangeText={(v) => {
+                                        const regex = /^[0-9\b]+$/;
 
-                            <GenericButton
-                                text={translate('View_Settings_Button_SignOut')}
-                                onPress={handleLogout}
-                                isLoading={isOnLogout}
-                            />
+                                        if (v === '' || regex.test(v)) {
+                                            setDaysToBeNext(v);
+                                        }
+                                    }}
+                                />
+
+                                <Notifications />
+
+                                {userPreferences.isUserPremium && (
+                                    <SettingContainer>
+                                        <SettingDescription>
+                                            {translate(
+                                                'View_Settings_SettingName_EnableMultiplesStores'
+                                            )}
+                                        </SettingDescription>
+                                        <Switch
+                                            value={
+                                                userPreferences.multiplesStores
+                                            }
+                                            onValueChange={
+                                                handleMultiStoresEnableSwitch
+                                            }
+                                        />
+                                    </SettingContainer>
+                                )}
+                            </CategoryOptions>
+
+                            <Appearance />
                         </Category>
-                    )}
-                </SettingsContent>
-            </ScrollView>
-        </Container>
+
+                        <Category>
+                            <CategoryTitle>
+                                {translate('View_Settings_CategoryName_Pro')}
+                            </CategoryTitle>
+
+                            {!userIsPremium && (
+                                <GenericButton
+                                    text={translate(
+                                        'View_Settings_Button_BecobeProToUnlockNewFeatures'
+                                    )}
+                                    onPress={navigateToPremiumView}
+                                />
+                            )}
+
+                            <CategoryOptions notPremium={!userIsPremium}>
+                                <View>
+                                    <SettingDescription>
+                                        {translate(
+                                            'View_Settings_SettingName_ExportAndInmport'
+                                        )}
+                                    </SettingDescription>
+
+                                    <PremiumButtonsContainer>
+                                        <ButtonPremium
+                                            disabled={!userIsPremium}
+                                            onPress={handleImportBackup}
+                                        >
+                                            <ButtonPremiumText>
+                                                {translate(
+                                                    'View_Settings_Button_ImportFile'
+                                                )}
+                                            </ButtonPremiumText>
+                                        </ButtonPremium>
+                                        <ButtonPremium
+                                            disabled={!userIsPremium}
+                                            onPress={handleExportBackup}
+                                        >
+                                            <ButtonPremiumText>
+                                                {translate(
+                                                    'View_Settings_Button_ExportFile'
+                                                )}
+                                            </ButtonPremiumText>
+                                        </ButtonPremium>
+
+                                        <ButtonPremium
+                                            disabled={!userIsPremium}
+                                            onPress={handleExportToExcel}
+                                        >
+                                            <ButtonPremiumText>
+                                                {translate(
+                                                    'View_Settings_Button_ExportToExcel'
+                                                )}
+                                            </ButtonPremiumText>
+                                        </ButtonPremium>
+                                    </PremiumButtonsContainer>
+                                </View>
+                            </CategoryOptions>
+
+                            {userIsPremium && (
+                                <ButtonCancel onPress={handleCancel}>
+                                    <ButtonCancelText>
+                                        {translate(
+                                            'View_Settings_Button_CancelSubscribe'
+                                        )}
+                                    </ButtonCancelText>
+                                </ButtonCancel>
+                            )}
+                        </Category>
+
+                        {userSigned && (
+                            <Category>
+                                <CategoryTitle>
+                                    {translate(
+                                        'View_Settings_CategoryName_Account'
+                                    )}
+                                </CategoryTitle>
+
+                                <SettingDescription>
+                                    {translate(
+                                        'View_Settings_AccountDescription'
+                                    )}
+                                </SettingDescription>
+
+                                <GenericButton
+                                    text={translate(
+                                        'View_Settings_Button_SignOut'
+                                    )}
+                                    onPress={handleLogout}
+                                    isLoading={isOnLogout}
+                                />
+                            </Category>
+                        )}
+                    </SettingsContent>
+                </ScrollView>
+            </Container>
+            {!!error && (
+                <NotificationError
+                    NotificationType="error"
+                    NotificationMessage={error}
+                    onPress={onDimissError}
+                />
+            )}
+        </>
     );
 };
 

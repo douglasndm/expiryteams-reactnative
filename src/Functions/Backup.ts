@@ -4,6 +4,8 @@ import DocumentPicker from 'react-native-document-picker';
 import CryptoJS from 'crypto-js';
 import EnvConfig from 'react-native-config';
 
+import { translate } from '../Locales';
+
 import { createProduct } from './Product';
 import { GetAllProducts } from './Products';
 import { shareFile } from './Share';
@@ -43,7 +45,7 @@ export async function ExportBackupFile(): Promise<void> {
         await shareFile({
             fileAsString: encryptedProducts,
             fileExtesion: 'cvbf',
-            fileName: 'controledevalidade',
+            fileName: translate('Function_Export_FileName'),
         });
     } catch (err) {
         throw new Error(err);
@@ -63,7 +65,7 @@ export async function ImportBackupFile(): Promise<void> {
 
         // caso a extensão do arquivo não for cvbf lança um erro e sai da função
         if (extension !== 'cvbf') {
-            throw new Error('Extensão invalida');
+            throw new Error(translate('Function_Import_Error_InvalidExtesion'));
         }
 
         // pega o arquivo temporario gerado pelo filePicker e faz a leitura dele
