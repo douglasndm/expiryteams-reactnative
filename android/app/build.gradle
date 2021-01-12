@@ -143,8 +143,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 83
-        versionName "1.7.0"
+        versionCode 84
+        versionName "1.7.1"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -221,6 +221,9 @@ android {
         }
     }
 }
+
+// Upload Crashlytics NDK symbols
+tasks.whenTaskAdded { task -> if (task.name.startsWith('assemble') && task.name.endsWith("Release")) task.finalizedBy "uploadCrashlyticsSymbolFile" + task.name.substring('assemble'.length()) }
 
 repositories {
     jcenter()
