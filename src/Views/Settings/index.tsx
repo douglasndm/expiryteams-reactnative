@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { View, ScrollView, Linking } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -12,14 +12,12 @@ import NotificationError from '../../Components/Notification';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
+import Pro from './Components/Pro';
 
 import {
     setHowManyDaysToBeNextExp,
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
-import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
-import { exportToExcel } from '../../Functions/Excel';
-import { isSubscriptionActive } from '../../Functions/ProMode';
 import { isUserSignedIn, signOutGoogle } from '../../Functions/Auth/Google';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
@@ -35,18 +33,12 @@ import {
     SettingContainer,
     SettingDescription,
     InputSetting,
-    PremiumButtonsContainer,
-    ButtonPremium,
-    ButtonPremiumText,
-    ButtonCancel,
-    ButtonCancelText,
 } from './styles';
 
 const Settings: React.FC = () => {
     const [error, setError] = useState<string>('');
 
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
-    const [userIsPremium, setUserIsPremium] = useState(false);
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const { userPreferences, setUserPreferences } = useContext(
@@ -55,7 +47,7 @@ const Settings: React.FC = () => {
     const [userSigned, setUserSigned] = useState<boolean>(false);
     const [isOnLogout, setIsOnLogout] = useState<boolean>(false);
 
-    const { navigate, goBack, reset } = useNavigation();
+    const { goBack } = useNavigation();
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
@@ -68,18 +60,6 @@ const Settings: React.FC = () => {
         },
         [setUserPreferences, userPreferences]
     );
-
-    const handleCancel = useCallback(async () => {
-        await Linking.openURL(
-            'https://play.google.com/store/account/subscriptions?sku=controledevalidade_premium&package=com.controledevalidade'
-        );
-
-        if (!(await isSubscriptionActive())) {
-            reset({
-                routes: [{ name: 'Home' }],
-            });
-        }
-    }, [reset]);
 
     const handleMultiStoresEnableSwitch = useCallback(async () => {
         await setEnableMultipleStoresMode(!multipleStoresState);
@@ -97,7 +77,6 @@ const Settings: React.FC = () => {
 
     useEffect(() => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
-        setUserIsPremium(userPreferences.isUserPremium);
         setMultipleStoresState(userPreferences.multiplesStores);
 
         loadData();
@@ -124,34 +103,6 @@ const Settings: React.FC = () => {
         setSettingDaysToBeNext,
         userPreferences.howManyDaysToBeNextToExpire,
     ]);
-
-    const navigateToPremiumView = useCallback(() => {
-        navigate('PremiumSubscription');
-    }, [navigate]);
-
-    const handleImportBackup = useCallback(async () => {
-        try {
-            await ImportBackupFile();
-        } catch (err) {
-            setError(err.message);
-        }
-    }, []);
-
-    const handleExportBackup = useCallback(async () => {
-        try {
-            await ExportBackupFile();
-        } catch (err) {
-            setError(err.message);
-        }
-    }, []);
-
-    const handleExportToExcel = useCallback(async () => {
-        try {
-            await exportToExcel();
-        } catch (err) {
-            setError(err.message);
-        }
-    }, []);
 
     const handleLogout = useCallback(async () => {
         try {
@@ -237,74 +188,7 @@ const Settings: React.FC = () => {
                             <Appearance />
                         </Category>
 
-                        <Category>
-                            <CategoryTitle>
-                                {translate('View_Settings_CategoryName_Pro')}
-                            </CategoryTitle>
-
-                            {!userIsPremium && (
-                                <GenericButton
-                                    text={translate(
-                                        'View_Settings_Button_BecobeProToUnlockNewFeatures'
-                                    )}
-                                    onPress={navigateToPremiumView}
-                                />
-                            )}
-
-                            <CategoryOptions notPremium={!userIsPremium}>
-                                <View>
-                                    <SettingDescription>
-                                        {translate(
-                                            'View_Settings_SettingName_ExportAndInmport'
-                                        )}
-                                    </SettingDescription>
-
-                                    <PremiumButtonsContainer>
-                                        <ButtonPremium
-                                            disabled={!userIsPremium}
-                                            onPress={handleImportBackup}
-                                        >
-                                            <ButtonPremiumText>
-                                                {translate(
-                                                    'View_Settings_Button_ImportFile'
-                                                )}
-                                            </ButtonPremiumText>
-                                        </ButtonPremium>
-                                        <ButtonPremium
-                                            disabled={!userIsPremium}
-                                            onPress={handleExportBackup}
-                                        >
-                                            <ButtonPremiumText>
-                                                {translate(
-                                                    'View_Settings_Button_ExportFile'
-                                                )}
-                                            </ButtonPremiumText>
-                                        </ButtonPremium>
-
-                                        <ButtonPremium
-                                            disabled={!userIsPremium}
-                                            onPress={handleExportToExcel}
-                                        >
-                                            <ButtonPremiumText>
-                                                {translate(
-                                                    'View_Settings_Button_ExportToExcel'
-                                                )}
-                                            </ButtonPremiumText>
-                                        </ButtonPremium>
-                                    </PremiumButtonsContainer>
-                                </View>
-                            </CategoryOptions>
-
-                            {userIsPremium && (
-                                <ButtonCancel onPress={handleCancel}>
-                                    <ButtonCancelText>
-                                        {translate(
-                                            'View_Settings_Button_CancelSubscribe'
-                                        )}
-                                    </ButtonCancelText>
-                                </ButtonCancel>
-                            )}
-                        </Category>
+                        <Pro />
 
                         {userSigned && (
                             <Category>
