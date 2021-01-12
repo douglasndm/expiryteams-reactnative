@@ -1,13 +1,17 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
+import { Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 import { addDays, isPast } from 'date-fns';
+
+import { translate } from '../../Locales';
 
 import ProductCard from '../ProductCard';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
-import { Container, AdView } from './styles';
+import { Container, AdView, ButtonPro, ButtonProText } from './styles';
 
 interface RequestProps {
     product: IProduct;
@@ -21,6 +25,7 @@ const ProductItem: React.FC<RequestProps> = ({
     disableAds,
 }: RequestProps) => {
     const { userPreferences } = useContext(PreferencesContext);
+    const { navigate } = useNavigation();
 
     const [adFailed, setAdFailed] = useState(false);
 
@@ -37,8 +42,12 @@ const ProductItem: React.FC<RequestProps> = ({
     }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
 
     const adUnitId = useMemo(() => {
-        return __DEV__
-            ? TestIds.BANNER
+        if (__DEV__) {
+            return TestIds.BANNER;
+        }
+
+        return Platform.OS === 'ios'
+            ? EnvConfig.IOS_ADUNIT_BANNER_BETWEEN_PRODUCTS_LIST
             : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
     }, []);
 
@@ -51,6 +60,14 @@ const ProductItem: React.FC<RequestProps> = ({
         return false;
     }, [disableAds, userPreferences.isUserPremium, index, adFailed]);
 
+    const handleNavigateToProPage = useCallback(() => {
+        navigate('PremiumSubscription');
+    }, [navigate]);
+
+    const choosenAdText = useMemo(() => {
+        return Math.floor(Math.random() * 3) + 1;
+    }, []);
+
     return (
         <Container>
             {showAd && (
@@ -60,6 +77,12 @@ const ProductItem: React.FC<RequestProps> = ({
                         size={BannerAdSize.BANNER}
                         onAdFailedToLoad={() => setAdFailed(true)}
                     />
+
+                    <ButtonPro onPress={handleNavigateToProPage}>
+                        <ButtonProText>
+                            {translate(`ProBanner_Text${choosenAdText}`)}
+                        </ButtonProText>
+                    </ButtonPro>
                 </AdView>
             )}
 
