@@ -30,11 +30,15 @@ import {
     ButtonPremiumText,
     ButtonCancel,
     ButtonCancelText,
+    Loading,
 } from './styles';
 
 const Pro: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
+    const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
+    const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
+    const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
     const [error, setError] = useState('');
 
     const { navigate, reset } = useNavigation();
@@ -57,25 +61,35 @@ const Pro: React.FC = () => {
 
     const handleImportBackup = useCallback(async () => {
         try {
+            setIsImportLoading(true);
+
             await ImportBackupFile();
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsImportLoading(false);
         }
     }, []);
 
     const handleExportBackup = useCallback(async () => {
         try {
+            setIsExportLoading(true);
             await ExportBackupFile();
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsExportLoading(false);
         }
     }, []);
 
     const handleExportToExcel = useCallback(async () => {
         try {
+            setIsExcelLoading(true);
             await exportToExcel();
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsExcelLoading(false);
         }
     }, []);
 
@@ -112,35 +126,56 @@ const Pro: React.FC = () => {
 
                             <PremiumButtonsContainer>
                                 <ButtonPremium
-                                    disabled={!userPreferences.isUserPremium}
+                                    enabled={
+                                        userPreferences.isUserPremium &&
+                                        !isImportLoading
+                                    }
                                     onPress={handleImportBackup}
                                 >
-                                    <ButtonPremiumText>
-                                        {translate(
-                                            'View_Settings_Button_ImportFile'
-                                        )}
-                                    </ButtonPremiumText>
+                                    {isImportLoading ? (
+                                        <Loading />
+                                    ) : (
+                                        <ButtonPremiumText>
+                                            {translate(
+                                                'View_Settings_Button_ImportFile'
+                                            )}
+                                        </ButtonPremiumText>
+                                    )}
                                 </ButtonPremium>
                                 <ButtonPremium
-                                    disabled={!userPreferences.isUserPremium}
+                                    enabled={
+                                        userPreferences.isUserPremium &&
+                                        !isExportLoading
+                                    }
                                     onPress={handleExportBackup}
                                 >
-                                    <ButtonPremiumText>
-                                        {translate(
-                                            'View_Settings_Button_ExportFile'
-                                        )}
-                                    </ButtonPremiumText>
+                                    {isExportLoading ? (
+                                        <Loading />
+                                    ) : (
+                                        <ButtonPremiumText>
+                                            {translate(
+                                                'View_Settings_Button_ExportFile'
+                                            )}
+                                        </ButtonPremiumText>
+                                    )}
                                 </ButtonPremium>
 
                                 <ButtonPremium
-                                    disabled={!userPreferences.isUserPremium}
+                                    enabled={
+                                        userPreferences.isUserPremium &&
+                                        !isExcelLoading
+                                    }
                                     onPress={handleExportToExcel}
                                 >
-                                    <ButtonPremiumText>
-                                        {translate(
-                                            'View_Settings_Button_ExportToExcel'
-                                        )}
-                                    </ButtonPremiumText>
+                                    {isExcelLoading ? (
+                                        <Loading />
+                                    ) : (
+                                        <ButtonPremiumText>
+                                            {translate(
+                                                'View_Settings_Button_ExportToExcel'
+                                            )}
+                                        </ButtonPremiumText>
+                                    )}
                                 </ButtonPremium>
                             </PremiumButtonsContainer>
                         </View>

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View``;
 
@@ -7,7 +8,7 @@ export const PremiumButtonsContainer = styled.View`
     margin-top: 10px;
 `;
 
-export const ButtonPremium = styled.TouchableOpacity`
+export const ButtonPremium = styled(RectButton)`
     margin-bottom: 10px;
     background-color: ${(props) => props.theme.colors.accent};
     padding: 25px 15px;
@@ -18,6 +19,11 @@ export const ButtonPremiumText = styled.Text`
     font-size: 14px;
     color: #fff;
 `;
+
+export const Loading = styled.ActivityIndicator.attrs(() => ({
+    size: 48,
+    color: '#fff',
+}))``;
 
 export const ButtonCancel = styled.TouchableOpacity`
     margin-top: 15px;
