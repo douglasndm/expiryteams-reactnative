@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
 import CryptoJS from 'crypto-js';
@@ -51,7 +52,11 @@ export async function ExportBackupFile(): Promise<void> {
 
 export async function ImportBackupFile(): Promise<void> {
     try {
-        const filePicked = await DocumentPicker.pick();
+        const options = {
+            type: Platform.OS === 'ios' ? 'public.item' : '*/*',
+        };
+
+        const filePicked = await DocumentPicker.pick(options);
 
         // Separa o nome do arquivo da extensão para fazer a validação da extensão do arquivo
         const [, extension] = filePicked.name.split('.');
@@ -80,6 +85,6 @@ export async function ImportBackupFile(): Promise<void> {
             await createProduct({ product: p, ignoreDuplicate: true });
         }
     } catch (err) {
-        console.log(err.message);
+        throw new Error(err);
     }
 }
