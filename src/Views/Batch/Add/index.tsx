@@ -230,7 +230,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
                         <NumericInputField
                             type="currency"
-                            locale="pt-BR"
+                            locale={locale}
                             currency={currency}
                             value={price}
                             onUpdate={(value: number) => setPrice(value)}
