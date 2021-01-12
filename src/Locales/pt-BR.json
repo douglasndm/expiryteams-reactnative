@@ -232,13 +232,23 @@
     "Function_StoreGroup_NoStore": "Sem loja",
 
     "Function_Share_SaveFileTitle": "Salvar arquivo",
-    "Functions_Share_SaveFileDescription": "Escolha um lugar para salvar o arquivo",
+    "Function_Share_SaveFileDescription": "Escolha um lugar para salvar o arquivo",
 
     "Function_Notification_ItOnlyHasProductsNextToExpTitle": "Você tem produtos próximo ao vencimento.",
     "Function_Notification_ItOnlyHasExpiredProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS!",
     "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS E PRÓXIMOS AO VENCIMENTO!",
     "Function_Notification_ItOnlyHasProductsNextToExpMessage": "Você tem {NUMBER} lotes próximo ao vencimento.",
     "Function_Notification_ItOnlyHasExpiredProductsMessage": "VOCÊ TEM {NUMBER} LOTES NÃO TRATADOS VENCIDOS.",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "VOCÊ TEM {EXPIREDNUMBER} LOTES NÃO TRATADOS VENCIDOS E {NEXTBATCHES} PRÓXIMOS AO VENCIMENTO."
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "VOCÊ TEM {EXPIREDNUMBER} LOTES NÃO TRATADOS VENCIDOS E {NEXTBATCHES} PRÓXIMOS AO VENCIMENTO.",
+
+    "Function_Excel_ColumnName_ProductName": "Produto",
+    "Function_Excel_ColumnName_ProductCode": "Código",
+    "Function_Excel_ColumnName_ProductStore": "Loja",
+    "Function_Excel_ColumnName_BatchName": "Lote",
+    "Function_Excel_ColumnName_BatchPrice": "Preço",
+    "Function_Excel_ColumnName_BatchAmount": "Quantidade",
+    "Function_Excel_ColumnName_BatchExpDate": "Vencimento em",
+    "Function_Excel_Workbook_Name": "Controle de validade",
+    "Function_Excel_filename": "controledevalidade"
 }
 

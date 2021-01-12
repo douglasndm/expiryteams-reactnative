@@ -1,5 +1,7 @@
 import XLSX from 'xlsx';
 
+import { translate } from '../Locales';
+
 import { shareFile } from './Share';
 import { GetAllProducts } from './Products';
 
@@ -23,15 +25,24 @@ export async function exportToExcel(): Promise<void> {
 
         products.forEach((product) => {
             product.lotes.forEach((batch) => {
-                excelRows.push({
-                    produto: product.name,
-                    codigo: product.code || '',
-                    loja: product.store || '',
-                    lote: batch.lote,
-                    preço: batch.price || 0,
-                    quantidade: batch.amount || 0,
-                    vencimento: batch.exp_date,
-                });
+                const row: any = {};
+
+                row[translate('Function_Excel_ColumnName_ProductName')] =
+                    product.name;
+                row[translate('Function_Excel_ColumnName_ProductCode')] =
+                    product.code || '';
+                row[translate('Function_Excel_ColumnName_ProductStore')] =
+                    product.store || '';
+                row[translate('Function_Excel_ColumnName_BatchName')] =
+                    batch.lote;
+                row[translate('Function_Excel_ColumnName_BatchPrice')] =
+                    batch.price || 0;
+                row[translate('Function_Excel_ColumnName_BatchAmount')] =
+                    batch.amount || 0;
+                row[translate('Function_Excel_ColumnName_BatchExpDate')] =
+                    batch.exp_date;
+
+                excelRows.push(row);
             });
         });
 
@@ -40,7 +51,7 @@ export async function exportToExcel(): Promise<void> {
         XLSX.utils.book_append_sheet(
             workbook,
             worksheet,
-            'Controle de validade'
+            translate('Function_Excel_Workbook_Name')
         );
 
         const wbout = XLSX.write(workbook, {
@@ -50,7 +61,7 @@ export async function exportToExcel(): Promise<void> {
 
         await shareFile({
             fileAsString: wbout,
-            fileName: 'controledevalidade',
+            fileName: translate('Function_Excel_filename'),
             fileExtesion: 'xlsx',
             encoding: 'base64',
         });

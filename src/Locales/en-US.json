@@ -239,5 +239,15 @@
     "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "YOU HAVE EXPIRED PRODUCTS AND PRODUCTS CLOSE TO EXPIRE!",
     "Function_Notification_ItOnlyHasProductsNextToExpMessage": "You have {NUMBER} batches close to expire.",
     "Function_Notification_ItOnlyHasExpiredProductsMessage": "YOU HAVE {NUMBER} NO TREATED EXPIRED BATCHES.",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "YOU HAVE {EXPIREDNUMBER} NO TREATED EXPIRED BATCHES AND {NEXTBATCHES} CLOSE TO EXPIRE BATCHES."
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "YOU HAVE {EXPIREDNUMBER} NO TREATED EXPIRED BATCHES AND {NEXTBATCHES} CLOSE TO EXPIRE BATCHES.",
+
+    "Function_Excel_ColumnName_ProductName": "Product",
+    "Function_Excel_ColumnName_ProductCode": "Code",
+    "Function_Excel_ColumnName_ProductStore": "Store",
+    "Function_Excel_ColumnName_BatchName": "Batch",
+    "Function_Excel_ColumnName_BatchPrice": "Price",
+    "Function_Excel_ColumnName_BatchAmount": "Amount",
+    "Function_Excel_ColumnName_BatchExpDate": "Expire in",
+    "Function_Excel_Workbook_Name": "Expiration checker",
+    "Function_Excel_filename": "expirationcheck"
 }
