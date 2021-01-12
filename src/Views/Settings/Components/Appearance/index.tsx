@@ -8,7 +8,7 @@ import { getActualAppTheme } from '../../../../Themes';
 
 import PreferencesContext from '../../../../Contexts/PreferencesContext';
 
-import { CategoryOptions, CategoryTitle } from '../../styles';
+import { Category, CategoryOptions, CategoryTitle } from '../../styles';
 import { Text, PickerContainer, Picker } from './styles';
 
 const Appearance: React.FC = () => {
@@ -34,88 +34,91 @@ const Appearance: React.FC = () => {
     );
 
     return (
-        <CategoryOptions>
+        <Category>
             <CategoryTitle>
                 {translate('View_Settings_CategoryName_Appearance')}
             </CategoryTitle>
 
-            <PickerContainer>
+            <CategoryOptions>
                 <Text>{translate('View_Settings_SettingName_AppTheme')}</Text>
-
-                <Picker
-                    mode="dropdown"
-                    selectedValue={selectedTheme}
-                    onValueChange={(value) => {
-                        handleThemeChange(String(value));
-                    }}
-                >
-                    <Picker.Item
-                        label={translate(
-                            'View_Settings_Appearance_Theme_System'
-                        )}
-                        value="system"
-                    />
-                    <Picker.Item
-                        label={translate(
-                            'View_Settings_Appearance_Theme_Light'
-                        )}
-                        value="light"
-                    />
-                    <Picker.Item
-                        label={translate('View_Settings_Appearance_Theme_Dark')}
-                        value="dark"
-                    />
-                    {userPreferences.isUserPremium || __DEV__ ? (
+                <PickerContainer>
+                    <Picker
+                        mode="dropdown"
+                        selectedValue={selectedTheme}
+                        onValueChange={(value) => {
+                            handleThemeChange(String(value));
+                        }}
+                    >
                         <Picker.Item
                             label={translate(
-                                'View_Settings_Appearance_Theme_UltraViolet'
+                                'View_Settings_Appearance_Theme_System'
                             )}
-                            value="ultraviolet"
+                            value="system"
                         />
-                    ) : null}
-
-                    {
-                        // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
-                        userPreferences.isUserPremium || __DEV__ ? (
+                        <Picker.Item
+                            label={translate(
+                                'View_Settings_Appearance_Theme_Light'
+                            )}
+                            value="light"
+                        />
+                        <Picker.Item
+                            label={translate(
+                                'View_Settings_Appearance_Theme_Dark'
+                            )}
+                            value="dark"
+                        />
+                        {userPreferences.isUserPremium || __DEV__ ? (
                             <Picker.Item
                                 label={translate(
-                                    'View_Settings_Appearance_Theme_DarkGreen'
+                                    'View_Settings_Appearance_Theme_UltraViolet'
                                 )}
-                                value="darkgreen"
+                                value="ultraviolet"
                             />
-                        ) : null
-                    }
+                        ) : null}
 
-                    {userPreferences.isUserPremium || __DEV__ ? (
-                        <Picker.Item
-                            label={translate(
-                                'View_Settings_Appearance_Theme_HappyPink'
-                            )}
-                            value="happypink"
-                        />
-                    ) : null}
+                        {
+                            // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
+                            userPreferences.isUserPremium || __DEV__ ? (
+                                <Picker.Item
+                                    label={translate(
+                                        'View_Settings_Appearance_Theme_DarkGreen'
+                                    )}
+                                    value="darkgreen"
+                                />
+                            ) : null
+                        }
 
-                    {userPreferences.isUserPremium || __DEV__ ? (
-                        <Picker.Item
-                            label={translate(
-                                'View_Settings_Appearance_Theme_OceanBlue'
-                            )}
-                            value="oceanblue"
-                        />
-                    ) : null}
-
-                    {userPreferences.isUserPremium ||
-                        (__DEV__ && (
+                        {userPreferences.isUserPremium || __DEV__ ? (
                             <Picker.Item
                                 label={translate(
-                                    'View_Settings_Appearance_Theme_Relax'
+                                    'View_Settings_Appearance_Theme_HappyPink'
                                 )}
-                                value="relax"
+                                value="happypink"
                             />
-                        ))}
-                </Picker>
-            </PickerContainer>
-        </CategoryOptions>
+                        ) : null}
+
+                        {userPreferences.isUserPremium || __DEV__ ? (
+                            <Picker.Item
+                                label={translate(
+                                    'View_Settings_Appearance_Theme_OceanBlue'
+                                )}
+                                value="oceanblue"
+                            />
+                        ) : null}
+
+                        {userPreferences.isUserPremium ||
+                            (__DEV__ && (
+                                <Picker.Item
+                                    label={translate(
+                                        'View_Settings_Appearance_Theme_Relax'
+                                    )}
+                                    value="relax"
+                                />
+                            ))}
+                    </Picker>
+                </PickerContainer>
+            </CategoryOptions>
+        </Category>
     );
 };
 

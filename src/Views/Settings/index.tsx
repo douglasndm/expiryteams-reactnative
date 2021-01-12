@@ -184,9 +184,9 @@ const Settings: React.FC = () => {
                                     </SettingContainer>
                                 )}
                             </CategoryOptions>
-
-                            <Appearance />
                         </Category>
+
+                        <Appearance />
 
                         <Pro />
 
