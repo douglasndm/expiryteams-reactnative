@@ -9,10 +9,10 @@ import {
     setNotificationCadency,
 } from '../../../../Functions/Settings';
 
-import { Dropdown } from '../../styles';
 import {
     SettingNotificationContainer,
     SettingNotificationDescription,
+    Picker,
 } from './styles';
 
 interface INotificationCadencyItem {
@@ -22,62 +22,67 @@ interface INotificationCadencyItem {
 
 const Notifications: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
+    const [selectedItem, setSelectedItem] = useState<string>(
+        () => userPreferences.notificationCadency
+    );
 
-    const [data, setData] = useState<Array<INotificationCadencyItem>>([
-        // {
-        //     label: translate(
-        //         'View_Settings_Notifications_Cadency_Hour'
-        //     ),
-        //     value: NotificationCadency.Hour,
-        // },
-        {
+    const data = useMemo(() => {
+        const availableCadency: Array<INotificationCadencyItem> = [];
+        // if (userPreferences.isUserPremium) {
+        //     availableCadency.push({
+        //         label: translate('View_Settings_Notifications_Cadency_Hour'),
+        //         value: NotificationCadency.Hour,
+        //     });
+        // }
+
+        availableCadency.push({
             label: translate('View_Settings_Notifications_Cadency_Day'),
             value: NotificationCadency.Day,
-        },
-        // {
-        //     label: translate(
-        //         'View_Settings_Notifications_Cadency_Week'
-        //     ),
-        //     value: NotificationCadency.Week,
-        // },
-        // {
-        //     label: translate(
-        //         'View_Settings_Notifications_Cadency_Month'
-        //     ),
-        //     value: NotificationCadency.Month,
-        // },
-        {
+        });
+        availableCadency.push({
             label: translate('View_Settings_Notifications_Cadency_Never'),
             value: NotificationCadency.Never,
-        },
-    ]);
+        });
 
-    const onItemChange = useCallback(async ({ value }) => {
-        await setNotificationCadency(value);
+        // if (userPreferences.isUserPremium) {
+        //     availableCadency.push({
+        //         label: translate('View_Settings_Notifications_Cadency_Week'),
+        //         value: NotificationCadency.Week,
+        //     });
+        //     availableCadency.push({
+        //         label: translate('View_Settings_Notifications_Cadency_Month'),
+        //         value: NotificationCadency.Month,
+        //     });
+        // }
+
+        return availableCadency;
     }, []);
 
-    const cadency = useMemo(() => {
-        const find = data.find(
-            (d) => d.value === userPreferences.notificationCadency
-        );
+    const onItemChange = useCallback(async (value) => {
+        await setNotificationCadency(value);
 
-        if (find) {
-            return userPreferences.notificationCadency;
-        }
-
-        return NotificationCadency.Day;
-    }, [userPreferences.notificationCadency, data]);
+        setSelectedItem(value);
+    }, []);
 
     return (
         <SettingNotificationContainer>
             <SettingNotificationDescription>
                 {translate('View_Settings_Notifications_Title')}
             </SettingNotificationDescription>
-            <Dropdown
-                items={data}
-                defaultValue={cadency}
-                onChangeItem={onItemChange}
-            />
+
+            <Picker
+                selectedValue={selectedItem}
+                onValueChange={onItemChange}
+                mode="dropdown"
+            >
+                {data.map((item) => (
+                    <Picker.Item
+                        key={item.value}
+                        label={item.label}
+                        value={item.value}
+                    />
+                ))}
+            </Picker>
         </SettingNotificationContainer>
     );
 };
