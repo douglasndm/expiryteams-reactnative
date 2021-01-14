@@ -169,7 +169,13 @@ const AddProduct: React.FC = () => {
                     index: 1,
                     routes: [
                         { name: 'Home' },
-                        { name: 'Success', params: { type: 'create_product' } },
+                        {
+                            name: 'Success',
+                            params: {
+                                type: 'create_product',
+                                productId: productCreatedId,
+                            },
+                        },
                     ],
                 });
             }

@@ -135,12 +135,14 @@ const EditBatch: React.FC = () => {
                 status: tratado ? 'Tratado' : 'Não tratado',
             });
 
-            Alert.alert(translate('View_EditBatch_Success_BatchUpdated'));
             reset({
                 index: 1,
                 routes: [
                     { name: 'Home' },
-                    { name: 'ProductDetails', params: { id: productId } },
+                    {
+                        name: 'Success',
+                        params: { productId, type: 'edit_batch' },
+                    },
                 ],
             });
         } catch (err) {

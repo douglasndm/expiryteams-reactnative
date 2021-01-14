@@ -107,7 +107,6 @@
 
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",
-    "View_EditBatch_Success_BatchUpdated": "Lote atualizado",
     "View_EditBatch_PageTitle": "Atualizar lote",
     "View_EditBatch_Button_DeleteBatch": "Apagar",
     "View_EditBatch_InputPlacehoder_Batch": "Lote",
@@ -225,7 +224,9 @@
     "View_Success_ProductUpdatedDescription": "O produto foi atualizado.",
     "View_Success_BatchDeletedDescription": "O lote foi deletado.",
     "View_Success_ProductDeletedDescription": "O produto foi deletado.",
-    "View_Success_Button_GoToHome": "Voltar para o início",
+
+    "View_Success_Button_GoToHome": "Ir para o início",
+    "View_Success_Button_NavigateToProduct": "Ir para o produto",
 
     "View_PhotoView_PageTitle": "Visualizar foto",
     "View_PhotoView_Button_Back": "Voltar",

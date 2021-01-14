@@ -119,7 +119,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 routes: [
                     { name: 'Home' },
                     { name: 'ProductDetails', params: { id: productId } },
-                    { name: 'Success', params: { type: 'create_batch' } },
+                    {
+                        name: 'Success',
+                        params: { type: 'create_batch', productId },
+                    },
                 ],
             });
         } catch (err) {

@@ -107,7 +107,6 @@
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
     "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
-    "View_EditBatch_Success_BatchUpdated": "Batch updated",
     "View_EditBatch_PageTitle": "Update batch",
     "View_EditBatch_Button_DeleteBatch": "Delete",
     "View_EditBatch_InputPlacehoder_Batch": "Batch",
@@ -225,7 +224,9 @@
     "View_Success_ProductUpdatedDescription": "The product has been updated",
     "View_Success_BatchDeletedDescription": "Batch was deleted",
     "View_Success_ProductDeletedDescription": "Product was deleted",
+
     "View_Success_Button_GoToHome": "Go home",
+    "View_Success_Button_NavigateToProduct": "Go to product",
 
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",

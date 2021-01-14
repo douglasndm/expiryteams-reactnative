@@ -26,6 +26,7 @@ interface Props {
         | 'edit_product'
         | 'delete_batch'
         | 'delete_product';
+    productId?: number;
 }
 
 const Success: React.FC = () => {
@@ -61,11 +62,33 @@ const Success: React.FC = () => {
         return BannerAdSize.MEDIUM_RECTANGLE;
     }, []);
 
-    const handleNavigateToHome = useCallback(() => {
+    const handleNavigate = useCallback(() => {
+        if (routeParams.productId) {
+            if (
+                type === 'create_batch' ||
+                type === 'create_product' ||
+                type === 'edit_batch' ||
+                type === 'edit_product'
+            ) {
+                reset({
+                    routes: [
+                        { name: 'Home' },
+                        {
+                            name: 'ProductDetails',
+                            params: {
+                                id: routeParams.productId,
+                            },
+                        },
+                    ],
+                });
+            }
+            return;
+        }
+
         reset({
             routes: [{ name: 'Home' }],
         });
-    }, [reset]);
+    }, [reset, routeParams.productId, type]);
 
     return (
         <Container>
@@ -129,10 +152,23 @@ const Success: React.FC = () => {
                     </Description>
                 )}
 
-                <Button
-                    text={translate('View_Success_Button_GoToHome')}
-                    onPress={handleNavigateToHome}
-                />
+                {(type === 'create_batch' ||
+                    type === 'create_product' ||
+                    type === 'edit_batch' ||
+                    type === 'edit_product') &&
+                !!routeParams.productId ? (
+                    <Button
+                        text={translate(
+                            'View_Success_Button_NavigateToProduct'
+                        )}
+                        onPress={handleNavigate}
+                    />
+                ) : (
+                    <Button
+                        text={translate('View_Success_Button_GoToHome')}
+                        onPress={handleNavigate}
+                    />
+                )}
 
                 {!userPreferences.isUserPremium && (
                     <BannerAd size={bannerSize} unitId={adUnitId} />

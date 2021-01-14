@@ -121,7 +121,10 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 index: 1,
                 routes: [
                     { name: 'Home' },
-                    { name: 'ProductDetails', params: { id: productId } },
+                    {
+                        name: 'Success',
+                        params: { productId, type: 'edit_product' },
+                    },
                 ],
             });
         } catch (err) {
