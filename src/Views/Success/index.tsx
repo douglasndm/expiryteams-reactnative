@@ -57,6 +57,10 @@ const Success: React.FC = () => {
         return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
     }, []);
 
+    const bannerSize = useMemo(() => {
+        return BannerAdSize.MEDIUM_RECTANGLE;
+    }, []);
+
     const handleNavigateToHome = useCallback(() => {
         reset({
             routes: [{ name: 'Home' }],
@@ -131,7 +135,7 @@ const Success: React.FC = () => {
                 />
 
                 {!userPreferences.isUserPremium && (
-                    <BannerAd size={BannerAdSize.BANNER} unitId={adUnitId} />
+                    <BannerAd size={bannerSize} unitId={adUnitId} />
                 )}
             </SuccessMessageContainer>
         </Container>

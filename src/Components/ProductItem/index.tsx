@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
@@ -51,6 +51,14 @@ const ProductItem: React.FC<RequestProps> = ({
             : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
     }, []);
 
+    const bannerSize = useMemo(() => {
+        if (PixelRatio.get() >= 3) {
+            return BannerAdSize.ADAPTIVE_BANNER;
+        }
+
+        return BannerAdSize.LARGE_BANNER;
+    }, []);
+
     const showAd = useMemo(() => {
         if (disableAds) return false;
         if (userPreferences.isUserPremium) return false;
@@ -74,7 +82,7 @@ const ProductItem: React.FC<RequestProps> = ({
                 <AdView>
                     <BannerAd
                         unitId={adUnitId}
-                        size={BannerAdSize.BANNER}
+                        size={bannerSize}
                         onAdFailedToLoad={() => setAdFailed(true)}
                     />
 
