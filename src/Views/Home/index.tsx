@@ -14,6 +14,7 @@ import FABProducts from '../../Components/FABProducts';
 import Notification from '../../Components/Notification';
 import ListProducts from '../../Components/ListProducts';
 import BarCodeReader from '../../Components/BarCodeReader';
+import AskReview from '../../Components/AskReview';
 
 import {
     Container,
@@ -141,6 +142,8 @@ const Home: React.FC = () => {
                         />
                     )}
                     <FABProducts />
+
+                    <AskReview />
                 </Container>
             )}
         </>

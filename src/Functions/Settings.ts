@@ -9,7 +9,8 @@ interface ISetSettingProps {
         | 'EnableNotifications'
         | 'EnableMultipleStores'
         | 'EnableProVersion'
-        | 'NotificationCadency';
+        | 'NotificationCadency'
+        | 'HowManyTimesAppWasOpen';
     value: string;
 }
 
@@ -21,7 +22,10 @@ export enum NotificationCadency {
     Never = 'Never',
 }
 
-async function setSetting({ type, value }: ISetSettingProps): Promise<void> {
+export async function setSetting({
+    type,
+    value,
+}: ISetSettingProps): Promise<void> {
     try {
         await AsyncStorage.setItem(type, value);
     } catch (err) {
@@ -167,4 +171,14 @@ export async function getEnableMultipleStoresMode(): Promise<boolean> {
     }
 
     return false;
+}
+
+export async function getHowManyTimesAppWasOpen(): Promise<number | null> {
+    const setting = await getSetting({ type: 'HowManyTimesAppWasOpen' });
+
+    if (setting) {
+        return Number(setting);
+    }
+
+    return null;
 }

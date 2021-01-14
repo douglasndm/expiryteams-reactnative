@@ -381,6 +381,8 @@ PODS:
     - React
   - react-native-document-picker (3.5.4):
     - React
+  - react-native-in-app-review (2.1.7):
+    - React
   - react-native-safe-area-context (3.1.7):
     - React
   - React-RCTActionSheet (0.63.4):
@@ -555,6 +557,7 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -682,6 +685,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-in-app-review:
+    :path: "../node_modules/react-native-in-app-review"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
@@ -813,6 +818,7 @@ SPEC CHECKSUMS:
   react-native-config: 54f023214af396f21ff0a9e0fed22620d676c8a1
   react-native-date-picker: e3793bde600b937ea6bcf66266278a8a0b0cb4d5
   react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
+  react-native-in-app-review: 2b0126af72d8c0056a8c6e8d653782817bf4d7ab
   react-native-safe-area-context: 955ecfce672683b495d9294d2f154a9ad1d9796b
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b

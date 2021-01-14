@@ -253,5 +253,10 @@
     "Function_Excel_ColumnName_BatchAmount": "Amount",
     "Function_Excel_ColumnName_BatchExpDate": "Expire in",
     "Function_Excel_Workbook_Name": "Expiration checker",
-    "Function_Excel_filename": "expirationcheck"
+    "Function_Excel_filename": "expirationcheck",
+
+    "AskUserReview_Title": "Are you enjoying the app?",
+    "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",
+    "AskUserReview_Button_No": "Not now",
+    "AskUserReview_Button_Yes": "Sure, let's do it"
 }
