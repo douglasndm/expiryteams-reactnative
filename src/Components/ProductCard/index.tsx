@@ -17,9 +17,7 @@ import {
     ProductDetails,
     ProductDetailsContainer,
     ProductName,
-    ProductCode,
-    ProductLote,
-    ProductStore,
+    ProductInfoItem,
     ProductExpDate,
     LoteDetailsContainer,
     AmountContainer,
@@ -89,24 +87,24 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             {product.name}
                         </ProductName>
                         {!!product.code && (
-                            <ProductCode expiredOrNext={expiredOrNext}>
+                            <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {translate('ProductCardComponent_ProductCode')}:
                                 {product.code}
-                            </ProductCode>
+                            </ProductInfoItem>
                         )}
 
                         {product.lotes.length > 0 && !!product.lotes[0].lote && (
-                            <ProductLote expiredOrNext={expiredOrNext}>
+                            <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {translate('ProductCardComponent_ProductBatch')}
                                 : {product.lotes[0].lote}
-                            </ProductLote>
+                            </ProductInfoItem>
                         )}
 
                         {userPreferences.multiplesStores && !!product.store && (
-                            <ProductStore expiredOrNext={expiredOrNext}>
+                            <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {translate('ProductCardComponent_ProductStore')}
                                 : {product.store}
-                            </ProductStore>
+                            </ProductInfoItem>
                         )}
                     </ProductDetailsContainer>
 

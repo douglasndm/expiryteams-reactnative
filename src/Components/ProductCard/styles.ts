@@ -54,18 +54,11 @@ export const ProductName = styled.Text<IProductInfo>`
             : props.theme.colors.text};
 `;
 
-export const ProductCode = styled.Text<IProductInfo>`
+export const ProductInfoItem = styled.Text<IProductInfo>`
     color: rgba(0, 0, 0, 0.3);
     font-size: 12px;
     margin-left: 2px;
 
-    color: ${(props) =>
-        props.expiredOrNext
-            ? props.theme.colors.productNextOrExpiredText
-            : props.theme.colors.text};
-`;
-
-export const ProductStore = styled.Text<IProductInfo>`
     color: ${(props) =>
         props.expiredOrNext
             ? props.theme.colors.productNextOrExpiredText
@@ -79,16 +72,6 @@ export const InputText = styled.TextInput`
     padding: 15px;
     background-color: #fff;
     font-size: 18px;
-`;
-
-export const ProductLote = styled.Text<IProductInfo>`
-    font-size: 12px;
-    margin-left: 2px;
-
-    color: ${(props) =>
-        props.expiredOrNext
-            ? props.theme.colors.productNextOrExpiredText
-            : props.theme.colors.text};
 `;
 
 export const ProductExpDate = styled.Text<IProductInfo>`
