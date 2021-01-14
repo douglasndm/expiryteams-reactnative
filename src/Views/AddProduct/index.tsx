@@ -1,7 +1,13 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo,
+} from 'react';
 import { ScrollView, Text, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getCountry } from 'react-native-localize';
+import { getLocales } from 'react-native-localize';
 import { useTheme } from 'styled-components';
 import { Button as ButtonPaper, Dialog } from 'react-native-paper';
 import EnvConfig from 'react-native-config';
@@ -65,19 +71,19 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 const AddProduct: React.FC = () => {
     const { goBack, navigate, reset } = useNavigation();
 
-    const [locale] = useState(() => {
-        if (getCountry() === 'US') {
+    const locale = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
             return 'en-US';
         }
         return 'pt-BR';
-    });
-    const [currency] = useState(() => {
-        if (getCountry() === 'US') {
+    }, []);
+    const currency = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
             return 'USD';
         }
 
         return 'BRL';
-    });
+    }, []);
 
     const { userPreferences } = useContext(PreferencesContext);
 

@@ -1,7 +1,13 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useContext,
+    useMemo,
+} from 'react';
 import { Alert, ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getCountry } from 'react-native-localize';
+import { getLocales } from 'react-native-localize';
 import crashlytics from '@react-native-firebase/crashlytics';
 import EnvConfig from 'react-native-config';
 import {
@@ -60,20 +66,19 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
     const { reset, goBack } = useNavigation();
 
-    const [locale] = useState(() => {
-        if (getCountry() === 'US') {
+    const locale = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
             return 'en-US';
         }
         return 'pt-BR';
-    });
-
-    const [currency] = useState(() => {
-        if (getCountry() === 'US') {
+    }, []);
+    const currency = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
             return 'USD';
         }
 
         return 'BRL';
-    });
+    }, []);
 
     const { userPreferences } = useContext(PreferencesContext);
 
