@@ -40,6 +40,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [totalPrice, setTotalPrice] = useState(0);
+
     const [languageCode] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
             return enUS;
@@ -52,6 +53,14 @@ const Product = ({ product, expired, nextToExp }: Request) => {
         }
         return 'dd/MM/yyyy';
     });
+
+    const currencyPrefix = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
+            return '$';
+        }
+
+        return 'R$';
+    }, []);
 
     const exp_date = useMemo(() => {
         if (product.lotes[0]) {
@@ -137,7 +146,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                             value={totalPrice}
                                             displayType="text"
                                             thousandSeparator
-                                            prefix="R$"
+                                            prefix={currencyPrefix}
                                             renderText={(value) => value}
                                             decimalScale={2}
                                         />

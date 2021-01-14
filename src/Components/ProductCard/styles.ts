@@ -65,15 +65,6 @@ export const ProductInfoItem = styled.Text<IProductInfo>`
             : props.theme.colors.text};
 `;
 
-export const InputText = styled.TextInput`
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    border-radius: 12px;
-    padding: 15px;
-    background-color: #fff;
-    font-size: 18px;
-`;
-
 export const ProductExpDate = styled.Text<IProductInfo>`
     font-size: 16px;
     margin-left: 2px;
