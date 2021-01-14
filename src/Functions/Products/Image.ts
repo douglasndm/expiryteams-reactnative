@@ -18,7 +18,7 @@ export async function getProductImagePath(
                 return product.photo;
             }
 
-            const filesDir = await readDir(DocumentDirectoryPath);
+            const filesDir = await readDir(`${DocumentDirectoryPath}/images`);
             const findedFile = filesDir.find(
                 (file) => file.name === product.photo
             );
@@ -52,7 +52,7 @@ export async function saveProductImage({
         if (await exists(fileName)) {
             path = fileName;
         } else {
-            const filesDir = await readDir(DocumentDirectoryPath);
+            const filesDir = await readDir(`${DocumentDirectoryPath}/images`);
 
             const findedFile = filesDir.find((file) => file.name === fileName);
 

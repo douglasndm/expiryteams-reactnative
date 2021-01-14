@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import RNFS, { unlink, copyFile } from 'react-native-fs';
+import { unlink } from 'react-native-fs';
 import { RNCamera } from 'react-native-camera';
 
 import { translate } from '../../Locales';
@@ -17,6 +17,7 @@ import {
     CameraComponent,
     ButtonsContainer,
 } from './styles';
+import { copyImageFromTempDirToDefinitiveDir } from '~/Functions/Products/Image';
 
 export interface onPhotoTakedProps {
     fileName: string;
@@ -80,21 +81,9 @@ const Camera: React.FC<CameraProps> = ({
 
     const handleSavePhoto = useCallback(async () => {
         if (image) {
-            const splited = image.split('/');
-            const generatedFilneName = splited[splited.length - 1];
+            const path = await copyImageFromTempDirToDefinitiveDir(image);
 
-            const fileName = `${Date.now()}-${generatedFilneName}`;
-
-            const newDir = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-
-            await copyFile(image, newDir);
-
-            await unlink(image);
-
-            onPhotoTaked({
-                fileName,
-                filePath: newDir,
-            });
+            onPhotoTaked(path);
         }
     }, [image, onPhotoTaked]);
 
