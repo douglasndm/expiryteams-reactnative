@@ -21,3 +21,7 @@ export const Description = styled.Text`
     color: ${(props) => props.theme.colors.subText};
     font-size: 16px;
 `;
+
+export const ButtonContainer = styled.View`
+    flex-direction: row;
+`;

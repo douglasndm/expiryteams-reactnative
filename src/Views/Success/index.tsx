@@ -16,6 +16,7 @@ import {
     SuccessMessageContainer,
     Title,
     Description,
+    ButtonContainer,
 } from './styles';
 
 interface Props {
@@ -62,7 +63,13 @@ const Success: React.FC = () => {
         return BannerAdSize.MEDIUM_RECTANGLE;
     }, []);
 
-    const handleNavigate = useCallback(() => {
+    const handleNavigateHome = useCallback(() => {
+        reset({
+            routes: [{ name: 'Home' }],
+        });
+    }, [reset]);
+
+    const handleNavigateToProduct = useCallback(() => {
         if (routeParams.productId) {
             if (
                 type === 'create_batch' ||
@@ -82,12 +89,7 @@ const Success: React.FC = () => {
                     ],
                 });
             }
-            return;
         }
-
-        reset({
-            routes: [{ name: 'Home' }],
-        });
     }, [reset, routeParams.productId, type]);
 
     return (
@@ -152,23 +154,26 @@ const Success: React.FC = () => {
                     </Description>
                 )}
 
-                {(type === 'create_batch' ||
-                    type === 'create_product' ||
-                    type === 'edit_batch' ||
-                    type === 'edit_product') &&
-                !!routeParams.productId ? (
-                    <Button
-                        text={translate(
-                            'View_Success_Button_NavigateToProduct'
-                        )}
-                        onPress={handleNavigate}
-                    />
-                ) : (
+                <ButtonContainer>
                     <Button
                         text={translate('View_Success_Button_GoToHome')}
-                        onPress={handleNavigate}
+                        onPress={handleNavigateHome}
                     />
-                )}
+
+                    {(type === 'create_batch' ||
+                        type === 'create_product' ||
+                        type === 'edit_batch' ||
+                        type === 'edit_product') &&
+                        !!routeParams.productId && (
+                            <Button
+                                text={translate(
+                                    'View_Success_Button_NavigateToProduct'
+                                )}
+                                onPress={handleNavigateToProduct}
+                                contentStyle={{ marginLeft: 10 }}
+                            />
+                        )}
+                </ButtonContainer>
 
                 {!userPreferences.isUserPremium && (
                     <BannerAd size={bannerSize} unitId={adUnitId} />
