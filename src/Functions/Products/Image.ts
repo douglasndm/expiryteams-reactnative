@@ -3,6 +3,8 @@ import {
     readDir,
     exists,
     unlink,
+    mkdir,
+    copyFile,
 } from 'react-native-fs';
 
 import { getProductById, updateProduct } from '../Product';
@@ -18,7 +20,13 @@ export async function getProductImagePath(
                 return product.photo;
             }
 
-            const filesDir = await readDir(`${DocumentDirectoryPath}/images`);
+            const imagesPath = `${DocumentDirectoryPath}/images`;
+
+            if (!(await exists(imagesPath))) {
+                await mkdir(imagesPath);
+            }
+
+            const filesDir = await readDir(imagesPath);
             const findedFile = filesDir.find(
                 (file) => file.name === product.photo
             );
@@ -85,4 +93,33 @@ export async function saveProductImage({
     } catch (err) {
         throw new Error(err.message);
     }
+}
+
+interface copyTempImageResponse {
+    fileName: string;
+    filePath: string;
+}
+
+export async function copyImageFromTempDirToDefinitiveDir(
+    tempPath: string
+): Promise<copyTempImageResponse> {
+    const splited = tempPath.split('/');
+    const generatedFilneName = splited[splited.length - 1];
+
+    const fileName = `${Date.now()}-${generatedFilneName}`;
+
+    const existsFolder = await exists(`${DocumentDirectoryPath}/images`);
+    if (!existsFolder) {
+        await mkdir(`${DocumentDirectoryPath}/images`);
+    }
+
+    const newPath = `${DocumentDirectoryPath}/images/${fileName}`;
+
+    await copyFile(tempPath, newPath);
+    await unlink(tempPath);
+
+    return {
+        fileName,
+        filePath: newPath,
+    };
 }
