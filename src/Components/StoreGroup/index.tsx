@@ -5,7 +5,7 @@ import EnvConfig from 'react-native-config';
 
 import { translate } from '../../Locales';
 
-import ProductItem from '../ProductItem';
+import ProductItem from '~/Components/ListProducts/ProductContainer';
 
 import {
     sortProductsLotesByLotesExpDate,

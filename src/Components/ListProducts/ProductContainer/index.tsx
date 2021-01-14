@@ -5,11 +5,11 @@ import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 import { addDays, isPast } from 'date-fns';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import ProductCard from '../ProductCard';
+import ProductCard from '~/Components/ListProducts/ProductCard';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { Container, AdView, ButtonPro, ButtonProText } from './styles';
 
@@ -19,7 +19,7 @@ interface RequestProps {
     disableAds?: boolean;
 }
 
-const ProductItem: React.FC<RequestProps> = ({
+const ProductContainer: React.FC<RequestProps> = ({
     product,
     index,
     disableAds,
@@ -103,4 +103,4 @@ const ProductItem: React.FC<RequestProps> = ({
     );
 };
 
-export default React.memo(ProductItem);
+export default React.memo(ProductContainer);

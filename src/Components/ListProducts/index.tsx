@@ -6,7 +6,7 @@ import { translate } from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
-import ProductItem from '../ProductItem';
+import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
 
 import {
