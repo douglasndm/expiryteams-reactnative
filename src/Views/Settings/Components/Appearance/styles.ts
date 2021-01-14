@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { Picker as ReactPicker } from '@react-native-community/picker';
+import { Picker as ReactPicker } from '@react-native-picker/picker';
 
 export const Text = styled.Text`
     color: ${(props) => props.theme.colors.text};
