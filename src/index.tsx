@@ -27,6 +27,7 @@ import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
+import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
 
 if (!__DEV__) {
@@ -95,6 +96,8 @@ const App: React.FC = () => {
                         >
                             <StatusBar />
                             <Routes />
+
+                            <AskReview />
                         </NavigationContainer>
                     </Portal>
                 </PaperProvider>
