@@ -3,13 +3,13 @@ import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
-import { exists, unlink } from 'react-native-fs';
+import { exists } from 'react-native-fs';
 import { translate } from '../../Locales';
 
 import StatusBar from '../../Components/StatusBar';
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
-import Camera from '../../Components/Camera';
+import Camera, { onPhotoTakedProps } from '../../Components/Camera';
 import BarCodeReader from '../../Components/BarCodeReader';
 import Notification from '../../Components/Notification';
 
@@ -18,6 +18,7 @@ import {
     updateProduct,
     deleteProduct,
 } from '../../Functions/Product';
+import { saveProductImage } from '~/Functions/Products/Image';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -160,22 +161,13 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     }, []);
 
     const onPhotoTaked = useCallback(
-        async (path: string) => {
-            if (await exists(path)) {
-                setPhotoPath(path);
+        async ({ fileName, filePath }: onPhotoTakedProps) => {
+            if (await exists(filePath)) {
+                setPhotoPath(filePath);
 
-                const product = await getProductById(productId);
-
-                if (product.photo) {
-                    if (await exists(product.photo)) {
-                        await unlink(product.photo);
-                    }
-                }
-
-                await updateProduct({
-                    ...product,
-                    id: productId,
-                    photo: path,
+                await saveProductImage({
+                    fileName,
+                    productId,
                 });
             }
             handleDisableCamera();

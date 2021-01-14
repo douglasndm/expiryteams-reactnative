@@ -17,6 +17,7 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
+import { exists } from 'react-native-fs';
 import { translate } from '../../Locales';
 
 import {
@@ -29,7 +30,7 @@ import { createLote } from '../../Functions/Lotes';
 import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
-import Camera from '../../Components/Camera';
+import Camera, { onPhotoTakedProps } from '../../Components/Camera';
 import BarCodeReader from '../../Components/BarCodeReader';
 import Notification from '../../Components/Notification';
 
@@ -93,6 +94,7 @@ const AddProduct: React.FC = () => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+    const [photoFileName, setPhotoFileName] = useState('');
     const [photoPath, setPhotoPath] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
@@ -139,7 +141,7 @@ const AddProduct: React.FC = () => {
                 name,
                 code,
                 store,
-                photo: photoPath,
+                photo: photoFileName,
                 lotes: [],
             };
 
@@ -250,8 +252,12 @@ const AddProduct: React.FC = () => {
     }, []);
 
     const onPhotoTaked = useCallback(
-        (path: string) => {
-            setPhotoPath(path);
+        async ({ fileName, filePath }: onPhotoTakedProps) => {
+            if (await exists(filePath)) {
+                setPhotoPath(filePath);
+                setPhotoFileName(fileName);
+            }
+
             handleDisableCamera();
         },
         [handleDisableCamera]

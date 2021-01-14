@@ -18,8 +18,12 @@ import {
     ButtonsContainer,
 } from './styles';
 
+export interface onPhotoTakedProps {
+    fileName: string;
+    filePath: string;
+}
 interface CameraProps {
-    onPhotoTaked: (photoPath: string) => void;
+    onPhotoTaked: ({ fileName, filePath }: onPhotoTakedProps) => void;
     onBackButtonPressed?: () => void;
 }
 
@@ -79,15 +83,18 @@ const Camera: React.FC<CameraProps> = ({
             const splited = image.split('/');
             const generatedFilneName = splited[splited.length - 1];
 
-            const newDir = `${
-                RNFS.DocumentDirectoryPath
-            }/${Date.now()}-${generatedFilneName}`;
+            const fileName = `${Date.now()}-${generatedFilneName}`;
+
+            const newDir = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
             await copyFile(image, newDir);
 
             await unlink(image);
 
-            onPhotoTaked(newDir);
+            onPhotoTaked({
+                fileName,
+                filePath: newDir,
+            });
         }
     }, [image, onPhotoTaked]);
 

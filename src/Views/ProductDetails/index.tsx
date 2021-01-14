@@ -48,6 +48,7 @@ import {
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import BatchTable from './Components/BatchesTable';
+import { getProductImagePath } from '~/Functions/Products/Image';
 
 interface Request {
     route: {
@@ -84,10 +85,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             const result = await getProductById(productId);
 
             if (result.photo) {
-                const pathExists = await exists(result.photo);
+                const imagePath = await getProductImagePath(productId);
 
-                if (pathExists) {
-                    setPhoto(`file://${result.photo}`);
+                if (imagePath) {
+                    const fileExists = await exists(imagePath);
+                    if (fileExists) {
+                        setPhoto(`file://${imagePath}`);
+                    }
                 }
             }
 
@@ -141,10 +145,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const handleOnPhotoPress = useCallback(() => {
         if (product && product.photo) {
             navigate('PhotoView', {
-                photoPath: product.photo,
+                productId,
             });
         }
-    }, [navigate, product]);
+    }, [navigate, product, productId]);
 
     return isLoading ? (
         <Loading />
