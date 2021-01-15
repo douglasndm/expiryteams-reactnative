@@ -1,20 +1,18 @@
 import React, { useState, useCallback, useContext } from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import RNPermissions from 'react-native-permissions';
 
-import { translate } from '../../../../Locales';
+import { translate } from '~/Locales';
 
-import PreferencesContext from '../../../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { isSubscriptionActive } from '../../../../Functions/ProMode';
-import {
-    ImportBackupFile,
-    ExportBackupFile,
-} from '../../../../Functions/Backup';
-import { exportToExcel } from '../../../../Functions/Excel';
+import { isSubscriptionActive } from '~/Functions/ProMode';
+import { importBackupFile, exportBackupFile } from '~/Functions/Backup';
+import { exportToExcel } from '~/Functions/Excel';
 
-import Button from '../../../../Components/Button';
-import Notification from '../../../../Components/Notification';
+import Button from '~/Components/Button';
+import Notification from '~/Components/Notification';
 
 import {
     Category,
@@ -63,7 +61,22 @@ const Pro: React.FC = () => {
         try {
             setIsImportLoading(true);
 
-            await ImportBackupFile();
+            if (Platform.OS === 'android') {
+                const isReadFileAllow = await RNPermissions.check(
+                    RNPermissions.PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+                );
+                if (isReadFileAllow !== 'granted') {
+                    const granted = await RNPermissions.request(
+                        RNPermissions.PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+                    );
+
+                    if (granted !== 'granted') {
+                        throw new Error('Permission denided');
+                    }
+                }
+            }
+
+            await importBackupFile();
         } catch (err) {
             setError(err.message);
         } finally {
@@ -74,7 +87,7 @@ const Pro: React.FC = () => {
     const handleExportBackup = useCallback(async () => {
         try {
             setIsExportLoading(true);
-            await ExportBackupFile();
+            await exportBackupFile();
         } catch (err) {
             setError(err.message);
         } finally {
