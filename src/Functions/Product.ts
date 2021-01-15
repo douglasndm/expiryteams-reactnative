@@ -1,5 +1,8 @@
+import { exists, unlink } from 'react-native-fs';
+
 import Realm from '../Services/Realm';
 import { createLote } from './Lotes';
+import { getProductImagePath } from './Products/Image';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
     productCode: string;
@@ -164,7 +167,17 @@ export async function deleteProduct(productId: number): Promise<void> {
     const realm = await Realm();
 
     try {
-        const product = realm.objects('Product').filtered(`id == ${productId}`);
+        const product = realm
+            .objects<IProduct>('Product')
+            .filtered(`id == ${productId}`)[0];
+
+        const photoPath = await getProductImagePath(productId);
+
+        if (photoPath) {
+            if (await exists(photoPath)) {
+                await unlink(photoPath);
+            }
+        }
 
         realm.write(async () => {
             realm.delete(product);
