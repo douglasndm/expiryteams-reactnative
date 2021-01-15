@@ -27,9 +27,18 @@ export async function getProductImagePath(
             }
 
             const filesDir = await readDir(imagesPath);
-            const findedFile = filesDir.find(
-                (file) => file.name === product.photo
-            );
+            const findedFile = filesDir.find((file) => {
+                const productImage = product.photo?.split('/');
+
+                if (productImage) {
+                    const fileName = productImage[productImage?.length - 1];
+
+                    if (file.name === fileName) return true;
+                    return false;
+                }
+
+                return false;
+            });
 
             if (findedFile) {
                 return findedFile.path;
