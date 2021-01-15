@@ -1,29 +1,18 @@
 import React, { useCallback } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
-import PushNotification from 'react-native-push-notification';
-import { addDays } from 'date-fns';
-
-import { useTheme } from 'styled-components/native';
+import { ScrollView, Alert } from 'react-native';
+import { DocumentDirectoryPath, readDir, mkdir, exists } from 'react-native-fs';
+import { encryptionMethods, zip } from 'react-native-zip-archive';
+import { addDays, mk } from 'date-fns';
 
 import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
-import {
-    getEnableNotifications,
-    setEnableNotifications,
-} from '../../Functions/Settings';
-// import * as Premium from '../../Functions/Premium';
-import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
-import { Category } from '../Settings/styles';
+import { getEnableNotifications } from '../../Functions/Settings';
+import { Container, Category } from '../Settings/styles';
+import { getAllProducts } from '~/Functions/Products';
 
 const Test: React.FC = () => {
-    const notificationSchedule = useCallback(() => {
-        PushNotification.getScheduledLocalNotifications((response) =>
-            console.log(response)
-        );
-    }, []);
-
     async function sampleData() {
         const realm = await Realm();
 
@@ -75,10 +64,6 @@ const Test: React.FC = () => {
         }
     }
 
-    async function saveFile() {
-        ExportBackupFile();
-    }
-
     async function getNot() {
         const noti = await getEnableNotifications();
 
@@ -89,59 +74,59 @@ const Test: React.FC = () => {
         }
     }
 
-    async function setNot() {
-        const noti = await getEnableNotifications();
-
-        await setEnableNotifications(!noti);
+    interface IProductImage {
+        productId: number;
+        imagePath: string;
+        imageName: string;
     }
 
-    const theme = useTheme();
+    const logFiles = useCallback(async () => {
+        const allProducts = await getAllProducts({});
+
+        const productsWithPics = allProducts.filter((p) => p.photo);
+        const dir = await readDir(DocumentDirectoryPath);
+
+        const files: Array<IProductImage> = [];
+
+        productsWithPics.forEach((p) => {
+            const findedPic = dir.find(
+                (file) => file.name === p.photo || file.path === p.photo
+            );
+
+            if (findedPic) {
+                files.push({
+                    productId: p.id,
+                    imageName: findedPic.name,
+                    imagePath: findedPic.path,
+                });
+            }
+        });
+
+        const targetPath = `${DocumentDirectoryPath}/backupfile.zip`;
+        const sourcePath = `${DocumentDirectoryPath}/images`;
+
+        const zipPath = await zip(sourcePath, targetPath);
+
+        console.log(zipPath);
+    }, []);
 
     return (
-        <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+        <Container>
             <ScrollView>
-                <Category
-                    style={{ backgroundColor: theme.colors.productBackground }}
-                >
+                <Category>
                     <Button text="Notification Status" onPress={getNot} />
-                    <Button
-                        text="Invert Notification Status"
-                        onPress={setNot}
-                    />
 
-                    <Button
-                        text="Throw notification timer schedule"
-                        onPress={notificationSchedule}
-                    />
-
-                    <Button
-                        text="Load with sample data"
-                        onPress={() => sampleData()}
-                    />
+                    <Button text="Load with sample data" onPress={sampleData} />
 
                     <Button
                         text="Delete all products"
-                        onPress={() => {
-                            deleteProducts();
-                        }}
+                        onPress={deleteProducts}
                     />
 
-                    <Button
-                        text="Import file"
-                        onPress={() => {
-                            ImportBackupFile();
-                        }}
-                    />
-
-                    <Button
-                        text="Export file"
-                        onPress={() => {
-                            saveFile();
-                        }}
-                    />
+                    <Button text="Log files" onPress={logFiles} />
                 </Category>
             </ScrollView>
-        </View>
+        </Container>
     );
 };
 
