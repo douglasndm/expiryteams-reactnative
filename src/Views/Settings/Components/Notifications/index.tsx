@@ -1,23 +1,25 @@
 import React, { useState, useCallback, useContext, useMemo } from 'react';
 
-import PreferencesContext from '../../../../Contexts/PreferencesContext';
+import { translate } from '~/Locales';
 
-import { translate } from '../../../../Locales';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     NotificationCadency,
     setNotificationCadency,
-} from '../../../../Functions/Settings';
+} from '~/Functions/Settings';
+
+import { Picker } from '../../styles';
 
 import {
     SettingNotificationContainer,
     SettingNotificationDescription,
-    Picker,
 } from './styles';
 
 interface INotificationCadencyItem {
     label: string;
     value: string;
+    key?: string;
 }
 
 const Notifications: React.FC = () => {
@@ -38,10 +40,12 @@ const Notifications: React.FC = () => {
         availableCadency.push({
             label: translate('View_Settings_Notifications_Cadency_Day'),
             value: NotificationCadency.Day,
+            key: NotificationCadency.Day,
         });
         availableCadency.push({
             label: translate('View_Settings_Notifications_Cadency_Never'),
             value: NotificationCadency.Never,
+            key: NotificationCadency.Never,
         });
 
         // if (userPreferences.isUserPremium) {
@@ -58,11 +62,16 @@ const Notifications: React.FC = () => {
         return availableCadency;
     }, []);
 
-    const onItemChange = useCallback(async (value) => {
-        await setNotificationCadency(value);
+    const onValueChange = useCallback(
+        async (value) => {
+            if (value !== selectedItem && value !== 'null') {
+                await setNotificationCadency(value);
 
-        setSelectedItem(value);
-    }, []);
+                setSelectedItem(value);
+            }
+        },
+        [selectedItem]
+    );
 
     return (
         <SettingNotificationContainer>
@@ -71,18 +80,11 @@ const Notifications: React.FC = () => {
             </SettingNotificationDescription>
 
             <Picker
-                selectedValue={selectedItem}
-                onValueChange={onItemChange}
-                mode="dropdown"
-            >
-                {data.map((item) => (
-                    <Picker.Item
-                        key={item.value}
-                        label={item.label}
-                        value={item.value}
-                    />
-                ))}
-            </Picker>
+                items={data}
+                onValueChange={onValueChange}
+                value={selectedItem}
+                placeholder={{ label: 'Selecione um item', value: 'null' }}
+            />
         </SettingNotificationContainer>
     );
 };

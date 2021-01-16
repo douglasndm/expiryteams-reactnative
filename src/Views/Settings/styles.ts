@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 
+import RNPickerSelect from 'react-native-picker-select';
+
 interface Request {
     notPremium?: boolean;
 }
@@ -26,7 +28,7 @@ export const SettingsContent = styled.View`
 
 export const Category = styled.View`
     margin-top: 20px;
-    padding: 15px;
+    padding: 15px 15px 25px;
     background-color: ${(props) => props.theme.colors.productBackground};
     border-radius: 12px;
 `;
@@ -63,3 +65,16 @@ export const InputSetting = styled.TextInput.attrs((props) => ({
     color: ${(props) => props.theme.colors.text};
     border-color: ${(props) => props.theme.colors.text};
 `;
+
+export const Picker = styled(RNPickerSelect).attrs(({ theme }) => ({
+    pickerProps: {
+        style: {
+            color: theme.colors.text,
+        },
+    },
+    textInputProps: {
+        style: {
+            color: theme.colors.text,
+        },
+    },
+}))``;
