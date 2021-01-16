@@ -10,6 +10,7 @@ import {
 } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 import Analyticts from '@react-native-firebase/analytics';
+import SplashScreen from 'react-native-splash-screen';
 
 import './Locales';
 
@@ -55,6 +56,8 @@ const App: React.FC = () => {
             const userPreferences = await getAllUserPreferences();
 
             setPreferences(userPreferences);
+
+            SplashScreen.hide();
         }
 
         getData();
