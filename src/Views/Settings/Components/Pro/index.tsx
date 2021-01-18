@@ -194,15 +194,16 @@ const Pro: React.FC = () => {
                         </View>
                     </CategoryOptions>
 
-                    {userPreferences.isUserPremium && (
-                        <ButtonCancel onPress={handleCancel}>
-                            <ButtonCancelText>
-                                {translate(
-                                    'View_Settings_Button_CancelSubscribe'
-                                )}
-                            </ButtonCancelText>
-                        </ButtonCancel>
-                    )}
+                    {userPreferences.isUserPremium &&
+                        Platform.OS === 'android' && (
+                            <ButtonCancel onPress={handleCancel}>
+                                <ButtonCancelText>
+                                    {translate(
+                                        'View_Settings_Button_CancelSubscribe'
+                                    )}
+                                </ButtonCancelText>
+                            </ButtonCancel>
+                        )}
                 </Category>
             </Container>
             {!!error && (
