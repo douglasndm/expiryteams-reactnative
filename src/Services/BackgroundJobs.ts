@@ -27,7 +27,7 @@ async function configureBackgroundJob() {
 
     BackgroundJob.configure(
         {
-            minimumFetchInterval: 15,
+            minimumFetchInterval: __DEV__ ? 15 : 1440,
             // Android options
             forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
             stopOnTerminate: false,
