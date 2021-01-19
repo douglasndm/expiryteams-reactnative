@@ -48,7 +48,7 @@ const UserInfo: React.FC<Props> = ({ isUserPro, navigate }: Props) => {
 
     return (
         <Container onPress={handleButtoClick}>
-            {user?.photo ? (
+            {user?.photo && userPreferences.isUserSignedIn ? (
                 <UserPhoto source={{ uri: user?.photo }} />
             ) : (
                 <DefaultUserPhoto />
