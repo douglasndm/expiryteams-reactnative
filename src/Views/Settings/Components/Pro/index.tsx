@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext, useMemo } from 'react';
 import { View, Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNPermissions from 'react-native-permissions';
@@ -41,17 +41,21 @@ const Pro: React.FC = () => {
 
     const { navigate, reset } = useNavigation();
 
+    const cancelSubscriptionLink = useMemo(() => {
+        return Platform.OS === 'ios'
+            ? 'https://apps.apple.com/account/subscriptions'
+            : 'https://play.google.com/store/account/subscriptions?sku=controledevalidade_pro_monthly&package=com.controledevalidade';
+    }, []);
+
     const handleCancel = useCallback(async () => {
-        await Linking.openURL(
-            'https://play.google.com/store/account/subscriptions?sku=controledevalidade_premium&package=com.controledevalidade'
-        );
+        await Linking.openURL(cancelSubscriptionLink);
 
         if (!(await isSubscriptionActive())) {
             reset({
                 routes: [{ name: 'Home' }],
             });
         }
-    }, [reset]);
+    }, [reset, cancelSubscriptionLink]);
 
     const navigateToPremiumView = useCallback(() => {
         navigate('Pro');
@@ -194,16 +198,15 @@ const Pro: React.FC = () => {
                         </View>
                     </CategoryOptions>
 
-                    {userPreferences.isUserPremium &&
-                        Platform.OS === 'android' && (
-                            <ButtonCancel onPress={handleCancel}>
-                                <ButtonCancelText>
-                                    {translate(
-                                        'View_Settings_Button_CancelSubscribe'
-                                    )}
-                                </ButtonCancelText>
-                            </ButtonCancel>
-                        )}
+                    {userPreferences.isUserPremium && (
+                        <ButtonCancel onPress={handleCancel}>
+                            <ButtonCancelText>
+                                {translate(
+                                    'View_Settings_Button_CancelSubscribe'
+                                )}
+                            </ButtonCancelText>
+                        </ButtonCancel>
+                    )}
                 </Category>
             </Container>
             {!!error && (
