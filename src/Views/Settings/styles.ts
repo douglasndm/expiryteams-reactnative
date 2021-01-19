@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
-import { Platform } from 'react-native';
+import styled, { css } from 'styled-components/native';
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -7,14 +7,19 @@ interface Request {
     notPremium?: boolean;
 }
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.View`
     flex: 1;
     background: ${(props) => props.theme.colors.background};
 `;
 export const PageHeader = styled.View`
-    margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
+    margin-top: 25px;
     flex-direction: row;
     align-items: center;
+
+    ${isIphoneX() &&
+    css`
+        margin-top: ${getStatusBarHeight() + 25}px;
+    `}
 `;
 export const PageTitle = styled.Text`
     font-size: 28px;
