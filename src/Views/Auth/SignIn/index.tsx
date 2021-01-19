@@ -53,7 +53,7 @@ const SignIn: React.FC = () => {
 
     const handleToGoProPage = useCallback(() => {
         reset({
-            routes: [{ name: 'Home' }, { name: 'PremiumSubscription' }],
+            routes: [{ name: 'Home' }, { name: 'Pro' }],
         });
     }, [reset]);
 

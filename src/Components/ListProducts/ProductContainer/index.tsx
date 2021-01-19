@@ -69,7 +69,7 @@ const ProductContainer: React.FC<RequestProps> = ({
     }, [disableAds, userPreferences.isUserPremium, index, adFailed]);
 
     const handleNavigateToProPage = useCallback(() => {
-        navigate('PremiumSubscription');
+        navigate('Pro');
     }, [navigate]);
 
     const choosenAdText = useMemo(() => {

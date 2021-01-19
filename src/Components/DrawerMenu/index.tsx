@@ -79,7 +79,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 )}
                                 label={translate('Menu_Button_GoToProPage')}
                                 onPress={() => {
-                                    navigation.navigate('PremiumSubscription');
+                                    navigation.navigate('Pro');
                                 }}
                             />
                         )}

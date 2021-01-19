@@ -54,7 +54,7 @@ const Pro: React.FC = () => {
     }, [reset]);
 
     const navigateToPremiumView = useCallback(() => {
-        navigate('PremiumSubscription');
+        navigate('Pro');
     }, [navigate]);
 
     const handleImportBackup = useCallback(async () => {

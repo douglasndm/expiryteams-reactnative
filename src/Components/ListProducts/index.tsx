@@ -40,7 +40,7 @@ const ListProducts: React.FC<RequestProps> = ({
     }, [navigate]);
 
     const handleNavigateProPage = useCallback(() => {
-        navigate('PremiumSubscription');
+        navigate('Pro');
     }, [navigate]);
 
     const choosenAdText = useMemo(() => {

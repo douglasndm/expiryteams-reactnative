@@ -38,7 +38,7 @@ import {
     LoadingIndicator,
 } from './styles';
 
-const PremiumSubscription: React.FC = () => {
+const Pro: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
@@ -274,4 +274,4 @@ const PremiumSubscription: React.FC = () => {
     );
 };
 
-export default PremiumSubscription;
+export default Pro;
