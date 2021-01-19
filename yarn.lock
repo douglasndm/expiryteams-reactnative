@@ -7546,7 +7546,7 @@ react-native-in-app-review@^2.1.7:
   resolved "https://registry.yarnpkg.com/react-native-in-app-review/-/react-native-in-app-review-2.1.7.tgz#823a20152161b04dece5020e4be946bcc9b55fed"
   integrity sha512-JjZj+REY1dlITCHG3L9eKn1BxaIb+qtGrIVAXgWYmiJTFN1FcztgJSuHdMFYSTJuIGhoKLrWOMFTUHnGDxT7Tg==
 
-react-native-iphone-x-helper@^1.3.0:
+react-native-iphone-x-helper@^1.3.0, react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
@@ -7561,14 +7561,14 @@ react-native-localize@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.0.1.tgz#a5bf2f2910260ac2574d5ca5d5f95dc8bbc4ac1f"
   integrity sha512-Tuf26iH7/pHd+yCAORD2EPLhkHdGTMEUXMiiKb4Pz69dE48R7C+MA30EqubE6qTlvAs6gHM+2E5dzLAxcGH5UA==
 
-react-native-paper@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.2.0.tgz#534c0f9dbeecfd73d20f1f7b1ef3df32aa2ca4b0"
-  integrity sha512-+pM8olBygXP5cdUcPRC++BPb5DvdYPN2LJFIt2eXbT0GXs7kU7nG+hFRnsxu8awt6em6gcHVVw3ajvQGEl+CIg==
+react-native-paper@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.7.0.tgz#0721033b11545bb312b7ae7b5af960bdfa7b7e93"
+  integrity sha512-RZwYZFFKry8LHHBYf5NENVaU2HaApERNcBLVzt4IE9AS0I+NkkLUyjKQYuLrgTF2EaZVEdeyUJwO7uQH/iNrnQ==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.5"
     color "^3.1.2"
-    react-native-safe-area-view "^0.14.9"
+    react-native-iphone-x-helper "^1.3.1"
 
 react-native-permissions@^2.0.2:
   version "2.2.2"
@@ -7618,13 +7618,6 @@ react-native-safe-area-context@^3.0.7:
   version "3.1.7"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.1.7.tgz#fc9e636dfb168f992a2172d363509ce0611a8403"
   integrity sha512-qSyg/pVMwVPgAy8yCvw349Q+uEUhtRBV33eVXHHkfoou1vCChJxI7SmNR47/6M3BLdjWcyc4lcd018Kx+jhQCw==
-
-react-native-safe-area-view@^0.14.9:
-  version "0.14.9"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.9.tgz#90ee8383037010d9a5055a97cf97e4c1da1f0c3d"
-  integrity sha512-WII/ulhpVyL/qbYb7vydq7dJAfZRBcEhg4/UWt6F6nAKpLa3gAceMOxBxI914ppwSP/TdUsandFy6lkJQE0z4A==
-  dependencies:
-    hoist-non-react-statics "^2.3.1"
 
 react-native-safe-modules@^1.0.0:
   version "1.0.0"
