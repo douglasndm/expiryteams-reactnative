@@ -1,15 +1,20 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext, useMemo } from 'react';
 
-import { translate } from '../../../../Locales';
+import { translate } from '~/Locales';
+import { getActualAppTheme } from '~/Themes';
 
-import { setAppTheme } from '../../../../Functions/Settings';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { getActualAppTheme } from '../../../../Themes';
+import { setAppTheme } from '~/Functions/Settings';
 
-import PreferencesContext from '../../../../Contexts/PreferencesContext';
+import { Category, CategoryOptions, CategoryTitle, Picker } from '../../styles';
+import { Text, PickerContainer } from './styles';
 
-import { Category, CategoryOptions, CategoryTitle } from '../../styles';
-import { Text, PickerContainer, Picker } from './styles';
+interface IThemeItem {
+    label: string;
+    value: string;
+    key: string;
+}
 
 const Appearance: React.FC = () => {
     const { userPreferences, setUserPreferences } = useContext(
@@ -18,8 +23,61 @@ const Appearance: React.FC = () => {
 
     const [selectedTheme, setSelectedTheme] = useState<string>('system');
 
+    const data = useMemo(() => {
+        const availableThemes: Array<IThemeItem> = [];
+
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_System'),
+            value: 'system',
+            key: 'system',
+        });
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_Light'),
+            value: 'light',
+            key: 'light',
+        });
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_Dark'),
+            value: 'dark',
+            key: 'dark',
+        });
+
+        if (userPreferences.isUserPremium) {
+            availableThemes.push({
+                label: translate('View_Settings_Appearance_Theme_UltraViolet'),
+                value: 'ultraviolet',
+                key: 'ultraviolet',
+            });
+            availableThemes.push({
+                label: translate('View_Settings_Appearance_Theme_DarkGreen'),
+                value: 'darkgreen',
+                key: 'darkgreen',
+            });
+            availableThemes.push({
+                label: translate('View_Settings_Appearance_Theme_HappyPink'),
+                value: 'happypink',
+                key: 'happypink',
+            });
+            availableThemes.push({
+                label: translate('View_Settings_Appearance_Theme_OceanBlue'),
+                value: 'oceanblue',
+                key: 'oceanblue',
+            });
+            availableThemes.push({
+                label: translate('View_Settings_Appearance_Theme_Relax'),
+                value: 'relax',
+                key: 'relax',
+            });
+        }
+
+        return availableThemes;
+    }, [userPreferences.isUserPremium]);
+
     const handleThemeChange = useCallback(
         async (themeName: string) => {
+            if (themeName === 'null') {
+                return;
+            }
             setSelectedTheme(themeName);
             await setAppTheme(themeName);
 
@@ -43,79 +101,14 @@ const Appearance: React.FC = () => {
                 <Text>{translate('View_Settings_SettingName_AppTheme')}</Text>
                 <PickerContainer>
                     <Picker
-                        mode="dropdown"
-                        selectedValue={selectedTheme}
-                        onValueChange={(value) => {
-                            handleThemeChange(String(value));
+                        items={data}
+                        onValueChange={handleThemeChange}
+                        value={selectedTheme}
+                        placeholder={{
+                            label: 'Selecione um item',
+                            value: 'null',
                         }}
-                    >
-                        <Picker.Item
-                            label={translate(
-                                'View_Settings_Appearance_Theme_System'
-                            )}
-                            value="system"
-                        />
-                        <Picker.Item
-                            label={translate(
-                                'View_Settings_Appearance_Theme_Light'
-                            )}
-                            value="light"
-                        />
-                        <Picker.Item
-                            label={translate(
-                                'View_Settings_Appearance_Theme_Dark'
-                            )}
-                            value="dark"
-                        />
-                        {userPreferences.isUserPremium || __DEV__ ? (
-                            <Picker.Item
-                                label={translate(
-                                    'View_Settings_Appearance_Theme_UltraViolet'
-                                )}
-                                value="ultraviolet"
-                            />
-                        ) : null}
-
-                        {
-                            // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
-                            userPreferences.isUserPremium || __DEV__ ? (
-                                <Picker.Item
-                                    label={translate(
-                                        'View_Settings_Appearance_Theme_DarkGreen'
-                                    )}
-                                    value="darkgreen"
-                                />
-                            ) : null
-                        }
-
-                        {userPreferences.isUserPremium || __DEV__ ? (
-                            <Picker.Item
-                                label={translate(
-                                    'View_Settings_Appearance_Theme_HappyPink'
-                                )}
-                                value="happypink"
-                            />
-                        ) : null}
-
-                        {userPreferences.isUserPremium || __DEV__ ? (
-                            <Picker.Item
-                                label={translate(
-                                    'View_Settings_Appearance_Theme_OceanBlue'
-                                )}
-                                value="oceanblue"
-                            />
-                        ) : null}
-
-                        {userPreferences.isUserPremium ||
-                            (__DEV__ && (
-                                <Picker.Item
-                                    label={translate(
-                                        'View_Settings_Appearance_Theme_Relax'
-                                    )}
-                                    value="relax"
-                                />
-                            ))}
-                    </Picker>
+                    />
                 </PickerContainer>
             </CategoryOptions>
         </Category>
