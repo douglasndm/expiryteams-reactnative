@@ -1,5 +1,10 @@
 import { Platform } from 'react-native';
-import BackgroundJob from 'react-native-background-job';
+import BackgroundJob from 'react-native-background-fetch';
+
+import {
+    getNotificationCadency,
+    NotificationCadency,
+} from '~/Functions/Settings';
 
 import { getNotificationForAllProductsCloseToExp } from '../Functions/ProductsNotifications';
 
@@ -13,24 +18,59 @@ const handleSetNotification = async () => {
     }
 };
 
-if (Platform.OS === 'android') {
-    // REGISTRA O SERVIÇO QUE VAI RODAR AS NOTIFICAÇÕES
-    const backgroundJob = {
-        jobKey: 'backgroundNotification',
-        job: handleSetNotification,
-    };
+async function configureBackgroundJob() {
+    const notificationCadency = await getNotificationCadency();
 
-    BackgroundJob.register(backgroundJob);
+    if (notificationCadency === NotificationCadency.Never) {
+        return;
+    }
 
-    const backgroundSchedule = {
-        jobKey: 'backgroundNotification',
-        period: __DEV__ ? 900000 : 86400000,
-        allowExecutionInForeground: true,
-    };
+    BackgroundJob.configure(
+        {
+            minimumFetchInterval: 15,
+            // Android options
+            forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
+            stopOnTerminate: false,
+            startOnBoot: true,
+            requiredNetworkType: BackgroundJob.NETWORK_TYPE_NONE, // Default
+            requiresCharging: false, // Default
+            requiresDeviceIdle: false, // Default
+            requiresBatteryNotLow: false, // Default
+            requiresStorageNotLow: false, // Default
+        },
+        async (taskId) => {
+            console.log(
+                `${Platform.OS} => [js] Received background-fetch event: `,
+                taskId
+            );
+            await handleSetNotification();
 
-    BackgroundJob.schedule(backgroundSchedule)
-        .then(() => console.log(backgroundSchedule))
-        .catch((err) => {
-            throw new Error(err);
-        });
+            // Required: Signal completion of your task to native code
+            // If you fail to do this, the OS can terminate your app
+            // or assign battery-blame for consuming too much background-time
+            BackgroundJob.finish(taskId);
+        },
+        (error) => {
+            console.log(`[js] RNBackgroundFetch failed to start: ${error}`);
+        }
+    );
+
+    // Optional: Query the authorization status.
+    BackgroundJob.status((status) => {
+        switch (status) {
+            case BackgroundJob.STATUS_RESTRICTED:
+                console.log('BackgroundFetch restricted');
+                break;
+            case BackgroundJob.STATUS_DENIED:
+                console.log('BackgroundFetch denied');
+                break;
+            case BackgroundJob.STATUS_AVAILABLE:
+                console.log('BackgroundFetch is enabled');
+                break;
+            default:
+                console.log('default');
+        }
+    });
 }
+
+configureBackgroundJob();

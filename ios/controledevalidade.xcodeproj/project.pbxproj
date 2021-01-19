@@ -14,6 +14,7 @@
 		4F47865D259661D0008C02AA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4F47865C259661D0008C02AA /* Config.xcconfig */; };
 		4FC6C2DA25A775F000A3DE7B /* swiftly-610.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */; };
 		4FC7F1102593EC6000112252 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */; };
+		4FF2A01525B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */; };
 		6D025C1AFFCE3DFEF28A11E5 /* libPods-controledevalidade-controledevalidadeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E595662963FA744842CB02 /* libPods-controledevalidade-controledevalidadeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		987BDF2B9550209C8C4388C8 /* libPods-controledevalidade.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A94E1A1CE4F3AEFF2108EE1F /* libPods-controledevalidade.a */; };
@@ -46,14 +47,18 @@
 		4F8EEF43259418130072C20A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = "swiftly-610.m4r"; sourceTree = "<group>"; };
 		4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
+		4FF2A1C825B64CE6007F6B6A /* controledevalidade.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = controledevalidade.entitlements; path = controledevalidade/controledevalidade.entitlements; sourceTree = "<group>"; };
 		529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-controledevalidadeTests.release.xcconfig"; path = "Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests.release.xcconfig"; sourceTree = "<group>"; };
 		53E595662963FA744842CB02 /* libPods-controledevalidade-controledevalidadeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-controledevalidadeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = controledevalidade/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		99E15B2747B0961A01CD027D /* Pods-controledevalidade.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade.staging.xcconfig"; path = "Target Support Files/Pods-controledevalidade/Pods-controledevalidade.staging.xcconfig"; sourceTree = "<group>"; };
 		A94E1A1CE4F3AEFF2108EE1F /* libPods-controledevalidade.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEDB098E6E57BAE61D9C18BD /* libPods-controledevalidade-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8331357B60652B803839D69 /* Pods-controledevalidade.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade.release.xcconfig"; path = "Target Support Files/Pods-controledevalidade/Pods-controledevalidade.release.xcconfig"; sourceTree = "<group>"; };
 		D1E2E8B9A172068309F1A51A /* libPods-controledevalidade-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B490CD3FDC34E4BC2AE842 /* Pods-controledevalidade-controledevalidadeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-controledevalidadeTests.debug.xcconfig"; path = "Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DB7B4D626BF8E117E9AC72B6 /* Pods-controledevalidade-controledevalidadeTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-controledevalidadeTests.staging.xcconfig"; path = "Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests.staging.xcconfig"; sourceTree = "<group>"; };
 		DF4B9FEBA596270CB8E1C6A2 /* Pods-controledevalidade.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade.debug.xcconfig"; path = "Target Support Files/Pods-controledevalidade/Pods-controledevalidade.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -99,6 +104,7 @@
 		13B07FAE1A68108700A75B9A /* controledevalidade */ = {
 			isa = PBXGroup;
 			children = (
+				4FF2A1C825B64CE6007F6B6A /* controledevalidade.entitlements */,
 				4F8EEDFC2594013E0072C20A /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -144,6 +150,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */,
 				4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */,
 				4F47865C259661D0008C02AA /* Config.xcconfig */,
 				4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */,
@@ -175,6 +182,8 @@
 				B8331357B60652B803839D69 /* Pods-controledevalidade.release.xcconfig */,
 				D6B490CD3FDC34E4BC2AE842 /* Pods-controledevalidade-controledevalidadeTests.debug.xcconfig */,
 				529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */,
+				99E15B2747B0961A01CD027D /* Pods-controledevalidade.staging.xcconfig */,
+				DB7B4D626BF8E117E9AC72B6 /* Pods-controledevalidade-controledevalidadeTests.staging.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -510,6 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FF2A01525B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -577,6 +587,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
@@ -602,6 +613,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
@@ -680,10 +692,11 @@
 		};
 		4F99437825B5325A00542397 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8331357B60652B803839D69 /* Pods-controledevalidade.release.xcconfig */;
+			baseConfigurationReference = 99E15B2747B0961A01CD027D /* Pods-controledevalidade.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
@@ -703,7 +716,7 @@
 		};
 		4F99437925B5325A00542397 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */;
+			baseConfigurationReference = DB7B4D626BF8E117E9AC72B6 /* Pods-controledevalidade-controledevalidadeTests.staging.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
