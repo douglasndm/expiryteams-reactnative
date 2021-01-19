@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { ScrollView, Platform } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -163,7 +163,7 @@ const Settings: React.FC = () => {
                                         }
                                     }}
                                 />
-                                {Platform.OS === 'android' && <Notifications />}
+                                <Notifications />
 
                                 {userPreferences.isUserPremium && (
                                     <SettingContainer>
