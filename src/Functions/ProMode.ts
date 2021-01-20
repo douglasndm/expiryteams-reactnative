@@ -51,18 +51,24 @@ export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
         const offerings = await Purchases.getOfferings();
 
         if (offerings.current && offerings.current.monthly !== null) {
-            await Analytics().logEvent('user_get_offerings_monthly');
+            if (!__DEV__) {
+                await Analytics().logEvent('user_get_offerings_monthly');
+            }
 
             return offerings.current.monthly;
         }
 
         if (offerings.current && offerings.current.threeMonth !== null) {
-            await Analytics().logEvent('user_get_offerings_three_month');
+            if (!__DEV__) {
+                await Analytics().logEvent('user_get_offerings_three_month');
+            }
 
             return offerings.current.threeMonth;
         }
 
-        await Analytics().logEvent('app_didnt_show_any_offerings');
+        if (!__DEV__) {
+            await Analytics().logEvent('app_didnt_show_any_offerings');
+        }
         throw new Error('We didt find any offers');
     } catch (err) {
         throw new Error(err);
@@ -75,9 +81,11 @@ export async function makeSubscription(): Promise<void> {
     const userSigned = await isUserSignedIn();
 
     if (!userSigned) {
-        await Analytics().logEvent(
-            'started_susbscription_process_but_user_not_signed'
-        );
+        if (!__DEV__) {
+            await Analytics().logEvent(
+                'started_susbscription_process_but_user_not_signed'
+            );
+        }
 
         throw new Error('User is not logged');
     }
