@@ -4,23 +4,26 @@ import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
 import { exists } from 'react-native-fs';
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import StatusBar from '../../Components/StatusBar';
-import Loading from '../../Components/Loading';
-import BackButton from '../../Components/BackButton';
-import Camera, { onPhotoTakedProps } from '../../Components/Camera';
-import BarCodeReader from '../../Components/BarCodeReader';
-import Notification from '../../Components/Notification';
+import StatusBar from '~/Components/StatusBar';
+import Loading from '~/Components/Loading';
+import BackButton from '~/Components/BackButton';
+import Camera, { onPhotoTakedProps } from '~/Components/Camera';
+import BarCodeReader from '~/Components/BarCodeReader';
+import Notification from '~/Components/Notification';
+
+import RewardCamera from '../Components/RewardCamera';
 
 import {
     getProductById,
     updateProduct,
     deleteProduct,
-} from '../../Functions/Product';
+} from '~/Functions/Product';
 import { saveProductImage } from '~/Functions/Products/Image';
+import { isProImagesByRewards } from '~/Functions/Pro/Rewards/Images';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -39,7 +42,7 @@ import {
     CameraButtonContainer,
     CameraButtonIcon,
     ProductImageContainer,
-} from '../AddProduct/styles';
+} from '../Add/styles';
 
 import {
     ButtonPaper,
@@ -57,8 +60,9 @@ interface RequestParams {
     };
 }
 
-const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
+const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { userPreferences } = useContext(PreferencesContext);
+    const [isProByReward, setIsProByReward] = useState<boolean>(false);
 
     const { productId } = route.params;
 
@@ -102,6 +106,10 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
         getProductData();
     }, [productId]);
+
+    useEffect(() => {
+        isProImagesByRewards().then((response) => setIsProByReward(response));
+    }, []);
 
     async function updateProd() {
         if (!name || name.trim() === '') {
@@ -221,8 +229,9 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 </PageHeader>
 
                                 <PageContent>
-                                    {!!photoPath &&
-                                        userPreferences.isUserPremium && (
+                                    {(isProByReward ||
+                                        userPreferences.isUserPremium) &&
+                                        !!photoPath && (
                                             <ProductImageContainer
                                                 onPress={handleEnableCamera}
                                             >
@@ -233,6 +242,16 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 />
                                             </ProductImageContainer>
                                         )}
+
+                                    {!userPreferences.isUserPremium &&
+                                        !isProByReward && (
+                                            <RewardCamera
+                                                setIsProByReward={
+                                                    setIsProByReward
+                                                }
+                                            />
+                                        )}
+
                                     <InputContainer>
                                         <InputGroup>
                                             <InputTextContainer>
@@ -250,7 +269,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 />
                                             </InputTextContainer>
 
-                                            {userPreferences.isUserPremium && (
+                                            {(userPreferences.isUserPremium ||
+                                                isProByReward) && (
                                                 <CameraButtonContainer
                                                     onPress={handleEnableCamera}
                                                 >
@@ -407,4 +427,4 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     );
 };
 
-export default EditProduct;
+export default Edit;

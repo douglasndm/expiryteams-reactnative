@@ -9,6 +9,7 @@ import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
 
 import { setProThemesByRewards } from '~/Functions/Pro/Rewards/Themes';
+import { setProImagesByRewards } from '~/Functions/Pro/Rewards/Images';
 
 let adUnit = TestIds.REWARDED;
 
@@ -55,6 +56,8 @@ const RewardAds: React.FC<Props> = ({
         }
 
         if (rewardFor === 'Images') {
+            await setProImagesByRewards();
+
             if (!__DEV__) {
                 await Analytics().logEvent(
                     'user_claimed_proImages_by_AdReward'

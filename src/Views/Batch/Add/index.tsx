@@ -16,17 +16,17 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { translate } from '../../../Locales';
+import { translate } from '~/Locales';
 
-import StatusBar from '../../../Components/StatusBar';
-import BackButton from '../../../Components/BackButton';
-import GenericButton from '../../../Components/Button';
-import Notification from '../../../Components/Notification';
+import StatusBar from '~/Components/StatusBar';
+import BackButton from '~/Components/BackButton';
+import GenericButton from '~/Components/Button';
+import Notification from '~/Components/Notification';
 
-import { createLote } from '../../../Functions/Lotes';
-import { getProductById } from '../../../Functions/Product';
+import { createLote } from '~/Functions/Lotes';
+import { getProductById } from '~/Functions/Product';
 
-import PreferencesContext from '../../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -41,7 +41,7 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-} from '../../AddProduct/styles';
+} from '~/Views/Product/Add/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
 interface Props {

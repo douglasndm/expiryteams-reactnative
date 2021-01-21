@@ -18,23 +18,23 @@ import {
 } from '@react-native-firebase/admob';
 
 import { exists } from 'react-native-fs';
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
 import {
     checkIfProductAlreadyExistsByCode,
     getProductByCode,
     createProduct,
-} from '../../Functions/Product';
-import { createLote } from '../../Functions/Lotes';
+} from '~/Functions/Product';
+import { createLote } from '~/Functions/Lotes';
 
-import StatusBar from '../../Components/StatusBar';
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-import Camera, { onPhotoTakedProps } from '../../Components/Camera';
-import BarCodeReader from '../../Components/BarCodeReader';
-import Notification from '../../Components/Notification';
+import StatusBar from '~/Components/StatusBar';
+import BackButton from '~/Components/BackButton';
+import GenericButton from '~/Components/Button';
+import Camera, { onPhotoTakedProps } from '~/Components/Camera';
+import BarCodeReader from '~/Components/BarCodeReader';
+import Notification from '~/Components/Notification';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -69,7 +69,7 @@ if (Platform.OS === 'ios' && !__DEV__) {
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
-const AddProduct: React.FC = () => {
+const Add: React.FC = () => {
     const { goBack, navigate, reset } = useNavigation();
 
     const locale = useMemo(() => {
@@ -525,4 +525,4 @@ const AddProduct: React.FC = () => {
     );
 };
 
-export default AddProduct;
+export default Add;

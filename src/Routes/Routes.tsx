@@ -1,25 +1,25 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from '../Views/Home';
-import AddProduct from '../Views/AddProduct';
-import AddLote from '../Views/Batch/Add';
-import EditProduct from '../Views/EditProduct';
-import EditLote from '../Views/Batch/Edit';
-import ProductDetails from '../Views/ProductDetails';
-import AllProducts from '../Views/AllProducts';
-import AllProductsByStore from '../Views/AllProductsByStore';
-import StoreDetails from '../Views/StoreDetails';
-import Settings from '../Views/Settings';
-import About from '../Views/About';
-import ProSubscription from '../Views/ProSubscription';
-import ProOfferings from '../Views/ProSubscription/Offerings';
-import Success from '../Views/Success';
-import PhotoView from '../Views/PhotoView';
+import Home from '~/Views/Home';
+import AddProduct from '~/Views/Product/Add';
+import AddLote from '~/Views/Batch/Add';
+import EditProduct from '~/Views/Product/Edit';
+import EditLote from '~/Views/Batch/Edit';
+import ProductDetails from '~/Views/ProductDetails';
+import AllProducts from '~/Views/AllProducts';
+import AllProductsByStore from '~/Views/AllProductsByStore';
+import StoreDetails from '~/Views/StoreDetails';
+import Settings from '~/Views/Settings';
+import About from '~/Views/About';
+import ProSubscription from '~/Views/ProSubscription';
+import ProOfferings from '~/Views/ProSubscription/Offerings';
+import Success from '~/Views/Success';
+import PhotoView from '~/Views/PhotoView';
 
-import SignIn from '../Views/Auth/SignIn';
+import SignIn from '~/Views/Auth/SignIn';
 
-import Test from '../Views/Test';
+import Test from '~/Views/Test';
 
 const Stack = createStackNavigator();
 
