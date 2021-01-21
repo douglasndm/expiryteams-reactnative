@@ -21,8 +21,14 @@ export async function isProThemeByRewards(): Promise<boolean> {
     }
 }
 
-export async function setProThemesByRewards(): Promise<void> {
-    const date = addMinutes(new Date(), __DEV__ ? 1 : 15);
+export async function setProThemesByRewards(minutes?: number): Promise<void> {
+    let time = __DEV__ ? 1 : 15;
+
+    if (minutes && !__DEV__) {
+        time = minutes;
+    }
+
+    const date = addMinutes(new Date(), time);
     const timestamp = getUnixTime(date);
 
     try {
