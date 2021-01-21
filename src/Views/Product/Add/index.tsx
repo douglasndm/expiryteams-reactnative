@@ -17,7 +17,7 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { exists } from 'react-native-fs';
+import { exists, unlink } from 'react-native-fs';
 import { translate } from '~/Locales';
 
 import {
@@ -44,6 +44,8 @@ import {
     PageHeader,
     PageTitle,
     PageContent,
+    ProductImageContainer,
+    ProductImage,
     InputContainer,
     InputTextContainer,
     InputText,
@@ -241,10 +243,15 @@ const Add: React.FC = () => {
         setError('');
     }, []);
 
-    const handleEnableCamera = useCallback(() => {
+    const handleEnableCamera = useCallback(async () => {
+        if (photoPath) {
+            if (await exists(photoPath)) {
+                await unlink(photoPath);
+            }
+        }
         setIsBarCodeEnabled(false);
         setIsCameraEnabled(true);
-    }, []);
+    }, [photoPath]);
 
     const handleDisableCamera = useCallback(() => {
         setIsCameraEnabled(false);
@@ -294,6 +301,20 @@ const Add: React.FC = () => {
                                 </PageHeader>
 
                                 <PageContent>
+                                    {(isProByReward ||
+                                        userPreferences.isUserPremium) &&
+                                        !!photoPath && (
+                                            <ProductImageContainer
+                                                onPress={handleEnableCamera}
+                                            >
+                                                <ProductImage
+                                                    source={{
+                                                        uri: `file://${photoPath}`,
+                                                    }}
+                                                />
+                                            </ProductImageContainer>
+                                        )}
+
                                     {!userPreferences.isUserPremium &&
                                         !isProByReward && (
                                             <RewardCamera
