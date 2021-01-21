@@ -49,6 +49,7 @@ import {
     InputContainer,
     InputTextContainer,
     InputText,
+    InputTextTip,
     CameraButtonContainer,
     CameraButtonIcon,
     NumericInputField,
@@ -106,8 +107,9 @@ const Add: React.FC = () => {
     const [amount, setAmount] = useState('');
     const [price, setPrice] = useState(0);
     const [store, setStore] = useState<string>();
-
     const [expDate, setExpDate] = useState(new Date());
+
+    const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
@@ -116,7 +118,7 @@ const Add: React.FC = () => {
 
     async function handleSave() {
         if (!name || name.trim() === '') {
-            setError(translate('View_AddProduct_AlertTypeProductName'));
+            setNameFieldError(true);
             return;
         }
 
@@ -326,7 +328,9 @@ const Add: React.FC = () => {
 
                                     <InputContainer>
                                         <InputGroup>
-                                            <InputTextContainer>
+                                            <InputTextContainer
+                                                hasError={nameFieldError}
+                                            >
                                                 <InputText
                                                     placeholder={translate(
                                                         'View_AddProduct_InputPlacehoder_Name'
@@ -337,6 +341,9 @@ const Add: React.FC = () => {
                                                     value={name}
                                                     onChangeText={(value) => {
                                                         setName(value);
+                                                        setNameFieldError(
+                                                            false
+                                                        );
                                                     }}
                                                     onFocus={() => {
                                                         setIsBarCodeEnabled(
@@ -345,6 +352,7 @@ const Add: React.FC = () => {
                                                     }}
                                                 />
                                             </InputTextContainer>
+
                                             {(userPreferences.isUserPremium ||
                                                 isProByReward) && (
                                                 <CameraButtonContainer
@@ -354,6 +362,13 @@ const Add: React.FC = () => {
                                                 </CameraButtonContainer>
                                             )}
                                         </InputGroup>
+                                        {nameFieldError && (
+                                            <InputTextTip>
+                                                {translate(
+                                                    'View_AddProduct_AlertTypeProductName'
+                                                )}
+                                            </InputTextTip>
+                                        )}
 
                                         <InputCodeTextContainer>
                                             <InputCodeText

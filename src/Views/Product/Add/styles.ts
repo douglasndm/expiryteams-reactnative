@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import NumericInput from '@wwdrew/react-native-numeric-textinput';
@@ -37,13 +37,23 @@ export const InputGroup = styled.View`
     margin: 0 0 10px 0;
 `;
 
-export const InputTextContainer = styled.View`
+interface InputTextContainerProps {
+    hasError?: boolean;
+}
+
+export const InputTextContainer = styled.View<InputTextContainerProps>`
     flex: 1;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     font-size: 18px;
     background-color: ${({ theme }) => theme.colors.inputBackground};
     color: ${({ theme }) => theme.colors.inputText};
+
+    ${(props) =>
+        props.hasError &&
+        css`
+            border: 2px solid red;
+        `}
 `;
 
 export const InputText = styled.TextInput.attrs((props) => ({
@@ -52,6 +62,11 @@ export const InputText = styled.TextInput.attrs((props) => ({
     padding: 15px 5px 15px 15px;
     font-size: 18px;
     color: ${(props) => props.theme.colors.text};
+`;
+
+export const InputTextTip = styled.Text`
+    color: red;
+    margin: -5px 10px 5px;
 `;
 
 export const CameraButtonContainer = styled(RectButton)`
