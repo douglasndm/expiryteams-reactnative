@@ -44,13 +44,22 @@ export async function checkIfProductAlreadyExistsByCode({
     }
 }
 
-export async function getProductByCode(productCode: string): Promise<IProduct> {
+export async function getProductByCode(
+    productCode: string,
+    store?: string
+): Promise<IProduct> {
     const realm = await Realm();
 
     try {
-        const result = realm
+        let result = realm
             .objects<IProduct>('Product')
             .filtered(`code = "${productCode}"`)[0];
+
+        if (store) {
+            result = realm
+                .objects<IProduct>('Product')
+                .filtered(`code = "${productCode}" AND store = "${store}"`)[0];
+        }
 
         return result;
     } catch (err) {

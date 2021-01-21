@@ -87,10 +87,7 @@
     "View_AddProduct_CalendarAccessibilityDescription": "Calendar to select the expiration date",
     "View_AddProduct_Button_Save": "Save",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Button to save the new product",
-    "View_AddProduct_DuplicateProductNotificationTitle": "Duplicate product",
-    "View_AddProduct_DuplicateProductNotificationDescription": "There is a existing product with the same code, we can not add a new product with same code, do you want to add new new batch to that existing product?",
-    "View_AddProduct_DuplicateProductNotificationButtonEditProdct": "Edit existing product",
-    "View_AddProduct_DuplicateProductNotificationButtonClose": "Close",
+    "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
 
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",

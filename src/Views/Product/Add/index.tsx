@@ -5,11 +5,9 @@ import React, {
     useCallback,
     useMemo,
 } from 'react';
-import { ScrollView, Text, Platform } from 'react-native';
+import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import { useTheme } from 'styled-components';
-import { Button as ButtonPaper, Dialog } from 'react-native-paper';
 import EnvConfig from 'react-native-config';
 import {
     InterstitialAd,
@@ -94,8 +92,6 @@ const Add: React.FC = () => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const theme = useTheme();
-
     const [adReady, setAdReady] = useState(false);
     const [isProByReward, setIsProByReward] = useState<boolean>(false);
 
@@ -110,10 +106,12 @@ const Add: React.FC = () => {
     const [expDate, setExpDate] = useState(new Date());
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
+    const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
+
+    const [existentProduct, setExistentProduct] = useState<number | null>(null);
 
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
-    const [productAlreadyExists, setProductAlreadyExists] = useState(false);
     const [erro, setError] = useState<string>('');
 
     async function handleSave() {
@@ -122,27 +120,8 @@ const Add: React.FC = () => {
             return;
         }
 
-        if (code) {
-            if (!!store && store !== '') {
-                const productExists = await checkIfProductAlreadyExistsByCode({
-                    productCode: code,
-                    productStore: store,
-                });
-
-                if (productExists) {
-                    setProductAlreadyExists(true);
-                    return;
-                }
-            } else {
-                const productExist = await checkIfProductAlreadyExistsByCode({
-                    productCode: code,
-                });
-
-                if (productExist) {
-                    setProductAlreadyExists(true);
-                    return;
-                }
-            }
+        if (nameFieldError || codeFieldError) {
+            return;
         }
         try {
             const newProduct: Omit<IProduct, 'id'> = {
@@ -233,14 +212,6 @@ const Add: React.FC = () => {
         setIsBarCodeEnabled(false);
     }, []);
 
-    const handleNavigateToExistProduct = useCallback(async () => {
-        const prod = await getProductByCode(code);
-
-        if (prod) {
-            navigate('ProductDetails', { id: prod.id });
-        }
-    }, [code, navigate]);
-
     const handleDimissNotification = useCallback(() => {
         setError('');
     }, []);
@@ -279,6 +250,26 @@ const Add: React.FC = () => {
         },
         [handleDisableCamera]
     );
+
+    const handleCheckProductCode = useCallback(async () => {
+        const prodExist = await checkIfProductAlreadyExistsByCode({
+            productCode: code,
+            productStore: store || undefined,
+        });
+
+        if (prodExist) {
+            setCodeFieldError(true);
+
+            const existProd = await getProductByCode(code, store || undefined);
+            setExistentProduct(existProd.id);
+        }
+    }, [code, store]);
+
+    const handleNavigateToExistProduct = useCallback(async () => {
+        if (existentProduct) {
+            navigate('AddLote', { productId: existentProduct });
+        }
+    }, [existentProduct, navigate]);
 
     return (
         <>
@@ -370,7 +361,9 @@ const Add: React.FC = () => {
                                             </InputTextTip>
                                         )}
 
-                                        <InputCodeTextContainer>
+                                        <InputCodeTextContainer
+                                            hasError={codeFieldError}
+                                        >
                                             <InputCodeText
                                                 placeholder={translate(
                                                     'View_AddProduct_InputPlacehoder_Code'
@@ -379,9 +372,11 @@ const Add: React.FC = () => {
                                                     'View_AddProduct_InputAccessibility_Code'
                                                 )}
                                                 value={code}
-                                                onChangeText={(value) =>
-                                                    setCode(value)
-                                                }
+                                                onChangeText={(value) => {
+                                                    setCode(value);
+                                                    setCodeFieldError(false);
+                                                }}
+                                                onBlur={handleCheckProductCode}
                                             />
                                             <InputTextIconContainer
                                                 onPress={
@@ -391,6 +386,18 @@ const Add: React.FC = () => {
                                                 <InputCodeTextIcon />
                                             </InputTextIconContainer>
                                         </InputCodeTextContainer>
+
+                                        {codeFieldError && (
+                                            <InputTextTip
+                                                onPress={
+                                                    handleNavigateToExistProduct
+                                                }
+                                            >
+                                                {translate(
+                                                    'View_AddProduct_Tip_DuplicateProduct'
+                                                )}
+                                            </InputTextTip>
+                                        )}
 
                                         <InputGroup>
                                             <InputTextContainer
@@ -532,47 +539,6 @@ const Add: React.FC = () => {
                             )}
                         </Container>
                     )}
-
-                    <Dialog
-                        visible={productAlreadyExists}
-                        onDismiss={() => {
-                            setProductAlreadyExists(false);
-                        }}
-                        style={{ backgroundColor: theme.colors.background }}
-                    >
-                        <Dialog.Title>
-                            {translate(
-                                'View_AddProduct_DuplicateProductNotificationTitle'
-                            )}
-                        </Dialog.Title>
-                        <Dialog.Content>
-                            <Text style={{ color: theme.colors.text }}>
-                                {translate(
-                                    'View_AddProduct_DuplicateProductNotificationDescription'
-                                )}
-                            </Text>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <ButtonPaper
-                                color={theme.colors.accent}
-                                onPress={handleNavigateToExistProduct}
-                            >
-                                {translate(
-                                    'View_AddProduct_DuplicateProductNotificationButtonEditProdct'
-                                )}
-                            </ButtonPaper>
-                            <ButtonPaper
-                                color={theme.colors.accent}
-                                onPress={() => {
-                                    setProductAlreadyExists(false);
-                                }}
-                            >
-                                {translate(
-                                    'View_AddProduct_DuplicateProductNotificationButtonClose'
-                                )}
-                            </ButtonPaper>
-                        </Dialog.Actions>
-                    </Dialog>
                 </>
             )}
         </>

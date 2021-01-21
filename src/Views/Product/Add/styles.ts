@@ -104,7 +104,7 @@ export const NumericInputField = styled(NumericInput).attrs((props) => ({
     color: ${({ theme }) => theme.colors.inputText};
 `;
 
-export const InputCodeTextContainer = styled.View`
+export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -113,6 +113,12 @@ export const InputCodeTextContainer = styled.View`
     border-radius: 12px;
     background-color: ${({ theme }) => theme.colors.inputBackground};
     padding-right: 10px;
+
+    ${(props) =>
+        props.hasError &&
+        css`
+            border: 2px solid red;
+        `}
 `;
 
 export const InputTextIconContainer = styled(RectButton)``;
