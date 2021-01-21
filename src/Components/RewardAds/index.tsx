@@ -26,12 +26,14 @@ interface Props {
     show: boolean;
     rewardFor: 'Themes' | 'Ads' | 'Images';
     onRewardClaimed: () => void;
+    onLoadedChange: (loaded: boolean) => void;
 }
 
 const RewardAds: React.FC<Props> = ({
     show = false,
     rewardFor,
     onRewardClaimed,
+    onLoadedChange,
 }: Props) => {
     const [loaded, setLoaded] = useState(false);
 
@@ -85,6 +87,10 @@ const RewardAds: React.FC<Props> = ({
             eventListener();
         };
     }, [setReward]);
+
+    useEffect(() => {
+        onLoadedChange(loaded);
+    }, [loaded, onLoadedChange]);
 
     useEffect(() => {
         if (show && loaded) {

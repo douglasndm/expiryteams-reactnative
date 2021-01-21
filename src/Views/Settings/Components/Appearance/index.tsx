@@ -34,6 +34,7 @@ const Appearance: React.FC = () => {
 
     const [selectedTheme, setSelectedTheme] = useState<string>('system');
     const [showRewardAd, setShowRewardAd] = useState<boolean>(false);
+    const [adLoaded, setAdLoaded] = useState<boolean>(false);
 
     const data = useMemo(() => {
         const availableThemes: Array<IThemeItem> = [];
@@ -116,6 +117,10 @@ const Appearance: React.FC = () => {
         setIsProByReward(true);
     }, []);
 
+    const onAdLoadedChange = useCallback((loaded: boolean) => {
+        setAdLoaded(loaded);
+    }, []);
+
     return (
         <Category>
             <CategoryTitle>
@@ -138,14 +143,18 @@ const Appearance: React.FC = () => {
 
                 {!userPreferences.isUserPremium && !isProByReward && (
                     <>
-                        <Button
-                            text={translate('RewardAd_Button_AdForTheme')}
-                            onPress={handleShowAd}
-                        />
+                        {adLoaded && (
+                            <Button
+                                text={translate('RewardAd_Button_AdForTheme')}
+                                onPress={handleShowAd}
+                            />
+                        )}
+
                         <RewardAds
                             rewardFor="Themes"
                             show={showRewardAd}
                             onRewardClaimed={onRewardClaimed}
+                            onLoadedChange={onAdLoadedChange}
                         />
                     </>
                 )}
