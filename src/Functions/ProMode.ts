@@ -76,7 +76,9 @@ export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
 }
 
 export async function makeSubscription(): Promise<void> {
-    await Analytics().logEvent('started_susbscription_process');
+    if (!__DEV__) {
+        await Analytics().logEvent('started_susbscription_process');
+    }
 
     const userSigned = await isUserSignedIn();
 
