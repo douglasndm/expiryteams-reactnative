@@ -1,18 +1,51 @@
-import React, { useCallback } from 'react';
-import { ScrollView, Alert } from 'react-native';
-import { DocumentDirectoryPath, readDir, mkdir, exists } from 'react-native-fs';
-import { encryptionMethods, zip } from 'react-native-zip-archive';
-import { addDays, mk } from 'date-fns';
+import React, { useCallback, useState, useEffect } from 'react';
+import { ScrollView } from 'react-native';
+import { DocumentDirectoryPath, readDir } from 'react-native-fs';
+import { zip } from 'react-native-zip-archive';
+import { addDays } from 'date-fns';
+import {
+    RewardedAd,
+    TestIds,
+    RewardedAdEventType,
+} from '@react-native-firebase/admob';
 
 import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
-import { getEnableNotifications } from '../../Functions/Settings';
 import { Container, Category } from '../Settings/styles';
 import { getAllProducts } from '~/Functions/Products';
+import {
+    isProThemeByRewards,
+    setProThemesByRewards,
+} from '~/Functions/Pro/Rewards/Themes';
+
+const rewardedAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 
 const Test: React.FC = () => {
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        const eventListener = rewardedAd.onAdEvent((type, error, reward) => {
+            if (type === RewardedAdEventType.LOADED) {
+                setLoaded(true);
+            }
+
+            if (type === RewardedAdEventType.EARNED_REWARD) {
+                console.log('User earned reward of ', reward);
+                setLoaded(false);
+            }
+        });
+
+        // Start loading the rewarded ad straight away
+        rewardedAd.load();
+
+        // Unsubscribe from events on unmount
+        return () => {
+            eventListener();
+        };
+    }, []);
+
     async function sampleData() {
         const realm = await Realm();
 
@@ -64,16 +97,6 @@ const Test: React.FC = () => {
         }
     }
 
-    async function getNot() {
-        const noti = await getEnableNotifications();
-
-        if (noti) {
-            Alert.alert('Habilitado');
-        } else {
-            Alert.alert('Desabilitado');
-        }
-    }
-
     interface IProductImage {
         productId: number;
         imagePath: string;
@@ -110,12 +133,17 @@ const Test: React.FC = () => {
         console.log(zipPath);
     }, []);
 
+    const rewardAd = useCallback(() => {
+        if (loaded) {
+            rewardedAd.show();
+            rewardedAd.load();
+        }
+    }, [loaded]);
+
     return (
         <Container>
             <ScrollView>
                 <Category>
-                    <Button text="Notification Status" onPress={getNot} />
-
                     <Button text="Load with sample data" onPress={sampleData} />
 
                     <Button
@@ -124,6 +152,20 @@ const Test: React.FC = () => {
                     />
 
                     <Button text="Log files" onPress={logFiles} />
+
+                    <Button
+                        text="log times"
+                        onPress={async () =>
+                            console.log(await isProThemeByRewards())
+                        }
+                    />
+
+                    <Button
+                        text="log  set time"
+                        onPress={async () => setProThemesByRewards()}
+                    />
+
+                    <Button text="Show rewards ad" onPress={rewardAd} />
                 </Category>
             </ScrollView>
         </Container>

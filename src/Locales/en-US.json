@@ -259,5 +259,7 @@
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",
     "AskUserReview_Button_No": "Not now",
-    "AskUserReview_Button_Yes": "Sure, let's do it"
+    "AskUserReview_Button_Yes": "Sure, let's do it",
+
+    "RewardAd_Button_AdForTheme": "Watch an ad and test PRO themes for 15 minutes"
 }

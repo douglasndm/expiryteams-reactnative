@@ -259,6 +259,8 @@
     "AskUserReview_Title": "Você está gostando do aplicativo?",
     "AskUserReview_Description": "Estou me esforçando para criar o melhor aplicativo da categoria, você poderia tirar alguns segundos para dizer como está o meu trabalho?",
     "AskUserReview_Button_No": "Não agora",
-    "AskUserReview_Button_Yes": "Claro, fazer avaliação"
+    "AskUserReview_Button_Yes": "Claro, fazer avaliação",
+
+    "RewardAd_Button_AdForTheme": "Veja 1 anúcio e teste os temas PRO por 15 minutos"
 }
 

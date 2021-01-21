@@ -3,13 +3,13 @@ import { getThemeByName } from '../Themes';
 
 import { isUserSignedIn } from './Auth/Google';
 import {
-    getAppTheme,
     getEnableMultipleStoresMode,
     getEnableNotifications,
     getNotificationCadency,
     getEnableProVersion,
     getHowManyDaysToBeNextExp,
 } from './Settings';
+import { getAppTheme } from './Themes';
 
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
     try {

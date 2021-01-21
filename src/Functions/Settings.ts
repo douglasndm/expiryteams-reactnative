@@ -5,7 +5,6 @@ import { getMultiplesStoresForLegacyUsers } from './MultiplesStoresLegacyUsers';
 interface ISetSettingProps {
     type:
         | 'HowManyDaysToBeNextExp'
-        | 'AppTheme'
         | 'EnableNotifications'
         | 'EnableMultipleStores'
         | 'EnableProVersion'
@@ -39,13 +38,6 @@ export async function setHowManyDaysToBeNextExp(
     await setSetting({
         type: 'HowManyDaysToBeNextExp',
         value: String(howManyDays),
-    });
-}
-
-export async function setAppTheme(themeName: string): Promise<void> {
-    await setSetting({
-        type: 'AppTheme',
-        value: themeName,
     });
 }
 
@@ -105,16 +97,6 @@ export async function getHowManyDaysToBeNextExp(): Promise<number> {
     }
 
     return Number(setting);
-}
-
-export async function getAppTheme(): Promise<string> {
-    const setting = await getSetting({ type: 'AppTheme' });
-
-    if (!setting) {
-        return 'system';
-    }
-
-    return setting;
 }
 
 export async function getEnableNotifications(): Promise<boolean> {
