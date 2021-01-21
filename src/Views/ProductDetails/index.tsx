@@ -22,6 +22,7 @@ import Notification from '../../Components/Notification';
 
 import { getProductById } from '../../Functions/Product';
 import { sortLoteByExpDate } from '../../Functions/Lotes';
+import { isProImagesByRewards } from '~/Functions/Pro/Rewards/Images';
 
 import {
     Container,
@@ -61,6 +62,8 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
+    const [isProByReward, setIsProByReward] = useState<boolean>(false);
+
     const { navigate, goBack } = useNavigation();
 
     const productId = useMemo(() => {
@@ -78,6 +81,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [lotes, setLotes] = useState<Array<ILote>>([]);
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
+
+    useEffect(() => {
+        isProImagesByRewards().then((response) => setIsProByReward(response));
+    }, []);
 
     const getProduct = useCallback(async () => {
         setIsLoading(true);
@@ -166,17 +173,18 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         </PageTitleContent>
 
                         <ProductContainer>
-                            {!!photo && (
-                                <ProductImageContainer
-                                    onPress={handleOnPhotoPress}
-                                >
-                                    <ProductImage
-                                        source={{
-                                            uri: photo,
-                                        }}
-                                    />
-                                </ProductImageContainer>
-                            )}
+                            {(userPreferences.isUserPremium || isProByReward) &&
+                                !!photo && (
+                                    <ProductImageContainer
+                                        onPress={handleOnPhotoPress}
+                                    >
+                                        <ProductImage
+                                            source={{
+                                                uri: photo,
+                                            }}
+                                        />
+                                    </ProductImageContainer>
+                                )}
                             <ProductInformationContent>
                                 <ProductName>{name}</ProductName>
                                 {!!code && (
