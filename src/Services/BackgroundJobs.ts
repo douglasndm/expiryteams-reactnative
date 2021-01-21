@@ -2,32 +2,33 @@ import { Platform } from 'react-native';
 import BackgroundJob from 'react-native-background-fetch';
 
 import {
-    getNotificationCadency,
-    NotificationCadency,
-} from '~/Functions/Settings';
+    isTimeForANotification,
+    setTimeForNextNotification,
+} from '~/Functions/Notifications';
 
 import { getNotificationForAllProductsCloseToExp } from '../Functions/ProductsNotifications';
 
 import { sendNotification } from './Notifications';
 
 const handleSetNotification = async () => {
-    const notification = await getNotificationForAllProductsCloseToExp();
+    const notificationTime = await isTimeForANotification();
 
-    if (notification) {
-        sendNotification(notification);
+    if (notificationTime) {
+        // schedule next notification
+        await setTimeForNextNotification();
+
+        const notification = await getNotificationForAllProductsCloseToExp();
+
+        if (notification) {
+            sendNotification(notification);
+        }
     }
 };
 
 async function configureBackgroundJob() {
-    const notificationCadency = await getNotificationCadency();
-
-    if (notificationCadency === NotificationCadency.Never) {
-        return;
-    }
-
     BackgroundJob.configure(
         {
-            minimumFetchInterval: __DEV__ ? 15 : 1440,
+            minimumFetchInterval: 15,
             // Android options
             forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
             stopOnTerminate: false,
