@@ -26,6 +26,7 @@ import {
     createProduct,
 } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
+import { isProImagesByRewards } from '~/Functions/Pro/Rewards/Images';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -33,6 +34,8 @@ import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Notification from '~/Components/Notification';
+
+import RewardCamera from '../Components/RewardCamera';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -91,6 +94,7 @@ const Add: React.FC = () => {
     const theme = useTheme();
 
     const [adReady, setAdReady] = useState(false);
+    const [isProByReward, setIsProByReward] = useState<boolean>(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -185,6 +189,10 @@ const Add: React.FC = () => {
             setError(error.message);
         }
     }
+
+    useEffect(() => {
+        isProImagesByRewards().then((response) => setIsProByReward(response));
+    }, []);
 
     useEffect(() => {
         const eventListener = interstitialAd.onAdEvent((type) => {
@@ -286,6 +294,15 @@ const Add: React.FC = () => {
                                 </PageHeader>
 
                                 <PageContent>
+                                    {!userPreferences.isUserPremium &&
+                                        !isProByReward && (
+                                            <RewardCamera
+                                                setIsProByReward={
+                                                    setIsProByReward
+                                                }
+                                            />
+                                        )}
+
                                     <InputContainer>
                                         <InputGroup>
                                             <InputTextContainer>
@@ -307,7 +324,8 @@ const Add: React.FC = () => {
                                                     }}
                                                 />
                                             </InputTextContainer>
-                                            {userPreferences.isUserPremium && (
+                                            {(userPreferences.isUserPremium ||
+                                                isProByReward) && (
                                                 <CameraButtonContainer
                                                     onPress={handleEnableCamera}
                                                 >
