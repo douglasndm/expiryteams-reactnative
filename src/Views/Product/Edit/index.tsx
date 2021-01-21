@@ -34,6 +34,7 @@ import {
     InputContainer,
     InputTextContainer,
     InputText,
+    InputTextTip,
     InputCodeTextContainer,
     InputCodeTextIcon,
     InputCodeText,
@@ -78,6 +79,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [photoPath, setPhotoPath] = useState('');
     const [store, setStore] = useState<string>('');
 
+    const [nameFieldError, setNameFieldError] = useState<boolean>(false);
+
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
@@ -113,7 +116,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     async function updateProd() {
         if (!name || name.trim() === '') {
-            setError(translate('View_EditProduct_Error_EmptyProductName'));
+            setNameFieldError(true);
             return;
         }
 
@@ -265,6 +268,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     value={name}
                                                     onChangeText={(value) => {
                                                         setName(value);
+                                                        setNameFieldError(
+                                                            false
+                                                        );
                                                     }}
                                                 />
                                             </InputTextContainer>
@@ -278,6 +284,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 </CameraButtonContainer>
                                             )}
                                         </InputGroup>
+                                        {nameFieldError && (
+                                            <InputTextTip>
+                                                {translate(
+                                                    'View_EditProduct_Error_EmptyProductName'
+                                                )}
+                                            </InputTextTip>
+                                        )}
 
                                         <InputCodeTextContainer>
                                             <InputCodeText
