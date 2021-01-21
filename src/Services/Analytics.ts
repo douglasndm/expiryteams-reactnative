@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { firebase } from '@react-native-firebase/analytics';
 
 const enableFirebaseAnalytics = async (enable: boolean): Promise<void> => {
@@ -5,5 +6,7 @@ const enableFirebaseAnalytics = async (enable: boolean): Promise<void> => {
 };
 
 if (!__DEV__) {
-    enableFirebaseAnalytics(true);
+    if (Platform.OS === 'android') {
+        enableFirebaseAnalytics(true);
+    }
 }
