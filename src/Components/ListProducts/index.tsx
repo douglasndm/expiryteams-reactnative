@@ -70,7 +70,12 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [products, handleNavigateProPage, userPreferences.isUserPremium]);
+    }, [
+        products,
+        handleNavigateProPage,
+        userPreferences.isUserPremium,
+        choosenAdText,
+    ]);
 
     const EmptyList = useCallback(() => {
         return (

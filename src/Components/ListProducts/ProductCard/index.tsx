@@ -1,31 +1,32 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
-import { PixelRatio } from 'react-native';
+import React, {
+    useState,
+    useEffect,
+    useContext,
+    useMemo,
+    useCallback,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 
-import NumberFormat from 'react-number-format';
 
 import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
+import { isProImagesByRewards } from '~/Functions/Pro/Rewards/Images';
+import { getProductImagePath } from '~/Functions/Products/Image';
+
 import {
-    Container,
     Card,
+    Content,
     ProductDetails,
-    ProductDetailsContainer,
+    TextContainer,
     ProductName,
     ProductInfoItem,
     ProductExpDate,
-    LoteDetailsContainer,
-    AmountContainer,
-    AmountContainerText,
-    Amount,
-    PriceContainer,
-    PriceContainerText,
-    Price,
+    ProductImage,
 } from './styles';
 
 interface Request {
@@ -35,11 +36,12 @@ interface Request {
     nextToExp: boolean;
 }
 const Product = ({ product, expired, nextToExp }: Request) => {
-    const navigation = useNavigation();
+    const { navigate } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [totalPrice, setTotalPrice] = useState(0);
+    const [isProByReward, setIsProByReward] = useState<boolean>(false);
+    const [imagePath, setImagePath] = useState<string>('');
 
     const [languageCode] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -54,14 +56,6 @@ const Product = ({ product, expired, nextToExp }: Request) => {
         return 'dd/MM/yyyy';
     });
 
-    const currencyPrefix = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return '$';
-        }
-
-        return 'R$';
-    }, []);
-
     const exp_date = useMemo(() => {
         if (product.lotes[0]) {
             return product.lotes[0].exp_date;
@@ -74,27 +68,36 @@ const Product = ({ product, expired, nextToExp }: Request) => {
     }, [expired, nextToExp]);
 
     useEffect(() => {
-        if (product.lotes[0]) {
-            if (product.lotes[0].amount && product.lotes[0].price) {
-                setTotalPrice(product.lotes[0].price * product.lotes[0].amount);
+        getProductImagePath(product.id).then((path) => {
+            if (path) {
+                setImagePath(`file://${path}`);
             }
-        }
-    }, [product]);
+        });
+    }, [product.id]);
+
+    useEffect(() => {
+        isProImagesByRewards().then((response) => setIsProByReward(response));
+    }, []);
+
+    const handleNavigateToProduct = useCallback(() => {
+        navigate('ProductDetails', { id: product.id });
+    }, [navigate, product.id]);
 
     return (
-        <Container>
-            <Card
-                onPress={() => {
-                    navigation.navigate('ProductDetails', { id: product.id });
-                }}
-                expired={expired}
-                nextToExp={nextToExp}
-            >
-                <ProductDetails>
-                    <ProductDetailsContainer>
-                        <ProductName expiredOrNext={expiredOrNext}>
-                            {product.name}
-                        </ProductName>
+        <Card
+            expired={expired}
+            nextToExp={nextToExp}
+            onPress={handleNavigateToProduct}
+        >
+            <Content>
+                {(isProByReward || userPreferences.isUserPremium) &&
+                    !!imagePath && <ProductImage source={{ uri: imagePath }} />}
+
+                <TextContainer>
+                    <ProductName expiredOrNext={expiredOrNext}>
+                        {product.name}
+                    </ProductName>
+                    <ProductDetails>
                         {!!product.code && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {translate('ProductCardComponent_ProductCode')}:
@@ -115,64 +118,34 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                 : {product.store}
                             </ProductInfoItem>
                         )}
-                    </ProductDetailsContainer>
 
-                    {product.lotes.length > 0 && !!product.lotes[0].amount && (
-                        <LoteDetailsContainer>
-                            <AmountContainer>
-                                <AmountContainerText
-                                    expiredOrNext={expiredOrNext}
-                                >
-                                    {translate(
+                        {product.lotes.length > 0 &&
+                            !!product.lotes[0].amount && (
+                                <ProductInfoItem expiredOrNext={expiredOrNext}>
+                                    {`${translate(
                                         'ProductCardComponent_ProductAmount'
-                                    )}
-                                </AmountContainerText>
-                                <Amount expiredOrNext={expiredOrNext}>
-                                    {product.lotes[0].amount}
-                                </Amount>
-                            </AmountContainer>
-
-                            {PixelRatio.get() > 1 && totalPrice > 0 && (
-                                <PriceContainer>
-                                    <PriceContainerText
-                                        expiredOrNext={expiredOrNext}
-                                    >
-                                        {translate(
-                                            'ProductCardComponent_ProductPrice'
-                                        )}
-                                    </PriceContainerText>
-                                    <Price expiredOrNext={expiredOrNext}>
-                                        <NumberFormat
-                                            value={totalPrice}
-                                            displayType="text"
-                                            thousandSeparator
-                                            prefix={currencyPrefix}
-                                            renderText={(value) => value}
-                                            decimalScale={2}
-                                        />
-                                    </Price>
-                                </PriceContainer>
+                                    )}: ${product.lotes[0].amount}`}
+                                </ProductInfoItem>
                             )}
-                        </LoteDetailsContainer>
-                    )}
-                </ProductDetails>
+                    </ProductDetails>
+                </TextContainer>
+            </Content>
 
-                {!!exp_date && (
-                    <ProductExpDate expiredOrNext={expiredOrNext}>
-                        {expired
-                            ? translate('ProductCardComponent_ProductExpiredIn')
-                            : translate('ProductCardComponent_ProductExpireIn')}
-                        {` ${formatDistanceToNow(exp_date, {
-                            addSuffix: true,
-                            locale: languageCode,
-                        })}`}
-                        {format(exp_date, `, EEEE, ${dateFormat}`, {
-                            locale: languageCode,
-                        })}
-                    </ProductExpDate>
-                )}
-            </Card>
-        </Container>
+            {!!exp_date && (
+                <ProductExpDate expiredOrNext={expiredOrNext}>
+                    {expired
+                        ? translate('ProductCardComponent_ProductExpiredIn')
+                        : translate('ProductCardComponent_ProductExpireIn')}
+                    {` ${formatDistanceToNow(exp_date, {
+                        addSuffix: true,
+                        locale: languageCode,
+                    })}`}
+                    {format(exp_date, `, EEEE, ${dateFormat}`, {
+                        locale: languageCode,
+                    })}
+                </ProductExpDate>
+            )}
+        </Card>
     );
 };
 
