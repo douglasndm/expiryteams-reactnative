@@ -22,7 +22,7 @@ export async function isProThemeByRewards(): Promise<boolean> {
 }
 
 export async function setProThemesByRewards(minutes?: number): Promise<void> {
-    let time = __DEV__ ? 1 : 15;
+    let time = __DEV__ ? 1 : 5;
 
     if (minutes && !__DEV__) {
         time = minutes;
