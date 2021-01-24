@@ -16,9 +16,16 @@ import Button from '../../Components/Button';
 import { Container, Category } from '../Settings/styles';
 import { getAllProducts } from '~/Functions/Products';
 import {
+    isTimeForANotification,
+    setTimeForNextNotification,
+} from '~/Functions/Notifications';
+
+import {
     isProThemeByRewards,
     setProThemesByRewards,
 } from '~/Functions/Pro/Rewards/Themes';
+import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
+import { sendNotification } from '~/Services/Notifications';
 
 const rewardedAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 
@@ -140,6 +147,16 @@ const Test: React.FC = () => {
         }
     }, [loaded]);
 
+    const handleNotification = useCallback(async () => {
+        await setTimeForNextNotification();
+
+        const notification = await getNotificationForAllProductsCloseToExp();
+
+        if (notification) {
+            sendNotification(notification);
+        }
+    }, []);
+
     return (
         <Container>
             <ScrollView>
@@ -166,6 +183,20 @@ const Test: React.FC = () => {
                     />
 
                     <Button text="Show rewards ad" onPress={rewardAd} />
+
+                    <Button
+                        text="Log is time to notificaiton"
+                        onPress={() =>
+                            isTimeForANotification().then((response) =>
+                                console.log(response)
+                            )
+                        }
+                    />
+
+                    <Button
+                        text="Throw notification"
+                        onPress={handleNotification}
+                    />
                 </Category>
             </ScrollView>
         </Container>

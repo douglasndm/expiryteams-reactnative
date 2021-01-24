@@ -236,12 +236,12 @@
     "Function_Share_SaveFileTitle": "Save file",
     "Function_Share_SaveFileDescription": "Choose a place to save the file",
 
-    "Function_Notification_ItOnlyHasProductsNextToExpTitle": "You have products close to expire.",
+    "Function_Notification_ItOnlyHasProductsNextToExpTitle": "You have products that will expire soon.",
     "Function_Notification_ItOnlyHasExpiredProductsTitle": "YOU HAVE EXPIRED PRODUCTS!",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "YOU HAVE EXPIRED PRODUCTS AND PRODUCTS CLOSE TO EXPIRE!",
-    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "You have {NUMBER} batches close to expire.",
-    "Function_Notification_ItOnlyHasExpiredProductsMessage": "YOU HAVE {NUMBER} NO TREATED EXPIRED BATCHES.",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "YOU HAVE {EXPIREDNUMBER} NO TREATED EXPIRED BATCHES AND {NEXTBATCHES} CLOSE TO EXPIRE BATCHES.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "YOU HAVE EXPIRED PRODUCTS!",
+    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "You have {NUMBER} products that will expire soon.",
+    "Function_Notification_ItOnlyHasExpiredProductsMessage": "YOU HAVE {NUMBER} EXPIRED PRODUCTS.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "You have {EXPIREDNUMBER} expired products and some others that will expire soon.",
 
     "Function_Excel_ColumnName_ProductName": "Product",
     "Function_Excel_ColumnName_ProductCode": "Code",

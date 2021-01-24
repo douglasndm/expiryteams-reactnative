@@ -238,10 +238,10 @@
 
     "Function_Notification_ItOnlyHasProductsNextToExpTitle": "Você tem produtos próximo ao vencimento.",
     "Function_Notification_ItOnlyHasExpiredProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS!",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS E PRÓXIMOS AO VENCIMENTO!",
-    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "Você tem {NUMBER} lotes próximo ao vencimento.",
-    "Function_Notification_ItOnlyHasExpiredProductsMessage": "VOCÊ TEM {NUMBER} LOTES NÃO TRATADOS VENCIDOS.",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "VOCÊ TEM {EXPIREDNUMBER} LOTES NÃO TRATADOS VENCIDOS E {NEXTBATCHES} PRÓXIMOS AO VENCIMENTO.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS!",
+    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "Você tem {NUMBER} produtos próximos ao vencimento.",
+    "Function_Notification_ItOnlyHasExpiredProductsMessage": "Você tem {NUMBER} produtos vencidos que ainda não foram tratados.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "Você tem {EXPIREDNUMBER} produtos vencidos e também tem produtos próximos ao vencimento que ainda não foram tratados.",
 
     "Function_Excel_ColumnName_ProductName": "Produto",
     "Function_Excel_ColumnName_ProductCode": "Código",

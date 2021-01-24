@@ -89,9 +89,7 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
             );
             NotificationMessage = translate(
                 'Function_Notification_ItHasExpiredAndNextToExpireProductsMessage'
-            )
-                .replace('{EXPIREDNUMBER}', String(productsVencidosCount))
-                .replace('{NEXTBATCHES}', String(productsNextToExpCount));
+            ).replace('{EXPIREDNUMBER}', String(productsVencidosCount));
         }
 
         if (!!NotificationTitle && !!NotificationMessage) {
