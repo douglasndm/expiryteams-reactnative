@@ -16,6 +16,7 @@ import {
     CategoryDetails,
     CategoryDetailsText,
     EmptyListText,
+    InvisibleComponent,
 } from './styles';
 
 interface RequestProps {
@@ -33,10 +34,6 @@ const ListProducts: React.FC<RequestProps> = ({
 
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
-    }, [navigate]);
-
-    const handleNavigateAddNewProduct = useCallback(() => {
-        navigate('AddProduct');
     }, [navigate]);
 
     const handleNavigateProPage = useCallback(() => {
@@ -93,22 +90,13 @@ const ListProducts: React.FC<RequestProps> = ({
                         'ListProductsComponent_Button_ShowAllProducts'
                     )}
                     onPress={handleNavigateToAllProducts}
+                    contentStyle={{ marginBottom: 100 }}
                 />
             );
         }
 
-        return (
-            <GenericButton
-                text={translate('ListProductsComponent_Button_AddNewProduct')}
-                onPress={handleNavigateAddNewProduct}
-            />
-        );
-    }, [
-        products.length,
-        isHome,
-        handleNavigateAddNewProduct,
-        handleNavigateToAllProducts,
-    ]);
+        return <InvisibleComponent />;
+    }, [products.length, isHome, handleNavigateToAllProducts]);
 
     const renderComponent = useCallback(({ item, index }) => {
         return <ProductItem product={item} index={index} />;
