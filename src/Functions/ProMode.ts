@@ -2,7 +2,7 @@ import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
 
-import { isUserSignedIn } from './Auth/Google';
+import { isUserSignedIn } from './Auth';
 import { getUserId } from './User';
 import { setEnableProVersion } from './Settings';
 

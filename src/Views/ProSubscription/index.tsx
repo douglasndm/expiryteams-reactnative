@@ -15,7 +15,7 @@ import {
     makeSubscription,
     isSubscriptionActive,
 } from '../../Functions/ProMode';
-import { isUserSignedIn } from '../../Functions/Auth/Google';
+import { isUserSignedIn } from '~/Functions/Auth';
 
 import Loading from '../../Components/Loading';
 import Notification from '../../Components/Notification';

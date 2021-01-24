@@ -1,7 +1,7 @@
 import { IUserPreferences } from '../@types/userPreference';
 import { getThemeByName } from '../Themes';
 
-import { isUserSignedIn } from './Auth/Google';
+import { isUserSignedIn } from './Auth';
 import {
     getEnableMultipleStoresMode,
     getEnableNotifications,

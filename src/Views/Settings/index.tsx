@@ -18,7 +18,7 @@ import {
     setHowManyDaysToBeNextExp,
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
-import { isUserSignedIn, signOutGoogle } from '../../Functions/Auth/Google';
+import { isUserSignedIn, signOut } from '~/Functions/Auth';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -107,7 +107,7 @@ const Settings: React.FC = () => {
     const handleLogout = useCallback(async () => {
         try {
             setIsOnLogout(true);
-            await signOutGoogle();
+            await signOut();
 
             setUserPreferences({
                 ...userPreferences,

@@ -57,7 +57,7 @@
     "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo made by",
-    "View_About_DonateDescription": "Did you like this app? Is this useful for you? Contribute with any amount to help keep it working and bringing new functions like the iPhone version.",
+    "View_About_DonateDescription": "Do you like this app? Is this useful for you? Contribute with any amount to help keep it working and bringing new functions like the iPhone version.",
     "View_About_Button_Donate": "Donate",
 
     "View_AddBatch_AlertTypeBatchName": "Type the batch's name",
@@ -95,10 +95,10 @@
     "View_AllProductsByStore_PageTitle": "All products by store",
 
     "View_Auth_SignIn_PageTitle": "Identify yourself",
-    "View_Auth_SignIn_Text_LoginRequired": "A Google authetication is required to continue.",
+    "View_Auth_SignIn_Text_LoginRequired": "An authentication is necessary to continue.",
     "View_Auth_SignIn_Text_WhyLogin": "We need to know who are you to use that to identify you when you restore your app in a new phone or when you reset this one.",
     "View_Auth_SignIn_Text_Benefits": "With that we can restore your subscription without you need to subscribe it again.",
-    "View_Auth_SignIn_Text_Login": "Login in",
+    "View_Auth_SignIn_Text_Login": "Continue with your account",
     "View_Auth_SignIn_Text_AllDone": "All done!",
     "View_Auth_SignIn_Button_ContinueToSubscription": "Continue to subscription",
 

@@ -1,16 +1,16 @@
 import React, { useCallback, useState, useContext } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '../../../Locales';
+import { translate } from '~/Locales';
 
-import { setUserId } from '../../../Functions/User';
-import { signInWithGoogle } from '../../../Functions/Auth/Google';
+import { setUserId } from '~/Functions/User';
+import { signIn } from '~/Functions/Auth';
 
-import PreferencesContext from '../../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import Header from '../../../Components/Header';
-import GenericButton from '../../../Components/Button';
-import Notification from '../../../Components/Notification';
+import Header from '~/Components/Header';
+import GenericButton from '~/Components/Button';
 
 import {
     Container,
@@ -19,7 +19,10 @@ import {
     SecondText,
     ThirdText,
     LoginText,
+    ButtonContainer,
+    AppleButton,
     GoogleButton,
+    ErrorMessage,
 } from './styles';
 
 const SignIn: React.FC = () => {
@@ -32,11 +35,29 @@ const SignIn: React.FC = () => {
         PreferencesContext
     );
 
+    const handleLoginWithApple = useCallback(async () => {
+        try {
+            setCompleted(false);
+            const user = await signIn('Apple');
+
+            await setUserId(user.uid);
+
+            setUserPreferences({
+                ...userPreferences,
+                isUserSignedIn: true,
+            });
+
+            setCompleted(true);
+        } catch (err) {
+            setError(err.message);
+        }
+    }, [userPreferences, setUserPreferences]);
+
     const handleGoogleButtonPressed = useCallback(async () => {
         try {
             setCompleted(false);
 
-            const user = await signInWithGoogle();
+            const user = await signIn('Google');
 
             await setUserId(user.uid);
 
@@ -83,26 +104,31 @@ const SignIn: React.FC = () => {
                     ? translate('View_Auth_SignIn_Text_AllDone')
                     : translate('View_Auth_SignIn_Text_Login')}
             </LoginText>
-            {!completed && <GoogleButton onPress={handleGoogleButtonPressed} />}
 
-            {completed && (
-                <GenericButton
-                    text={translate(
-                        'View_Auth_SignIn_Button_ContinueToSubscription'
-                    )}
-                    onPress={handleToGoProPage}
-                />
-            )}
+            <ButtonContainer>
+                {Platform.OS === 'ios' && !completed && (
+                    <AppleButton
+                        buttonStyle={AppleButton.Style.WHITE_OUTLINE}
+                        onPress={handleLoginWithApple}
+                    />
+                )}
 
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
+                {Platform.OS === 'android' && !completed && (
+                    <GoogleButton onPress={handleGoogleButtonPressed} />
+                )}
+
+                {completed && (
+                    <GenericButton
+                        text={translate(
+                            'View_Auth_SignIn_Button_ContinueToSubscription'
+                        )}
+                        onPress={handleToGoProPage}
+                    />
+                )}
+            </ButtonContainer>
+
+            {!!error && <ErrorMessage>{error}</ErrorMessage>}
         </Container>
     );
 };
-
 export default SignIn;

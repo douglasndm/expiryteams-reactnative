@@ -1,4 +1,4 @@
-interface IUser {
+interface IFirebaseUser {
     displayName: string | null;
     email: string | null;
     emailVerified: boolean;
@@ -7,7 +7,7 @@ interface IUser {
     uid: string;
 }
 
-interface IGoogleUser {
+interface IUser {
     name: string | null;
     email: string | null;
     photo: string | null;
