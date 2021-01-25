@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
 
@@ -73,12 +73,15 @@ const About: React.FC = () => {
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
             </AboutSection>
 
-            <AboutSection>
-                <Text>{translate('View_About_DonateDescription')}</Text>
-                <Link onPress={handleDonatePress}>
-                    {translate('View_About_Button_Donate')}
-                </Link>
-            </AboutSection>
+            {/* Apple does not allow links to any kind of payment outside App Store */}
+            {Platform.OS !== 'ios' && (
+                <AboutSection>
+                    <Text>{translate('View_About_DonateDescription')}</Text>
+                    <Link onPress={handleDonatePress}>
+                        {translate('View_About_Button_Donate')}
+                    </Link>
+                </AboutSection>
+            )}
 
             <AboutSection>
                 <Text>{translate('View_About_LogoMadeBy')}</Text>

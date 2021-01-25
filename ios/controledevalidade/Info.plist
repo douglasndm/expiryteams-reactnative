@@ -6,6 +6,8 @@
 	<array>
 		<string>com.transistorsoft.fetch</string>
 	</array>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<string>true</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -105,8 +107,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-    <key>CFBundleAllowMixedLocalizations</key>
-    <string>true</string>
 </dict>
 </plist>
