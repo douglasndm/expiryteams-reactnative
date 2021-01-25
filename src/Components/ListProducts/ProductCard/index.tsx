@@ -15,7 +15,6 @@ import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { isProImagesByRewards } from '~/Functions/Pro/Rewards/Images';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
 import {
@@ -40,7 +39,6 @@ const Product = ({ product, expired, nextToExp }: Request) => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [isProByReward, setIsProByReward] = useState<boolean>(false);
     const [imagePath, setImagePath] = useState<string>('');
 
     const [languageCode] = useState(() => {
@@ -75,10 +73,6 @@ const Product = ({ product, expired, nextToExp }: Request) => {
         });
     }, [product.id]);
 
-    useEffect(() => {
-        isProImagesByRewards().then((response) => setIsProByReward(response));
-    }, []);
-
     const handleNavigateToProduct = useCallback(() => {
         navigate('ProductDetails', { id: product.id });
     }, [navigate, product.id]);
@@ -90,8 +84,9 @@ const Product = ({ product, expired, nextToExp }: Request) => {
             onPress={handleNavigateToProduct}
         >
             <Content>
-                {(isProByReward || userPreferences.isUserPremium) &&
-                    !!imagePath && <ProductImage source={{ uri: imagePath }} />}
+                {userPreferences.isUserPremium && !!imagePath && (
+                    <ProductImage source={{ uri: imagePath }} />
+                )}
 
                 <TextContainer>
                     <ProductName expiredOrNext={expiredOrNext}>

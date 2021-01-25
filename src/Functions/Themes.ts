@@ -1,13 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { getEnableProVersion } from './Settings';
-import { isProThemeByRewards } from './Pro/Rewards/Themes';
 
 export async function getAppTheme(): Promise<string> {
     const isUserPro = await getEnableProVersion();
-    const isUserProByReward = await isProThemeByRewards();
 
-    if (isUserPro || isUserProByReward) {
+    if (isUserPro) {
         const proTheme = await AsyncStorage.getItem('AppThemePRO');
 
         if (!proTheme) {
@@ -29,9 +27,8 @@ export async function getAppTheme(): Promise<string> {
 export async function setAppTheme(themeName: string): Promise<void> {
     try {
         const isUserPro = await getEnableProVersion();
-        const isUserProByReward = await isProThemeByRewards();
 
-        if (isUserPro || isUserProByReward) {
+        if (isUserPro) {
             await AsyncStorage.setItem('AppThemePRO', themeName);
 
             // this if makes sure if user select a non-pro theme it will still be selected if

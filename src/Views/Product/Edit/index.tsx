@@ -13,15 +13,12 @@ import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Notification from '~/Components/Notification';
 
-import RewardCamera from '../Components/RewardCamera';
-
 import {
     getProductById,
     updateProduct,
     deleteProduct,
 } from '~/Functions/Product';
 import { saveProductImage } from '~/Functions/Products/Image';
-import { isProImagesByRewards } from '~/Functions/Pro/Rewards/Images';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -63,7 +60,6 @@ interface RequestParams {
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { userPreferences } = useContext(PreferencesContext);
-    const [isProByReward, setIsProByReward] = useState<boolean>(false);
 
     const { productId } = route.params;
 
@@ -109,10 +105,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
         getProductData();
     }, [productId]);
-
-    useEffect(() => {
-        isProImagesByRewards().then((response) => setIsProByReward(response));
-    }, []);
 
     async function updateProd() {
         if (!name || name.trim() === '') {
@@ -232,8 +224,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 </PageHeader>
 
                                 <PageContent>
-                                    {(isProByReward ||
-                                        userPreferences.isUserPremium) &&
+                                    {userPreferences.isUserPremium &&
                                         !!photoPath && (
                                             <ProductImageContainer
                                                 onPress={handleEnableCamera}
@@ -244,15 +235,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     }}
                                                 />
                                             </ProductImageContainer>
-                                        )}
-
-                                    {!userPreferences.isUserPremium &&
-                                        !isProByReward && (
-                                            <RewardCamera
-                                                setIsProByReward={
-                                                    setIsProByReward
-                                                }
-                                            />
                                         )}
 
                                     <InputContainer>
@@ -275,8 +257,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 />
                                             </InputTextContainer>
 
-                                            {(userPreferences.isUserPremium ||
-                                                isProByReward) && (
+                                            {userPreferences.isUserPremium && (
                                                 <CameraButtonContainer
                                                     onPress={handleEnableCamera}
                                                 >

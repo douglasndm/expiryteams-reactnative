@@ -20,10 +20,6 @@ import {
     setTimeForNextNotification,
 } from '~/Functions/Notifications';
 
-import {
-    isProThemeByRewards,
-    setProThemesByRewards,
-} from '~/Functions/Pro/Rewards/Themes';
 import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
 import { sendNotification } from '~/Services/Notifications';
 
@@ -169,18 +165,6 @@ const Test: React.FC = () => {
                     />
 
                     <Button text="Log files" onPress={logFiles} />
-
-                    <Button
-                        text="log times"
-                        onPress={async () =>
-                            console.log(await isProThemeByRewards())
-                        }
-                    />
-
-                    <Button
-                        text="log  set time"
-                        onPress={async () => setProThemesByRewards()}
-                    />
 
                     <Button text="Show rewards ad" onPress={rewardAd} />
 
