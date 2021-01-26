@@ -4,6 +4,7 @@ import DatePicker from 'react-native-date-picker';
 import NumericInput from '@wwdrew/react-native-numeric-textinput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
+import RNPickerSelect from 'react-native-picker-select';
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -146,6 +147,31 @@ export const MoreInformationsTitle = styled.Text`
     color: ${({ theme }) => theme.colors.subText};
     margin-bottom: 5px;
 `;
+
+export const PickerContainer = styled.View`
+    justify-content: space-between;
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+
+    background-color: ${({ theme }) => theme.colors.inputBackground};
+
+    padding: 15px 5px 15px 15px;
+    font-size: 18px;
+`;
+
+export const Picker = styled(RNPickerSelect).attrs(({ theme }) => ({
+    pickerProps: {
+        style: {
+            color: theme.colors.text,
+        },
+    },
+    textInputProps: {
+        style: {
+            color: theme.colors.text,
+        },
+    },
+}))``;
 
 export const ExpDateGroup = styled.View`
     align-items: center;

@@ -24,6 +24,7 @@ import {
     createProduct,
 } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
+import { getAllCategories } from '~/Functions/Category';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -51,6 +52,8 @@ import {
     InputGroup,
     MoreInformationsContainer,
     MoreInformationsTitle,
+    PickerContainer,
+    Picker,
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
@@ -69,6 +72,12 @@ if (Platform.OS === 'ios' && !__DEV__) {
 }
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
+
+interface ICategoryItem {
+    label: string;
+    value: string;
+    key: string;
+}
 
 const Add: React.FC = () => {
     const { goBack, navigate, reset } = useNavigation();
@@ -98,8 +107,13 @@ const Add: React.FC = () => {
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
     const [price, setPrice] = useState(0);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(
+        null
+    );
     const [store, setStore] = useState<string>();
     const [expDate, setExpDate] = useState(new Date());
+
+    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
@@ -110,7 +124,7 @@ const Add: React.FC = () => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
     const [erro, setError] = useState<string>('');
 
-    async function handleSave() {
+    const handleSave = useCallback(async () => {
         if (!name || name.trim() === '') {
             setNameFieldError(true);
             return;
@@ -120,11 +134,19 @@ const Add: React.FC = () => {
             return;
         }
         try {
+            // will be an array of categories in the future
+            const prodCategories: Array<string> = [];
+
+            if (selectedCategory && selectedCategory !== 'null') {
+                prodCategories.push(selectedCategory);
+            }
+
             const newProduct: Omit<IProduct, 'id'> = {
                 name,
                 code,
                 store,
                 photo: photoFileName,
+                categories: prodCategories,
                 lotes: [],
             };
 
@@ -167,7 +189,38 @@ const Add: React.FC = () => {
         } catch (error) {
             setError(error.message);
         }
-    }
+    }, [
+        adReady,
+        amount,
+        code,
+        codeFieldError,
+        expDate,
+        lote,
+        name,
+        nameFieldError,
+        photoFileName,
+        price,
+        reset,
+        selectedCategory,
+        store,
+        userPreferences.isUserPremium,
+    ]);
+
+    useEffect(() => {
+        getAllCategories().then((allCategories) => {
+            const categoriesArray: Array<ICategoryItem> = [];
+
+            allCategories.forEach((cat) =>
+                categoriesArray.push({
+                    key: cat.id,
+                    label: cat.name,
+                    value: cat.id,
+                })
+            );
+
+            setCategories(categoriesArray);
+        });
+    }, []);
 
     useEffect(() => {
         const eventListener = interstitialAd.onAdEvent((type) => {
@@ -189,6 +242,10 @@ const Add: React.FC = () => {
         return () => {
             eventListener();
         };
+    }, []);
+
+    const handleCategoryChange = useCallback((value) => {
+        setSelectedCategory(value);
     }, []);
 
     const handleAmountChange = useCallback((value) => {
@@ -443,14 +500,31 @@ const Add: React.FC = () => {
                                             )}
                                         />
 
-                                        {userPreferences.multiplesStores && (
-                                            <MoreInformationsContainer>
-                                                <MoreInformationsTitle>
-                                                    {translate(
-                                                        'View_AddProduct_MoreInformation_Label'
-                                                    )}
-                                                </MoreInformationsTitle>
+                                        <MoreInformationsContainer>
+                                            <MoreInformationsTitle>
+                                                {translate(
+                                                    'View_AddProduct_MoreInformation_Label'
+                                                )}
+                                            </MoreInformationsTitle>
 
+                                            <PickerContainer
+                                                style={{ marginBottom: 10 }}
+                                            >
+                                                <Picker
+                                                    items={categories}
+                                                    onValueChange={
+                                                        handleCategoryChange
+                                                    }
+                                                    value={selectedCategory}
+                                                    placeholder={{
+                                                        label:
+                                                            'Selecione a categoria',
+                                                        value: 'null',
+                                                    }}
+                                                />
+                                            </PickerContainer>
+
+                                            {userPreferences.multiplesStores && (
                                                 <InputGroup>
                                                     <InputTextContainer>
                                                         <InputText
@@ -477,8 +551,8 @@ const Add: React.FC = () => {
                                                         />
                                                     </InputTextContainer>
                                                 </InputGroup>
-                                            </MoreInformationsContainer>
-                                        )}
+                                            )}
+                                        </MoreInformationsContainer>
 
                                         <ExpDateGroup>
                                             <ExpDateLabel>

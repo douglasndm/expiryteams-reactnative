@@ -132,6 +132,7 @@ export async function createProduct({
                 code: product.code,
                 photo: product.photo,
                 store: product.store,
+                categories: product.categories,
                 lotes: [],
             });
         });
