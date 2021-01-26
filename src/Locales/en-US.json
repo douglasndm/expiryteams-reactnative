@@ -80,6 +80,7 @@
     "View_AddProduct_InputPlacehoder_Amount": "Amount",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Unit price",
     "View_AddProduct_InputPlacehoder_Store": "Store",
+    "View_AddProduct_InputPlaceholder_SelectCategory": "Select the category",
     "View_AddProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_AddProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_AddProduct_InputAccessibility_Batch": "Field to type the Batch",

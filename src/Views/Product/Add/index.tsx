@@ -506,22 +506,25 @@ const Add: React.FC = () => {
                                                 )}
                                             </MoreInformationsTitle>
 
-                                            <PickerContainer
-                                                style={{ marginBottom: 10 }}
-                                            >
-                                                <Picker
-                                                    items={categories}
-                                                    onValueChange={
-                                                        handleCategoryChange
-                                                    }
-                                                    value={selectedCategory}
-                                                    placeholder={{
-                                                        label:
-                                                            'Selecione a categoria',
-                                                        value: 'null',
-                                                    }}
-                                                />
-                                            </PickerContainer>
+                                            {userPreferences.isUserPremium && (
+                                                <PickerContainer
+                                                    style={{ marginBottom: 10 }}
+                                                >
+                                                    <Picker
+                                                        items={categories}
+                                                        onValueChange={
+                                                            handleCategoryChange
+                                                        }
+                                                        value={selectedCategory}
+                                                        placeholder={{
+                                                            label: translate(
+                                                                'View_AddProduct_InputPlaceholder_SelectCategory'
+                                                            ),
+                                                            value: 'null',
+                                                        }}
+                                                    />
+                                                </PickerContainer>
+                                            )}
 
                                             {userPreferences.multiplesStores && (
                                                 <InputGroup>
