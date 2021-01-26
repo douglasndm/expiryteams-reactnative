@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useContext } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { appleAuth } from 'AppleAuth';
 
 import { translate } from '~/Locales';
 
@@ -106,12 +107,14 @@ const SignIn: React.FC = () => {
             </LoginText>
 
             <ButtonContainer>
-                {Platform.OS === 'ios' && !completed && (
-                    <AppleButton
-                        buttonStyle={AppleButton.Style.WHITE_OUTLINE}
-                        onPress={handleLoginWithApple}
-                    />
-                )}
+                {Platform.OS === 'ios' &&
+                    appleAuth.isSupported &&
+                    !completed && (
+                        <AppleButton
+                            buttonStyle={AppleButton.Style.WHITE_OUTLINE}
+                            onPress={handleLoginWithApple}
+                        />
+                    )}
 
                 {Platform.OS === 'android' && !completed && (
                     <GoogleButton onPress={handleGoogleButtonPressed} />
