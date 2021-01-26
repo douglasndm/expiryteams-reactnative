@@ -1,3 +1,4 @@
+import { UpdateMode } from 'realm';
 import { exists, unlink } from 'react-native-fs';
 
 import Realm from '../Services/Realm';
@@ -167,7 +168,7 @@ export async function updateProduct(
 
     try {
         realm.write(() => {
-            realm.create('Product', product, 'modified');
+            realm.create('Product', product, UpdateMode.Modified);
         });
     } catch (err) {
         throw new Error(err);

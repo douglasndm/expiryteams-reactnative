@@ -19,7 +19,11 @@ import {
     deleteProduct,
 } from '~/Functions/Product';
 import { getAllCategories } from '~/Functions/Category';
-import { saveProductImage } from '~/Functions/Products/Image';
+import {
+    saveProductImage,
+    getProductImagePath,
+    getImageFileNameFromPath,
+} from '~/Functions/Products/Image';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -83,7 +87,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
-    const [photoPath, setPhotoPath] = useState('');
+    const [photoPath, setPhotoPath] = useState<string>('');
     const [store, setStore] = useState<string>('');
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
@@ -123,10 +127,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setName(product.name);
             if (product.code) setCode(product.code);
             if (product.store) setStore(product.store);
-            if (product.photo) {
-                if (await exists(product.photo)) {
-                    setPhotoPath(product.photo);
-                }
+
+            const path = await getProductImagePath(productId);
+            if (path) {
+                setPhotoPath(`${path}`);
             }
 
             if (product.categories.length > 0) {
@@ -158,13 +162,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         setSelectedCategory(value);
     }, []);
 
-    async function updateProd() {
+    const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
             setNameFieldError(true);
             return;
         }
 
         try {
+            const photoFileName = getImageFileNameFromPath(photoPath);
+
             const prodCategories: Array<string> = [];
 
             if (selectedCategory && selectedCategory !== 'null') {
@@ -176,8 +182,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 name,
                 code,
                 store,
+
                 categories: prodCategories,
-                photo: photoPath,
+                photo: photoFileName,
             });
 
             reset({
@@ -193,7 +200,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } catch (err) {
             setError(err.message);
         }
-    }
+    }, [code, name, photoPath, productId, reset, selectedCategory, store]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);

@@ -9,6 +9,14 @@ import {
 
 import { getProductById, updateProduct } from '../Product';
 
+export function getImageFileNameFromPath(path: string): string {
+    const productImage = path.split('/');
+
+    const fileName = productImage[productImage?.length - 1];
+
+    return fileName;
+}
+
 export async function getProductImagePath(
     productId: number
 ): Promise<string | null> {

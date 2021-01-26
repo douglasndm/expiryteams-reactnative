@@ -65,6 +65,7 @@ import {
     BannerText,
     Icons,
 } from './styles';
+import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 let adUnit = TestIds.INTERSTITIAL;
 
@@ -137,6 +138,8 @@ const Add: React.FC = () => {
             return;
         }
         try {
+            const picFileName = getImageFileNameFromPath(photoPath);
+
             const prodCategories: Array<string> = [];
 
             if (selectedCategory && selectedCategory !== 'null') {
@@ -147,7 +150,7 @@ const Add: React.FC = () => {
                 name,
                 code,
                 store,
-                photo: photoFileName,
+                photo: picFileName,
                 categories: prodCategories,
                 lotes: [],
             };
