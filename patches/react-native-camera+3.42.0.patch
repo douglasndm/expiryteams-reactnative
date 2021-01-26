@@ -1,0 +1,16 @@
+diff --git a/node_modules/react-native-camera/android/src/main/java/org/reactnative/camera/RNCameraView.java b/node_modules/react-native-camera/android/src/main/java/org/reactnative/camera/RNCameraView.java
+index 99e00d5..1ca51b3 100644
+--- a/node_modules/react-native-camera/android/src/main/java/org/reactnative/camera/RNCameraView.java
++++ b/node_modules/react-native-camera/android/src/main/java/org/reactnative/camera/RNCameraView.java
+@@ -249,7 +249,10 @@ public class RNCameraView extends CameraView implements LifecycleEventListener,
+     int paddingY = (int) ((height - correctHeight) / 2);
+     mPaddingX = paddingX;
+     mPaddingY = paddingY;
+-    preview.layout(paddingX, paddingY, correctWidth + paddingX, correctHeight + paddingY);
++    // preview.layout(paddingX, paddingY, correctWidth + paddingX, correctHeight + paddingY);
++
++    // Update : Dynamic height issue fix
++    preview.layout(paddingX, 0, correctWidth + paddingX, (int)height);
+   }
+ 
+   @SuppressLint("all")
