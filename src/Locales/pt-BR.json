@@ -237,6 +237,8 @@
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
     "View_Category_List_AllCategories_Label": "Todas as categorias",
 
+    "View_Category_List_View_BeforeCategoryName": "Categoria ",
+
     "Function_Category_AddCategory_Error_AlreadyExists": "Categoria já existe",
 
     "Function_StoreGroup_NoStore": "Sem loja",

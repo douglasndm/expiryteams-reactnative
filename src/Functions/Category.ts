@@ -11,16 +11,6 @@ export async function getAllCategories(): Promise<Array<ICategory>> {
 
         const realmResponse = realm.objects<ICategory>('Category').slice();
 
-        // // I did it because realm return a "complex" object and I just want the name and id
-        // const categories: Array<ICategory> = [];
-
-        // realmResponse.forEach((category) =>
-        //     categories.push({
-        //         id: category.id,
-        //         name: category.name,
-        //     })
-        // );
-
         return realmResponse;
     } catch (err) {
         throw new Error(err.message);
@@ -57,6 +47,27 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
         });
 
         return category;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
+
+export async function getAllProductsByCategory(
+    categoryUuid: string
+): Promise<Array<IProduct>> {
+    try {
+        const realm = await Realm();
+
+        const products = realm.objects<IProduct>('Product').slice();
+
+        const filtedProducts = products.filter((p) => {
+            const isInCategory = p.categories.find((c) => c === categoryUuid);
+
+            if (isInCategory) return true;
+            return false;
+        });
+
+        return filtedProducts;
     } catch (err) {
         throw new Error(err.message);
     }
