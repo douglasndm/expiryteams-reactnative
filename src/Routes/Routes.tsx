@@ -16,6 +16,8 @@ import ProSubscription from '~/Views/ProSubscription';
 import ProOfferings from '~/Views/ProSubscription/Offerings';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
+import ListCategory from '~/Views/Category/List';
+import CategoryView from '~/Views/Category/View';
 
 import SignIn from '~/Views/Auth/SignIn';
 
@@ -26,6 +28,7 @@ const Stack = createStackNavigator();
 const Routes: React.FC = () => {
     return (
         <Stack.Navigator headerMode="none">
+            <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
@@ -44,6 +47,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Pro" component={ProSubscription} />
             <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
+
+            <Stack.Screen name="CategoryView" component={CategoryView} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="ProOfferings" component={ProOfferings} />

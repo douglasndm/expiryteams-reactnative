@@ -226,6 +226,12 @@
     "View_Success_Button_GoToHome": "Go home",
     "View_Success_Button_NavigateToProduct": "Go to product",
 
+    "View_Category_List_PageTitle": "Categories",
+    "View_Category_List_InputAdd_Placeholder": "New category name",
+    "View_Category_List_AllCategories_Label": "All categories",
+
+    "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
+
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
 

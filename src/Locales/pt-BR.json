@@ -229,6 +229,12 @@
     "View_PhotoView_PageTitle": "Visualizar foto",
     "View_PhotoView_Button_Back": "Voltar",
 
+    "View_Category_List_PageTitle": "Categorias",
+    "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
+    "View_Category_List_AllCategories_Label": "Todas as categorias",
+
+    "Function_Category_AddCategory_Error_AlreadyExists": "Categoria já existe",
+
     "Function_StoreGroup_NoStore": "Sem loja",
 
     "Function_Export_FileName": "controledevalidade_backup",
