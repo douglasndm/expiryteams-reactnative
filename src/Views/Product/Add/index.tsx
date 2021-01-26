@@ -61,6 +61,9 @@ import {
     InputCodeTextIcon,
     InputCodeText,
     InputTextIconContainer,
+    BannerContainer,
+    BannerText,
+    Icons,
 } from './styles';
 
 let adUnit = TestIds.INTERSTITIAL;
@@ -319,6 +322,10 @@ const Add: React.FC = () => {
         }
     }, [existentProduct, navigate]);
 
+    const handleNavigateToPro = useCallback(() => {
+        navigate('Pro');
+    }, [navigate]);
+
     return (
         <>
             {isCameraEnabled ? (
@@ -356,6 +363,20 @@ const Add: React.FC = () => {
                                         )}
 
                                     <InputContainer>
+                                        {!userPreferences.isUserPremium && (
+                                            <BannerContainer
+                                                onPress={handleNavigateToPro}
+                                            >
+                                                <BannerText>
+                                                    {translate(
+                                                        'View_AddProduct_Banner_UnlockCamera'
+                                                    )}
+                                                </BannerText>
+
+                                                <Icons name="arrow-down-outline" />
+                                            </BannerContainer>
+                                        )}
+
                                         <InputGroup>
                                             <InputTextContainer
                                                 hasError={nameFieldError}
@@ -382,13 +403,14 @@ const Add: React.FC = () => {
                                                 />
                                             </InputTextContainer>
 
-                                            {userPreferences.isUserPremium && (
-                                                <CameraButtonContainer
-                                                    onPress={handleEnableCamera}
-                                                >
-                                                    <CameraButtonIcon />
-                                                </CameraButtonContainer>
-                                            )}
+                                            <CameraButtonContainer
+                                                onPress={handleEnableCamera}
+                                                enabled={
+                                                    userPreferences.isUserPremium
+                                                }
+                                            >
+                                                <CameraButtonIcon />
+                                            </CameraButtonContainer>
                                         </InputGroup>
                                         {nameFieldError && (
                                             <InputTextTip>

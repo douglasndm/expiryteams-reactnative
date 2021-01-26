@@ -93,6 +93,7 @@
     "View_AddProduct_Button_Save": "Salvar",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Botão para salvar o novo produto",
     "View_AddProduct_Tip_DuplicateProduct": "Já existe um produto cadastrado com o mesmo código. Clique aqui para adicionar um lote ao produto existente",
+    "View_AddProduct_Banner_UnlockCamera": "Se torne PRO e desbloqueie a câmera",
 
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
