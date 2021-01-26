@@ -6,13 +6,23 @@ import {
 } from '@react-navigation/drawer';
 import { useTheme } from 'styled-components';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import UserInfo from './UserInfo';
 
-import { Container, MenuItem, Icons, DrawerSection } from './styles';
+import {
+    Container,
+    MenuItemContainer,
+    MenuItem,
+    MenuItemText,
+    Icons,
+    DrawerSection,
+    LabelGroup,
+    LabelContainer,
+    Label,
+} from './styles';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
@@ -21,6 +31,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const theme = useTheme();
 
     const { userPreferences } = useContext(PreferencesContext);
+
+    const navigteToCategories = useCallback(() => {
+        navigation.navigate('ListCategory');
+    }, [navigation]);
 
     const handleNavigateToSite = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev');
@@ -71,6 +85,24 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 }
                             />
                         )}
+
+                        <MenuItemContainer onPress={navigteToCategories}>
+                            <Icons name="filter-outline" />
+                            <MenuItemText>
+                                {translate('Menu_Button_GoToCategories')}
+                            </MenuItemText>
+
+                            <LabelGroup>
+                                <LabelContainer>
+                                    <Label>{translate('Menu_Label_PRO')}</Label>
+                                </LabelContainer>
+                                <LabelContainer>
+                                    <Label>
+                                        {translate('Menu_Label_Beta')}
+                                    </Label>
+                                </LabelContainer>
+                            </LabelGroup>
+                        </MenuItemContainer>
 
                         {!userPreferences.isUserPremium && (
                             <MenuItem

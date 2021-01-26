@@ -6,6 +6,7 @@
     "Menu_Button_GoToAddProduct": "Adicionar produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
     "Menu_Button_GoToAllProductsByStore": "Produtos por loja",
+    "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToProPage": "SEJA PRO",
     "Menu_Button_GoToSettings": "Configurações",
     "Menu_Button_GoToAbout": "Sobre",
@@ -14,6 +15,9 @@
 
     "Menu_UserProfile_Button_login": "Entrar",
     "Menu_UserProfile_Label": "USUÁRIO PRO",
+
+    "Menu_Label_PRO": "PRO",
+    "Menu_Label_Beta": "BETA",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",

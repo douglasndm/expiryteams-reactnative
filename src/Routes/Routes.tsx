@@ -28,7 +28,6 @@ const Stack = createStackNavigator();
 const Routes: React.FC = () => {
     return (
         <Stack.Navigator headerMode="none">
-            <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
@@ -48,6 +47,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
+            <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
