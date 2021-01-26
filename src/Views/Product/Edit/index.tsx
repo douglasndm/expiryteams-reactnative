@@ -18,6 +18,7 @@ import {
     updateProduct,
     deleteProduct,
 } from '~/Functions/Product';
+import { getAllCategories } from '~/Functions/Category';
 import { saveProductImage } from '~/Functions/Products/Image';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -40,6 +41,10 @@ import {
     CameraButtonContainer,
     CameraButtonIcon,
     ProductImageContainer,
+    MoreInformationsContainer,
+    MoreInformationsTitle,
+    PickerContainer,
+    Picker,
 } from '../Add/styles';
 
 import {
@@ -58,6 +63,12 @@ interface RequestParams {
     };
 }
 
+interface ICategoryItem {
+    label: string;
+    value: string;
+    key: string;
+}
+
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { userPreferences } = useContext(PreferencesContext);
 
@@ -74,6 +85,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState('');
     const [store, setStore] = useState<string>('');
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(
+        null
+    );
+
+    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
@@ -83,6 +99,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     useEffect(() => {
         async function getProductData() {
             setIsLoading(true);
+
+            const allCategories = await getAllCategories();
+            const categoriesArray: Array<ICategoryItem> = [];
+
+            allCategories.forEach((cat) =>
+                categoriesArray.push({
+                    key: cat.id,
+                    label: cat.name,
+                    value: cat.id,
+                })
+            );
+            setCategories(categoriesArray);
 
             const product = await getProductById(productId);
 
@@ -101,10 +129,34 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 }
             }
 
+            if (product.categories.length > 0) {
+                setSelectedCategory(product.categories[0]);
+            }
+
             setIsLoading(false);
         }
         getProductData();
     }, [productId]);
+
+    useEffect(() => {
+        getAllCategories().then((allCategories) => {
+            const categoriesArray: Array<ICategoryItem> = [];
+
+            allCategories.forEach((cat) =>
+                categoriesArray.push({
+                    key: cat.id,
+                    label: cat.name,
+                    value: cat.id,
+                })
+            );
+
+            setCategories(categoriesArray);
+        });
+    }, []);
+
+    const handleCategoryChange = useCallback((value) => {
+        setSelectedCategory(value);
+    }, []);
 
     async function updateProd() {
         if (!name || name.trim() === '') {
@@ -113,11 +165,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
 
         try {
+            const prodCategories: Array<string> = [];
+
+            if (selectedCategory && selectedCategory !== 'null') {
+                prodCategories.push(selectedCategory);
+            }
+
             updateProduct({
                 id: productId,
                 name,
                 code,
                 store,
+                categories: prodCategories,
                 photo: photoPath,
             });
 
@@ -295,26 +354,50 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                             </InputTextIconContainer>
                                         </InputCodeTextContainer>
 
-                                        {userPreferences.multiplesStores && (
-                                            <InputGroup>
-                                                <InputTextContainer>
-                                                    <InputText
-                                                        placeholder={translate(
-                                                            'View_EditProduct_InputPlacehoder_Store'
-                                                        )}
-                                                        accessibilityLabel={translate(
-                                                            'View_EditProduct_InputAccessibility_Store'
-                                                        )}
-                                                        value={store}
-                                                        onChangeText={(
-                                                            value
-                                                        ) => {
-                                                            setStore(value);
-                                                        }}
-                                                    />
-                                                </InputTextContainer>
-                                            </InputGroup>
-                                        )}
+                                        <MoreInformationsContainer>
+                                            <MoreInformationsTitle>
+                                                {translate(
+                                                    'View_AddProduct_MoreInformation_Label'
+                                                )}
+                                            </MoreInformationsTitle>
+
+                                            <PickerContainer
+                                                style={{ marginBottom: 10 }}
+                                            >
+                                                <Picker
+                                                    items={categories}
+                                                    onValueChange={
+                                                        handleCategoryChange
+                                                    }
+                                                    value={selectedCategory}
+                                                    placeholder={{
+                                                        label:
+                                                            'Selecione a categoria',
+                                                        value: 'null',
+                                                    }}
+                                                />
+                                            </PickerContainer>
+                                            {userPreferences.multiplesStores && (
+                                                <InputGroup>
+                                                    <InputTextContainer>
+                                                        <InputText
+                                                            placeholder={translate(
+                                                                'View_EditProduct_InputPlacehoder_Store'
+                                                            )}
+                                                            accessibilityLabel={translate(
+                                                                'View_EditProduct_InputAccessibility_Store'
+                                                            )}
+                                                            value={store}
+                                                            onChangeText={(
+                                                                value
+                                                            ) => {
+                                                                setStore(value);
+                                                            }}
+                                                        />
+                                                    </InputTextContainer>
+                                                </InputGroup>
+                                            )}
+                                        </MoreInformationsContainer>
 
                                         <ActionsButtonContainer>
                                             <ButtonPaper

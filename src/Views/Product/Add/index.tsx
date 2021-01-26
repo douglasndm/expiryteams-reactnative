@@ -134,7 +134,6 @@ const Add: React.FC = () => {
             return;
         }
         try {
-            // will be an array of categories in the future
             const prodCategories: Array<string> = [];
 
             if (selectedCategory && selectedCategory !== 'null') {
