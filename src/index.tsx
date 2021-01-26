@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
-import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
@@ -10,16 +9,17 @@ import {
 } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 import Analyticts from '@react-native-firebase/analytics';
+import SplashScreen from 'react-native-splash-screen';
 
 import './Locales';
 
 import './Services/Admob';
 import './Services/Analytics';
-import './Services/BackgroundJobs';
 
 import './Functions/MultiplesStoresLegacyUsers';
 import './Functions/ProMode';
 import { getAllUserPreferences } from './Functions/UserPreferences';
+import { NotificationCadency } from './Functions/Settings';
 
 import Themes from './Themes';
 
@@ -27,6 +27,7 @@ import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
+import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
 
 if (!__DEV__) {
@@ -45,6 +46,7 @@ const App: React.FC = () => {
         appTheme: Themes.Light,
         multiplesStores: false,
         enableNotifications: true,
+        notificationCadency: NotificationCadency.Day,
         isUserSignedIn: false,
     });
 
@@ -53,6 +55,8 @@ const App: React.FC = () => {
             const userPreferences = await getAllUserPreferences();
 
             setPreferences(userPreferences);
+
+            SplashScreen.hide();
         }
 
         getData();
@@ -94,6 +98,8 @@ const App: React.FC = () => {
                         >
                             <StatusBar />
                             <Routes />
+
+                            <AskReview />
                         </NavigationContainer>
                     </Portal>
                 </PaperProvider>
@@ -102,9 +108,4 @@ const App: React.FC = () => {
     );
 };
 
-const codePushOptions: CodePushOptions = {
-    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
-    mandatoryInstallMode: CodePush.InstallMode.ON_NEXT_RESUME,
-};
-
-export default CodePush(codePushOptions)(App);
+export default App;

@@ -4,7 +4,7 @@ import { translate } from '../../../Locales';
 
 import PreferencesContext from '../../../Contexts/PreferencesContext';
 
-import { getUser } from '../../../Functions/Auth/Google';
+import { getUser } from '../../../Functions/Auth';
 
 import {
     Container,
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const UserInfo: React.FC<Props> = ({ isUserPro, navigate }: Props) => {
-    const [user, setUser] = useState<IGoogleUser | null>(null);
+    const [user, setUser] = useState<IUser | null>(null);
 
     const { userPreferences } = useContext(PreferencesContext);
 
@@ -48,7 +48,7 @@ const UserInfo: React.FC<Props> = ({ isUserPro, navigate }: Props) => {
 
     return (
         <Container onPress={handleButtoClick}>
-            {user?.photo ? (
+            {user?.photo && userPreferences.isUserSignedIn ? (
                 <UserPhoto source={{ uri: user?.photo }} />
             ) : (
                 <DefaultUserPhoto />

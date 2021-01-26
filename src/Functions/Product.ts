@@ -1,5 +1,9 @@
+import { UpdateMode } from 'realm';
+import { exists, unlink } from 'react-native-fs';
+
 import Realm from '../Services/Realm';
 import { createLote } from './Lotes';
+import { getProductImagePath } from './Products/Image';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
     productCode: string;
@@ -41,13 +45,22 @@ export async function checkIfProductAlreadyExistsByCode({
     }
 }
 
-export async function getProductByCode(productCode: string): Promise<IProduct> {
+export async function getProductByCode(
+    productCode: string,
+    store?: string
+): Promise<IProduct> {
     const realm = await Realm();
 
     try {
-        const result = realm
+        let result = realm
             .objects<IProduct>('Product')
             .filtered(`code = "${productCode}"`)[0];
+
+        if (store) {
+            result = realm
+                .objects<IProduct>('Product')
+                .filtered(`code = "${productCode}" AND store = "${store}"`)[0];
+        }
 
         return result;
     } catch (err) {
@@ -118,7 +131,9 @@ export async function createProduct({
                 id: nextProductId,
                 name: product.name,
                 code: product.code,
+                photo: product.photo,
                 store: product.store,
+                categories: product.categories,
                 lotes: [],
             });
         });
@@ -141,6 +156,8 @@ interface updateProductProps {
     name?: string;
     code?: string;
     store?: string;
+    photo?: string;
+    categories?: Array<string>;
     lotes?: Array<ILote>;
 }
 
@@ -151,7 +168,7 @@ export async function updateProduct(
 
     try {
         realm.write(() => {
-            realm.create('Product', product, 'modified');
+            realm.create('Product', product, UpdateMode.Modified);
         });
     } catch (err) {
         throw new Error(err);
@@ -162,7 +179,17 @@ export async function deleteProduct(productId: number): Promise<void> {
     const realm = await Realm();
 
     try {
-        const product = realm.objects('Product').filtered(`id == ${productId}`);
+        const product = realm
+            .objects<IProduct>('Product')
+            .filtered(`id == ${productId}`)[0];
+
+        const photoPath = await getProductImagePath(productId);
+
+        if (photoPath) {
+            if (await exists(photoPath)) {
+                await unlink(photoPath);
+            }
+        }
 
         realm.write(async () => {
             realm.delete(product);

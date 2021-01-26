@@ -6,5 +6,6 @@ interface IUserPreferences {
     appTheme: DefaultTheme;
     multiplesStores: boolean;
     enableNotifications: boolean;
+    notificationCadency: NotificationCadency;
     isUserSignedIn: boolean;
 }

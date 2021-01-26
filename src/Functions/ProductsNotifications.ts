@@ -1,20 +1,14 @@
-import { Notifications } from 'react-native-notifications';
 import { addDays, isPast } from 'date-fns';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 import { translate } from '../Locales';
 
-import { getHowManyDaysToBeNextExp, getEnableNotifications } from './Settings';
+import { getHowManyDaysToBeNextExp } from './Settings';
 import {
     getAllProducts,
     removeAllLotesTratadosFromAllProduts,
 } from './Products';
 
-export async function getAllProductsNextToExp(): Promise<void> {
-    const isNotifcationEnabled = await getEnableNotifications();
-
-    if (!isNotifcationEnabled) return;
-
+export async function getNotificationForAllProductsCloseToExp(): Promise<INotification | null> {
     const daysToBeNext = await getHowManyDaysToBeNextExp();
 
     try {
@@ -95,23 +89,21 @@ export async function getAllProductsNextToExp(): Promise<void> {
             );
             NotificationMessage = translate(
                 'Function_Notification_ItHasExpiredAndNextToExpireProductsMessage'
-            )
-                .replace('{EXPIREDNUMBER}', String(productsVencidosCount))
-                .replace('{NEXTBATCHES}', String(productsNextToExpCount));
+            ).replace('{EXPIREDNUMBER}', String(productsVencidosCount));
         }
 
         if (!!NotificationTitle && !!NotificationMessage) {
-            Notifications.postLocalNotification(
-                {
-                    title: NotificationTitle,
-                    body: NotificationMessage,
-                },
-                1
-            );
+            const notification: INotification = {
+                title: NotificationTitle,
+                message: NotificationMessage,
+                amount: productsVencidosCount + productsNextToExpCount,
+            };
+
+            return notification;
         }
+
+        return null;
     } catch (err) {
-        crashlytics().recordError(err);
-        crashlytics().log('Falha ao enviar notificação');
         throw new Error(err);
     }
 }

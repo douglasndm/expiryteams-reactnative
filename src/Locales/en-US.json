@@ -6,6 +6,7 @@
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",
     "Menu_Button_GoToAllProductsByStore": "All products by store",
+    "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToProPage": "Become PRO",
     "Menu_Button_GoToSettings": "Settings",
     "Menu_Button_GoToAbout": "About",
@@ -15,13 +16,25 @@
     "Menu_UserProfile_Button_login": "Sign in",
     "Menu_UserProfile_Label": "PRO User",
 
+    "Menu_Label_PRO": "PRO",
+    "Menu_Label_Beta": "BETA",
+
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
     "BarCodeReader_PermissionRequired": "We need your permission to access the device's camera to user barcode reader.",
     "BarCodeReader_PermissionBlocked": "Camera access is blocked. If you want to use barcode reader you need to unblock it on your device settings.",
     "BarCodeReader_Button_RequestPermission": "Authorize camera",
 
-    "ListProductsComponent_PROBanner_message": "Discover the benefits of PRO",
+    "Component_Camera_PageTitle": "Take a product photo",
+    "Component_Camera_PageTitle_OnPreview": "Did you like the photo?",
+    "Component_Camera_Button_TakePicture": "Take picture",
+    "Component_Camera_Button_TakeAnotherPicture": "Take another picture",
+    "Component_Camera_Button_SavePicture": "Looks good",
+
+    "ProBanner_Text1": "PRO users can take photos of products, do you want more?",
+    "ProBanner_Text2": "Discover the benefits of PRO",
+    "ProBanner_Text3": "We don't have ads on PRO, meet more advantages",
+
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_ShowAllProducts": "Show all products",
@@ -48,7 +61,7 @@
     "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo made by",
-    "View_About_DonateDescription": "Did you like this app? Is this useful for you? Contribute with any amount to help keep it working and bringing new functions like the iPhone version.",
+    "View_About_DonateDescription": "Do you like this app? Is this useful for you? Contribute with any amount to help keep it working and bringing new functions like the iPhone version.",
     "View_About_Button_Donate": "Donate",
 
     "View_AddBatch_AlertTypeBatchName": "Type the batch's name",
@@ -67,6 +80,7 @@
     "View_AddProduct_InputPlacehoder_Amount": "Amount",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Unit price",
     "View_AddProduct_InputPlacehoder_Store": "Store",
+    "View_AddProduct_InputPlaceholder_SelectCategory": "Select the category",
     "View_AddProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_AddProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_AddProduct_InputAccessibility_Batch": "Field to type the Batch",
@@ -78,10 +92,8 @@
     "View_AddProduct_CalendarAccessibilityDescription": "Calendar to select the expiration date",
     "View_AddProduct_Button_Save": "Save",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Button to save the new product",
-    "View_AddProduct_DuplicateProductNotificationTitle": "Duplicate product",
-    "View_AddProduct_DuplicateProductNotificationDescription": "There is a existing product with the same code, we can not add a new product with same code, do you want to add new new batch to that existing product?",
-    "View_AddProduct_DuplicateProductNotificationButtonEditProdct": "Edit existing product",
-    "View_AddProduct_DuplicateProductNotificationButtonClose": "Close",
+    "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
+    "View_AddProduct_Banner_UnlockCamera": "Become PRO and unlock the camera",
 
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
@@ -89,16 +101,15 @@
     "View_AllProductsByStore_PageTitle": "All products by store",
 
     "View_Auth_SignIn_PageTitle": "Identify yourself",
-    "View_Auth_SignIn_Text_LoginRequired": "A Google authetication is required to continue.",
+    "View_Auth_SignIn_Text_LoginRequired": "An authentication is necessary to continue.",
     "View_Auth_SignIn_Text_WhyLogin": "We need to know who are you to use that to identify you when you restore your app in a new phone or when you reset this one.",
     "View_Auth_SignIn_Text_Benefits": "With that we can restore your subscription without you need to subscribe it again.",
-    "View_Auth_SignIn_Text_Login": "Login in",
+    "View_Auth_SignIn_Text_Login": "Continue with your account",
     "View_Auth_SignIn_Text_AllDone": "All done!",
     "View_Auth_SignIn_Button_ContinueToSubscription": "Continue to subscription",
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
     "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
-    "View_EditBatch_Success_BatchUpdated": "Batch updated",
     "View_EditBatch_PageTitle": "Update batch",
     "View_EditBatch_Button_DeleteBatch": "Delete",
     "View_EditBatch_InputPlacehoder_Batch": "Batch",
@@ -122,10 +133,11 @@
     "View_EditProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
-    "View_EditProduct_Button_Save": "Update Product",
+    "View_EditProduct_Button_Save": "Save",
     "View_EditProduct_Button_Cancel": "Cancel",
 
     "View_Home_SearchText": "Search for a product",
+    "View_FloatMenu_AddProduct": "New product",
 
     "View_ProductDetails_PageTitle": "More info",
     "View_ProductDetails_Code": "Code",
@@ -143,7 +155,7 @@
     "View_ProductDetails_TableComponent_BatchNameColumnTitle": "Batch",
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Expire in",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Amount",
-    "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Price",
+    "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Total price",
 
     "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",
@@ -153,6 +165,7 @@
     "View_ProPage_AdvantageFour": "EXCLUSIVES THEMES.",
     "View_ProPage_AdvantageFive": "SMALL PRICE, GREAT ADVANTAGES.",
     "View_ProPage_AdvantageSix": "SAVE PRODUCTS FOR MULTIPLES STORES.",
+    "View_ProPage_AdvantageSeven": "TAKE PHOTOS OF PRODUCTS.",
     "View_ProPage_UserAlreadyPro": "You are already PRO",
     "View_ProPage_BeforeIntroPrice": "SUBSCRIBE FOR ONLY",
     "View_ProPage_AfterIntroPrice": " IN THE FIRST MONTH AND THEN",
@@ -160,7 +173,8 @@
     "View_ProPage_SubscribePeriod_Monthly": "MONTHLY",
     "View_ProPage_UserNeedToSignIn": "You need to sign in first.",
     "View_ProPage_Button_ClickToSignIn": "Click here to sign in.",
-    "View_ProPage_Button_GoBackToHome": "Go to home",
+    "View_ProPage_Button_GoBackToHome": "Go home",
+    "View_ProPage_SubscriptionNotAvailable": "Subscription is not available now, check you internet connection.",
 
 
     "View_Settings_PageTitle": "Settings",
@@ -191,6 +205,13 @@
     "View_Settings_Appearance_Theme_Relax": "Relax (PRO)",
     "View_Settings_Appearance_Theme_Florest": "Florest (PRO)",
 
+    "View_Settings_Notifications_Title": "Notification frequency",
+    "View_Settings_Notifications_Cadency_Hour": "Every hour",
+    "View_Settings_Notifications_Cadency_Day": "Daily",
+    "View_Settings_Notifications_Cadency_Week": "Weekly",
+    "View_Settings_Notifications_Cadency_Month": "Monthly",
+    "View_Settings_Notifications_Cadency_Never": "Never",
+
     "View_AllProductByStore_BeforeStoreName": "All products by store ",
     "View_AllProductByStore_NoStore": "no store",
 
@@ -207,17 +228,48 @@
     "View_Success_ProductUpdatedDescription": "The product has been updated",
     "View_Success_BatchDeletedDescription": "Batch was deleted",
     "View_Success_ProductDeletedDescription": "Product was deleted",
-    "View_Success_Button_GoToHome": "Go to home",
+
+    "View_Success_Button_GoToHome": "Go home",
+    "View_Success_Button_NavigateToProduct": "Go to product",
+
+    "View_Category_List_PageTitle": "Categories",
+    "View_Category_List_InputAdd_Placeholder": "New category name",
+    "View_Category_List_AllCategories_Label": "All categories",
+
+    "View_Category_List_View_BeforeCategoryName": "Category ",
+
+    "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
+
+    "View_PhotoView_PageTitle": "Photo View",
+    "View_PhotoView_Button_Back": "Go back",
 
     "Function_StoreGroup_NoStore": "No store",
+
+    "Function_Export_FileName": "expirationcheck_backup",
+    "Function_Import_Error_InvalidExtesion": "Invalid extension",
 
     "Function_Share_SaveFileTitle": "Save file",
     "Function_Share_SaveFileDescription": "Choose a place to save the file",
 
-    "Function_Notification_ItOnlyHasProductsNextToExpTitle": "You have products close to expire.",
+    "Function_Notification_ItOnlyHasProductsNextToExpTitle": "You have products that will expire soon.",
     "Function_Notification_ItOnlyHasExpiredProductsTitle": "YOU HAVE EXPIRED PRODUCTS!",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "YOU HAVE EXPIRED PRODUCTS AND PRODUCTS CLOSE TO EXPIRE!",
-    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "You have {NUMBER} batches close to expire.",
-    "Function_Notification_ItOnlyHasExpiredProductsMessage": "YOU HAVE {NUMBER} NO TREATED EXPIRED BATCHES.",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "YOU HAVE {EXPIREDNUMBER} NO TREATED EXPIRED BATCHES AND {NEXTBATCHES} CLOSE TO EXPIRE BATCHES."
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "YOU HAVE EXPIRED PRODUCTS!",
+    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "You have {NUMBER} products that will expire soon.",
+    "Function_Notification_ItOnlyHasExpiredProductsMessage": "YOU HAVE {NUMBER} EXPIRED PRODUCTS.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "You have {EXPIREDNUMBER} expired products and some others that will expire soon.",
+
+    "Function_Excel_ColumnName_ProductName": "Product",
+    "Function_Excel_ColumnName_ProductCode": "Code",
+    "Function_Excel_ColumnName_ProductStore": "Store",
+    "Function_Excel_ColumnName_BatchName": "Batch",
+    "Function_Excel_ColumnName_BatchPrice": "Price",
+    "Function_Excel_ColumnName_BatchAmount": "Amount",
+    "Function_Excel_ColumnName_BatchExpDate": "Expire in",
+    "Function_Excel_Workbook_Name": "Expiration checker",
+    "Function_Excel_filename": "expirationcheck",
+
+    "AskUserReview_Title": "Are you enjoying the app?",
+    "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",
+    "AskUserReview_Button_No": "Not now",
+    "AskUserReview_Button_Yes": "Sure, let's do it"
 }

@@ -16,6 +16,7 @@ import {
     SuccessMessageContainer,
     Title,
     Description,
+    ButtonContainer,
 } from './styles';
 
 interface Props {
@@ -26,6 +27,7 @@ interface Props {
         | 'edit_product'
         | 'delete_batch'
         | 'delete_product';
+    productId?: number;
 }
 
 const Success: React.FC = () => {
@@ -54,36 +56,41 @@ const Success: React.FC = () => {
     const adUnitId = useMemo(() => {
         if (__DEV__) return TestIds.BANNER;
 
-        switch (type) {
-            case 'create_batch':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDABATCH;
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
+    }, []);
 
-            case 'create_product':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
+    const bannerSize = useMemo(() => {
+        return BannerAdSize.MEDIUM_RECTANGLE;
+    }, []);
 
-            case 'edit_batch':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTEREDITABATCH;
-
-            case 'edit_product':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTEREDITAPRODUCT;
-
-            case 'delete_batch':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEABATCH;
-
-            case 'delete_product':
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEAPRODUCT;
-
-            default: {
-                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
-            }
-        }
-    }, [type]);
-
-    const handleNavigateToHome = useCallback(() => {
+    const handleNavigateHome = useCallback(() => {
         reset({
             routes: [{ name: 'Home' }],
         });
     }, [reset]);
+
+    const handleNavigateToProduct = useCallback(() => {
+        if (routeParams.productId) {
+            if (
+                type === 'create_batch' ||
+                type === 'create_product' ||
+                type === 'edit_batch' ||
+                type === 'edit_product'
+            ) {
+                reset({
+                    routes: [
+                        { name: 'Home' },
+                        {
+                            name: 'ProductDetails',
+                            params: {
+                                id: routeParams.productId,
+                            },
+                        },
+                    ],
+                });
+            }
+        }
+    }, [reset, routeParams.productId, type]);
 
     return (
         <Container>
@@ -147,13 +154,29 @@ const Success: React.FC = () => {
                     </Description>
                 )}
 
-                <Button
-                    text={translate('View_Success_Button_GoToHome')}
-                    onPress={handleNavigateToHome}
-                />
+                <ButtonContainer>
+                    <Button
+                        text={translate('View_Success_Button_GoToHome')}
+                        onPress={handleNavigateHome}
+                    />
+
+                    {(type === 'create_batch' ||
+                        type === 'create_product' ||
+                        type === 'edit_batch' ||
+                        type === 'edit_product') &&
+                        !!routeParams.productId && (
+                            <Button
+                                text={translate(
+                                    'View_Success_Button_NavigateToProduct'
+                                )}
+                                onPress={handleNavigateToProduct}
+                                contentStyle={{ marginLeft: 10 }}
+                            />
+                        )}
+                </ButtonContainer>
 
                 {!userPreferences.isUserPremium && (
-                    <BannerAd size={BannerAdSize.BANNER} unitId={adUnitId} />
+                    <BannerAd size={bannerSize} unitId={adUnitId} />
                 )}
             </SuccessMessageContainer>
         </Container>

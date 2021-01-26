@@ -6,6 +6,7 @@
     "Menu_Button_GoToAddProduct": "Adicionar produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
     "Menu_Button_GoToAllProductsByStore": "Produtos por loja",
+    "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToProPage": "SEJA PRO",
     "Menu_Button_GoToSettings": "Configurações",
     "Menu_Button_GoToAbout": "Sobre",
@@ -15,13 +16,25 @@
     "Menu_UserProfile_Button_login": "Entrar",
     "Menu_UserProfile_Label": "USUÁRIO PRO",
 
+    "Menu_Label_PRO": "PRO",
+    "Menu_Label_Beta": "BETA",
+
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",
     "BarCodeReader_PermissionRequired": "Precisamos da sua permissão para acessar a câmera do seu dispostivo para habilitar o leitor de código de barras.",
     "BarCodeReader_PermissionBlocked": "O Acesso a câmera do dispositivo foi bloqueado, para usar o leitor de códigos de barras você precisar desbloquear a permissão do aplicativo para usar a câmera nas configurações do dispositivo.",
     "BarCodeReader_Button_RequestPermission": "Autorizar câmera",
 
-    "ListProductsComponent_PROBanner_message": "Conheça as vantagens do PRO",
+    "Component_Camera_PageTitle": "Tirar foto do produto",
+    "Component_Camera_PageTitle_OnPreview": "Gostou da foto?",
+    "Component_Camera_Button_TakePicture": "Tirar foto",
+    "Component_Camera_Button_TakeAnotherPicture": "Tirar outra foto",
+    "Component_Camera_Button_SavePicture": "Ficou boa",
+
+    "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
+    "ProBanner_Text2": "Conheça as vantagens do PRO",
+    "ProBanner_Text3": "O PRO não tem anúncios, conheça essa e outras vantagens",
+
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
@@ -67,6 +80,7 @@
     "View_AddProduct_InputPlacehoder_Amount": "Quantidade",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Preço unitário",
     "View_AddProduct_InputPlacehoder_Store": "Loja",
+    "View_AddProduct_InputPlaceholder_SelectCategory": "Selecione a categoria",
     "View_AddProduct_InputAccessibility_Name": "Campo para digitar o nome do produto",
     "View_AddProduct_InputAccessibility_Code": "Campo para digitar o código do produto",
     "View_AddProduct_InputAccessibility_Batch": "Campo para digitar o lote do produto",
@@ -78,10 +92,8 @@
     "View_AddProduct_CalendarAccessibilityDescription": "Calendário para selecionar a data de vencimento do produto",
     "View_AddProduct_Button_Save": "Salvar",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Botão para salvar o novo produto",
-    "View_AddProduct_DuplicateProductNotificationTitle": "Produto duplicado",
-    "View_AddProduct_DuplicateProductNotificationDescription": "Existe um produto com o mesmo código cadastrado, não é possivel adicionar um outro produto com o mesmo código. Você quer adicionar um novo lote ao produto existente?",
-    "View_AddProduct_DuplicateProductNotificationButtonEditProdct": "Editar produto existente",
-    "View_AddProduct_DuplicateProductNotificationButtonClose": "Fechar",
+    "View_AddProduct_Tip_DuplicateProduct": "Já existe um produto cadastrado com o mesmo código. Clique aqui para adicionar um lote ao produto existente",
+    "View_AddProduct_Banner_UnlockCamera": "Se torne PRO e desbloqueie a câmera",
 
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
@@ -89,16 +101,15 @@
     "View_AllProductsByStore_PageTitle": "Todos os produtos por loja",
 
     "View_Auth_SignIn_PageTitle": "Identifique-se",
-    "View_Auth_SignIn_Text_LoginRequired": "Autenticação com o Google é obrigatória para assinar",
+    "View_Auth_SignIn_Text_LoginRequired": "Autenticação é necessária para continuar",
     "View_Auth_SignIn_Text_WhyLogin": "Nós precisamos saber quem você é para identificar você caso você restaure este telefone ou troque ele.",
     "View_Auth_SignIn_Text_Benefits": "Deste modo, podemos restaurar sua assinatura PRO sem a necessidade de realizar uma nova assinatura",
-    "View_Auth_SignIn_Text_Login": "Entrar com o Google",
+    "View_Auth_SignIn_Text_Login": "Entre com sua conta",
     "View_Auth_SignIn_Text_AllDone": "Tudo certo!",
     "View_Auth_SignIn_Button_ContinueToSubscription": "Continuar para a assinatura",
 
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",
-    "View_EditBatch_Success_BatchUpdated": "Lote atualizado",
     "View_EditBatch_PageTitle": "Atualizar lote",
     "View_EditBatch_Button_DeleteBatch": "Apagar",
     "View_EditBatch_InputPlacehoder_Batch": "Lote",
@@ -122,10 +133,11 @@
     "View_EditProduct_InputAccessibility_Name": "Campo de texto para digitar o nome do produto",
     "View_EditProduct_InputAccessibility_Code": "Campo de texto para digitar o código do produto",
     "View_EditProduct_InputAccessibility_Store": "Campo de texto para digitar a loja do produto",
-    "View_EditProduct_Button_Save": "Atualizar produto",
+    "View_EditProduct_Button_Save": "Salvar",
     "View_EditProduct_Button_Cancel": "Cancelar",
 
     "View_Home_SearchText": "Procurar por um produto",
+    "View_FloatMenu_AddProduct": "Novo produto",
 
     "View_ProductDetails_PageTitle": "Detalhes",
     "View_ProductDetails_Code": "Código",
@@ -143,16 +155,17 @@
     "View_ProductDetails_TableComponent_BatchNameColumnTitle": "Lote",
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Vence em",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
-    "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço",
+    "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
 
     "View_ProPage_MeetPRO": "Conheça o",
     "View_ProPage_ProLabel": "PRO",
     "View_ProPage_AdvantageOne": "SEM ANÚNCIOS.",
-    "View_ProPage_AdvantageTwo": "SAVE SEUS PRODUTOS EM FORMATO EXCEL.",
-    "View_ProPage_AdvantageThree": "SAVE SEUS DADOS PARA MANTE-LOS SEGUROS CASO VOCÊ PRECISE FORMATAR O TELEFONE OU TROCAR ELE.",
-    "View_ProPage_AdvantageFour": "TEMAS EXCLUSIVOS",
-    "View_ProPage_AdvantageFive": "PEQUENO PREÇO, GRANDES VANTANGENS",
+    "View_ProPage_AdvantageTwo": "SALVE SEUS PRODUTOS EM FORMATO EXCEL.",
+    "View_ProPage_AdvantageThree": "SALVE SEUS DADOS PARA MANTE-LOS SEGUROS CASO VOCÊ PRECISE FORMATAR O TELEFONE OU TROCAR ELE.",
+    "View_ProPage_AdvantageFour": "TEMAS EXCLUSIVOS.",
+    "View_ProPage_AdvantageFive": "PEQUENO PREÇO, GRANDES VANTANGENS.",
     "View_ProPage_AdvantageSix": "SALVE PRODUTOS DE VÁRIAS LOJAS.",
+    "View_ProPage_AdvantageSeven": "TIRE FOTOS DOS PRODUTOS.",
     "View_ProPage_UserAlreadyPro": "Você já é PRO",
     "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
     "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
@@ -161,6 +174,7 @@
     "View_ProPage_UserNeedToSignIn": "Você precisa entrar com sua conta primeiro.",
     "View_ProPage_Button_ClickToSignIn": "Clique aqui para entrar.",
     "View_ProPage_Button_GoBackToHome": "Voltar para o início",
+    "View_ProPage_SubscriptionNotAvailable": "Assinaturas não estão disponíveis no momento, verifique sua conexão com a internet.",
 
 
     "View_Settings_PageTitle": "Configurações",
@@ -191,6 +205,13 @@
     "View_Settings_Appearance_Theme_Relax": "Relaxado (PRO)",
     "View_Settings_Appearance_Theme_Florest": "Floresta (PRO)",
 
+    "View_Settings_Notifications_Title": "Frequência das notificações",
+    "View_Settings_Notifications_Cadency_Hour": "A cada hora",
+    "View_Settings_Notifications_Cadency_Day": "Diariamente",
+    "View_Settings_Notifications_Cadency_Week": "Semanalmente",
+    "View_Settings_Notifications_Cadency_Month": "Mensalmente",
+    "View_Settings_Notifications_Cadency_Never": "Nunca",
+
     "View_AllProductByStore_BeforeStoreName": "Todos os produtos por loja",
     "View_AllProductByStore_NoStore": "sem loja",
 
@@ -207,18 +228,49 @@
     "View_Success_ProductUpdatedDescription": "O produto foi atualizado.",
     "View_Success_BatchDeletedDescription": "O lote foi deletado.",
     "View_Success_ProductDeletedDescription": "O produto foi deletado.",
-    "View_Success_Button_GoToHome": "Voltar para o início",
+
+    "View_Success_Button_GoToHome": "Ir para o início",
+    "View_Success_Button_NavigateToProduct": "Ir para o produto",
+
+    "View_PhotoView_PageTitle": "Visualizar foto",
+    "View_PhotoView_Button_Back": "Voltar",
+
+    "View_Category_List_PageTitle": "Categorias",
+    "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
+    "View_Category_List_AllCategories_Label": "Todas as categorias",
+
+    "View_Category_List_View_BeforeCategoryName": "Categoria ",
+
+    "Function_Category_AddCategory_Error_AlreadyExists": "Categoria já existe",
 
     "Function_StoreGroup_NoStore": "Sem loja",
 
+    "Function_Export_FileName": "controledevalidade_backup",
+    "Function_Import_Error_InvalidExtesion": "Extensão do arquivo inválida",
+
     "Function_Share_SaveFileTitle": "Salvar arquivo",
-    "Functions_Share_SaveFileDescription": "Escolha um lugar para salvar o arquivo",
+    "Function_Share_SaveFileDescription": "Escolha um lugar para salvar o arquivo",
 
     "Function_Notification_ItOnlyHasProductsNextToExpTitle": "Você tem produtos próximo ao vencimento.",
     "Function_Notification_ItOnlyHasExpiredProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS!",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS E PRÓXIMOS AO VENCIMENTO!",
-    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "Você tem {NUMBER} lotes próximo ao vencimento.",
-    "Function_Notification_ItOnlyHasExpiredProductsMessage": "VOCÊ TEM {NUMBER} LOTES NÃO TRATADOS VENCIDOS.",
-    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "VOCÊ TEM {EXPIREDNUMBER} LOTES NÃO TRATADOS VENCIDOS E {NEXTBATCHES} PRÓXIMOS AO VENCIMENTO."
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsTitle": "VOCÊ TEM PRODUTOS VENCIDOS!",
+    "Function_Notification_ItOnlyHasProductsNextToExpMessage": "Você tem {NUMBER} produtos próximos ao vencimento.",
+    "Function_Notification_ItOnlyHasExpiredProductsMessage": "Você tem {NUMBER} produtos vencidos que ainda não foram tratados.",
+    "Function_Notification_ItHasExpiredAndNextToExpireProductsMessage": "Você tem {EXPIREDNUMBER} produtos vencidos e também tem produtos próximos ao vencimento que ainda não foram tratados.",
+
+    "Function_Excel_ColumnName_ProductName": "Produto",
+    "Function_Excel_ColumnName_ProductCode": "Código",
+    "Function_Excel_ColumnName_ProductStore": "Loja",
+    "Function_Excel_ColumnName_BatchName": "Lote",
+    "Function_Excel_ColumnName_BatchPrice": "Preço",
+    "Function_Excel_ColumnName_BatchAmount": "Quantidade",
+    "Function_Excel_ColumnName_BatchExpDate": "Vencimento em",
+    "Function_Excel_Workbook_Name": "Controle de validade",
+    "Function_Excel_filename": "controledevalidade",
+
+    "AskUserReview_Title": "Você está gostando do aplicativo?",
+    "AskUserReview_Description": "Estou me esforçando para criar o melhor aplicativo da categoria, você poderia tirar alguns segundos para dizer como está o meu trabalho?",
+    "AskUserReview_Button_No": "Não agora",
+    "AskUserReview_Button_Yes": "Claro, fazer avaliação"
 }
 

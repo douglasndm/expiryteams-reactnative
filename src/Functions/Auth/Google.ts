@@ -8,7 +8,7 @@ GoogleSignin.configure({
     webClientId: EnvConfig.GOOGLE_SIGNIN_CLIENT_ID,
 });
 
-export async function isUserSignedIn(): Promise<boolean> {
+export async function isUserSignedInWithGoogle(): Promise<boolean> {
     try {
         return GoogleSignin.isSignedIn();
     } catch (err) {
@@ -16,20 +16,22 @@ export async function isUserSignedIn(): Promise<boolean> {
     }
 }
 
-export async function getUser(): Promise<IGoogleUser> {
-    const isUserSigned = await isUserSignedIn();
-
-    if (!isUserSigned) {
-        throw new Error('User is not signed');
-    }
-
-    const googleUser = await GoogleSignin.getCurrentUser();
+export async function getUserWithGoogle(): Promise<IUser | null> {
+    let googleUser = await GoogleSignin.getCurrentUser();
 
     if (!googleUser) {
-        throw new Error('An error occured when getting user');
+        try {
+            googleUser = await GoogleSignin.signInSilently();
+
+            if (!googleUser) {
+                return null;
+            }
+        } catch (err) {
+            return null;
+        }
     }
 
-    const returnedUser: IGoogleUser = {
+    const returnedUser: IUser = {
         name: googleUser.user.name || '',
         email: googleUser.user.email,
         photo: googleUser.user.photo,
@@ -38,7 +40,7 @@ export async function getUser(): Promise<IGoogleUser> {
     return returnedUser;
 }
 
-export async function signInWithGoogle(): Promise<IUser> {
+export async function signInWithGoogle(): Promise<IFirebaseUser> {
     try {
         await Analytics().logEvent('user_started_signin_process');
 
@@ -57,9 +59,9 @@ export async function signInWithGoogle(): Promise<IUser> {
         // Sign-in the user with the credential
         const authResult = await auth().signInWithCredential(googleCredential);
 
-        await Analytics().logEvent('user_is_now_signed');
+        await Analytics().logEvent('user_is_now_signed_with_google');
 
-        const user: IUser = {
+        const user: IFirebaseUser = {
             displayName: authResult.user.displayName,
             email: authResult.user.email,
             emailVerified: authResult.user.emailVerified,
@@ -70,7 +72,7 @@ export async function signInWithGoogle(): Promise<IUser> {
 
         return user;
     } catch (err) {
-        await Analytics().logEvent('error_while_signing_user');
+        await Analytics().logEvent('error_while_signing_user_with_google');
         throw new Error(err);
     }
 }
@@ -82,7 +84,7 @@ export async function signOutGoogle(): Promise<void> {
             await GoogleSignin.signOut();
             await setUserId('');
 
-            await Analytics().logEvent('user_is_now_signout');
+            await Analytics().logEvent('user_is_now_signout_google');
         }
     } catch (err) {
         throw new Error(err);

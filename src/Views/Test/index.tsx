@@ -1,41 +1,53 @@
-import React from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import React, { useCallback, useState, useEffect } from 'react';
+import { ScrollView } from 'react-native';
+import { DocumentDirectoryPath, readDir } from 'react-native-fs';
+import { zip } from 'react-native-zip-archive';
 import { addDays } from 'date-fns';
-import BackgroundJob from 'react-native-background-job';
-
-import { useTheme } from 'styled-components/native';
+import {
+    RewardedAd,
+    TestIds,
+    RewardedAdEventType,
+} from '@react-native-firebase/admob';
 
 import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
+import { Container, Category } from '../Settings/styles';
+import { getAllProducts } from '~/Functions/Products';
 import {
-    getEnableNotifications,
-    setEnableNotifications,
-} from '../../Functions/Settings';
-// import * as Premium from '../../Functions/Premium';
-import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
-import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
-import { Category } from '../Settings/styles';
+    isTimeForANotification,
+    setTimeForNextNotification,
+} from '~/Functions/Notifications';
+
+import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
+import { sendNotification } from '~/Services/Notifications';
+
+const rewardedAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 
 const Test: React.FC = () => {
-    function setBackgroundJob() {
-        const backgroundSchedule = {
-            jobKey: 'backgroundNotification',
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        const eventListener = rewardedAd.onAdEvent((type, error, reward) => {
+            if (type === RewardedAdEventType.LOADED) {
+                setLoaded(true);
+            }
+
+            if (type === RewardedAdEventType.EARNED_REWARD) {
+                console.log('User earned reward of ', reward);
+                setLoaded(false);
+            }
+        });
+
+        // Start loading the rewarded ad straight away
+        rewardedAd.load();
+
+        // Unsubscribe from events on unmount
+        return () => {
+            eventListener();
         };
-
-        BackgroundJob.schedule(backgroundSchedule)
-            .then(() => console.log('Success'))
-            .catch((err) => {
-                if (__DEV__) {
-                    console.warn(err);
-                }
-            });
-    }
-
-    function note() {
-        getAllProductsNextToExp();
-    }
+    }, []);
 
     async function sampleData() {
         const realm = await Realm();
@@ -88,78 +100,90 @@ const Test: React.FC = () => {
         }
     }
 
-    async function saveFile() {
-        ExportBackupFile();
+    interface IProductImage {
+        productId: number;
+        imagePath: string;
+        imageName: string;
     }
 
-    async function getNot() {
-        const noti = await getEnableNotifications();
+    const logFiles = useCallback(async () => {
+        const allProducts = await getAllProducts({});
 
-        if (noti) {
-            Alert.alert('Habilitado');
-        } else {
-            Alert.alert('Desabilitado');
+        const productsWithPics = allProducts.filter((p) => p.photo);
+        const dir = await readDir(DocumentDirectoryPath);
+
+        const files: Array<IProductImage> = [];
+
+        productsWithPics.forEach((p) => {
+            const findedPic = dir.find(
+                (file) => file.name === p.photo || file.path === p.photo
+            );
+
+            if (findedPic) {
+                files.push({
+                    productId: p.id,
+                    imageName: findedPic.name,
+                    imagePath: findedPic.path,
+                });
+            }
+        });
+
+        const targetPath = `${DocumentDirectoryPath}/backupfile.zip`;
+        const sourcePath = `${DocumentDirectoryPath}/images`;
+
+        const zipPath = await zip(sourcePath, targetPath);
+
+        console.log(zipPath);
+    }, []);
+
+    const rewardAd = useCallback(() => {
+        if (loaded) {
+            rewardedAd.show();
+            rewardedAd.load();
         }
-    }
+    }, [loaded]);
 
-    async function setNot() {
-        const noti = await getEnableNotifications();
+    const handleNotification = useCallback(async () => {
+        await setTimeForNextNotification();
 
-        await setEnableNotifications(!noti);
-    }
+        const notification = await getNotificationForAllProductsCloseToExp();
 
-    const theme = useTheme();
+        if (notification) {
+            sendNotification(notification);
+        }
+    }, []);
 
     return (
-        <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+        <Container>
             <ScrollView>
-                <Category
-                    style={{ backgroundColor: theme.colors.productBackground }}
-                >
-                    <Button text="Notification Status" onPress={getNot} />
-                    <Button
-                        text="Invert Notification Status"
-                        onPress={setNot}
-                    />
-
-                    <Button
-                        text="Disparar notificação"
-                        onPress={() => note()}
-                    />
-
-                    <Button
-                        text="Load with sample data"
-                        onPress={() => sampleData()}
-                    />
+                <Category>
+                    <Button text="Load with sample data" onPress={sampleData} />
 
                     <Button
                         text="Delete all products"
-                        onPress={() => {
-                            deleteProducts();
-                        }}
+                        onPress={deleteProducts}
+                    />
+
+                    <Button text="Log files" onPress={logFiles} />
+
+                    <Button text="Show rewards ad" onPress={rewardAd} />
+
+                    <Button
+                        text="Log is time to notificaiton"
+                        onPress={() =>
+                            isTimeForANotification().then((response) =>
+                                console.log(response)
+                            )
+                        }
                     />
 
                     <Button
-                        text="Background job"
-                        onPress={() => setBackgroundJob()}
-                    />
-
-                    <Button
-                        text="Import file"
-                        onPress={() => {
-                            ImportBackupFile();
-                        }}
-                    />
-
-                    <Button
-                        text="Export file"
-                        onPress={() => {
-                            saveFile();
-                        }}
+                        text="Throw notification"
+                        onPress={handleNotification}
                     />
                 </Category>
             </ScrollView>
-        </View>
+        </Container>
     );
 };
 

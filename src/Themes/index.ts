@@ -10,7 +10,7 @@ import OceanBlue from './OceanBlue';
 import Relax from './Relax';
 import Florest from './Florest';
 
-import { getAppTheme } from '../Functions/Settings';
+import { getAppTheme } from '../Functions/Themes';
 
 export default {
     Light,

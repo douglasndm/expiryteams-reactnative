@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -6,7 +6,7 @@ import { translate } from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
-import ProductItem from '../ProductItem';
+import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
 
 import {
@@ -16,6 +16,7 @@ import {
     CategoryDetails,
     CategoryDetailsText,
     EmptyListText,
+    InvisibleComponent,
 } from './styles';
 
 interface RequestProps {
@@ -35,13 +36,13 @@ const ListProducts: React.FC<RequestProps> = ({
         navigate('AllProducts');
     }, [navigate]);
 
-    const handleNavigateAddNewProduct = useCallback(() => {
-        navigate('AddProduct');
+    const handleNavigateProPage = useCallback(() => {
+        navigate('Pro');
     }, [navigate]);
 
-    const handleNavigateProPage = useCallback(() => {
-        navigate('PremiumSubscription');
-    }, [navigate]);
+    const choosenAdText = useMemo(() => {
+        return Math.floor(Math.random() * 3) + 1;
+    }, []);
 
     const ListHeader = useCallback(() => {
         return (
@@ -49,9 +50,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
                         <ProText>
-                            {translate(
-                                'ListProductsComponent_PROBanner_message'
-                            )}
+                            {translate(`ProBanner_Text${choosenAdText}`)}
                         </ProText>
                     </ProBanner>
                 )}
@@ -68,7 +67,12 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [products, handleNavigateProPage, userPreferences.isUserPremium]);
+    }, [
+        products,
+        handleNavigateProPage,
+        userPreferences.isUserPremium,
+        choosenAdText,
+    ]);
 
     const EmptyList = useCallback(() => {
         return (
@@ -86,22 +90,13 @@ const ListProducts: React.FC<RequestProps> = ({
                         'ListProductsComponent_Button_ShowAllProducts'
                     )}
                     onPress={handleNavigateToAllProducts}
+                    contentStyle={{ marginBottom: 100 }}
                 />
             );
         }
 
-        return (
-            <GenericButton
-                text={translate('ListProductsComponent_Button_AddNewProduct')}
-                onPress={handleNavigateAddNewProduct}
-            />
-        );
-    }, [
-        products.length,
-        isHome,
-        handleNavigateAddNewProduct,
-        handleNavigateToAllProducts,
-    ]);
+        return <InvisibleComponent />;
+    }, [products.length, isHome, handleNavigateToAllProducts]);
 
     const renderComponent = useCallback(({ item, index }) => {
         return <ProductItem product={item} index={index} />;
@@ -117,7 +112,6 @@ const ListProducts: React.FC<RequestProps> = ({
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
                 initialNumToRender={10}
-                removeClippedSubviews
             />
         </Container>
     );

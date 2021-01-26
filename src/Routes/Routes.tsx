@@ -1,23 +1,27 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from '../Views/Home';
-import AddProduct from '../Views/AddProduct';
-import AddLote from '../Views/AddLote';
-import EditProduct from '../Views/EditProduct';
-import EditLote from '../Views/EditLote';
-import ProductDetails from '../Views/ProductDetails';
-import AllProducts from '../Views/AllProducts';
-import AllProductsByStore from '../Views/AllProductsByStore';
-import StoreDetails from '../Views/StoreDetails';
-import Settings from '../Views/Settings';
-import About from '../Views/About';
-import ProSubscription from '../Views/ProSubscription';
-import Success from '../Views/Success';
+import Home from '~/Views/Home';
+import AddProduct from '~/Views/Product/Add';
+import AddLote from '~/Views/Batch/Add';
+import EditProduct from '~/Views/Product/Edit';
+import EditLote from '~/Views/Batch/Edit';
+import ProductDetails from '~/Views/ProductDetails';
+import AllProducts from '~/Views/AllProducts';
+import AllProductsByStore from '~/Views/AllProductsByStore';
+import StoreDetails from '~/Views/StoreDetails';
+import Settings from '~/Views/Settings';
+import About from '~/Views/About';
+import ProSubscription from '~/Views/ProSubscription';
+import ProOfferings from '~/Views/ProSubscription/Offerings';
+import Success from '~/Views/Success';
+import PhotoView from '~/Views/PhotoView';
+import ListCategory from '~/Views/Category/List';
+import CategoryView from '~/Views/Category/View';
 
-import SignIn from '../Views/Auth/SignIn';
+import SignIn from '~/Views/Auth/SignIn';
 
-import Test from '../Views/Test';
+import Test from '~/Views/Test';
 
 const Stack = createStackNavigator();
 
@@ -39,13 +43,15 @@ const Routes: React.FC = () => {
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditLote" component={EditLote} />
             <Stack.Screen name="Test" component={Test} />
-            <Stack.Screen
-                name="PremiumSubscription"
-                component={ProSubscription}
-            />
+            <Stack.Screen name="Pro" component={ProSubscription} />
             <Stack.Screen name="Success" component={Success} />
+            <Stack.Screen name="PhotoView" component={PhotoView} />
+
+            <Stack.Screen name="ListCategory" component={ListCategory} />
+            <Stack.Screen name="CategoryView" component={CategoryView} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="ProOfferings" component={ProOfferings} />
         </Stack.Navigator>
     );
 };

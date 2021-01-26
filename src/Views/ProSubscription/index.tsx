@@ -5,7 +5,6 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PurchasesPackage } from 'react-native-purchases';
 
@@ -16,7 +15,7 @@ import {
     makeSubscription,
     isSubscriptionActive,
 } from '../../Functions/ProMode';
-import { isUserSignedIn } from '../../Functions/Auth/Google';
+import { isUserSignedIn } from '~/Functions/Auth';
 
 import Loading from '../../Components/Loading';
 import Notification from '../../Components/Notification';
@@ -25,6 +24,7 @@ import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
+    Scroll,
     HeaderContainer,
     TitleContainer,
     IntroductionText,
@@ -38,7 +38,7 @@ import {
     LoadingIndicator,
 } from './styles';
 
-const PremiumSubscription: React.FC = () => {
+const Pro: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
@@ -78,7 +78,7 @@ const PremiumSubscription: React.FC = () => {
 
             setPackageSubscription(response);
         } catch (err) {
-            setError(err.message);
+            // setError(err.message);
         } finally {
             setIsLoading(false);
         }
@@ -143,101 +143,126 @@ const PremiumSubscription: React.FC = () => {
     return isLoading ? (
         <Loading />
     ) : (
-        <Container>
-            <ScrollView>
-                <HeaderContainer>
-                    <TitleContainer>
-                        <IntroductionText>
-                            {translate('View_ProPage_MeetPRO')}
-                        </IntroductionText>
-                        <AppNameTitle>{translate('AppName')}</AppNameTitle>
-                        <PremiumTitle>
-                            {translate('View_ProPage_ProLabel')}
-                        </PremiumTitle>
-                    </TitleContainer>
-                </HeaderContainer>
+        <>
+            <Container>
+                <Scroll>
+                    <HeaderContainer>
+                        <TitleContainer>
+                            <IntroductionText>
+                                {translate('View_ProPage_MeetPRO')}
+                            </IntroductionText>
+                            <AppNameTitle>{translate('AppName')}</AppNameTitle>
+                            <PremiumTitle>
+                                {translate('View_ProPage_ProLabel')}
+                            </PremiumTitle>
+                        </TitleContainer>
+                    </HeaderContainer>
 
-                <AdvantagesGroup>
-                    <AdvantageContainer>
-                        <AdvantageText>
-                            {translate('View_ProPage_AdvantageOne')}
-                        </AdvantageText>
-                    </AdvantageContainer>
+                    <AdvantagesGroup>
+                        <AdvantageContainer>
+                            <AdvantageText>
+                                {translate('View_ProPage_AdvantageOne')}
+                            </AdvantageText>
+                        </AdvantageContainer>
 
-                    <AdvantageContainer>
-                        <AdvantageText>
-                            {translate('View_ProPage_AdvantageTwo')}
-                        </AdvantageText>
-                    </AdvantageContainer>
+                        <AdvantageContainer>
+                            <AdvantageText>
+                                {translate('View_ProPage_AdvantageSeven')}
+                            </AdvantageText>
+                        </AdvantageContainer>
 
-                    <AdvantageContainer>
-                        <AdvantageText>
-                            {translate('View_ProPage_AdvantageThree')}
-                        </AdvantageText>
-                    </AdvantageContainer>
-                    <AdvantageContainer>
-                        <AdvantageText>
-                            {translate('View_ProPage_AdvantageFour')}
-                        </AdvantageText>
-                    </AdvantageContainer>
-                    <AdvantageContainer>
-                        <AdvantageText>
-                            {translate('View_ProPage_AdvantageSix')}
-                        </AdvantageText>
-                    </AdvantageContainer>
-                    <AdvantageContainer>
-                        <AdvantageText>
-                            {translate('View_ProPage_AdvantageFive')}
-                        </AdvantageText>
-                    </AdvantageContainer>
-                </AdvantagesGroup>
+                        <AdvantageContainer>
+                            <AdvantageText>
+                                {translate('View_ProPage_AdvantageTwo')}
+                            </AdvantageText>
+                        </AdvantageContainer>
 
-                {userPreferences.isUserSignedIn ? (
-                    <>
-                        {alreadyPremium ? (
-                            <ButtonSubscription>
+                        <AdvantageContainer>
+                            <AdvantageText>
+                                {translate('View_ProPage_AdvantageThree')}
+                            </AdvantageText>
+                        </AdvantageContainer>
+                        <AdvantageContainer>
+                            <AdvantageText>
+                                {translate('View_ProPage_AdvantageFour')}
+                            </AdvantageText>
+                        </AdvantageContainer>
+                        <AdvantageContainer>
+                            <AdvantageText>
+                                {translate('View_ProPage_AdvantageSix')}
+                            </AdvantageText>
+                        </AdvantageContainer>
+                        <AdvantageContainer>
+                            <AdvantageText>
+                                {translate('View_ProPage_AdvantageFive')}
+                            </AdvantageText>
+                        </AdvantageContainer>
+                    </AdvantagesGroup>
+
+                    {userPreferences.isUserSignedIn ? (
+                        <>
+                            {alreadyPremium ? (
+                                <ButtonSubscription>
+                                    <TextSubscription>
+                                        {translate(
+                                            'View_ProPage_UserAlreadyPro'
+                                        )}
+                                    </TextSubscription>
+                                </ButtonSubscription>
+                            ) : (
+                                <>
+                                    {packageSubscription ? (
+                                        <ButtonSubscription
+                                            onPress={handleMakeSubscription}
+                                            disabled={isLoadingMakeSubscription}
+                                        >
+                                            {isLoadingMakeSubscription && (
+                                                <LoadingIndicator />
+                                            )}
+                                            {!isLoadingMakeSubscription && (
+                                                <>
+                                                    <TextSubscription>
+                                                        {subscribeButtonString}
+                                                    </TextSubscription>
+                                                </>
+                                            )}
+                                        </ButtonSubscription>
+                                    ) : (
+                                        <ButtonSubscription disabled>
+                                            <TextSubscription>
+                                                {translate(
+                                                    'View_ProPage_SubscriptionNotAvailable'
+                                                )}
+                                            </TextSubscription>
+                                        </ButtonSubscription>
+                                    )}
+                                </>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            <ButtonSubscription
+                                onPress={handleNavigateToSignIn}
+                            >
                                 <TextSubscription>
-                                    {translate('View_ProPage_UserAlreadyPro')}
+                                    {translate('View_ProPage_UserNeedToSignIn')}
+                                </TextSubscription>
+                                <TextSubscription>
+                                    {translate(
+                                        'View_ProPage_Button_ClickToSignIn'
+                                    )}
                                 </TextSubscription>
                             </ButtonSubscription>
-                        ) : (
-                            <ButtonSubscription
-                                onPress={handleMakeSubscription}
-                                disabled={isLoadingMakeSubscription}
-                            >
-                                {isLoadingMakeSubscription && (
-                                    <LoadingIndicator />
-                                )}
-                                {!isLoadingMakeSubscription && (
-                                    <>
-                                        <TextSubscription>
-                                            {subscribeButtonString}
-                                        </TextSubscription>
-                                    </>
-                                )}
-                            </ButtonSubscription>
-                        )}
-                    </>
-                ) : (
-                    <>
-                        <ButtonSubscription onPress={handleNavigateToSignIn}>
-                            <TextSubscription>
-                                {translate('View_ProPage_UserNeedToSignIn')}
-                            </TextSubscription>
-                            <TextSubscription>
-                                {translate('View_ProPage_Button_ClickToSignIn')}
-                            </TextSubscription>
-                        </ButtonSubscription>
-                    </>
-                )}
+                        </>
+                    )}
 
-                <ButtonSubscription onPress={handleNavigateHome}>
-                    <TextSubscription>
-                        {translate('View_ProPage_Button_GoBackToHome')}
-                    </TextSubscription>
-                </ButtonSubscription>
-            </ScrollView>
-
+                    <ButtonSubscription onPress={handleNavigateHome}>
+                        <TextSubscription>
+                            {translate('View_ProPage_Button_GoBackToHome')}
+                        </TextSubscription>
+                    </ButtonSubscription>
+                </Scroll>
+            </Container>
             {!!error && (
                 <Notification
                     NotificationMessage={error}
@@ -245,8 +270,8 @@ const PremiumSubscription: React.FC = () => {
                     onPress={handleDimissNotification}
                 />
             )}
-        </Container>
+        </>
     );
 };
 
-export default PremiumSubscription;
+export default Pro;

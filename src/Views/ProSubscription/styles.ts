@@ -6,6 +6,8 @@ export const Container = styled.View`
     background-color: ${(props) => props.theme.colors.background};
 `;
 
+export const Scroll = styled.ScrollView``;
+
 export const HeaderContainer = styled.View`
     background-color: ${(props) => props.theme.colors.accent};
     margin-left: -16px;

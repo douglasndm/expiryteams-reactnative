@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { AppleButton as ApplButton } from 'AppleAuth';
 import { GoogleSigninButton } from '@react-native-community/google-signin';
 
 export const Container = styled.ScrollView`
@@ -33,8 +34,26 @@ export const LoginText = styled.Text`
     text-align: center;
     margin-top: 10px;
 `;
+export const ButtonContainer = styled.View`
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
+`;
+
+export const AppleButton = styled(ApplButton).attrs(() => ({
+    cornerRadius: 5,
+    buttonType: ApplButton.Type.CONTINUE,
+}))`
+    width: 200px;
+    height: 60px;
+`;
 
 export const GoogleButton = styled(GoogleSigninButton)`
-    align-self: center;
-    margin-top: 10px;
+    width: 200px;
+    height: 60px;
+`;
+
+export const ErrorMessage = styled.Text`
+    margin: 10px;
+    color: red;
 `;

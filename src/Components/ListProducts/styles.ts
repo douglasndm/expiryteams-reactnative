@@ -39,3 +39,7 @@ export const EmptyListText = styled.Text`
     margin-right: 15px;
     color: ${({ theme }) => theme.colors.text};
 `;
+
+export const InvisibleComponent = styled.View`
+    margin-bottom: 100px;
+`;

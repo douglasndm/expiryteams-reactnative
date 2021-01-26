@@ -143,8 +143,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 80
-        versionName "1.6.7"
+        versionCode 89
+        versionName "1.8"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -222,6 +222,17 @@ android {
     }
 }
 
+// Upload Crashlytics NDK symbols
+tasks.whenTaskAdded { task -> if (task.name.startsWith('assemble') && task.name.endsWith("Release")) task.finalizedBy "uploadCrashlyticsSymbolFile" + task.name.substring('assemble'.length()) }
+
+repositories {
+    jcenter()
+
+    maven {
+      url  "https://adcolony.bintray.com/AdColony"
+    }
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
@@ -262,7 +273,10 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-ads:19.6.0'
     implementation 'com.google.ads.mediation:inmobi:9.1.1.0'
-    implementation 'com.vungle:publisher-sdk-android:6.8.1'
+    implementation 'com.google.ads.mediation:vungle:6.8.1.1'
+    implementation 'com.google.ads.mediation:adcolony:4.3.0.0'
+    implementation 'com.google.ads.mediation:applovin:9.14.7.0'
+    implementation 'com.google.ads.mediation:facebook:6.2.0.1'
     // Mediation Test Suite
     implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
 }
@@ -278,7 +292,7 @@ apply from: file("../../node_modules/@react-native-community/cli-platform-androi
 
 //React Native Vector Icons
 project.ext.vectoricons = [
-    iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
+    iconFontNames: [ 'Ionicons.ttf', 'Feather.ttf' ] // Name of the font files you want to copy
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

@@ -1,11 +1,12 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
+import { Platform } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import { useNavigation } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
 import { translate } from '../../Locales';
 
-import ProductItem from '../ProductItem';
+import ProductItem from '~/Components/ListProducts/ProductContainer';
 
 import {
     sortProductsLotesByLotesExpDate,
@@ -24,21 +25,28 @@ interface IRequest {
 }
 
 const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
-    const navigation = useNavigation();
+    const { navigate } = useNavigation();
     const { userPreferences } = useContext(PreferencesContext);
 
-    const adUnitId = __DEV__
-        ? TestIds.BANNER
-        : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENSTOREGROUPS;
+    const unitId = useMemo(() => {
+        if (__DEV__) {
+            return TestIds.BANNER;
+        }
+
+        if (Platform.OS === 'ios') {
+            return EnvConfig.IOS_ADUNIT_BANNER_BETWEEN_STORE_GROUPS;
+        }
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENSTOREGROUPS;
+    }, []);
 
     const resultsTemp = sortProductsLotesByLotesExpDate(products);
     const results = sortProductsByFisrtLoteExpDate(resultsTemp);
 
     const handleStoreDetails = useCallback(() => {
-        navigation.push('StoreDetails', {
+        navigate('StoreDetails', {
             storeName,
         });
-    }, [storeName, navigation]);
+    }, [storeName, navigate]);
 
     return (
         <StoreGroupContainer>
@@ -59,7 +67,10 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
 
             {!userPreferences.isUserPremium && (
                 <AdView>
-                    <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
+                    <BannerAd
+                        unitId={unitId}
+                        size={BannerAdSize.LARGE_BANNER}
+                    />
                 </AdView>
             )}
         </StoreGroupContainer>

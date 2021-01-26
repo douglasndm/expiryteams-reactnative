@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../Locales';
 
 import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
-import FABProducts from '../../Components/FABProducts';
 import BarCodeReader from '../../Components/BarCodeReader';
 import Notification from '../../Components/Notification';
 
@@ -19,11 +19,15 @@ import {
     InputTextContainer,
     InputTextIconContainer,
     InputTextIcon,
+    FloatButton,
+    Icons,
 } from '../Home/styles';
 
 import { Container } from './styles';
 
 const AllProducts: React.FC = () => {
+    const { navigate } = useNavigation();
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
@@ -65,6 +69,10 @@ const AllProducts: React.FC = () => {
     const handleOnBarCodeReaderClose = useCallback(() => {
         setEnableBarCodeReader(false);
     }, []);
+
+    const handleNavigateAddProduct = useCallback(() => {
+        navigate('AddProduct');
+    }, [navigate]);
 
     const handleSearchChange = useCallback(
         async (search: string) => {
@@ -142,7 +150,14 @@ const AllProducts: React.FC = () => {
                         )}
                     </Container>
 
-                    <FABProducts />
+                    <FloatButton
+                        icon={() => (
+                            <Icons name="add-outline" color="white" size={22} />
+                        )}
+                        small
+                        label={translate('View_FloatMenu_AddProduct')}
+                        onPress={handleNavigateAddProduct}
+                    />
                 </>
             )}
         </>
