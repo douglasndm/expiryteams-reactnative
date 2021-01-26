@@ -1,10 +1,9 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { View, Linking } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import { useTheme } from 'styled-components';
 
 import { translate } from '~/Locales';
 
@@ -15,7 +14,7 @@ import UserInfo from './UserInfo';
 import {
     Container,
     MenuItemContainer,
-    MenuItem,
+    MenuContent,
     MenuItemText,
     Icons,
     DrawerSection,
@@ -28,12 +27,39 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
 ) => {
     const { navigation } = props;
-    const theme = useTheme();
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const navigteToCategories = useCallback(() => {
+    const shouldShowMultiplesStores = useMemo(() => {
+        if (!userPreferences.isUserPremium) {
+            return true;
+        }
+
+        if (userPreferences.isUserPremium && userPreferences.multiplesStores) {
+            return true;
+        }
+
+        return false;
+    }, [userPreferences]);
+
+    const navigateToAddProduct = useCallback(() => {
+        navigation.navigate('AddProduct');
+    }, [navigation]);
+
+    const navigateToAllProducts = useCallback(() => {
+        navigation.navigate('AllProducts');
+    }, [navigation]);
+
+    const navigateToAllProductsByStore = useCallback(() => {
+        navigation.navigate('AllProductsByStore');
+    }, [navigation]);
+
+    const navigateToCategories = useCallback(() => {
         navigation.navigate('ListCategory');
+    }, [navigation]);
+
+    const navigateToPRO = useCallback(() => {
+        navigation.navigate('Pro');
     }, [navigation]);
 
     const handleNavigateToSite = useCallback(async () => {
@@ -50,47 +76,75 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     />
 
                     <DrawerSection>
-                        <MenuItem
-                            icon={() => <Icons name="home-outline" size={22} />}
-                            label={translate('Menu_Button_GoToHome')}
+                        <MenuItemContainer
                             onPress={() => navigation.navigate('Home')}
-                        />
-                        <MenuItem
-                            icon={() => (
-                                <Icons
-                                    name="add"
-                                    color={theme.colors.text}
-                                    size={22}
-                                />
-                            )}
-                            label={translate('Menu_Button_GoToAddProduct')}
-                            onPress={() => navigation.navigate('AddProduct')}
-                        />
-                        <MenuItem
-                            icon={() => <Icons name="apps-outline" size={22} />}
-                            label={translate('Menu_Button_GoToAllProducts')}
-                            onPress={() => navigation.navigate('AllProducts')}
-                        />
+                        >
+                            <MenuContent>
+                                <Icons name="home-outline" />
+                                <MenuItemText>
+                                    {translate('Menu_Button_GoToHome')}
+                                </MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
 
-                        {userPreferences.multiplesStores && (
-                            <MenuItem
-                                icon={() => (
-                                    <Icons name="list-outline" size={22} />
-                                )}
-                                label={translate(
-                                    'Menu_Button_GoToAllProductsByStore'
-                                )}
-                                onPress={() =>
-                                    navigation.navigate('AllProductsByStore')
+                        <MenuItemContainer onPress={navigateToAddProduct}>
+                            <MenuContent>
+                                <Icons name="add" />
+                                <MenuItemText>
+                                    {translate('Menu_Button_GoToAddProduct')}
+                                </MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
+
+                        <MenuItemContainer onPress={navigateToAllProducts}>
+                            <MenuContent>
+                                <Icons name="apps-outline" />
+                                <MenuItemText>
+                                    {translate('Menu_Button_GoToAllProducts')}
+                                </MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
+
+                        {shouldShowMultiplesStores && (
+                            <MenuItemContainer
+                                onPress={
+                                    userPreferences.isUserPremium
+                                        ? navigateToAllProductsByStore
+                                        : navigateToPRO
                                 }
-                            />
+                            >
+                                <MenuContent>
+                                    <Icons name="list-outline" />
+                                    <MenuItemText>
+                                        {translate(
+                                            'Menu_Button_GoToAllProductsByStore'
+                                        )}
+                                    </MenuItemText>
+                                </MenuContent>
+
+                                <LabelGroup>
+                                    <LabelContainer>
+                                        <Label>
+                                            {translate('Menu_Label_PRO')}
+                                        </Label>
+                                    </LabelContainer>
+                                </LabelGroup>
+                            </MenuItemContainer>
                         )}
 
-                        <MenuItemContainer onPress={navigteToCategories}>
-                            <Icons name="filter-outline" />
-                            <MenuItemText>
-                                {translate('Menu_Button_GoToCategories')}
-                            </MenuItemText>
+                        <MenuItemContainer
+                            onPress={
+                                userPreferences.isUserPremium
+                                    ? navigateToCategories
+                                    : navigateToPRO
+                            }
+                        >
+                            <MenuContent>
+                                <Icons name="file-tray-full-outline" />
+                                <MenuItemText>
+                                    {translate('Menu_Button_GoToCategories')}
+                                </MenuItemText>
+                            </MenuContent>
 
                             <LabelGroup>
                                 <LabelContainer>
@@ -105,43 +159,62 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </MenuItemContainer>
 
                         {!userPreferences.isUserPremium && (
-                            <MenuItem
-                                icon={() => (
-                                    <Icons name="analytics-outline" size={22} />
-                                )}
-                                label={translate('Menu_Button_GoToProPage')}
-                                onPress={() => {
-                                    navigation.navigate('Pro');
-                                }}
-                            />
+                            <MenuItemContainer
+                                onPress={() => navigation.navigate('Pro')}
+                            >
+                                <MenuContent>
+                                    <Icons name="analytics-outline" />
+                                    <MenuItemText>
+                                        {translate('Menu_Button_GoToProPage')}
+                                    </MenuItemText>
+                                </MenuContent>
+                            </MenuItemContainer>
                         )}
                     </DrawerSection>
                 </View>
             </DrawerContentScrollView>
 
             <DrawerSection>
-                <MenuItem
-                    icon={() => <Icons name="settings-outline" size={22} />}
-                    label={translate('Menu_Button_GoToSettings')}
+                <MenuItemContainer
                     onPress={() => navigation.navigate('Settings')}
-                />
-                <MenuItem
-                    icon={() => <Icons name="globe-outline" size={22} />}
-                    label={translate('Menu_Button_KnowOthersApps')}
-                    onPress={handleNavigateToSite}
-                />
-                <MenuItem
-                    icon={() => <Icons name="help-circle-outline" size={22} />}
-                    label={translate('Menu_Button_GoToAbout')}
-                    onPress={() => navigation.navigate('About')}
-                />
+                >
+                    <MenuContent>
+                        <Icons name="settings-outline" />
+                        <MenuItemText>
+                            {translate('Menu_Button_GoToSettings')}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
+
+                <MenuItemContainer onPress={handleNavigateToSite}>
+                    <MenuContent>
+                        <Icons name="globe-outline" />
+                        <MenuItemText>
+                            {translate('Menu_Button_KnowOthersApps')}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
+
+                <MenuItemContainer onPress={() => navigation.navigate('About')}>
+                    <MenuContent>
+                        <Icons name="help-circle-outline" />
+                        <MenuItemText>
+                            {translate('Menu_Button_GoToAbout')}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
 
                 {__DEV__ && (
-                    <MenuItem
-                        icon={() => <Icons name="bug-outline" size={22} />}
-                        label={translate('Menu_Button_GoToTest')}
+                    <MenuItemContainer
                         onPress={() => navigation.navigate('Test')}
-                    />
+                    >
+                        <MenuContent>
+                            <Icons name="bug-outline" />
+                            <MenuItemText>
+                                {translate('Menu_Button_GoToTest')}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
                 )}
             </DrawerSection>
         </Container>

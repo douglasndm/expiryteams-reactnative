@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { Drawer } from 'react-native-paper';
-import { DrawerItem } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -13,16 +12,18 @@ export const MenuItemContainer = styled(RectButton)`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 3px 5px 15px;
+    padding: 15px;
 `;
 
-export const MenuItem = styled(DrawerItem).attrs((props) => ({
-    labelStyle: {
-        color: props.theme.colors.text,
-    },
-}))``;
+export const MenuContent = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
 
-export const MenuItemText = styled.Text``;
+export const MenuItemText = styled.Text`
+    margin-left: 20px;
+    color: ${(props) => props.theme.colors.text};
+`;
 
 export const Icons = styled(Ionicons).attrs(() => ({
     size: 22,
@@ -37,7 +38,7 @@ export const LabelGroup = styled.View`
 `;
 
 export const LabelContainer = styled.View`
-    padding: 10px;
+    padding: 5px 10px;
     background-color: #eaeaea;
     margin-right: 5px;
 `;
