@@ -150,11 +150,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 <LabelContainer>
                                     <Label>{translate('Menu_Label_PRO')}</Label>
                                 </LabelContainer>
-                                <LabelContainer>
-                                    <Label>
-                                        {translate('Menu_Label_Beta')}
-                                    </Label>
-                                </LabelContainer>
                             </LabelGroup>
                         </MenuItemContainer>
 
