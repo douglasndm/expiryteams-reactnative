@@ -26,6 +26,14 @@ const About: React.FC = () => {
     const { goBack } = useNavigation();
     const [userId, setUserId] = useState<string>('');
 
+    const navigateToTerms = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/terms');
+    }, []);
+
+    const navigateToPrivacy = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/privacy');
+    }, []);
+
     const handleLinkedinPress = useCallback(async () => {
         await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
     }, []);
@@ -66,6 +74,18 @@ const About: React.FC = () => {
                 <ApplicationVersion>
                     {translate('View_About_AppVersion') + getVersion()}
                 </ApplicationVersion>
+            </AboutSection>
+
+            <AboutSection>
+                <Text>
+                    {translate('BeforeTermsAndPrivacy')}
+                    <Link onPress={navigateToTerms}>{translate('Terms')}</Link>
+                    {translate('BetweenTermsAndPrivacy')}
+                    <Link onPress={navigateToPrivacy}>
+                        {translate('PrivacyPolicy')}
+                    </Link>
+                    .
+                </Text>
             </AboutSection>
 
             <AboutSection>

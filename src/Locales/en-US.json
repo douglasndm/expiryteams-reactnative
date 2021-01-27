@@ -169,11 +169,13 @@
     "View_ProPage_UserAlreadyPro": "You are already PRO",
     "View_ProPage_BeforeIntroPrice": "SUBSCRIBE FOR ONLY",
     "View_ProPage_AfterIntroPrice": " IN THE FIRST MONTH AND THEN",
+
     "View_ProPage_SubscribePeriod_Quarterly": "QUARTERLY",
     "View_ProPage_SubscribePeriod_Monthly": "MONTHLY",
+
     "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
     "View_ProPage_Button_GoBackToHome": "Go home",
-    "View_ProPage_SubscriptionNotAvailable": "Subscription is not available now, check you internet connection.",
+    "View_ProPage_SubscriptionNotAvailable": "Subscriptions are not available now",
 
 
     "View_Settings_PageTitle": "Settings",
@@ -270,5 +272,10 @@
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",
     "AskUserReview_Button_No": "Not now",
-    "AskUserReview_Button_Yes": "Sure, let's do it"
+    "AskUserReview_Button_Yes": "Sure, let's do it",
+
+    "BeforeTermsAndPrivacy": "By using this app you are acception our ",
+    "BetweenTermsAndPrivacy": " and ",
+    "Terms": "Terms of service",
+    "PrivacyPolicy": "Privacy Policy"
 }
