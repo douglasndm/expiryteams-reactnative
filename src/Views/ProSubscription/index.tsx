@@ -245,9 +245,6 @@ const Pro: React.FC = () => {
                                 onPress={handleNavigateToSignIn}
                             >
                                 <TextSubscription>
-                                    {translate('View_ProPage_UserNeedToSignIn')}
-                                </TextSubscription>
-                                <TextSubscription>
                                     {translate(
                                         'View_ProPage_Button_ClickToSignIn'
                                     )}
