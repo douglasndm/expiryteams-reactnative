@@ -6,11 +6,10 @@ interface Offer {
     isSelected?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
+    flex: 1;
     background-color: ${(props) => props.theme.colors.background};
 `;
-
-export const Scroll = styled.ScrollView``;
 
 export const HeaderContainer = styled.View`
     background-color: ${(props) => props.theme.colors.accent};
@@ -157,4 +156,14 @@ export const SubscriptionIntroPrice = styled.Text<Offer>`
         css`
             color: ${({ theme }) => theme.colors.text};
         `}
+`;
+
+export const TermsPrivacyText = styled.Text`
+    margin: 10px;
+    text-align: center;
+    color: ${(props) => props.theme.colors.text};
+`;
+
+export const TermsPrivacyLink = styled.Text`
+    color: ${(props) => props.theme.colors.accent};
 `;

@@ -169,11 +169,16 @@
     "View_ProPage_UserAlreadyPro": "Você já é PRO",
     "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
     "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
+
     "View_ProPage_SubscribePeriod_Quarterly": "TRIMESTRAIS",
     "View_ProPage_SubscribePeriod_Monthly": "MENSAIS",
+
+
+    "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
     "View_ProPage_Button_ClickToSignIn": "Continuar para a assinatura",
     "View_ProPage_Button_GoBackToHome": "Voltar para o início",
-    "View_ProPage_SubscriptionNotAvailable": "Assinaturas não estão disponíveis no momento, verifique sua conexão com a internet.",
+
+    "View_ProPage_SubscriptionNotAvailable": "Assinaturas não estão disponíveis no momento.",
 
 
     "View_Settings_PageTitle": "Configurações",

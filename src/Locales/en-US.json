@@ -173,6 +173,7 @@
     "View_ProPage_SubscribePeriod_Quarterly": "QUARTERLY",
     "View_ProPage_SubscribePeriod_Monthly": "MONTHLY",
 
+    "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
     "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
     "View_ProPage_Button_GoBackToHome": "Go home",
     "View_ProPage_SubscriptionNotAvailable": "Subscriptions are not available now",

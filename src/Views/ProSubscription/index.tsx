@@ -5,26 +5,26 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
+import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
 import {
     getSubscriptionDetails,
     makeSubscription,
     isSubscriptionActive,
-} from '../../Functions/ProMode';
+} from '~/Functions/ProMode';
 import { isUserSignedIn } from '~/Functions/Auth';
 
-import Loading from '../../Components/Loading';
-import Notification from '../../Components/Notification';
+import Loading from '~/Components/Loading';
+import Notification from '~/Components/Notification';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
-    Scroll,
     HeaderContainer,
     TitleContainer,
     IntroductionText,
@@ -44,6 +44,8 @@ import {
     SubscriptionDescription,
     SubscriptionPrice,
     SubscriptionIntroPrice,
+    TermsPrivacyText,
+    TermsPrivacyLink,
 } from './styles';
 
 const Pro: React.FC = () => {
@@ -185,289 +187,294 @@ const Pro: React.FC = () => {
         setSelectedPlan('annual');
     }, []);
 
+    const navigateToTerms = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/terms');
+    }, []);
+
+    const navigateToPrivacy = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/privacy');
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
         <>
             <Container>
-                <Scroll>
-                    <HeaderContainer>
-                        <TitleContainer>
-                            <IntroductionText>
-                                {translate('View_ProPage_MeetPRO')}
-                            </IntroductionText>
-                            <AppNameTitle>{translate('AppName')}</AppNameTitle>
-                            <PremiumTitle>
-                                {translate('View_ProPage_ProLabel')}
-                            </PremiumTitle>
-                        </TitleContainer>
-                    </HeaderContainer>
+                <HeaderContainer>
+                    <TitleContainer>
+                        <IntroductionText>
+                            {translate('View_ProPage_MeetPRO')}
+                        </IntroductionText>
+                        <AppNameTitle>{translate('AppName')}</AppNameTitle>
+                        <PremiumTitle>
+                            {translate('View_ProPage_ProLabel')}
+                        </PremiumTitle>
+                    </TitleContainer>
+                </HeaderContainer>
 
-                    <AdvantagesGroup>
-                        <AdvantageContainer>
-                            <AdvantageText>
-                                {translate('View_ProPage_AdvantageOne')}
-                            </AdvantageText>
-                        </AdvantageContainer>
+                <AdvantagesGroup>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageOne')}
+                        </AdvantageText>
+                    </AdvantageContainer>
 
-                        <AdvantageContainer>
-                            <AdvantageText>
-                                {translate('View_ProPage_AdvantageSeven')}
-                            </AdvantageText>
-                        </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageSeven')}
+                        </AdvantageText>
+                    </AdvantageContainer>
 
-                        <AdvantageContainer>
-                            <AdvantageText>
-                                {translate('View_ProPage_AdvantageTwo')}
-                            </AdvantageText>
-                        </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageTwo')}
+                        </AdvantageText>
+                    </AdvantageContainer>
 
-                        <AdvantageContainer>
-                            <AdvantageText>
-                                {translate('View_ProPage_AdvantageThree')}
-                            </AdvantageText>
-                        </AdvantageContainer>
-                        <AdvantageContainer>
-                            <AdvantageText>
-                                {translate('View_ProPage_AdvantageFour')}
-                            </AdvantageText>
-                        </AdvantageContainer>
-                        <AdvantageContainer>
-                            <AdvantageText>
-                                {translate('View_ProPage_AdvantageSix')}
-                            </AdvantageText>
-                        </AdvantageContainer>
-                        <AdvantageContainer>
-                            <AdvantageText>
-                                {translate('View_ProPage_AdvantageFive')}
-                            </AdvantageText>
-                        </AdvantageContainer>
-                    </AdvantagesGroup>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageThree')}
+                        </AdvantageText>
+                    </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageFour')}
+                        </AdvantageText>
+                    </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageSix')}
+                        </AdvantageText>
+                    </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            {translate('View_ProPage_AdvantageFive')}
+                        </AdvantageText>
+                    </AdvantageContainer>
+                </AdvantagesGroup>
 
-                    {userPreferences.isUserSignedIn ? (
-                        <>
-                            {alreadyPremium ? (
-                                <ButtonSubscription>
-                                    <TextSubscription>
-                                        {translate(
-                                            'View_ProPage_UserAlreadyPro'
-                                        )}
-                                    </TextSubscription>
-                                </ButtonSubscription>
-                            ) : (
-                                <>
-                                    <SubscriptionsGroup>
-                                        {monthlyPlan && (
-                                            <SubscriptionContainer
-                                                onPress={
-                                                    handleChangePlanMonthly
-                                                }
-                                                isSelected={
-                                                    !!selectedPlan &&
-                                                    selectedPlan === 'monthly'
-                                                }
-                                            >
-                                                <SubscriptionPeriodContainer>
-                                                    <SubscriptionPeriod>
-                                                        Mensal
-                                                    </SubscriptionPeriod>
-                                                </SubscriptionPeriodContainer>
+                {userPreferences.isUserSignedIn ? (
+                    <>
+                        {alreadyPremium ? (
+                            <ButtonSubscription>
+                                <TextSubscription>
+                                    {translate('View_ProPage_UserAlreadyPro')}
+                                </TextSubscription>
+                            </ButtonSubscription>
+                        ) : (
+                            <>
+                                <SubscriptionsGroup>
+                                    {monthlyPlan && (
+                                        <SubscriptionContainer
+                                            onPress={handleChangePlanMonthly}
+                                            isSelected={
+                                                !!selectedPlan &&
+                                                selectedPlan === 'monthly'
+                                            }
+                                        >
+                                            <SubscriptionPeriodContainer>
+                                                <SubscriptionPeriod>
+                                                    Mensal
+                                                </SubscriptionPeriod>
+                                            </SubscriptionPeriodContainer>
 
-                                                <DetailsContainer>
-                                                    <SubscriptionDescription
+                                            <DetailsContainer>
+                                                <SubscriptionDescription
+                                                    isSelected={
+                                                        !!selectedPlan &&
+                                                        selectedPlan ===
+                                                            'monthly'
+                                                    }
+                                                >
+                                                    <SubscriptionIntroPrice
                                                         isSelected={
                                                             !!selectedPlan &&
                                                             selectedPlan ===
                                                                 'monthly'
                                                         }
                                                     >
-                                                        <SubscriptionIntroPrice
-                                                            isSelected={
-                                                                !!selectedPlan &&
-                                                                selectedPlan ===
-                                                                    'monthly'
-                                                            }
-                                                        >
+                                                        {
+                                                            monthlyPlan.product
+                                                                .intro_price_string
+                                                        }
+                                                    </SubscriptionIntroPrice>{' '}
+                                                    no primeiro mês e depois
+                                                    <SubscriptionPrice
+                                                        isSelected={
+                                                            !!selectedPlan &&
+                                                            selectedPlan ===
+                                                                'monthly'
+                                                        }
+                                                    >
+                                                        {' '}
+                                                        {
+                                                            monthlyPlan.product
+                                                                .price_string
+                                                        }
+                                                    </SubscriptionPrice>{' '}
+                                                    mensais
+                                                </SubscriptionDescription>
+                                            </DetailsContainer>
+                                        </SubscriptionContainer>
+                                    )}
+
+                                    {quarterlyPlan && (
+                                        <SubscriptionContainer
+                                            onPress={handleChangePlanQuarterly}
+                                            isSelected={
+                                                !!selectedPlan &&
+                                                selectedPlan === 'quarterly'
+                                            }
+                                            style={{
+                                                marginLeft: 10,
+                                                marginRight: 10,
+                                            }}
+                                        >
+                                            <SubscriptionPeriodContainer>
+                                                <SubscriptionPeriod>
+                                                    Trimestral
+                                                </SubscriptionPeriod>
+                                            </SubscriptionPeriodContainer>
+
+                                            <DetailsContainer>
+                                                <SubscriptionDescription
+                                                    isSelected={
+                                                        !!selectedPlan &&
+                                                        selectedPlan ===
+                                                            'quarterly'
+                                                    }
+                                                >
+                                                    {!!quarterlyPlan.product
+                                                        .intro_price_string && (
+                                                        <SubscriptionIntroPrice>
                                                             {
-                                                                monthlyPlan
+                                                                quarterlyPlan
                                                                     .product
                                                                     .intro_price_string
-                                                            }
-                                                        </SubscriptionIntroPrice>{' '}
-                                                        no primeiro mês e depois
-                                                        <SubscriptionPrice
-                                                            isSelected={
-                                                                !!selectedPlan &&
-                                                                selectedPlan ===
-                                                                    'monthly'
-                                                            }
-                                                        >
-                                                            {' '}
-                                                            {
-                                                                monthlyPlan
-                                                                    .product
-                                                                    .price_string
-                                                            }
-                                                        </SubscriptionPrice>{' '}
-                                                        mensais
-                                                    </SubscriptionDescription>
-                                                </DetailsContainer>
-                                            </SubscriptionContainer>
-                                        )}
-
-                                        {quarterlyPlan && (
-                                            <SubscriptionContainer
-                                                onPress={
-                                                    handleChangePlanQuarterly
-                                                }
-                                                isSelected={
-                                                    !!selectedPlan &&
-                                                    selectedPlan === 'quarterly'
-                                                }
-                                                style={{
-                                                    marginLeft: 10,
-                                                    marginRight: 10,
-                                                }}
-                                            >
-                                                <SubscriptionPeriodContainer>
-                                                    <SubscriptionPeriod>
-                                                        Trimestral
-                                                    </SubscriptionPeriod>
-                                                </SubscriptionPeriodContainer>
-
-                                                <DetailsContainer>
-                                                    <SubscriptionDescription
+                                                            }{' '}
+                                                            nos primeiros três
+                                                            meses e depois{' '}
+                                                        </SubscriptionIntroPrice>
+                                                    )}
+                                                    <SubscriptionPrice
                                                         isSelected={
                                                             !!selectedPlan &&
                                                             selectedPlan ===
                                                                 'quarterly'
                                                         }
                                                     >
-                                                        {!!quarterlyPlan.product
-                                                            .intro_price_string && (
-                                                            <SubscriptionIntroPrice>
-                                                                {
-                                                                    quarterlyPlan
-                                                                        .product
-                                                                        .intro_price_string
-                                                                }{' '}
-                                                                nos primeiros
-                                                                três meses e
-                                                                depois{' '}
-                                                            </SubscriptionIntroPrice>
-                                                        )}
-                                                        <SubscriptionPrice
-                                                            isSelected={
-                                                                !!selectedPlan &&
-                                                                selectedPlan ===
-                                                                    'quarterly'
-                                                            }
-                                                        >
-                                                            {
-                                                                quarterlyPlan
-                                                                    .product
-                                                                    .price_string
-                                                            }
-                                                        </SubscriptionPrice>{' '}
-                                                        trimestrais
-                                                    </SubscriptionDescription>
-                                                </DetailsContainer>
-                                            </SubscriptionContainer>
-                                        )}
+                                                        {
+                                                            quarterlyPlan
+                                                                .product
+                                                                .price_string
+                                                        }
+                                                    </SubscriptionPrice>{' '}
+                                                    trimestrais
+                                                </SubscriptionDescription>
+                                            </DetailsContainer>
+                                        </SubscriptionContainer>
+                                    )}
 
-                                        {annualPlan && (
-                                            <SubscriptionContainer
-                                                onPress={handleChangePlanAnnual}
-                                                isSelected={
-                                                    !!selectedPlan &&
-                                                    selectedPlan === 'annual'
-                                                }
+                                    {annualPlan && (
+                                        <SubscriptionContainer
+                                            onPress={handleChangePlanAnnual}
+                                            isSelected={
+                                                !!selectedPlan &&
+                                                selectedPlan === 'annual'
+                                            }
+                                        >
+                                            <SubscriptionPeriodContainer
+                                                isSelected
                                             >
-                                                <SubscriptionPeriodContainer
-                                                    isSelected
+                                                <SubscriptionPeriod>
+                                                    Anual
+                                                </SubscriptionPeriod>
+                                            </SubscriptionPeriodContainer>
+                                            <DetailsContainer>
+                                                <SubscriptionDescription
+                                                    isSelected={
+                                                        !!selectedPlan &&
+                                                        selectedPlan ===
+                                                            'annual'
+                                                    }
                                                 >
-                                                    <SubscriptionPeriod>
-                                                        Anual
-                                                    </SubscriptionPeriod>
-                                                </SubscriptionPeriodContainer>
-                                                <DetailsContainer>
-                                                    <SubscriptionDescription
+                                                    <SubscriptionPrice
                                                         isSelected={
                                                             !!selectedPlan &&
                                                             selectedPlan ===
                                                                 'annual'
                                                         }
                                                     >
-                                                        <SubscriptionPrice
-                                                            isSelected={
-                                                                !!selectedPlan &&
-                                                                selectedPlan ===
-                                                                    'annual'
-                                                            }
-                                                        >
-                                                            {
-                                                                annualPlan
-                                                                    .product
-                                                                    .price_string
-                                                            }
-                                                        </SubscriptionPrice>{' '}
-                                                        Anuais
-                                                    </SubscriptionDescription>
-                                                </DetailsContainer>
-                                            </SubscriptionContainer>
-                                        )}
-                                    </SubscriptionsGroup>
-
-                                    {monthlyPlan ||
-                                    quarterlyPlan ||
-                                    annualPlan ? (
-                                        <ButtonSubscription
-                                            onPress={handleMakeSubscription}
-                                            disabled={isLoadingMakeSubscription}
-                                        >
-                                            {isLoadingMakeSubscription && (
-                                                <LoadingIndicator />
-                                            )}
-                                            {!isLoadingMakeSubscription && (
-                                                <>
-                                                    <TextSubscription>
-                                                        Assinar
-                                                    </TextSubscription>
-                                                </>
-                                            )}
-                                        </ButtonSubscription>
-                                    ) : (
-                                        <ButtonSubscription disabled>
-                                            <TextSubscription>
-                                                {translate(
-                                                    'View_ProPage_SubscriptionNotAvailable'
-                                                )}
-                                            </TextSubscription>
-                                        </ButtonSubscription>
+                                                        {
+                                                            annualPlan.product
+                                                                .price_string
+                                                        }
+                                                    </SubscriptionPrice>{' '}
+                                                    Anuais
+                                                </SubscriptionDescription>
+                                            </DetailsContainer>
+                                        </SubscriptionContainer>
                                     )}
-                                </>
-                            )}
-                        </>
-                    ) : (
-                        <>
-                            <ButtonSubscription
-                                onPress={handleNavigateToSignIn}
-                            >
-                                <TextSubscription>
+                                </SubscriptionsGroup>
+
+                                <TermsPrivacyText>
                                     {translate(
-                                        'View_ProPage_Button_ClickToSignIn'
+                                        'View_ProPage_Text_BeforeTermsAndPrivacy'
                                     )}
-                                </TextSubscription>
-                            </ButtonSubscription>
-                        </>
-                    )}
+                                    <TermsPrivacyLink onPress={navigateToTerms}>
+                                        {translate('Terms')}
+                                    </TermsPrivacyLink>
+                                    {translate('BetweenTermsAndPrivacy')}
+                                    <TermsPrivacyLink
+                                        onPress={navigateToPrivacy}
+                                    >
+                                        {translate('PrivacyPolicy')}
+                                    </TermsPrivacyLink>
+                                    .
+                                </TermsPrivacyText>
+                                {monthlyPlan || quarterlyPlan || annualPlan ? (
+                                    <ButtonSubscription
+                                        onPress={handleMakeSubscription}
+                                        disabled={isLoadingMakeSubscription}
+                                    >
+                                        {isLoadingMakeSubscription && (
+                                            <LoadingIndicator />
+                                        )}
+                                        {!isLoadingMakeSubscription && (
+                                            <>
+                                                <TextSubscription>
+                                                    Assinar
+                                                </TextSubscription>
+                                            </>
+                                        )}
+                                    </ButtonSubscription>
+                                ) : (
+                                    <ButtonSubscription disabled>
+                                        <TextSubscription>
+                                            {translate(
+                                                'View_ProPage_SubscriptionNotAvailable'
+                                            )}
+                                        </TextSubscription>
+                                    </ButtonSubscription>
+                                )}
+                            </>
+                        )}
+                    </>
+                ) : (
+                    <>
+                        <ButtonSubscription onPress={handleNavigateToSignIn}>
+                            <TextSubscription>
+                                {translate('View_ProPage_Button_ClickToSignIn')}
+                            </TextSubscription>
+                        </ButtonSubscription>
+                    </>
+                )}
 
-                    <ButtonSubscription onPress={handleNavigateHome}>
-                        <TextSubscription>
-                            {translate('View_ProPage_Button_GoBackToHome')}
-                        </TextSubscription>
-                    </ButtonSubscription>
-                </Scroll>
+                <ButtonSubscription onPress={handleNavigateHome}>
+                    <TextSubscription>
+                        {translate('View_ProPage_Button_GoBackToHome')}
+                    </TextSubscription>
+                </ButtonSubscription>
             </Container>
             {!!error && (
                 <Notification
