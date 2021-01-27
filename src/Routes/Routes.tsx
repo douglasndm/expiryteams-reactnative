@@ -13,7 +13,6 @@ import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import ProSubscription from '~/Views/ProSubscription';
-import ProOfferings from '~/Views/ProSubscription/Offerings';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 import ListCategory from '~/Views/Category/List';
@@ -51,7 +50,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CategoryView" component={CategoryView} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="ProOfferings" component={ProOfferings} />
         </Stack.Navigator>
     );
 };

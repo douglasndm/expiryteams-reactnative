@@ -116,7 +116,7 @@ const SignIn: React.FC = () => {
                         />
                     )}
 
-                {Platform.OS === 'android' && !completed && (
+                {(Platform.OS === 'android' || __DEV__) && !completed && (
                     <GoogleButton onPress={handleGoogleButtonPressed} />
                 )}
 

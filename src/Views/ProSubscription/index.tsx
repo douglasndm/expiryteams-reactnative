@@ -6,7 +6,7 @@ import React, {
     useMemo,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { PurchasesPackage } from 'react-native-purchases';
+import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
 import { translate } from '../../Locales';
 
@@ -36,6 +36,14 @@ import {
     ButtonSubscription,
     TextSubscription,
     LoadingIndicator,
+    SubscriptionsGroup,
+    SubscriptionContainer,
+    SubscriptionPeriodContainer,
+    SubscriptionPeriod,
+    DetailsContainer,
+    SubscriptionDescription,
+    SubscriptionPrice,
+    SubscriptionIntroPrice,
 } from './styles';
 
 const Pro: React.FC = () => {
@@ -49,11 +57,17 @@ const Pro: React.FC = () => {
     const [isLoadingMakeSubscription, setIsLoadingMakeSubscription] = useState<
         boolean
     >(false);
+    const [selectedPlan, setSelectedPlan] = useState<string | undefined>();
 
-    const [
-        packageSubscription,
-        setPackageSubscription,
-    ] = useState<PurchasesPackage | null>(null);
+    const [monthlyPlan, setMonthlyPlan] = useState<
+        PurchasesPackage | undefined
+    >();
+    const [quarterlyPlan, setQuarterlyPlan] = useState<
+        PurchasesPackage | undefined
+    >();
+    const [annualPlan, setAnnualPlan] = useState<
+        PurchasesPackage | undefined
+    >();
 
     const [alreadyPremium, setAlreadyPremium] = useState(false);
 
@@ -71,12 +85,20 @@ const Pro: React.FC = () => {
 
             const response = await getSubscriptionDetails();
 
-            if (!response) {
-                setPackageSubscription(null);
-                return;
-            }
+            response.forEach((packageItem) => {
+                if (packageItem.packageType === PACKAGE_TYPE.MONTHLY) {
+                    setMonthlyPlan(packageItem);
+                    return;
+                }
+                if (packageItem.packageType === PACKAGE_TYPE.THREE_MONTH) {
+                    setQuarterlyPlan(packageItem);
+                    return;
+                }
 
-            setPackageSubscription(response);
+                if (packageItem.packageType === PACKAGE_TYPE.ANNUAL) {
+                    setAnnualPlan(packageItem);
+                }
+            });
         } catch (err) {
             // setError(err.message);
         } finally {
@@ -87,7 +109,29 @@ const Pro: React.FC = () => {
     const handleMakeSubscription = useCallback(async () => {
         try {
             setIsLoadingMakeSubscription(true);
-            await makeSubscription();
+            if (
+                selectedPlan !== 'annual' &&
+                selectedPlan !== 'quarterly' &&
+                selectedPlan !== 'monthly'
+            ) {
+                setError('Selecione o plano');
+                return;
+            }
+
+            let plan = null;
+
+            if (selectedPlan === 'annual') {
+                plan = annualPlan;
+            } else if (selectedPlan === 'quarterly') {
+                plan = quarterlyPlan;
+            } else if (selectedPlan === 'monthly') {
+                plan = monthlyPlan;
+            }
+            if (!plan) {
+                throw new Error('Plan dint found');
+            }
+
+            await makeSubscription(plan);
 
             setUserPreferences({
                 ...userPreferences,
@@ -103,7 +147,15 @@ const Pro: React.FC = () => {
         } finally {
             setIsLoadingMakeSubscription(false);
         }
-    }, [setUserPreferences, userPreferences, navigate]);
+    }, [
+        selectedPlan,
+        setUserPreferences,
+        userPreferences,
+        navigate,
+        annualPlan,
+        quarterlyPlan,
+        monthlyPlan,
+    ]);
 
     const handleNavigateHome = useCallback(() => {
         navigate('Home');
@@ -121,24 +173,17 @@ const Pro: React.FC = () => {
         setError('');
     }, []);
 
-    const subscribeButtonString = useMemo(() => {
-        const period =
-            packageSubscription?.packageType === 'THREE_MONTH'
-                ? translate('View_ProPage_SubscribePeriod_Quarterly')
-                : translate('View_ProPage_SubscribePeriod_Monthly');
+    const handleChangePlanMonthly = useCallback(() => {
+        setSelectedPlan('monthly');
+    }, []);
 
-        if (!packageSubscription?.product.intro_price_string) {
-            return `${translate('View_ProPage_BeforeIntroPrice')} ${
-                packageSubscription?.product.price_string
-            } ${period}`;
-        }
+    const handleChangePlanQuarterly = useCallback(() => {
+        setSelectedPlan('quarterly');
+    }, []);
 
-        return `${translate('View_ProPage_BeforeIntroPrice')} ${
-            packageSubscription.product.intro_price_string
-        } ${translate('View_ProPage_AfterIntroPrice')} ${
-            packageSubscription?.product?.price_string
-        } ${period}`;
-    }, [packageSubscription]);
+    const handleChangePlanAnnual = useCallback(() => {
+        setSelectedPlan('annual');
+    }, []);
 
     return isLoading ? (
         <Loading />
@@ -211,7 +256,171 @@ const Pro: React.FC = () => {
                                 </ButtonSubscription>
                             ) : (
                                 <>
-                                    {packageSubscription ? (
+                                    <SubscriptionsGroup>
+                                        {monthlyPlan && (
+                                            <SubscriptionContainer
+                                                onPress={
+                                                    handleChangePlanMonthly
+                                                }
+                                                isSelected={
+                                                    !!selectedPlan &&
+                                                    selectedPlan === 'monthly'
+                                                }
+                                            >
+                                                <SubscriptionPeriodContainer>
+                                                    <SubscriptionPeriod>
+                                                        Mensal
+                                                    </SubscriptionPeriod>
+                                                </SubscriptionPeriodContainer>
+
+                                                <DetailsContainer>
+                                                    <SubscriptionDescription
+                                                        isSelected={
+                                                            !!selectedPlan &&
+                                                            selectedPlan ===
+                                                                'monthly'
+                                                        }
+                                                    >
+                                                        <SubscriptionIntroPrice
+                                                            isSelected={
+                                                                !!selectedPlan &&
+                                                                selectedPlan ===
+                                                                    'monthly'
+                                                            }
+                                                        >
+                                                            {
+                                                                monthlyPlan
+                                                                    .product
+                                                                    .intro_price_string
+                                                            }
+                                                        </SubscriptionIntroPrice>{' '}
+                                                        no primeiro mês e depois
+                                                        <SubscriptionPrice
+                                                            isSelected={
+                                                                !!selectedPlan &&
+                                                                selectedPlan ===
+                                                                    'monthly'
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            {
+                                                                monthlyPlan
+                                                                    .product
+                                                                    .price_string
+                                                            }
+                                                        </SubscriptionPrice>{' '}
+                                                        mensais
+                                                    </SubscriptionDescription>
+                                                </DetailsContainer>
+                                            </SubscriptionContainer>
+                                        )}
+
+                                        {quarterlyPlan && (
+                                            <SubscriptionContainer
+                                                onPress={
+                                                    handleChangePlanQuarterly
+                                                }
+                                                isSelected={
+                                                    !!selectedPlan &&
+                                                    selectedPlan === 'quarterly'
+                                                }
+                                                style={{
+                                                    marginLeft: 10,
+                                                    marginRight: 10,
+                                                }}
+                                            >
+                                                <SubscriptionPeriodContainer>
+                                                    <SubscriptionPeriod>
+                                                        Trimestral
+                                                    </SubscriptionPeriod>
+                                                </SubscriptionPeriodContainer>
+
+                                                <DetailsContainer>
+                                                    <SubscriptionDescription
+                                                        isSelected={
+                                                            !!selectedPlan &&
+                                                            selectedPlan ===
+                                                                'quarterly'
+                                                        }
+                                                    >
+                                                        {!!quarterlyPlan.product
+                                                            .intro_price_string && (
+                                                            <SubscriptionIntroPrice>
+                                                                {
+                                                                    quarterlyPlan
+                                                                        .product
+                                                                        .intro_price_string
+                                                                }{' '}
+                                                                nos primeiros
+                                                                três meses e
+                                                                depois{' '}
+                                                            </SubscriptionIntroPrice>
+                                                        )}
+                                                        <SubscriptionPrice
+                                                            isSelected={
+                                                                !!selectedPlan &&
+                                                                selectedPlan ===
+                                                                    'quarterly'
+                                                            }
+                                                        >
+                                                            {
+                                                                quarterlyPlan
+                                                                    .product
+                                                                    .price_string
+                                                            }
+                                                        </SubscriptionPrice>{' '}
+                                                        trimestrais
+                                                    </SubscriptionDescription>
+                                                </DetailsContainer>
+                                            </SubscriptionContainer>
+                                        )}
+
+                                        {annualPlan && (
+                                            <SubscriptionContainer
+                                                onPress={handleChangePlanAnnual}
+                                                isSelected={
+                                                    !!selectedPlan &&
+                                                    selectedPlan === 'annual'
+                                                }
+                                            >
+                                                <SubscriptionPeriodContainer
+                                                    isSelected
+                                                >
+                                                    <SubscriptionPeriod>
+                                                        Anual
+                                                    </SubscriptionPeriod>
+                                                </SubscriptionPeriodContainer>
+                                                <DetailsContainer>
+                                                    <SubscriptionDescription
+                                                        isSelected={
+                                                            !!selectedPlan &&
+                                                            selectedPlan ===
+                                                                'annual'
+                                                        }
+                                                    >
+                                                        <SubscriptionPrice
+                                                            isSelected={
+                                                                !!selectedPlan &&
+                                                                selectedPlan ===
+                                                                    'annual'
+                                                            }
+                                                        >
+                                                            {
+                                                                annualPlan
+                                                                    .product
+                                                                    .price_string
+                                                            }
+                                                        </SubscriptionPrice>{' '}
+                                                        Anuais
+                                                    </SubscriptionDescription>
+                                                </DetailsContainer>
+                                            </SubscriptionContainer>
+                                        )}
+                                    </SubscriptionsGroup>
+
+                                    {monthlyPlan ||
+                                    quarterlyPlan ||
+                                    annualPlan ? (
                                         <ButtonSubscription
                                             onPress={handleMakeSubscription}
                                             disabled={isLoadingMakeSubscription}
@@ -222,7 +431,7 @@ const Pro: React.FC = () => {
                                             {!isLoadingMakeSubscription && (
                                                 <>
                                                     <TextSubscription>
-                                                        {subscribeButtonString}
+                                                        Assinar
                                                     </TextSubscription>
                                                 </>
                                             )}

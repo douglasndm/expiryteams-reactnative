@@ -37,7 +37,9 @@ export async function isSubscriptionActive(): Promise<boolean> {
     }
 }
 
-export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
+export async function getSubscriptionDetails(): Promise<
+    Array<PurchasesPackage>
+> {
     const userSigned = await isUserSignedIn();
 
     if (!userSigned) {
@@ -50,32 +52,29 @@ export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
 
         const offerings = await Purchases.getOfferings();
 
-        if (offerings.current && offerings.current.monthly !== null) {
-            if (!__DEV__) {
-                await Analytics().logEvent('user_get_offerings_monthly');
-            }
+        const packages: Array<PurchasesPackage> = [];
 
-            return offerings.current.monthly;
+        if (offerings.current && offerings.current.monthly !== null) {
+            packages.push(offerings.current.monthly);
         }
 
         if (offerings.current && offerings.current.threeMonth !== null) {
-            if (!__DEV__) {
-                await Analytics().logEvent('user_get_offerings_three_month');
-            }
-
-            return offerings.current.threeMonth;
+            packages.push(offerings.current.threeMonth);
         }
 
-        if (!__DEV__) {
-            await Analytics().logEvent('app_didnt_show_any_offerings');
+        if (offerings.current && offerings.current.annual !== null) {
+            packages.push(offerings.current.annual);
         }
-        throw new Error('We didt find any offers');
+
+        return packages;
     } catch (err) {
         throw new Error(err);
     }
 }
 
-export async function makeSubscription(): Promise<void> {
+export async function makeSubscription(
+    purchasePackage: PurchasesPackage
+): Promise<void> {
     if (!__DEV__) {
         await Analytics().logEvent('started_susbscription_process');
     }
@@ -83,12 +82,6 @@ export async function makeSubscription(): Promise<void> {
     const userSigned = await isUserSignedIn();
 
     if (!userSigned) {
-        if (!__DEV__) {
-            await Analytics().logEvent(
-                'started_susbscription_process_but_user_not_signed'
-            );
-        }
-
         throw new Error('User is not logged');
     }
 
@@ -97,12 +90,10 @@ export async function makeSubscription(): Promise<void> {
 
         await Purchases.identify(userId);
 
-        const offerings = await getSubscriptionDetails();
-
         const {
             purchaserInfo,
             // productIdentifier,
-        } = await Purchases.purchasePackage(offerings);
+        } = await Purchases.purchasePackage(purchasePackage);
 
         // console.log(productIdentifier);
         // console.log(purchaserInfo);
