@@ -5,7 +5,7 @@ import React, {
     useMemo,
     useContext,
 } from 'react';
-import { Platform } from 'react-native';
+import { Platform, PixelRatio } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
@@ -58,6 +58,14 @@ const Home: React.FC = () => {
         }
 
         return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_HOME;
+    }, []);
+
+    const bannerSize = useMemo(() => {
+        if (PixelRatio.get() < 2) {
+            return BannerAdSize.BANNER;
+        }
+
+        return BannerAdSize.LARGE_BANNER;
     }, []);
 
     const getProduts = useCallback(async () => {
@@ -160,10 +168,7 @@ const Home: React.FC = () => {
 
                     {!userPreferences.isUserPremium && (
                         <AdContainer>
-                            <BannerAd
-                                unitId={adUnit}
-                                size={BannerAdSize.LARGE_BANNER}
-                            />
+                            <BannerAd unitId={adUnit} size={bannerSize} />
                         </AdContainer>
                     )}
 
