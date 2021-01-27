@@ -13,6 +13,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 import './Locales';
 
+import './Services/BackgroundJobs';
 import './Services/Admob';
 import './Services/Analytics';
 

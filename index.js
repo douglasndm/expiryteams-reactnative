@@ -7,7 +7,6 @@ import CodePush from 'react-native-code-push';
 
 import { name as appName } from './app.json';
 import App from './src';
-import './src/Services/BackgroundJobs';
 import './src/Functions/OpenAppTimes';
 
 const codePushOptions = {

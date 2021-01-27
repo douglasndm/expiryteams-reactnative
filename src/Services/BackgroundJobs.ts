@@ -28,7 +28,7 @@ const handleSetNotification = async () => {
 async function configureBackgroundJob() {
     BackgroundJob.configure(
         {
-            minimumFetchInterval: 15,
+            minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
             // Android options
             forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
             stopOnTerminate: false,
