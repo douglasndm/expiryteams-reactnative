@@ -170,11 +170,22 @@
     "View_ProPage_BeforeIntroPrice": "SUBSCRIBE FOR ONLY",
     "View_ProPage_AfterIntroPrice": " IN THE FIRST MONTH AND THEN",
 
-    "View_ProPage_SubscribePeriod_Quarterly": "QUARTERLY",
-    "View_ProPage_SubscribePeriod_Monthly": "MONTHLY",
+    "View_ProPage_SubscribePeriod_Monthly": "Monthly",
+    "View_ProPage_SubscribePeriod_ThreeMonths": "3 months",
+    "View_ProPage_SubscribePeriod_OneYear": "Annual",
+
+    "View_ProPage_AfterIntroPrice_Monthly": " on the first month, then ",
+    "View_ProPage_AfterPrice_Monthly": " monthly",
+
+    "View_ProPage_AfterIntroPrice_ThreeMonths": " for 3 months, then ",
+    "View_ProPage_AfterPrice_ThreeMonths": " every three months",
+
+    "View_ProPage_AfterIntroPrice_OneYear": " in the first year, then ",
+    "View_ProPage_AfterPrice_OneYear": " yearly",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
     "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
+    "View_ProPage_Button_Subscribe": "Continue",
     "View_ProPage_Button_GoBackToHome": "Go home",
     "View_ProPage_SubscriptionNotAvailable": "Subscriptions are not available now",
 

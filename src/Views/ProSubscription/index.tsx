@@ -274,7 +274,9 @@ const Pro: React.FC = () => {
                                         >
                                             <SubscriptionPeriodContainer>
                                                 <SubscriptionPeriod>
-                                                    Mensal
+                                                    {translate(
+                                                        'View_ProPage_SubscribePeriod_Monthly'
+                                                    )}
                                                 </SubscriptionPeriod>
                                             </SubscriptionPeriodContainer>
 
@@ -297,8 +299,10 @@ const Pro: React.FC = () => {
                                                             monthlyPlan.product
                                                                 .intro_price_string
                                                         }
-                                                    </SubscriptionIntroPrice>{' '}
-                                                    no primeiro mês e depois
+                                                    </SubscriptionIntroPrice>
+                                                    {translate(
+                                                        'View_ProPage_AfterIntroPrice_Monthly'
+                                                    )}
                                                     <SubscriptionPrice
                                                         isSelected={
                                                             !!selectedPlan &&
@@ -306,13 +310,14 @@ const Pro: React.FC = () => {
                                                                 'monthly'
                                                         }
                                                     >
-                                                        {' '}
                                                         {
                                                             monthlyPlan.product
                                                                 .price_string
                                                         }
-                                                    </SubscriptionPrice>{' '}
-                                                    mensais
+                                                    </SubscriptionPrice>
+                                                    {translate(
+                                                        'View_ProPage_AfterPrice_Monthly'
+                                                    )}
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
                                         </SubscriptionContainer>
@@ -332,7 +337,9 @@ const Pro: React.FC = () => {
                                         >
                                             <SubscriptionPeriodContainer>
                                                 <SubscriptionPeriod>
-                                                    Trimestral
+                                                    {translate(
+                                                        'View_ProPage_SubscribePeriod_ThreeMonths'
+                                                    )}
                                                 </SubscriptionPeriod>
                                             </SubscriptionPeriodContainer>
 
@@ -346,14 +353,21 @@ const Pro: React.FC = () => {
                                                 >
                                                     {!!quarterlyPlan.product
                                                         .intro_price_string && (
-                                                        <SubscriptionIntroPrice>
+                                                        <SubscriptionIntroPrice
+                                                            isSelected={
+                                                                !!selectedPlan &&
+                                                                selectedPlan ===
+                                                                    'quarterly'
+                                                            }
+                                                        >
                                                             {
                                                                 quarterlyPlan
                                                                     .product
                                                                     .intro_price_string
-                                                            }{' '}
-                                                            nos primeiros três
-                                                            meses e depois{' '}
+                                                            }
+                                                            {translate(
+                                                                'View_ProPage_AfterIntroPrice_ThreeMonths'
+                                                            )}
                                                         </SubscriptionIntroPrice>
                                                     )}
                                                     <SubscriptionPrice
@@ -368,8 +382,10 @@ const Pro: React.FC = () => {
                                                                 .product
                                                                 .price_string
                                                         }
-                                                    </SubscriptionPrice>{' '}
-                                                    trimestrais
+                                                    </SubscriptionPrice>
+                                                    {translate(
+                                                        'View_ProPage_AfterPrice_ThreeMonths'
+                                                    )}
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
                                         </SubscriptionContainer>
@@ -387,7 +403,9 @@ const Pro: React.FC = () => {
                                                 isSelected
                                             >
                                                 <SubscriptionPeriod>
-                                                    Anual
+                                                    {translate(
+                                                        'View_ProPage_SubscribePeriod_OneYear'
+                                                    )}
                                                 </SubscriptionPeriod>
                                             </SubscriptionPeriodContainer>
                                             <DetailsContainer>
@@ -398,6 +416,20 @@ const Pro: React.FC = () => {
                                                             'annual'
                                                     }
                                                 >
+                                                    {!!annualPlan.product
+                                                        .intro_price_string && (
+                                                        <SubscriptionIntroPrice>
+                                                            {
+                                                                annualPlan
+                                                                    .product
+                                                                    .intro_price_string
+                                                            }
+                                                            {translate(
+                                                                'View_ProPage_AfterIntroPrice_OneYear'
+                                                            )}
+                                                        </SubscriptionIntroPrice>
+                                                    )}
+
                                                     <SubscriptionPrice
                                                         isSelected={
                                                             !!selectedPlan &&
@@ -409,8 +441,10 @@ const Pro: React.FC = () => {
                                                             annualPlan.product
                                                                 .price_string
                                                         }
-                                                    </SubscriptionPrice>{' '}
-                                                    Anuais
+                                                    </SubscriptionPrice>
+                                                    {translate(
+                                                        'View_ProPage_AfterPrice_OneYear'
+                                                    )}
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
                                         </SubscriptionContainer>
@@ -443,7 +477,9 @@ const Pro: React.FC = () => {
                                         {!isLoadingMakeSubscription && (
                                             <>
                                                 <TextSubscription>
-                                                    Assinar
+                                                    {translate(
+                                                        'View_ProPage_Button_Subscribe'
+                                                    )}
                                                 </TextSubscription>
                                             </>
                                         )}

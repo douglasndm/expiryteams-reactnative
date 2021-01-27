@@ -170,12 +170,23 @@
     "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
     "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
 
-    "View_ProPage_SubscribePeriod_Quarterly": "TRIMESTRAIS",
-    "View_ProPage_SubscribePeriod_Monthly": "MENSAIS",
+    "View_ProPage_SubscribePeriod_Monthly": "Mensal",
+    "View_ProPage_SubscribePeriod_ThreeMonths": "3 meses",
+    "View_ProPage_SubscribePeriod_OneYear": "Anual",
+
+    "View_ProPage_AfterIntroPrice_Monthly": " no primeiro mês, depois ",
+    "View_ProPage_AfterPrice_Monthly": " mensais",
+
+    "View_ProPage_AfterIntroPrice_ThreeMonths": " por três meses, depois ",
+    "View_ProPage_AfterPrice_ThreeMonths": " a cada três meses",
+
+    "View_ProPage_AfterIntroPrice_OneYear": " no primeiro ano, depois ",
+    "View_ProPage_AfterPrice_OneYear": " anualmente",
 
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
     "View_ProPage_Button_ClickToSignIn": "Continuar para a assinatura",
+    "View_ProPage_Button_Subscribe": "Continuar",
     "View_ProPage_Button_GoBackToHome": "Voltar para o início",
 
     "View_ProPage_SubscriptionNotAvailable": "Assinaturas não estão disponíveis no momento.",
