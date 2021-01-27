@@ -466,75 +466,75 @@ const Add: React.FC = () => {
                                             </InputTextTip>
                                         )}
 
-                                        <InputGroup>
-                                            <InputTextContainer
-                                                style={{
-                                                    flex: 5,
-                                                    marginRight: 10,
-                                                }}
-                                            >
-                                                <InputText
-                                                    placeholder={translate(
-                                                        'View_AddProduct_InputPlacehoder_Batch'
-                                                    )}
-                                                    accessibilityLabel={translate(
-                                                        'View_AddProduct_InputAccessibility_Batch'
-                                                    )}
-                                                    value={lote}
-                                                    onChangeText={(value) =>
-                                                        setLote(value)
-                                                    }
-                                                    onFocus={() => {
-                                                        setIsBarCodeEnabled(
-                                                            false
-                                                        );
-                                                    }}
-                                                />
-                                            </InputTextContainer>
-                                            <InputTextContainer>
-                                                <InputText
-                                                    style={{
-                                                        flex: 4,
-                                                    }}
-                                                    placeholder={translate(
-                                                        'View_AddProduct_InputPlacehoder_Amount'
-                                                    )}
-                                                    accessibilityLabel={translate(
-                                                        'View_AddProduct_InputAccessibility_Amount'
-                                                    )}
-                                                    keyboardType="numeric"
-                                                    value={String(amount)}
-                                                    onChangeText={
-                                                        handleAmountChange
-                                                    }
-                                                    onFocus={() => {
-                                                        setIsBarCodeEnabled(
-                                                            false
-                                                        );
-                                                    }}
-                                                />
-                                            </InputTextContainer>
-                                        </InputGroup>
-
-                                        <NumericInputField
-                                            type="currency"
-                                            locale={locale}
-                                            currency={currency}
-                                            value={price}
-                                            onUpdate={(value: number) =>
-                                                setPrice(value)
-                                            }
-                                            placeholder={translate(
-                                                'View_AddProduct_InputPlacehoder_UnitPrice'
-                                            )}
-                                        />
-
                                         <MoreInformationsContainer>
                                             <MoreInformationsTitle>
                                                 {translate(
                                                     'View_AddProduct_MoreInformation_Label'
                                                 )}
                                             </MoreInformationsTitle>
+
+                                            <InputGroup>
+                                                <InputTextContainer
+                                                    style={{
+                                                        flex: 5,
+                                                        marginRight: 10,
+                                                    }}
+                                                >
+                                                    <InputText
+                                                        placeholder={translate(
+                                                            'View_AddProduct_InputPlacehoder_Batch'
+                                                        )}
+                                                        accessibilityLabel={translate(
+                                                            'View_AddProduct_InputAccessibility_Batch'
+                                                        )}
+                                                        value={lote}
+                                                        onChangeText={(value) =>
+                                                            setLote(value)
+                                                        }
+                                                        onFocus={() => {
+                                                            setIsBarCodeEnabled(
+                                                                false
+                                                            );
+                                                        }}
+                                                    />
+                                                </InputTextContainer>
+                                                <InputTextContainer>
+                                                    <InputText
+                                                        style={{
+                                                            flex: 4,
+                                                        }}
+                                                        placeholder={translate(
+                                                            'View_AddProduct_InputPlacehoder_Amount'
+                                                        )}
+                                                        accessibilityLabel={translate(
+                                                            'View_AddProduct_InputAccessibility_Amount'
+                                                        )}
+                                                        keyboardType="numeric"
+                                                        value={String(amount)}
+                                                        onChangeText={
+                                                            handleAmountChange
+                                                        }
+                                                        onFocus={() => {
+                                                            setIsBarCodeEnabled(
+                                                                false
+                                                            );
+                                                        }}
+                                                    />
+                                                </InputTextContainer>
+                                            </InputGroup>
+
+                                            <NumericInputField
+                                                type="currency"
+                                                locale={locale}
+                                                currency={currency}
+                                                value={price}
+                                                onUpdate={(value: number) =>
+                                                    setPrice(value)
+                                                }
+                                                placeholder={translate(
+                                                    'View_AddProduct_InputPlacehoder_UnitPrice'
+                                                )}
+                                            />
 
                                             {userPreferences.isUserPremium && (
                                                 <PickerContainer
