@@ -203,7 +203,7 @@ const Add: React.FC = () => {
         lote,
         name,
         nameFieldError,
-        photoFileName,
+        photoPath,
         price,
         reset,
         selectedCategory,
@@ -306,16 +306,21 @@ const Add: React.FC = () => {
     );
 
     const handleCheckProductCode = useCallback(async () => {
-        const prodExist = await checkIfProductAlreadyExistsByCode({
-            productCode: code,
-            productStore: store || undefined,
-        });
+        if (code) {
+            const prodExist = await checkIfProductAlreadyExistsByCode({
+                productCode: code,
+                productStore: store || undefined,
+            });
 
-        if (prodExist) {
-            setCodeFieldError(true);
+            if (prodExist) {
+                setCodeFieldError(true);
 
-            const existProd = await getProductByCode(code, store || undefined);
-            setExistentProduct(existProd.id);
+                const existProd = await getProductByCode(
+                    code,
+                    store || undefined
+                );
+                setExistentProduct(existProd.id);
+            }
         }
     }, [code, store]);
 
