@@ -11,7 +11,7 @@ export const AdView = styled.View`
 
 export const ButtonPro = styled(RectButton)`
     background: ${(props) => props.theme.colors.accent};
-    padding: 7px;
+    padding: 12px;
     border-radius: 10px;
     margin: 5px 15px 0;
 `;

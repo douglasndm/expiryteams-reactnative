@@ -17,6 +17,8 @@ import {
     CategoryDetailsText,
     EmptyListText,
     InvisibleComponent,
+    FloatButton,
+    Icons,
 } from './styles';
 
 interface RequestProps {
@@ -38,6 +40,10 @@ const ListProducts: React.FC<RequestProps> = ({
 
     const handleNavigateProPage = useCallback(() => {
         navigate('Pro');
+    }, [navigate]);
+
+    const handleNavigateAddProduct = useCallback(() => {
+        navigate('AddProduct');
     }, [navigate]);
 
     const choosenAdText = useMemo(() => {
@@ -112,6 +118,15 @@ const ListProducts: React.FC<RequestProps> = ({
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
                 initialNumToRender={10}
+            />
+
+            <FloatButton
+                icon={() => (
+                    <Icons name="add-outline" color="white" size={22} />
+                )}
+                small
+                label={translate('View_FloatMenu_AddProduct')}
+                onPress={handleNavigateAddProduct}
             />
         </Container>
     );

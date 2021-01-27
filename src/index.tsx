@@ -50,16 +50,12 @@ const App: React.FC = () => {
         isUserSignedIn: false,
     });
 
-    useEffect(() => {
-        async function getData() {
-            const userPreferences = await getAllUserPreferences();
+    const loadInitialData = useCallback(async () => {
+        const userPreferences = await getAllUserPreferences();
 
-            setPreferences(userPreferences);
+        setPreferences(userPreferences);
 
-            SplashScreen.hide();
-        }
-
-        getData();
+        SplashScreen.hide();
     }, []);
 
     const handleOnScreenChange = useCallback(
@@ -82,6 +78,10 @@ const App: React.FC = () => {
         },
         [previousRoute]
     );
+
+    useEffect(() => {
+        loadInitialData();
+    }, [loadInitialData]);
 
     return (
         <PreferencesContext.Provider

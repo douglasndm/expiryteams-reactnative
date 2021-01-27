@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
+import { FAB } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
     flex: 1;
@@ -43,3 +45,15 @@ export const EmptyListText = styled.Text`
 export const InvisibleComponent = styled.View`
     margin-bottom: 100px;
 `;
+
+export const FloatButton = styled(FAB).attrs(() => ({
+    color: 'white',
+}))`
+    background-color: ${({ theme }) => theme.colors.accent};
+
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+`;
+
+export const Icons = styled(Ionicons)``;
