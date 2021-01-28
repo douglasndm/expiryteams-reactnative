@@ -8,16 +8,16 @@ export const Container = styled.View`
 `;
 
 export const ProBanner = styled(RectButton)`
-    background-color: ${(props) => props.theme.colors.accent};
+    background-color: #e8e8e8;
     border-radius: 12px;
     margin: 5px 10px 5px 10px;
 `;
 
 export const ProText = styled.Text`
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     text-align: center;
-    color: #fff;
+    color: #454545;
     margin: 15px;
 `;
 

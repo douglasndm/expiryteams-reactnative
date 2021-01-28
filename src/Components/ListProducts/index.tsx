@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../Locales';
@@ -56,7 +56,9 @@ const ListProducts: React.FC<RequestProps> = ({
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
                         <ProText>
-                            {translate(`ProBanner_Text${choosenAdText}`)}
+                            {Platform.OS === 'android'
+                                ? translate('ProBanner_Text4').toUpperCase()
+                                : translate(`ProBanner_Text${choosenAdText}`)}
                         </ProText>
                     </ProBanner>
                 )}

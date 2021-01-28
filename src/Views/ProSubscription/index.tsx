@@ -1,11 +1,5 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    useMemo,
-} from 'react';
-import { Linking } from 'react-native';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Linking, Platform, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
@@ -288,18 +282,40 @@ const Pro: React.FC = () => {
                                                             'monthly'
                                                     }
                                                 >
-                                                    <SubscriptionIntroPrice
-                                                        isSelected={
-                                                            !!selectedPlan &&
-                                                            selectedPlan ===
-                                                                'monthly'
-                                                        }
-                                                    >
-                                                        {
-                                                            monthlyPlan.product
-                                                                .intro_price_string
-                                                        }
-                                                    </SubscriptionIntroPrice>
+                                                    {monthlyPlan.product
+                                                        .intro_price === 0 &&
+                                                    Platform.OS ===
+                                                        'android' ? (
+                                                        monthlyPlan.product
+                                                            .intro_price_period_unit ===
+                                                            'DAY' && (
+                                                            <Text>
+                                                                {
+                                                                    monthlyPlan
+                                                                        .product
+                                                                        .intro_price_period_number_of_units
+                                                                }
+                                                                {translate(
+                                                                    'View_ProPage_AfterDaysFreeTest'
+                                                                )}
+                                                            </Text>
+                                                        )
+                                                    ) : (
+                                                        <SubscriptionIntroPrice
+                                                            isSelected={
+                                                                !!selectedPlan &&
+                                                                selectedPlan ===
+                                                                    'monthly'
+                                                            }
+                                                        >
+                                                            {
+                                                                monthlyPlan
+                                                                    .product
+                                                                    .intro_price_string
+                                                            }
+                                                        </SubscriptionIntroPrice>
+                                                    )}
+
                                                     {translate(
                                                         'View_ProPage_AfterIntroPrice_Monthly'
                                                     )}

@@ -34,6 +34,7 @@
     "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
     "ProBanner_Text2": "Conheça as vantagens do PRO",
     "ProBanner_Text3": "O PRO não tem anúncios, conheça essa e outras vantagens",
+    "ProBanner_Text4": "Teste o PRO mensal de graça por 7 dias!",
 
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
@@ -166,6 +167,7 @@
     "View_ProPage_AdvantageFive": "PEQUENO PREÇO, GRANDES VANTANGENS.",
     "View_ProPage_AdvantageSix": "SALVE PRODUTOS DE VÁRIAS LOJAS.",
     "View_ProPage_AdvantageSeven": "TIRE FOTOS DOS PRODUTOS.",
+
     "View_ProPage_UserAlreadyPro": "Você já é PRO",
     "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
     "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
@@ -174,6 +176,7 @@
     "View_ProPage_SubscribePeriod_ThreeMonths": "3 meses",
     "View_ProPage_SubscribePeriod_OneYear": "Anual",
 
+    "View_ProPage_AfterDaysFreeTest": " dias grátis",
     "View_ProPage_AfterIntroPrice_Monthly": " no primeiro mês, depois ",
     "View_ProPage_AfterPrice_Monthly": " mensais",
 

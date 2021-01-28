@@ -34,6 +34,7 @@
     "ProBanner_Text1": "PRO users can take photos of products, do you want more?",
     "ProBanner_Text2": "Discover the benefits of PRO",
     "ProBanner_Text3": "We don't have ads on PRO, meet more advantages",
+    "ProBanner_Text4": "Test PRO monthly for free for 7 days",
 
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
@@ -174,6 +175,8 @@
     "View_ProPage_SubscribePeriod_ThreeMonths": "3 months",
     "View_ProPage_SubscribePeriod_OneYear": "Annual",
 
+
+    "View_ProPage_AfterDaysFreeTest": " days free",
     "View_ProPage_AfterIntroPrice_Monthly": " on the first month, then ",
     "View_ProPage_AfterPrice_Monthly": " monthly",
 
