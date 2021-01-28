@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Linking, Platform } from 'react-native';
+import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
 
@@ -36,12 +36,6 @@ const About: React.FC = () => {
 
     const handleLinkedinPress = useCallback(async () => {
         await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
-    }, []);
-
-    const handleDonatePress = useCallback(async () => {
-        await Linking.openURL(
-            'https://www.paypal.com/donate?hosted_button_id=L68N3E8YGSTW2'
-        );
     }, []);
 
     const handleFlatIconPress = useCallback(async () => {
@@ -92,16 +86,6 @@ const About: React.FC = () => {
                 <Text>{translate('View_About_DevelopedBy')}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
             </AboutSection>
-
-            {/* Apple does not allow links to any kind of payment outside App Store */}
-            {Platform.OS !== 'ios' && (
-                <AboutSection>
-                    <Text>{translate('View_About_DonateDescription')}</Text>
-                    <Link onPress={handleDonatePress}>
-                        {translate('View_About_Button_Donate')}
-                    </Link>
-                </AboutSection>
-            )}
 
             <AboutSection>
                 <Text>{translate('View_About_LogoMadeBy')}</Text>
