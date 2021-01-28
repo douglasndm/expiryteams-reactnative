@@ -143,8 +143,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 92
-        versionName "1.8.1"
+        versionCode 93
+        versionName "1.8.2"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -273,7 +273,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
-    implementation 'com.google.android.gms:play-services-ads:19.6.0'
+    implementation 'com.google.android.gms:play-services-ads:19.7.0'
     implementation 'com.google.ads.mediation:inmobi:9.1.1.0'
     implementation 'com.google.ads.mediation:vungle:6.8.1.1'
     implementation 'com.google.ads.mediation:adcolony:4.3.0.0'
