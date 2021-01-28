@@ -16,6 +16,7 @@ import './Locales';
 import './Services/BackgroundJobs';
 import './Services/Admob';
 import './Services/Analytics';
+import './Services/AppsFlyer';
 
 import './Functions/MultiplesStoresLegacyUsers';
 import './Functions/ProMode';

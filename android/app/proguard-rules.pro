@@ -11,3 +11,8 @@
 
 # [react-native-background-fetch]
 -keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
+
+-dontwarn com.appsflyer.**
+-keep public class com.google.firebase.messaging.FirebaseMessagingService {
+  public *;
+}
