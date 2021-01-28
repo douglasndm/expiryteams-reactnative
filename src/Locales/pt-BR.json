@@ -261,6 +261,12 @@
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Categoria já existe",
 
+    "View_Category_Edit_PageTitle": "Editar categoria",
+    "View_Category_Edit_InputNamePlaceholder": "Digite o nome da categoria",
+    "View_Category_Edit_ButtonSave": "Salvar",
+    "View_Category_Edit_SuccessText": "Atualizado",
+    "View_Category_Edit_ErrorEmtpyName": "Digite o nome da categoria",
+
     "Function_StoreGroup_NoStore": "Sem loja",
 
     "Function_Export_FileName": "controledevalidade_backup",

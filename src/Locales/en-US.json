@@ -256,6 +256,12 @@
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
 
+    "View_Category_Edit_PageTitle": "Edit category",
+    "View_Category_Edit_InputNamePlaceholder": "Category name",
+    "View_Category_Edit_ButtonSave": "Save",
+    "View_Category_Edit_SuccessText": "Success",
+    "View_Category_Edit_ErrorEmtpyName": "Type the category name",
+
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
 

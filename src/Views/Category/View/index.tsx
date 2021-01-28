@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
@@ -13,7 +13,13 @@ import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import Notification from '~/Components/Notification';
 
-import { Container, CategoryTitle } from './styles';
+import {
+    Container,
+    CategoryTitle,
+    ActionsButtonContainer,
+    ActionButton,
+    Icons,
+} from './styles';
 
 interface Props {
     id: string;
@@ -21,6 +27,7 @@ interface Props {
 
 const CategoryView: React.FC = () => {
     const { params } = useRoute();
+    const { navigate } = useNavigation();
 
     const routeParams = params as Props;
 
@@ -55,6 +62,10 @@ const CategoryView: React.FC = () => {
         }
     }, [routeParams.id]);
 
+    const handleEdit = useCallback(() => {
+        navigate('CategoryEdit', { id: routeParams.id });
+    }, [navigate, routeParams.id]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -69,6 +80,15 @@ const CategoryView: React.FC = () => {
                 {translate('View_Category_List_View_BeforeCategoryName')}
                 {categoryName}
             </CategoryTitle>
+
+            <ActionsButtonContainer>
+                <ActionButton
+                    icon={() => <Icons name="create-outline" size={22} />}
+                    onPress={handleEdit}
+                >
+                    {translate('View_ProductDetails_Button_UpdateProduct')}
+                </ActionButton>
+            </ActionsButtonContainer>
 
             <ListProducts products={products} />
 

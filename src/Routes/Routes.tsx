@@ -17,6 +17,7 @@ import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
+import CategoryEdit from '~/Views/Category/Edit';
 
 import SignIn from '~/Views/Auth/SignIn';
 
@@ -48,6 +49,7 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />
+            <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
         </Stack.Navigator>
