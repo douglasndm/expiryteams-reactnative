@@ -3,7 +3,7 @@ import XLSX from 'xlsx';
 import { translate } from '../Locales';
 
 import { shareFile } from './Share';
-import { GetAllProducts } from './Products';
+import { getAllProducts } from './Products';
 
 interface ExcelRowProps {
     produto: string;
@@ -19,7 +19,7 @@ export async function exportToExcel(): Promise<void> {
     try {
         const workbook = XLSX.utils.book_new();
 
-        const products = await GetAllProducts();
+        const products = await getAllProducts({});
 
         const excelRows: Array<ExcelRowProps> = [];
 

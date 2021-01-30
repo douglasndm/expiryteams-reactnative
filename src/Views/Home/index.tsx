@@ -13,11 +13,7 @@ import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import {
-    searchForAProductInAList,
-    GetAllProducts,
-    getAllProducts,
-} from '~/Functions/Products';
+import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -99,7 +95,7 @@ const Home: React.FC = () => {
             setSearchString(search);
 
             if (search && search !== '') {
-                const allProducts = await GetAllProducts();
+                const allProducts = await getAllProducts({});
 
                 const findProducts = searchForAProductInAList({
                     products: allProducts,

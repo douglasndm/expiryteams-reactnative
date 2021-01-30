@@ -9,13 +9,17 @@ export function sortProductsLotesByLotesExpDate(
     const productsLotesSorted = listProducts.map((prod) => {
         const prodLotesSorted = sortLoteByExpDate(prod.lotes);
 
-        return {
+        const product: IProduct = {
             id: prod.id,
             name: prod.name,
             code: prod.code,
             store: prod.store,
+            photo: prod.photo,
+            categories: prod.categories,
             lotes: prodLotesSorted,
         };
+
+        return product;
     });
 
     return productsLotesSorted;
@@ -49,13 +53,16 @@ export function removeAllLotesTratadosFromAllProduts(
     listProducts: Array<IProduct>
 ): Array<IProduct> {
     const results = listProducts.map((prod) => {
-        return {
+        const product: IProduct = {
             id: prod.id,
             name: prod.name,
             code: prod.code,
             store: prod.store,
+            photo: prod.photo,
+            categories: prod.categories,
             lotes: removeLotesTratados(prod.lotes),
         };
+        return product;
     });
 
     return results;
@@ -136,18 +143,6 @@ export async function getAllProducts({
         }
 
         return filtertedProducts;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function GetAllProducts(): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
-    try {
-        const results = realm.objects<IProduct>('Product').slice();
-
-        return results;
     } catch (err) {
         throw new Error(err);
     }
