@@ -53,15 +53,18 @@ const ListProducts: React.FC<RequestProps> = ({
     const ListHeader = useCallback(() => {
         return (
             <View>
-                {userPreferences.isUserPremium !== true && (
-                    <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>
-                            {Platform.OS === 'android'
-                                ? translate('ProBanner_Text4').toUpperCase()
-                                : translate(`ProBanner_Text${choosenAdText}`)}
-                        </ProText>
-                    </ProBanner>
-                )}
+                {userPreferences.isUserPremium !== true &&
+                    Platform.OS !== 'ios' && (
+                        <ProBanner onPress={handleNavigateProPage}>
+                            <ProText>
+                                {Platform.OS === 'android'
+                                    ? translate('ProBanner_Text4').toUpperCase()
+                                    : translate(
+                                          `ProBanner_Text${choosenAdText}`
+                                      )}
+                            </ProText>
+                        </ProBanner>
+                    )}
 
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
