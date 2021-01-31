@@ -5,26 +5,33 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { ScrollView } from 'react-native';
+import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import EnvConfig from 'react-native-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import StatusBar from '../../Components/StatusBar';
-import Loading from '../../Components/Loading';
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-import Notification from '../../Components/Notification';
+import StatusBar from '~/Components/StatusBar';
+import Loading from '~/Components/Loading';
+import BackButton from '~/Components/BackButton';
+import Notification from '~/Components/Notification';
 
-import { getProductById } from '../../Functions/Product';
-import { sortLoteByExpDate } from '../../Functions/Lotes';
+import { getProductById } from '~/Functions/Product';
+import { sortLoteByExpDate } from '~/Functions/Lotes';
+import { getProductImagePath } from '~/Functions/Products/Image';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import { ProBanner, ProText } from '~/Components/ListProducts/styles';
 
 import {
     Container,
+    ScrollView,
     PageHeader,
     ProductContainer,
     PageTitleContent,
@@ -41,14 +48,12 @@ import {
     Icons,
     CategoryDetails,
     CategoryDetailsText,
+    AdContainer,
     TableContainer,
     FloatButton,
 } from './styles';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
-
 import BatchTable from './Components/BatchesTable';
-import { getProductImagePath } from '~/Functions/Products/Image';
 
 interface Request {
     route: {
@@ -69,6 +74,18 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+
+    const adUnit = useMemo(() => {
+        if (__DEV__) {
+            return TestIds.BANNER;
+        }
+
+        if (Platform.OS === 'ios') {
+            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+        }
+
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+    }, []);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -149,6 +166,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             });
         }
     }, [navigate, product, productId]);
+
+    const handleNavigateToPro = useCallback(() => {
+        navigate('Pro');
+    }, [navigate]);
 
     return isLoading ? (
         <Loading />
@@ -232,6 +253,25 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             </TableContainer>
                         )}
 
+                        {!userPreferences.isUserPremium && (
+                            <AdContainer>
+                                <BannerAd
+                                    unitId={adUnit}
+                                    size={BannerAdSize.MEDIUM_RECTANGLE}
+                                />
+
+                                {Platform.OS === 'android' && (
+                                    <ProBanner onPress={handleNavigateToPro}>
+                                        <ProText>
+                                            {translate(
+                                                'ProBanner_Text4'
+                                            ).toUpperCase()}
+                                        </ProText>
+                                    </ProBanner>
+                                )}
+                            </AdContainer>
+                        )}
+
                         {lotesTratados.length > 0 && (
                             <>
                                 <CategoryDetails>
@@ -248,17 +288,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 />
                             </>
                         )}
-
-                        <GenericButton
-                            text={translate(
-                                'View_ProductDetails_Button_AddNewBatch'
-                            )}
-                            onPress={() => {
-                                navigate('AddLote', {
-                                    productId,
-                                });
-                            }}
-                        />
                     </PageContent>
                 </ScrollView>
                 {!!error && (

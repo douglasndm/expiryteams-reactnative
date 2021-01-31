@@ -145,7 +145,6 @@
     "View_ProductDetails_Button_DeleteProduct": "Delete",
     "View_ProductDetails_TableTitle_NotTreatedBatches": "Not treated batches yet",
     "View_ProductDetails_TableTitle_TreatedBatches": "Treated batches",
-    "View_ProductDetails_Button_AddNewBatch": "Add a new batch",
     "View_ProductDetails_FloatButton_AddNewBatch": "Add batch",
     "View_ProductDetails_WarningDelete_Title": "Are you sure?",
     "View_ProductDetails_WarningDelete_Message": "If you continue you will delete this product",

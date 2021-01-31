@@ -145,7 +145,6 @@
     "View_ProductDetails_Button_DeleteProduct": "Apagar",
     "View_ProductDetails_TableTitle_NotTreatedBatches": "Lotes ainda não tratados",
     "View_ProductDetails_TableTitle_TreatedBatches": "Lotes tratados",
-    "View_ProductDetails_Button_AddNewBatch": "Adicionar novo lote",
     "View_ProductDetails_FloatButton_AddNewBatch": "Adicionar lote",
     "View_ProductDetails_WarningDelete_Title": "Você tem certeza?",
     "View_ProductDetails_WarningDelete_Message": "Se você continuar você vai apagar este produto",
