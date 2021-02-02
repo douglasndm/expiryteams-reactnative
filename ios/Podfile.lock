@@ -470,7 +470,7 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - RealmJS (6.1.5):
+  - RealmJS (10.1.4):
     - GCDWebServer
     - React
   - RNAppleAuthentication (2.1.0):
@@ -900,7 +900,7 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  RealmJS: efb0b7b52759192752ef8b6f061e2c3dd0ea14cd
+  RealmJS: 0b841607e0327c1bb58b97dd21eee16658a07d65
   RNAppleAuthentication: 46cbc67739bae83ca229497f9b0038f3f5431443
   RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
