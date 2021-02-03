@@ -208,6 +208,8 @@ PODS:
   - OpenSSL-Universal (1.0.2.20):
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
+  - Permission-AppTrackingTransparency (3.0.0):
+    - RNPermissions
   - Permission-Camera (3.0.0):
     - RNPermissions
   - Permission-Notifications (3.0.0):
@@ -579,6 +581,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
+  - Permission-AppTrackingTransparency (from `../node_modules/react-native-permissions/ios/AppTrackingTransparency`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -703,6 +706,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
+  Permission-AppTrackingTransparency:
+    :path: "../node_modules/react-native-permissions/ios/AppTrackingTransparency"
   Permission-Camera:
     :path: "../node_modules/react-native-permissions/ios/Camera"
   Permission-Notifications:
@@ -864,6 +869,7 @@ SPEC CHECKSUMS:
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
+  Permission-AppTrackingTransparency: 15da2933d9d04f5106fa19407eb452fa1b4e8059
   Permission-Camera: 119b01de97a5b3edb637999e38476b68143b9d17
   Permission-Notifications: 5c69bf2f6c1e30345af4f25e2981dc1c8dafbc22
   PersonalizedAdConsent: dbecabb3467df967c16d9cebc2ef4a8890e4bbd8
@@ -931,6 +937,6 @@ SPEC CHECKSUMS:
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 10775dbd4319397142605f28de188e0466977698
+PODFILE CHECKSUM: 5eee8a311dd4115bd5c7b8d42a0ec58d4b3b9fae
 
 COCOAPODS: 1.10.1

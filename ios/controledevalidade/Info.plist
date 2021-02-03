@@ -58,8 +58,13 @@
 			</dict>
 		</dict>
 	</dict>
+
 	<key>NSCameraUsageDescription</key>
 	<string>Precisamos da sua autorização para usar a câmera para usar o leitor de códigos de barras</string>
+
+    <key>NSUserTrackingUsageDescription</key>
+    <string>Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recusos e mostrar anúncios mais relevantes.</string>
+
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>

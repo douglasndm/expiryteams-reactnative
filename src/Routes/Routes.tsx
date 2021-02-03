@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from '~/Views/Home';
@@ -20,6 +21,8 @@ import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
 
 import SignIn from '~/Views/Auth/SignIn';
+
+import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
 
@@ -52,6 +55,13 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
+
+            {Platform.OS === 'ios' && (
+                <Stack.Screen
+                    name="TrackingPermission"
+                    component={TrackingPermission}
+                />
+            )}
         </Stack.Navigator>
     );
 };

@@ -6,6 +6,7 @@ import React, {
     useContext,
 } from 'react';
 import { Platform, PixelRatio } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
@@ -13,6 +14,7 @@ import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
+import { getAllowedToReadIDFA } from '~/Functions/Privacy';
 import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
@@ -31,6 +33,8 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+    const { reset } = useNavigation();
+
     const { userPreferences } = useContext(PreferencesContext);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -43,6 +47,18 @@ const Home: React.FC = () => {
     const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
         false
     );
+
+    useEffect(() => {
+        if (Platform.OS === 'ios') {
+            getAllowedToReadIDFA().then((response) => {
+                if (response === null) {
+                    reset({
+                        routes: [{ name: 'TrackingPermission' }],
+                    });
+                }
+            });
+        }
+    }, [reset]);
 
     const adUnit = useMemo(() => {
         if (__DEV__) {

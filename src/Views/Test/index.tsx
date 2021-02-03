@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { zip } from 'react-native-zip-archive';
 import { addDays } from 'date-fns';
 import {
@@ -153,6 +154,10 @@ const Test: React.FC = () => {
         }
     }, []);
 
+    const handleDeletePrivacySetting = useCallback(async () => {
+        await AsyncStorage.removeItem('Privacy/canUseIDFA');
+    }, []);
+
     return (
         <Container>
             <ScrollView>
@@ -180,6 +185,11 @@ const Test: React.FC = () => {
                     <Button
                         text="Throw notification"
                         onPress={handleNotification}
+                    />
+
+                    <Button
+                        text="Delete privacy setting"
+                        onPress={handleDeletePrivacySetting}
                     />
                 </Category>
             </ScrollView>
