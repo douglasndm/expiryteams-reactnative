@@ -261,11 +261,6 @@ const Add: React.FC = () => {
         }
     }, []);
 
-    const handleOnCodeRead = useCallback((codeRead: string) => {
-        setCode(codeRead);
-        setIsBarCodeEnabled(false);
-    }, []);
-
     const handleDimissNotification = useCallback(() => {
         setError('');
     }, []);
@@ -305,24 +300,35 @@ const Add: React.FC = () => {
         [handleDisableCamera]
     );
 
-    const handleCheckProductCode = useCallback(async () => {
-        if (code) {
-            const prodExist = await checkIfProductAlreadyExistsByCode({
-                productCode: code,
-                productStore: store || undefined,
-            });
+    const handleCheckProductCode = useCallback(
+        async (anotherCode?: string) => {
+            let theCode;
 
-            if (prodExist) {
-                setCodeFieldError(true);
-
-                const existProd = await getProductByCode(
-                    code,
-                    store || undefined
-                );
-                setExistentProduct(existProd.id);
+            if (code) {
+                theCode = code;
+            } else if (anotherCode) {
+                theCode = anotherCode;
             }
-        }
-    }, [code, store]);
+
+            if (theCode) {
+                const prodExist = await checkIfProductAlreadyExistsByCode({
+                    productCode: theCode,
+                    productStore: store || undefined,
+                });
+
+                if (prodExist) {
+                    setCodeFieldError(true);
+
+                    const existProd = await getProductByCode(
+                        theCode,
+                        store || undefined
+                    );
+                    setExistentProduct(existProd.id);
+                }
+            }
+        },
+        [code, store]
+    );
 
     const handleNavigateToExistProduct = useCallback(async () => {
         if (existentProduct) {
@@ -333,6 +339,15 @@ const Add: React.FC = () => {
     const handleNavigateToPro = useCallback(() => {
         navigate('Pro');
     }, [navigate]);
+
+    const handleOnCodeRead = useCallback(
+        async (codeRead: string) => {
+            setCode(codeRead);
+            setIsBarCodeEnabled(false);
+            await handleCheckProductCode(codeRead);
+        },
+        [handleCheckProductCode]
+    );
 
     return (
         <>
