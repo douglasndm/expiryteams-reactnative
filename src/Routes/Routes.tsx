@@ -9,13 +9,15 @@ import EditProduct from '~/Views/Product/Edit';
 import EditLote from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/ProductDetails';
 import AllProducts from '~/Views/AllProducts';
-import AllProductsByStore from '~/Views/AllProductsByStore';
 import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import ProSubscription from '~/Views/ProSubscription';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
+
+import StoreList from '~/Views/Store/List';
+
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
@@ -34,10 +36,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
-            <Stack.Screen
-                name="AllProductsByStore"
-                component={AllProductsByStore}
-            />
+
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
@@ -53,6 +52,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
+
+            <Stack.Screen name="StoreList" component={StoreList} />
 
             <Stack.Screen name="SignIn" component={SignIn} />
 

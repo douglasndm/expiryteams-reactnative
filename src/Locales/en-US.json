@@ -5,7 +5,7 @@
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",
-    "Menu_Button_GoToAllProductsByStore": "All products by store",
+    "Menu_Button_GoToStores": "Stores",
     "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToProPage": "Become PRO",
     "Menu_Button_GoToSettings": "Settings",
@@ -97,7 +97,7 @@
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
 
-    "View_AllProductsByStore_PageTitle": "All products by store",
+    "View_Store_List_PageTitle": "Stores",
 
     "View_Auth_SignIn_PageTitle": "Identify yourself",
     "View_Auth_SignIn_Text_LoginRequired": "An authentication is necessary to continue.",

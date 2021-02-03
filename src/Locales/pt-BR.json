@@ -5,7 +5,7 @@
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
-    "Menu_Button_GoToAllProductsByStore": "Produtos por loja",
+    "Menu_Button_GoToStores": "Lojas",
     "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToProPage": "SEJA PRO",
     "Menu_Button_GoToSettings": "Configurações",
@@ -97,7 +97,7 @@
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
-    "View_AllProductsByStore_PageTitle": "Todos os produtos por loja",
+    "View_Store_List_PageTitle": "Todas as lojas",
 
     "View_Auth_SignIn_PageTitle": "Identifique-se",
     "View_Auth_SignIn_Text_LoginRequired": "Autenticação é necessária para continuar",

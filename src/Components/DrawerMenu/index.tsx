@@ -51,7 +51,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     }, [navigation]);
 
     const navigateToAllProductsByStore = useCallback(() => {
-        navigation.navigate('AllProductsByStore');
+        navigation.navigate('StoreList');
     }, [navigation]);
 
     const navigateToCategories = useCallback(() => {
@@ -116,9 +116,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 <MenuContent>
                                     <Icons name="list-outline" />
                                     <MenuItemText>
-                                        {translate(
-                                            'Menu_Button_GoToAllProductsByStore'
-                                        )}
+                                        {translate('Menu_Button_GoToStores')}
                                     </MenuItemText>
                                 </MenuContent>
 
