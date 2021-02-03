@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
     flex: 1;
@@ -6,11 +7,16 @@ export const Container = styled.View`
 `;
 
 export const Content = styled.View`
-    margin-top: 10px;
+    margin: 10px;
 `;
 export const PageTitleContainer = styled.View`
     flex-direction: row;
     align-items: center;
+
+    ${isIphoneX() &&
+    css`
+        padding-top: ${getStatusBarHeight() + 20}px;
+    `}
 `;
 
 interface InputTextContainerProps {
