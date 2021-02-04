@@ -14,6 +14,7 @@ if (Platform.OS === 'ios') {
 AppsFlyer.initSdk({
     devKey: EnvConfig.APPSFLYER_DEV_KEY,
     isDebug: __DEV__,
+    onInstallConversionDataListener: true,
     ...iosConfig,
 })
     .then(async () => {
