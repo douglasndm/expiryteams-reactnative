@@ -96,6 +96,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
 
+    const choosenAdText = useMemo(() => {
+        return Math.floor(Math.random() * 3) + 1;
+    }, []);
+
     const getProduct = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -260,15 +264,17 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     size={BannerAdSize.MEDIUM_RECTANGLE}
                                 />
 
-                                {Platform.OS === 'android' && (
-                                    <ProBanner onPress={handleNavigateToPro}>
-                                        <ProText>
-                                            {translate(
-                                                'ProBanner_Text4'
-                                            ).toUpperCase()}
-                                        </ProText>
-                                    </ProBanner>
-                                )}
+                                <ProBanner onPress={handleNavigateToPro}>
+                                    <ProText>
+                                        {Platform.OS === 'android'
+                                            ? translate(
+                                                  'ProBanner_Text4'
+                                              ).toUpperCase()
+                                            : translate(
+                                                  `ProBanner_Text${choosenAdText}`
+                                              )}
+                                    </ProText>
+                                </ProBanner>
                             </AdContainer>
                         )}
 
