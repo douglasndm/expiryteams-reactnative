@@ -3,6 +3,8 @@ import { Switch } from 'react-native';
 import RNPermissions, { request } from 'react-native-permissions';
 import { useNavigation } from '@react-navigation/native';
 
+import { translate } from '~/Locales';
+
 import { setAllowedToReadIDFA } from '~/Functions/Privacy';
 
 import Button from '~/Components/Button';
@@ -48,28 +50,26 @@ const AppleATT: React.FC = () => {
     return (
         <Container>
             <Content>
-                <PageTitle>Precisamos da sua permissão</PageTitle>
+                <PageTitle>
+                    {translate('View_Permissions_AppleAT_PageTitle')}
+                </PageTitle>
                 <Message>
-                    Precisamos da sua autorização para usar o identificador
-                    único do seu dispositivo ara mostra-lo anúncios mais
-                    relevantes e fazer análises de quais parte do aplicativo
-                    precisam melhorar. Por favor note que desativando estas
-                    opções não removeram os anúncios caso não seja usuário PRO,
-                    só fala que os anúncios não sejam tão interessantes para
-                    você como poderiam ser. Os anúncios no aplicativo são umas
-                    das poucas formas de renda deste aplicativo e com anúncios
-                    mais relevantes você estaria contribuindo para o
-                    desenvolvimento e manutenção do aplicativo.
+                    {translate('View_Permissions_AppleAT_Message')}
                 </Message>
 
                 <SettingContainer>
                     <SettingTitle>
-                        Uso da identificação única do dispositivo
+                        {translate(
+                            'View_Permissions_AppleAT_SwitchAllowTracking'
+                        )}
                     </SettingTitle>
                     <Switch value={deviceId} onValueChange={onDeviceIdChange} />
                 </SettingContainer>
 
-                <Button text="Continuar" onPress={handleContinue} />
+                <Button
+                    text={translate('View_Permissions_AppleAT_Button_Continue')}
+                    onPress={handleContinue}
+                />
             </Content>
         </Container>
     );
