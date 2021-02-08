@@ -266,6 +266,11 @@ const Add: React.FC = () => {
     }, []);
 
     const handleEnableCamera = useCallback(async () => {
+        if (!userPreferences.isUserPremium) {
+            navigate('Pro');
+            return;
+        }
+
         if (photoPath) {
             if (await exists(photoPath)) {
                 await unlink(photoPath);
@@ -273,7 +278,7 @@ const Add: React.FC = () => {
         }
         setIsBarCodeEnabled(false);
         setIsCameraEnabled(true);
-    }, [photoPath]);
+    }, [photoPath, navigate, userPreferences.isUserPremium]);
 
     const handleDisableCamera = useCallback(() => {
         setIsCameraEnabled(false);
@@ -428,9 +433,6 @@ const Add: React.FC = () => {
 
                                             <CameraButtonContainer
                                                 onPress={handleEnableCamera}
-                                                enabled={
-                                                    userPreferences.isUserPremium
-                                                }
                                             >
                                                 <CameraButtonIcon />
                                             </CameraButtonContainer>
