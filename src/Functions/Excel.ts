@@ -1,4 +1,6 @@
 import XLSX from 'xlsx';
+import { format } from 'date-fns';
+import { getLocales } from 'react-native-localize';
 
 import { translate } from '../Locales';
 
@@ -15,35 +17,75 @@ interface ExcelRowProps {
     preço: number;
 }
 
+interface exportModel {
+    product: Omit<IProduct, 'Lotes'>;
+    batch: ILote;
+}
+
+function sortProducts(products: Array<exportModel>): Array<exportModel> {
+    const sorted: Array<exportModel> = [];
+
+    if (products.length > 2) {
+        const lotesSorted = products.sort((p1, p2) => {
+            if (p1.batch.exp_date > p2.batch.exp_date) return 1;
+            if (p1.batch.exp_date < p2.batch.exp_date) return -1;
+            return 0;
+        });
+
+        return lotesSorted;
+    }
+    return sorted;
+}
+
 export async function exportToExcel(): Promise<void> {
+    let dateFormat = 'dd/MM/yyyy';
+
+    if (getLocales()[0].languageCode === 'en') {
+        dateFormat = 'MM/dd/yyyy';
+    }
+
     try {
+        const excelExport: Array<exportModel> = [];
+
         const workbook = XLSX.utils.book_new();
 
-        const products = await getAllProducts({});
+        const allProducts = await getAllProducts({});
+
+        allProducts.forEach((p) => {
+            p.lotes.forEach((l) => {
+                excelExport.push({
+                    product: p,
+                    batch: l,
+                });
+            });
+        });
+
+        const sortedProducts = sortProducts(excelExport);
 
         const excelRows: Array<ExcelRowProps> = [];
 
-        products.forEach((product) => {
-            product.lotes.forEach((batch) => {
-                const row: any = {};
+        sortedProducts.forEach((item) => {
+            const row: any = {};
 
-                row[translate('Function_Excel_ColumnName_ProductName')] =
-                    product.name;
-                row[translate('Function_Excel_ColumnName_ProductCode')] =
-                    product.code || '';
-                row[translate('Function_Excel_ColumnName_ProductStore')] =
-                    product.store || '';
-                row[translate('Function_Excel_ColumnName_BatchName')] =
-                    batch.lote;
-                row[translate('Function_Excel_ColumnName_BatchPrice')] =
-                    batch.price || 0;
-                row[translate('Function_Excel_ColumnName_BatchAmount')] =
-                    batch.amount || 0;
-                row[translate('Function_Excel_ColumnName_BatchExpDate')] =
-                    batch.exp_date;
+            row[translate('Function_Excel_ColumnName_ProductName')] =
+                item.product.name;
+            row[translate('Function_Excel_ColumnName_ProductCode')] =
+                item.product.code || '';
+            row[translate('Function_Excel_ColumnName_ProductStore')] =
+                item.product.store || '';
+            row[translate('Function_Excel_ColumnName_BatchName')] =
+                item.batch.lote;
+            row[translate('Function_Excel_ColumnName_BatchPrice')] =
+                item.batch.price || 0;
+            row[translate('Function_Excel_ColumnName_BatchAmount')] =
+                item.batch.amount || 0;
+            row[translate('Function_Excel_ColumnName_BatchExpDate')] = format(
+                item.batch.exp_date,
+                dateFormat
+            );
+            row.Tratado = item.batch.status === 'Tratado' ? 'Sim' : 'Não';
 
-                excelRows.push(row);
-            });
+            excelRows.push(row);
         });
 
         const worksheet = XLSX.utils.json_to_sheet(excelRows);
