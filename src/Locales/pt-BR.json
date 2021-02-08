@@ -1,6 +1,6 @@
 {
     "AppName": "Controle de Validade",
-    "AppName_ProVersion": "Premium",
+    "AppName_ProVersion": "Modo PRO",
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
@@ -17,7 +17,6 @@
     "Menu_UserProfile_Label": "USUÁRIO PRO",
 
     "Menu_Label_PRO": "PRO",
-    "Menu_Label_Beta": "BETA",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",

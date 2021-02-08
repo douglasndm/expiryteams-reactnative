@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		46EEEF37BF504D64B6C99C3A /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CF1710EA7C44AB68C647EC7 /* OpenSans-Light.ttf */; };
 		4F47865D259661D0008C02AA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4F47865C259661D0008C02AA /* Config.xcconfig */; };
+		4F9E2D0125D0DDA30017A9CF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F9E2D0325D0DDA30017A9CF /* InfoPlist.strings */; };
 		4FC6C2DA25A775F000A3DE7B /* swiftly-610.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */; };
 		4FC7F1102593EC6000112252 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */; };
 		4FF2A01525B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */; };
@@ -64,6 +65,8 @@
 		4F8EEDFD259401AA0072C20A /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		4F8EEF42259416390072C20A /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		4F8EEF43259418130072C20A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		4F9E2D0225D0DDA30017A9CF /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		4F9E2D0625D0DDAF0017A9CF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */ = {isa = PBXFileReference; lastKnownFileType = file; path = "swiftly-610.m4r"; sourceTree = "<group>"; };
 		4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
@@ -182,6 +185,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4F9E2D0325D0DDA30017A9CF /* InfoPlist.strings */,
 				4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */,
 				4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */,
 				4F47865C259661D0008C02AA /* Config.xcconfig */,
@@ -349,6 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FC6C2DA25A775F000A3DE7B /* swiftly-610.m4r in Resources */,
+				4F9E2D0125D0DDA30017A9CF /* InfoPlist.strings in Resources */,
 				4F47865D259661D0008C02AA /* Config.xcconfig in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -606,6 +611,18 @@
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4F9E2D0325D0DDA30017A9CF /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4F9E2D0225D0DDA30017A9CF /* pt-BR */,
+				4F9E2D0625D0DDAF0017A9CF /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {

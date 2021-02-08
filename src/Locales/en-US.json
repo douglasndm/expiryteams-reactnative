@@ -1,6 +1,6 @@
 {
-    "AppName": "Expiration checker",
-    "AppName_ProVersion": "Premium",
+    "AppName": "Expiry Checker",
+    "AppName_ProVersion": "PRO Mode",
 
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
@@ -17,7 +17,6 @@
     "Menu_UserProfile_Label": "PRO User",
 
     "Menu_Label_PRO": "PRO",
-    "Menu_Label_Beta": "BETA",
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
