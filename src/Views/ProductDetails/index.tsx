@@ -266,13 +266,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                                 <ProBanner onPress={handleNavigateToPro}>
                                     <ProText>
-                                        {Platform.OS === 'android'
-                                            ? translate(
-                                                  'ProBanner_Text4'
-                                              ).toUpperCase()
-                                            : translate(
-                                                  `ProBanner_Text${choosenAdText}`
-                                              )}
+                                        {translate(
+                                            `ProBanner_Text${choosenAdText}`
+                                        )}
                                     </ProText>
                                 </ProBanner>
                             </AdContainer>
