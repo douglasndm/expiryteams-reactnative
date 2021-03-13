@@ -17,7 +17,6 @@ import './Locales';
 import './Services/BackgroundJobs';
 import './Services/Admob';
 import './Services/Analytics';
-import './Services/AppsFlyer';
 
 import './Functions/MultiplesStoresLegacyUsers';
 import './Functions/ProMode';
@@ -62,7 +61,7 @@ const App: React.FC = () => {
     }, []);
 
     const handleOnScreenChange = useCallback(
-        async (state) => {
+        async state => {
             const route = state.routes[0] || 'undefined';
             const focusedRouteName = getFocusedRouteNameFromRoute(route);
 
