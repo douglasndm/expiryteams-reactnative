@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		46EEEF37BF504D64B6C99C3A /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CF1710EA7C44AB68C647EC7 /* OpenSans-Light.ttf */; };
+		4F1D6B5625FD5564009BA07C /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1D6B5525FD5564009BA07C /* File.swift */; };
 		4F47865D259661D0008C02AA /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4F47865C259661D0008C02AA /* Config.xcconfig */; };
 		4F9E2D0125D0DDA30017A9CF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4F9E2D0325D0DDA30017A9CF /* InfoPlist.strings */; };
 		4FC6C2DA25A775F000A3DE7B /* swiftly-610.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */; };
@@ -61,6 +62,8 @@
 		44D558C29B5B4E65B1ED4030 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/Assets/Fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		465575EC9E104D4FBE9DD049 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		4BFB04DA8838458F9DA6D6E0 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		4F1D6B5425FD5564009BA07C /* controledevalidade-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "controledevalidade-Bridging-Header.h"; sourceTree = "<group>"; };
+		4F1D6B5525FD5564009BA07C /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		4F47865C259661D0008C02AA /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		4F8EEDFD259401AA0072C20A /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		4F8EEF42259416390072C20A /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
@@ -185,6 +188,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4F1D6B5525FD5564009BA07C /* File.swift */,
 				4F9E2D0325D0DDA30017A9CF /* InfoPlist.strings */,
 				4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */,
 				4FC6C2D925A775F000A3DE7B /* swiftly-610.m4r */,
@@ -197,6 +201,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D509CEE3C7F78C22E161026A /* Pods */,
 				A404833BD27A4A49A3780DD6 /* Resources */,
+				4F1D6B5425FD5564009BA07C /* controledevalidade-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -318,7 +323,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = F3ZQ4BPF29;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1240;
 					};
 				};
 			};
@@ -635,6 +640,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FF2A01525B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m in Sources */,
+				4F1D6B5625FD5564009BA07C /* File.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -667,6 +673,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6B490CD3FDC34E4BC2AE842 /* Pods-controledevalidade-controledevalidadeTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -675,11 +682,7 @@
 				);
 				INFOPLIST_FILE = controledevalidadeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -695,16 +698,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = controledevalidadeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -723,15 +723,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.8.6;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.8.7;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -739,6 +736,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.controledevalidade;
 				PRODUCT_NAME = controledevalidade;
+				SWIFT_OBJC_BRIDGING_HEADER = "controledevalidade-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -752,14 +750,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.8.6;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.8.7;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -767,6 +762,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.controledevalidade;
 				PRODUCT_NAME = controledevalidade;
+				SWIFT_OBJC_BRIDGING_HEADER = "controledevalidade-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -817,10 +813,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IOS_GOOGLE_URL_SCHEMA = "$(IOS_GOOGLE_URL_SCHEMA)";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					/usr/lib/swift,
-					"$(inherited)",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
@@ -842,14 +835,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.8.6;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.8.7;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -857,6 +847,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.controledevalidade;
 				PRODUCT_NAME = controledevalidade;
+				SWIFT_OBJC_BRIDGING_HEADER = "controledevalidade-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -866,16 +857,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DB7B4D626BF8E117E9AC72B6 /* Pods-controledevalidade-controledevalidadeTests.staging.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = controledevalidadeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -939,10 +927,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IOS_GOOGLE_URL_SCHEMA = "$(IOS_GOOGLE_URL_SCHEMA)";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					/usr/lib/swift,
-					"$(inherited)",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
@@ -1002,10 +987,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IOS_GOOGLE_URL_SCHEMA = "$(IOS_GOOGLE_URL_SCHEMA)";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					/usr/lib/swift,
-					"$(inherited)",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
