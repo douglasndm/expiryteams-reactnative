@@ -259,7 +259,7 @@
     "View_Category_Edit_ErrorEmtpyName": "Type the category name",
 
     "View_Permissions_AppleAT_PageTitle": "We need your permission",
-    "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
+    "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to track you in sites and apps that you use to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
     "View_Permissions_AppleAT_SwitchAllowTracking": "Use unique device identification",
     "View_Permissions_AppleAT_Button_Continue": "Continue",
 
