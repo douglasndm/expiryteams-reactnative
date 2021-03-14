@@ -74,14 +74,14 @@ const Pro: React.FC = () => {
             setIsLoading(true);
             const alreaderSignedIn = await isUserSignedIn();
 
-            if (alreaderSignedIn !== true) return;
+            if (alreaderSignedIn !== true && Platform.OS !== 'ios') return;
 
             const alreadyProUser = await isSubscriptionActive();
             setAlreadyPremium(alreadyProUser);
 
             const response = await getSubscriptionDetails();
 
-            response.forEach((packageItem) => {
+            response.forEach(packageItem => {
                 if (packageItem.packageType === PACKAGE_TYPE.MONTHLY) {
                     setMonthlyPlan(packageItem);
                     return;
@@ -247,7 +247,9 @@ const Pro: React.FC = () => {
                     </AdvantageContainer>
                 </AdvantagesGroup>
 
-                {userPreferences.isUserSignedIn ? (
+                {(userPreferences.isUserSignedIn &&
+                    Platform.OS === 'android') ||
+                Platform.OS === 'ios' ? (
                     <>
                         {alreadyPremium ? (
                             <ButtonSubscription>

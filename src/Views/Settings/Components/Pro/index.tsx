@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext, useMemo } from 'react';
-import { View, Linking, Platform } from 'react-native';
+import { View, Linking, Platform, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNPermissions from 'react-native-permissions';
 
@@ -7,7 +7,7 @@ import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { isSubscriptionActive } from '~/Functions/ProMode';
+import { isSubscriptionActive, RestorePurchasers } from '~/Functions/ProMode';
 import { importBackupFile, exportBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
 
@@ -32,11 +32,14 @@ import {
 } from './styles';
 
 const Pro: React.FC = () => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
 
     const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
     const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
+    const [isRestoreLoading, setIsRestoreLoading] = useState<boolean>(false);
     const [error, setError] = useState('');
 
     const { navigate, reset } = useNavigation();
@@ -113,6 +116,29 @@ const Pro: React.FC = () => {
     const onDimissError = useCallback(() => {
         setError('');
     }, []);
+
+    const restoreSubscription = useCallback(async () => {
+        setIsRestoreLoading(true);
+        await RestorePurchasers();
+
+        const result = await isSubscriptionActive();
+
+        if (result === true) {
+            setUserPreferences({
+                ...userPreferences,
+                isUserPremium: true,
+            });
+
+            Alert.alert(
+                translate('View_Settings_Subscription_Alert_RestoreSuccess')
+            );
+        } else {
+            Alert.alert(
+                translate('View_Settings_Subscription_Alert_NoSubscription')
+            );
+        }
+        setIsRestoreLoading(false);
+    }, [setUserPreferences, userPreferences]);
 
     return (
         <>
@@ -197,6 +223,24 @@ const Pro: React.FC = () => {
                             </PremiumButtonsContainer>
                         </View>
                     </CategoryOptions>
+
+                    {!userPreferences.isUserPremium && (
+                        <View>
+                            <SettingDescription>
+                                {translate(
+                                    'View_Settings_Subscription_RestoreText'
+                                )}
+                            </SettingDescription>
+
+                            <Button
+                                text={translate(
+                                    'View_Settings_Subscription_RestoreButton'
+                                )}
+                                onPress={restoreSubscription}
+                                isLoading={isRestoreLoading}
+                            />
+                        </View>
+                    )}
 
                     {userPreferences.isUserPremium && (
                         <ButtonCancel onPress={handleCancel}>

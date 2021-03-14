@@ -224,6 +224,11 @@
     "View_Settings_Notifications_Cadency_Month": "Monthly",
     "View_Settings_Notifications_Cadency_Never": "Never",
 
+    "View_Settings_Subscription_RestoreText": "Already a PRO User?",
+    "View_Settings_Subscription_RestoreButton": "Restore subscription",
+    "View_Settings_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
+    "View_Settings_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
+
     "View_AllProductByStore_BeforeStoreName": "All products by store ",
     "View_AllProductByStore_NoStore": "no store",
 

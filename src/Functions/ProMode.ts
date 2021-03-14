@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
@@ -12,21 +13,24 @@ Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 export async function isSubscriptionActive(): Promise<boolean> {
     const userSigned = await isUserSignedIn();
 
-    if (!userSigned) {
-        return false;
+    if (!userSigned && Platform.OS !== 'ios') {
+        throw new Error('User is not logged');
     }
 
     try {
-        const localUserId = await getUserId();
+        if (userSigned) {
+            const localUserId = await getUserId();
 
-        if (!localUserId) {
-            throw new Error('User is not signed');
+            if (!localUserId) {
+                throw new Error('User is not signed');
+            }
+
+            Purchases.identify(localUserId);
         }
 
-        const purchaserInfo = await Purchases.identify(localUserId);
-        // access latest purchaserInfo
+        const purchaserInfo = await Purchases.getPurchaserInfo();
 
-        if (purchaserInfo.activeSubscriptions.length > 0) {
+        if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
             await setEnableProVersion(true);
             return true;
         }
@@ -42,14 +46,15 @@ export async function getSubscriptionDetails(): Promise<
 > {
     const userSigned = await isUserSignedIn();
 
-    if (!userSigned) {
+    if (!userSigned && Platform.OS !== 'ios') {
         throw new Error('User is not logged');
     }
 
     try {
-        const userId = await getUserId();
-        await Purchases.identify(userId);
-
+        if (userSigned) {
+            const userId = await getUserId();
+            await Purchases.identify(userId);
+        }
         const offerings = await Purchases.getOfferings();
 
         const packages: Array<PurchasesPackage> = [];
@@ -81,14 +86,16 @@ export async function makeSubscription(
 
     const userSigned = await isUserSignedIn();
 
-    if (!userSigned) {
+    if (!userSigned && Platform.OS !== 'ios') {
         throw new Error('User is not logged');
     }
 
     try {
-        const userId = await getUserId();
+        if (userSigned) {
+            const userId = await getUserId();
 
-        await Purchases.identify(userId);
+            await Purchases.identify(userId);
+        }
 
         const {
             purchaserInfo,
@@ -111,6 +118,21 @@ export async function makeSubscription(
             await Analytics().logEvent('error_in_subscribe_process');
             throw new Error(e);
         }
+    }
+}
+
+export async function RestorePurchasers(): Promise<void> {
+    try {
+        const restore = await Purchases.restoreTransactions();
+        // ... check restored purchaserInfo to see if entitlement is now active
+
+        if (restore.activeSubscriptions.length > 0) {
+            await setEnableProVersion(true);
+        }
+
+        console.log(restore);
+    } catch (e) {
+        throw new Error(e.message);
     }
 }
 
