@@ -25,12 +25,3 @@ export const Message = styled.Text`
 
     margin: 15px 0;
 `;
-
-export const SettingContainer = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px;
-`;
-
-export const SettingTitle = styled.Text``;
