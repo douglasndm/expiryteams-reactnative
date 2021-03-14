@@ -41,6 +41,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>CodePushDeploymentKey</key>
 	<string>$(CODEPUSH_KEY)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>$(IOS_ADMOB_APPID)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -62,8 +64,6 @@
 	<string></string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recusos e mostrar anúncios mais relevantes.</string>
-	<key>GADApplicationIdentifier</key>
-	<string>$(IOS_ADMOB_APPID)</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
