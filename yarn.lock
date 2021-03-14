@@ -7988,10 +7988,10 @@ react-native-picker-select@^8.0.4:
     "@react-native-picker/picker" "^1.8.3"
     lodash.isequal "^4.5.0"
 
-react-native-purchases@^3.4.3:
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-3.4.3.tgz#f263fddb47d00a53fd6e317781d086634dcdbd09"
-  integrity sha512-wbK1CcMDX2iW66LMBh5yE7gMViAxCswTH+clWQXg5rm5zZBCAOX0pf+NE7nB0XMIgIyeeO5U0j1Gjtotkkv4MQ==
+react-native-purchases@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-4.0.1.tgz#26c28f1f0d1a08a0cb69339d3785d1f8bdefc624"
+  integrity sha512-ai/D+cC9wJE4XgGb0k+ryr5cJ+yVqCv0jXzLMRV/WtXQKMbLqPijpDcPtW/IKexMlTg2T0IhPP3xr3E0Gtl5tw==
 
 react-native-push-notification@^7.0.0:
   version "7.0.0"
