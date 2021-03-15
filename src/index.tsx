@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
@@ -8,7 +7,6 @@ import {
     NavigationContainer,
     getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
-import EnvConfig from 'react-native-config';
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -31,13 +29,6 @@ import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
-
-if (!__DEV__) {
-    Sentry.init({
-        dsn: EnvConfig.SENTRY_DSN,
-        enableAutoSessionTracking: true,
-    });
-}
 
 const App: React.FC = () => {
     const [previousRoute, setPreviousRoute] = useState('Home');

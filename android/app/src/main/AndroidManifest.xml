@@ -34,8 +34,6 @@
         </intent-filter>
       </activity>
 
-      <meta-data android:name="io.sentry.session-tracking.enable" android:value="true" />
-
         <!-- Change the value to true to enable pop-up for in foreground on receiving remote notifications (for prevent duplicating while showing local notifications set this to false) -->
         <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>
         <!-- Change the resource name to your App's accent color - or any other color you want -->

@@ -85,7 +85,6 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
@@ -145,7 +144,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 97
+        versionCode 98
         versionName "1.8.7"
 
         // FOR REACT NATIVE CAMERA
@@ -273,8 +272,6 @@ dependencies {
             implementation 'org.webkit:android-jsc:+'
         }
     }
-
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
     implementation 'com.google.android.gms:play-services-ads:19.7.0'
     implementation 'com.google.ads.mediation:inmobi:9.1.1.0'
