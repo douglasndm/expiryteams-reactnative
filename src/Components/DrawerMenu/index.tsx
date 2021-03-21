@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, Image } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
@@ -9,10 +9,10 @@ import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import UserInfo from './UserInfo';
-
 import {
     Container,
+    LogoContainer,
+    Logo,
     MenuItemContainer,
     MenuContent,
     MenuItemText,
@@ -70,11 +70,9 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         <Container>
             <DrawerContentScrollView {...props}>
                 <View>
-                    <UserInfo
-                        isUserPro={userPreferences.isUserPremium}
-                        navigate={navigation.navigate}
-                    />
-
+                    <LogoContainer>
+                        <Logo />
+                    </LogoContainer>
                     <DrawerSection>
                         <MenuItemContainer
                             onPress={() => navigation.navigate('Home')}
