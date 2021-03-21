@@ -10,7 +10,6 @@ import {
     makeSubscription,
     isSubscriptionActive,
 } from '~/Functions/ProMode';
-import { isUserSignedIn } from '~/Functions/Auth';
 
 import Loading from '~/Components/Loading';
 import Notification from '~/Components/Notification';
@@ -72,9 +71,6 @@ const Pro: React.FC = () => {
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const alreaderSignedIn = await isUserSignedIn();
-
-            if (alreaderSignedIn !== true && Platform.OS !== 'ios') return;
 
             const alreadyProUser = await isSubscriptionActive();
             setAlreadyPremium(alreadyProUser);
@@ -155,10 +151,6 @@ const Pro: React.FC = () => {
 
     const handleNavigateHome = useCallback(() => {
         navigate('Home');
-    }, [navigate]);
-
-    const handleNavigateToSignIn = useCallback(() => {
-        navigate('SignIn');
     }, [navigate]);
 
     useEffect(() => {
@@ -247,81 +239,58 @@ const Pro: React.FC = () => {
                     </AdvantageContainer>
                 </AdvantagesGroup>
 
-                {(userPreferences.isUserSignedIn &&
-                    Platform.OS === 'android') ||
-                Platform.OS === 'ios' ? (
-                    <>
-                        {alreadyPremium ? (
-                            <ButtonSubscription>
-                                <TextSubscription>
-                                    {translate('View_ProPage_UserAlreadyPro')}
-                                </TextSubscription>
-                            </ButtonSubscription>
-                        ) : (
-                            <>
-                                <SubscriptionsGroup>
-                                    {monthlyPlan && (
-                                        <SubscriptionContainer
-                                            onPress={handleChangePlanMonthly}
-                                            isSelected={
-                                                !!selectedPlan &&
-                                                selectedPlan === 'monthly'
-                                            }
-                                        >
-                                            <SubscriptionPeriodContainer>
-                                                <SubscriptionPeriod>
-                                                    {translate(
-                                                        'View_ProPage_SubscribePeriod_Monthly'
-                                                    )}
-                                                </SubscriptionPeriod>
-                                            </SubscriptionPeriodContainer>
+                <>
+                    {alreadyPremium ? (
+                        <ButtonSubscription>
+                            <TextSubscription>
+                                {translate('View_ProPage_UserAlreadyPro')}
+                            </TextSubscription>
+                        </ButtonSubscription>
+                    ) : (
+                        <>
+                            <SubscriptionsGroup>
+                                {monthlyPlan && (
+                                    <SubscriptionContainer
+                                        onPress={handleChangePlanMonthly}
+                                        isSelected={
+                                            !!selectedPlan &&
+                                            selectedPlan === 'monthly'
+                                        }
+                                    >
+                                        <SubscriptionPeriodContainer>
+                                            <SubscriptionPeriod>
+                                                {translate(
+                                                    'View_ProPage_SubscribePeriod_Monthly'
+                                                )}
+                                            </SubscriptionPeriod>
+                                        </SubscriptionPeriodContainer>
 
-                                            <DetailsContainer>
-                                                <SubscriptionDescription
-                                                    isSelected={
-                                                        !!selectedPlan &&
-                                                        selectedPlan ===
-                                                            'monthly'
-                                                    }
-                                                >
-                                                    {monthlyPlan.product
-                                                        .intro_price === 0 &&
-                                                    Platform.OS ===
-                                                        'android' ? (
-                                                        monthlyPlan.product
-                                                            .intro_price_period_unit ===
-                                                            'DAY' && (
-                                                            <Text>
-                                                                {
-                                                                    monthlyPlan
-                                                                        .product
-                                                                        .intro_price_period_number_of_units
-                                                                }
-                                                                {translate(
-                                                                    'View_ProPage_AfterDaysFreeTest'
-                                                                )}
-                                                            </Text>
-                                                        )
-                                                    ) : (
-                                                        <SubscriptionIntroPrice
-                                                            isSelected={
-                                                                !!selectedPlan &&
-                                                                selectedPlan ===
-                                                                    'monthly'
-                                                            }
-                                                        >
+                                        <DetailsContainer>
+                                            <SubscriptionDescription
+                                                isSelected={
+                                                    !!selectedPlan &&
+                                                    selectedPlan === 'monthly'
+                                                }
+                                            >
+                                                {monthlyPlan.product
+                                                    .intro_price === 0 &&
+                                                Platform.OS === 'android' ? (
+                                                    monthlyPlan.product
+                                                        .intro_price_period_unit ===
+                                                        'DAY' && (
+                                                        <Text>
                                                             {
                                                                 monthlyPlan
                                                                     .product
-                                                                    .intro_price_string
+                                                                    .intro_price_period_number_of_units
                                                             }
-                                                        </SubscriptionIntroPrice>
-                                                    )}
-
-                                                    {translate(
-                                                        'View_ProPage_AfterIntroPrice_Monthly'
-                                                    )}
-                                                    <SubscriptionPrice
+                                                            {translate(
+                                                                'View_ProPage_AfterDaysFreeTest'
+                                                            )}
+                                                        </Text>
+                                                    )
+                                                ) : (
+                                                    <SubscriptionIntroPrice
                                                         isSelected={
                                                             !!selectedPlan &&
                                                             selectedPlan ===
@@ -330,65 +299,64 @@ const Pro: React.FC = () => {
                                                     >
                                                         {
                                                             monthlyPlan.product
-                                                                .price_string
+                                                                .intro_price_string
                                                         }
-                                                    </SubscriptionPrice>
-                                                    {translate(
-                                                        'View_ProPage_AfterPrice_Monthly'
-                                                    )}
-                                                </SubscriptionDescription>
-                                            </DetailsContainer>
-                                        </SubscriptionContainer>
-                                    )}
+                                                    </SubscriptionIntroPrice>
+                                                )}
 
-                                    {quarterlyPlan && (
-                                        <SubscriptionContainer
-                                            onPress={handleChangePlanQuarterly}
-                                            isSelected={
-                                                !!selectedPlan &&
-                                                selectedPlan === 'quarterly'
-                                            }
-                                            style={{
-                                                marginLeft: 10,
-                                                marginRight: 10,
-                                            }}
-                                        >
-                                            <SubscriptionPeriodContainer>
-                                                <SubscriptionPeriod>
-                                                    {translate(
-                                                        'View_ProPage_SubscribePeriod_ThreeMonths'
-                                                    )}
-                                                </SubscriptionPeriod>
-                                            </SubscriptionPeriodContainer>
-
-                                            <DetailsContainer>
-                                                <SubscriptionDescription
+                                                {translate(
+                                                    'View_ProPage_AfterIntroPrice_Monthly'
+                                                )}
+                                                <SubscriptionPrice
                                                     isSelected={
                                                         !!selectedPlan &&
                                                         selectedPlan ===
-                                                            'quarterly'
+                                                            'monthly'
                                                     }
                                                 >
-                                                    {!!quarterlyPlan.product
-                                                        .intro_price_string && (
-                                                        <SubscriptionIntroPrice
-                                                            isSelected={
-                                                                !!selectedPlan &&
-                                                                selectedPlan ===
-                                                                    'quarterly'
-                                                            }
-                                                        >
-                                                            {
-                                                                quarterlyPlan
-                                                                    .product
-                                                                    .intro_price_string
-                                                            }
-                                                            {translate(
-                                                                'View_ProPage_AfterIntroPrice_ThreeMonths'
-                                                            )}
-                                                        </SubscriptionIntroPrice>
-                                                    )}
-                                                    <SubscriptionPrice
+                                                    {
+                                                        monthlyPlan.product
+                                                            .price_string
+                                                    }
+                                                </SubscriptionPrice>
+                                                {translate(
+                                                    'View_ProPage_AfterPrice_Monthly'
+                                                )}
+                                            </SubscriptionDescription>
+                                        </DetailsContainer>
+                                    </SubscriptionContainer>
+                                )}
+
+                                {quarterlyPlan && (
+                                    <SubscriptionContainer
+                                        onPress={handleChangePlanQuarterly}
+                                        isSelected={
+                                            !!selectedPlan &&
+                                            selectedPlan === 'quarterly'
+                                        }
+                                        style={{
+                                            marginLeft: 10,
+                                            marginRight: 10,
+                                        }}
+                                    >
+                                        <SubscriptionPeriodContainer>
+                                            <SubscriptionPeriod>
+                                                {translate(
+                                                    'View_ProPage_SubscribePeriod_ThreeMonths'
+                                                )}
+                                            </SubscriptionPeriod>
+                                        </SubscriptionPeriodContainer>
+
+                                        <DetailsContainer>
+                                            <SubscriptionDescription
+                                                isSelected={
+                                                    !!selectedPlan &&
+                                                    selectedPlan === 'quarterly'
+                                                }
+                                            >
+                                                {!!quarterlyPlan.product
+                                                    .intro_price_string && (
+                                                    <SubscriptionIntroPrice
                                                         isSelected={
                                                             !!selectedPlan &&
                                                             selectedPlan ===
@@ -398,131 +366,132 @@ const Pro: React.FC = () => {
                                                         {
                                                             quarterlyPlan
                                                                 .product
-                                                                .price_string
+                                                                .intro_price_string
                                                         }
-                                                    </SubscriptionPrice>
-                                                    {translate(
-                                                        'View_ProPage_AfterPrice_ThreeMonths'
-                                                    )}
-                                                </SubscriptionDescription>
-                                            </DetailsContainer>
-                                        </SubscriptionContainer>
-                                    )}
+                                                        {translate(
+                                                            'View_ProPage_AfterIntroPrice_ThreeMonths'
+                                                        )}
+                                                    </SubscriptionIntroPrice>
+                                                )}
+                                                <SubscriptionPrice
+                                                    isSelected={
+                                                        !!selectedPlan &&
+                                                        selectedPlan ===
+                                                            'quarterly'
+                                                    }
+                                                >
+                                                    {
+                                                        quarterlyPlan.product
+                                                            .price_string
+                                                    }
+                                                </SubscriptionPrice>
+                                                {translate(
+                                                    'View_ProPage_AfterPrice_ThreeMonths'
+                                                )}
+                                            </SubscriptionDescription>
+                                        </DetailsContainer>
+                                    </SubscriptionContainer>
+                                )}
 
-                                    {annualPlan && (
-                                        <SubscriptionContainer
-                                            onPress={handleChangePlanAnnual}
-                                            isSelected={
-                                                !!selectedPlan &&
-                                                selectedPlan === 'annual'
-                                            }
-                                        >
-                                            <SubscriptionPeriodContainer
-                                                isSelected
+                                {annualPlan && (
+                                    <SubscriptionContainer
+                                        onPress={handleChangePlanAnnual}
+                                        isSelected={
+                                            !!selectedPlan &&
+                                            selectedPlan === 'annual'
+                                        }
+                                    >
+                                        <SubscriptionPeriodContainer isSelected>
+                                            <SubscriptionPeriod>
+                                                {translate(
+                                                    'View_ProPage_SubscribePeriod_OneYear'
+                                                )}
+                                            </SubscriptionPeriod>
+                                        </SubscriptionPeriodContainer>
+                                        <DetailsContainer>
+                                            <SubscriptionDescription
+                                                isSelected={
+                                                    !!selectedPlan &&
+                                                    selectedPlan === 'annual'
+                                                }
                                             >
-                                                <SubscriptionPeriod>
-                                                    {translate(
-                                                        'View_ProPage_SubscribePeriod_OneYear'
-                                                    )}
-                                                </SubscriptionPeriod>
-                                            </SubscriptionPeriodContainer>
-                                            <DetailsContainer>
-                                                <SubscriptionDescription
+                                                {!!annualPlan.product
+                                                    .intro_price_string && (
+                                                    <SubscriptionIntroPrice>
+                                                        {
+                                                            annualPlan.product
+                                                                .intro_price_string
+                                                        }
+                                                        {translate(
+                                                            'View_ProPage_AfterIntroPrice_OneYear'
+                                                        )}
+                                                    </SubscriptionIntroPrice>
+                                                )}
+
+                                                <SubscriptionPrice
                                                     isSelected={
                                                         !!selectedPlan &&
                                                         selectedPlan ===
                                                             'annual'
                                                     }
                                                 >
-                                                    {!!annualPlan.product
-                                                        .intro_price_string && (
-                                                        <SubscriptionIntroPrice>
-                                                            {
-                                                                annualPlan
-                                                                    .product
-                                                                    .intro_price_string
-                                                            }
-                                                            {translate(
-                                                                'View_ProPage_AfterIntroPrice_OneYear'
-                                                            )}
-                                                        </SubscriptionIntroPrice>
-                                                    )}
-
-                                                    <SubscriptionPrice
-                                                        isSelected={
-                                                            !!selectedPlan &&
-                                                            selectedPlan ===
-                                                                'annual'
-                                                        }
-                                                    >
-                                                        {
-                                                            annualPlan.product
-                                                                .price_string
-                                                        }
-                                                    </SubscriptionPrice>
-                                                    {translate(
-                                                        'View_ProPage_AfterPrice_OneYear'
-                                                    )}
-                                                </SubscriptionDescription>
-                                            </DetailsContainer>
-                                        </SubscriptionContainer>
-                                    )}
-                                </SubscriptionsGroup>
-
-                                <TermsPrivacyText>
-                                    {translate(
-                                        'View_ProPage_Text_BeforeTermsAndPrivacy'
-                                    )}
-                                    <TermsPrivacyLink onPress={navigateToTerms}>
-                                        {translate('Terms')}
-                                    </TermsPrivacyLink>
-                                    {translate('BetweenTermsAndPrivacy')}
-                                    <TermsPrivacyLink
-                                        onPress={navigateToPrivacy}
-                                    >
-                                        {translate('PrivacyPolicy')}
-                                    </TermsPrivacyLink>
-                                    .
-                                </TermsPrivacyText>
-                                {monthlyPlan || quarterlyPlan || annualPlan ? (
-                                    <ButtonSubscription
-                                        onPress={handleMakeSubscription}
-                                        disabled={isLoadingMakeSubscription}
-                                    >
-                                        {isLoadingMakeSubscription && (
-                                            <LoadingIndicator />
-                                        )}
-                                        {!isLoadingMakeSubscription && (
-                                            <>
-                                                <TextSubscription>
-                                                    {translate(
-                                                        'View_ProPage_Button_Subscribe'
-                                                    )}
-                                                </TextSubscription>
-                                            </>
-                                        )}
-                                    </ButtonSubscription>
-                                ) : (
-                                    <ButtonSubscription disabled>
-                                        <TextSubscription>
-                                            {translate(
-                                                'View_ProPage_SubscriptionNotAvailable'
-                                            )}
-                                        </TextSubscription>
-                                    </ButtonSubscription>
+                                                    {
+                                                        annualPlan.product
+                                                            .price_string
+                                                    }
+                                                </SubscriptionPrice>
+                                                {translate(
+                                                    'View_ProPage_AfterPrice_OneYear'
+                                                )}
+                                            </SubscriptionDescription>
+                                        </DetailsContainer>
+                                    </SubscriptionContainer>
                                 )}
-                            </>
-                        )}
-                    </>
-                ) : (
-                    <>
-                        <ButtonSubscription onPress={handleNavigateToSignIn}>
-                            <TextSubscription>
-                                {translate('View_ProPage_Button_ClickToSignIn')}
-                            </TextSubscription>
-                        </ButtonSubscription>
-                    </>
-                )}
+                            </SubscriptionsGroup>
+
+                            <TermsPrivacyText>
+                                {translate(
+                                    'View_ProPage_Text_BeforeTermsAndPrivacy'
+                                )}
+                                <TermsPrivacyLink onPress={navigateToTerms}>
+                                    {translate('Terms')}
+                                </TermsPrivacyLink>
+                                {translate('BetweenTermsAndPrivacy')}
+                                <TermsPrivacyLink onPress={navigateToPrivacy}>
+                                    {translate('PrivacyPolicy')}
+                                </TermsPrivacyLink>
+                                .
+                            </TermsPrivacyText>
+                            {monthlyPlan || quarterlyPlan || annualPlan ? (
+                                <ButtonSubscription
+                                    onPress={handleMakeSubscription}
+                                    disabled={isLoadingMakeSubscription}
+                                >
+                                    {isLoadingMakeSubscription && (
+                                        <LoadingIndicator />
+                                    )}
+                                    {!isLoadingMakeSubscription && (
+                                        <>
+                                            <TextSubscription>
+                                                {translate(
+                                                    'View_ProPage_Button_Subscribe'
+                                                )}
+                                            </TextSubscription>
+                                        </>
+                                    )}
+                                </ButtonSubscription>
+                            ) : (
+                                <ButtonSubscription disabled>
+                                    <TextSubscription>
+                                        {translate(
+                                            'View_ProPage_SubscriptionNotAvailable'
+                                        )}
+                                    </TextSubscription>
+                                </ButtonSubscription>
+                            )}
+                        </>
+                    )}
+                </>
 
                 <ButtonSubscription onPress={handleNavigateHome}>
                     <TextSubscription>

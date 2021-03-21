@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
@@ -12,10 +11,6 @@ Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
 export async function isSubscriptionActive(): Promise<boolean> {
     const userSigned = await isUserSignedIn();
-
-    if (!userSigned && Platform.OS !== 'ios') {
-        throw new Error('User is not logged');
-    }
 
     try {
         if (userSigned) {
@@ -45,10 +40,6 @@ export async function getSubscriptionDetails(): Promise<
     Array<PurchasesPackage>
 > {
     const userSigned = await isUserSignedIn();
-
-    if (!userSigned && Platform.OS !== 'ios') {
-        throw new Error('User is not logged');
-    }
 
     try {
         if (userSigned) {
@@ -85,10 +76,6 @@ export async function makeSubscription(
     }
 
     const userSigned = await isUserSignedIn();
-
-    if (!userSigned && Platform.OS !== 'ios') {
-        throw new Error('User is not logged');
-    }
 
     try {
         if (userSigned) {
@@ -129,8 +116,6 @@ export async function RestorePurchasers(): Promise<void> {
         if (restore.activeSubscriptions.length > 0) {
             await setEnableProVersion(true);
         }
-
-        console.log(restore);
     } catch (e) {
         throw new Error(e.message);
     }
@@ -138,6 +123,4 @@ export async function RestorePurchasers(): Promise<void> {
 
 // Chama a função para verificar se usuário tem inscrição ativa (como o arquivo é importado
 // na home ele verifica e já marca nas configurações a resposta)
-isSubscriptionActive()
-    .then(() => console.log('Subscription checked'))
-    .catch(() => console.log('User is not signed in'));
+isSubscriptionActive().then(() => console.log('Subscription checked'));
