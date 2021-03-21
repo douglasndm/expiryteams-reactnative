@@ -1,7 +1,9 @@
-import styled from 'styled-components/native';
+import { Platform } from 'react-native';
+import styled, { css } from 'styled-components/native';
 import { Drawer } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import LogoImg from '~/Assets/Logo.png';
 
@@ -11,9 +13,29 @@ export const Container = styled.View`
 `;
 
 export const LogoContainer = styled.View`
-    margin-top: -10px;
     background-color: ${props => props.theme.colors.accent};
     align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    flex-direction: row;
+
+    ${isIphoneX() &&
+    css`
+        padding-top: 65px;
+        margin-top: -65px;
+    `};
+
+    ${Platform.OS === 'ios' &&
+    !isIphoneX() &&
+    css`
+        padding-top: 25px;
+        margin-top: -25px;
+    `}
+
+    ${Platform.OS === 'android' &&
+    css`
+        margin-top: -10px;
+    `}
 `;
 
 export const Logo = styled.Image.attrs(() => ({
