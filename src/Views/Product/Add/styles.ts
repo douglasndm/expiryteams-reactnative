@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
+import styled, { css } from 'styled-components/native';
 import DatePicker from 'react-native-date-picker';
 import NumericInput from '@wwdrew/react-native-numeric-textinput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -158,6 +158,11 @@ export const PickerContainer = styled.View`
 
     padding: 5px;
     font-size: 18px;
+
+    ${Platform.OS === 'ios' &&
+    css`
+        padding: 17px 10px;
+    `}
 `;
 
 export const Picker = styled(RNPickerSelect).attrs(({ theme }) => ({
