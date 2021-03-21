@@ -50,19 +50,19 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
     background-color: ${({ theme }) => theme.colors.inputBackground};
     color: ${({ theme }) => theme.colors.inputText};
 
-    ${(props) =>
+    ${props =>
         props.hasError &&
         css`
             border: 2px solid red;
         `}
 `;
 
-export const InputText = styled.TextInput.attrs((props) => ({
+export const InputText = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
 `;
 
 export const InputTextTip = styled.Text`
@@ -74,7 +74,7 @@ export const CameraButtonContainer = styled(RectButton)`
     margin-left: 15px;
 `;
 
-export const CameraButtonIcon = styled(Ionicons).attrs((props) => ({
+export const CameraButtonIcon = styled(Ionicons).attrs(props => ({
     name: 'camera-outline',
     size: 36,
     color: props.theme.colors.text,
@@ -93,7 +93,7 @@ export const ProductImage = styled.Image`
     height: 150px;
 `;
 
-export const NumericInputField = styled(NumericInput).attrs((props) => ({
+export const NumericInputField = styled(NumericInput).attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -115,7 +115,7 @@ export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
     background-color: ${({ theme }) => theme.colors.inputBackground};
     padding-right: 10px;
 
-    ${(props) =>
+    ${props =>
         props.hasError &&
         css`
             border: 2px solid red;
@@ -124,19 +124,19 @@ export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
 
 export const InputTextIconContainer = styled(RectButton)``;
 
-export const InputCodeTextIcon = styled(Ionicons).attrs((props) => ({
+export const InputCodeTextIcon = styled(Ionicons).attrs(props => ({
     name: 'barcode-outline',
     size: 36,
     color: props.theme.colors.text,
 }))``;
 
-export const InputCodeText = styled.TextInput.attrs((props) => ({
+export const InputCodeText = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`
     flex: 1;
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
 `;
 
 export const MoreInformationsContainer = styled.View``;
@@ -156,7 +156,7 @@ export const PickerContainer = styled.View`
 
     background-color: ${({ theme }) => theme.colors.inputBackground};
 
-    padding: 15px 5px 15px 15px;
+    padding: 5px;
     font-size: 18px;
 `;
 
@@ -178,12 +178,12 @@ export const ExpDateGroup = styled.View`
 `;
 export const ExpDateLabel = styled.Text`
     font-size: 16px;
-    color: ${(props) => props.theme.colors.subText};
+    color: ${props => props.theme.colors.subText};
     margin-top: 10px;
     margin-bottom: 10px;
 `;
 
-export const CustomDatePicker = styled(DatePicker).attrs((props) => ({
+export const CustomDatePicker = styled(DatePicker).attrs(props => ({
     textColor: props.theme.colors.inputText,
     fadeToColor: 'none',
     mode: 'date',
