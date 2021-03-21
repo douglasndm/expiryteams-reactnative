@@ -56,7 +56,9 @@ const ListProducts: React.FC<RequestProps> = ({
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
                         <ProText>
-                            {translate(`ProBanner_Text${choosenAdText}`)}
+                            {translate(
+                                `ProBanner_Text${choosenAdText}`
+                            ).toLocaleUpperCase()}
                         </ProText>
                     </ProBanner>
                 )}
@@ -112,7 +114,7 @@ const ListProducts: React.FC<RequestProps> = ({
         <Container>
             <FlatList
                 data={products}
-                keyExtractor={(item) => String(item.id)}
+                keyExtractor={item => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}

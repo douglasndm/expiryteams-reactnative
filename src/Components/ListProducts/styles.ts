@@ -8,13 +8,13 @@ export const Container = styled.View`
 `;
 
 export const ProBanner = styled(RectButton)`
-    background-color: #e8e8e8;
+    background-color: #ffffff;
     border-radius: 12px;
     margin: 5px 10px 5px 10px;
 `;
 
 export const ProText = styled.Text`
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     text-align: center;
     color: #454545;
@@ -31,7 +31,7 @@ export const CategoryDetails = styled.View`
 `;
 
 export const CategoryDetailsText = styled.Text`
-    color: ${(props) => props.theme.colors.textAccent};
+    color: ${props => props.theme.colors.textAccent};
     font-size: 18px;
 `;
 
