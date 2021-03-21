@@ -226,10 +226,9 @@
     "View_Settings_Notifications_Cadency_Month": "Mensalmente",
     "View_Settings_Notifications_Cadency_Never": "Nunca",
 
-    "View_Settings_Subscription_RestoreText": "Já tem uma assinatura?",
-    "View_Settings_Subscription_RestoreButton": "Restaurar assinatura",
-    "View_Settings_Subscription_Alert_NoSubscription": "Você não tem nenhuma assinatura ativa no momento.",
-    "View_Settings_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",
+    "View_PROView_Subscription_RestoreButton": "Já tem uma assinatura? Restaurar assinatura",
+    "View_PROView_Subscription_Alert_NoSubscription": "Você não tem nenhuma assinatura ativa no momento.",
+    "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",
 
     "View_AllProductByStore_BeforeStoreName": "Todos os produtos por loja",
     "View_AllProductByStore_NoStore": "sem loja",

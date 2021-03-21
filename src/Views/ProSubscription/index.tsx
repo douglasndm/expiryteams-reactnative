@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Linking, Platform, Text } from 'react-native';
+import { Linking, Platform, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
@@ -9,6 +9,7 @@ import {
     getSubscriptionDetails,
     makeSubscription,
     isSubscriptionActive,
+    RestorePurchasers,
 } from '~/Functions/ProMode';
 
 import Loading from '~/Components/Loading';
@@ -43,6 +44,7 @@ import {
 
 const Pro: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isRestoreLoading, setIsRestoreLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
     const { userPreferences, setUserPreferences } = useContext(
@@ -180,6 +182,31 @@ const Pro: React.FC = () => {
     const navigateToPrivacy = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev/privacy');
     }, []);
+
+    const restoreSubscription = useCallback(async () => {
+        setIsRestoreLoading(true);
+        await RestorePurchasers();
+
+        const result = await isSubscriptionActive();
+
+        if (result === true) {
+            setUserPreferences({
+                ...userPreferences,
+                isUserPremium: true,
+            });
+
+            Alert.alert(
+                translate('View_PROView_Subscription_Alert_RestoreSuccess')
+            );
+
+            handleNavigateHome();
+        } else {
+            Alert.alert(
+                translate('View_PROView_Subscription_Alert_NoSubscription')
+            );
+        }
+        setIsRestoreLoading(false);
+    }, [setUserPreferences, userPreferences, handleNavigateHome]);
 
     return isLoading ? (
         <Loading />
@@ -465,7 +492,10 @@ const Pro: React.FC = () => {
                             {monthlyPlan || quarterlyPlan || annualPlan ? (
                                 <ButtonSubscription
                                     onPress={handleMakeSubscription}
-                                    disabled={isLoadingMakeSubscription}
+                                    disabled={
+                                        isLoadingMakeSubscription ||
+                                        isRestoreLoading
+                                    }
                                 >
                                     {isLoadingMakeSubscription && (
                                         <LoadingIndicator />
@@ -489,6 +519,23 @@ const Pro: React.FC = () => {
                                     </TextSubscription>
                                 </ButtonSubscription>
                             )}
+                            <ButtonSubscription
+                                onPress={restoreSubscription}
+                                disabled={
+                                    isLoadingMakeSubscription ||
+                                    isRestoreLoading
+                                }
+                            >
+                                {isRestoreLoading ? (
+                                    <LoadingIndicator />
+                                ) : (
+                                    <TextSubscription>
+                                        {translate(
+                                            'View_PROView_Subscription_RestoreButton'
+                                        )}
+                                    </TextSubscription>
+                                )}
+                            </ButtonSubscription>
                         </>
                     )}
                 </>
