@@ -141,6 +141,7 @@
     "View_ProductDetails_Code": "Code",
     "View_ProductDetails_Store": "Store",
     "View_ProductDetails_Button_UpdateProduct": "Update",
+    "View_ProductDetails_Button_ShareProduct": "Share",
     "View_ProductDetails_Button_DeleteProduct": "Delete",
     "View_ProductDetails_TableTitle_NotTreatedBatches": "Not treated batches yet",
     "View_ProductDetails_TableTitle_TreatedBatches": "Treated batches",
@@ -153,6 +154,9 @@
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Expire in",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Amount",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Total price",
+
+    "View_ShareProduct_Title": "Check this product",
+    "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
 
     "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",

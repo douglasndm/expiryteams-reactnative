@@ -10,6 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import { getLocales } from 'react-native-localize';
+import { format } from 'date-fns';
 import EnvConfig from 'react-native-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -23,6 +25,7 @@ import Notification from '~/Components/Notification';
 
 import { getProductById } from '~/Functions/Product';
 import { sortLoteByExpDate } from '~/Functions/Lotes';
+import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -74,6 +77,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+
+    const dateFormat = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    }, []);
 
     const adUnit = useMemo(() => {
         if (__DEV__) {
@@ -150,12 +160,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [getProduct]);
 
     useEffect(() => {
-        setLotesTratados(() =>
-            lotes.filter((lote) => lote.status === 'Tratado')
-        );
+        setLotesTratados(() => lotes.filter(lote => lote.status === 'Tratado'));
 
         setLotesNaoTratados(() =>
-            lotes.filter((lote) => lote.status !== 'Tratado')
+            lotes.filter(lote => lote.status !== 'Tratado')
         );
     }, [lotes]);
 
@@ -174,6 +182,22 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const handleNavigateToPro = useCallback(() => {
         navigate('Pro');
     }, [navigate]);
+
+    const handleShare = useCallback(async () => {
+        if (product) {
+            if (lotesNaoTratados.length > 0) {
+                const expireDate = lotesNaoTratados[0].exp_date;
+
+                await ShareProductImageWithText({
+                    productId,
+                    title: translate('View_ShareProduct_Title'),
+                    text: translate('View_ShareProduct_Message')
+                        .replace('{PRODUCT}', product.name)
+                        .replace('{DATE}', format(expireDate, dateFormat)),
+                });
+            }
+        }
+    }, [productId, product, lotesNaoTratados, dateFormat]);
 
     return isLoading ? (
         <Loading />
@@ -234,6 +258,23 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             'View_ProductDetails_Button_UpdateProduct'
                                         )}
                                     </ActionButton>
+
+                                    {userPreferences.isUserPremium &&
+                                        lotesNaoTratados.length > 0 && (
+                                            <ActionButton
+                                                icon={() => (
+                                                    <Icons
+                                                        name="share-social-outline"
+                                                        size={22}
+                                                    />
+                                                )}
+                                                onPress={handleShare}
+                                            >
+                                                {translate(
+                                                    'View_ProductDetails_Button_ShareProduct'
+                                                )}
+                                            </ActionButton>
+                                        )}
                                 </ActionsButtonContainer>
                             </ProductInformationContent>
                         </ProductContainer>

@@ -141,6 +141,7 @@
     "View_ProductDetails_Code": "Código",
     "View_ProductDetails_Store": "Loja",
     "View_ProductDetails_Button_UpdateProduct": "Editar",
+    "View_ProductDetails_Button_ShareProduct": "Compartilhar",
     "View_ProductDetails_Button_DeleteProduct": "Apagar",
     "View_ProductDetails_TableTitle_NotTreatedBatches": "Lotes ainda não tratados",
     "View_ProductDetails_TableTitle_TreatedBatches": "Lotes tratados",
@@ -153,6 +154,9 @@
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Vence em",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
+
+    "View_ShareProduct_Title": "Favor checar o produto",
+    "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
 
     "View_ProPage_MeetPRO": "Conheça o",
     "View_ProPage_ProLabel": "PRO",

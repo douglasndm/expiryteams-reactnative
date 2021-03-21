@@ -547,8 +547,8 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - RNShare (3.7.0):
-    - React
+  - RNShare (5.1.4):
+    - React-Core
   - RNVectorIcons (8.0.0):
     - React-Core
   - RNZipArchive (5.0.6):
@@ -936,7 +936,7 @@ SPEC CHECKSUMS:
   RNPurchases: 726fdc2b22fb24a5fb664d832f95c489c3a9190a
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNShare: a1d5064df7a0ebe778d001869b3f0a124bf0a491
+  RNShare: 8af5349f05fc042d230674dd650d19789187ff9c
   RNVectorIcons: f67a1abce2ec73e62fe4606e8110e95a832bc859
   RNZipArchive: 9dfdaa1d1ad49a423e83df505f292e0ae8126a5d
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
