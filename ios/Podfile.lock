@@ -23,65 +23,65 @@ PODS:
     - React-Core (= 0.64.0)
     - React-jsi (= 0.64.0)
     - ReactCommon/turbomodule/core (= 0.64.0)
-  - Firebase/AdMob (7.6.0):
+  - Firebase/AdMob (7.8.1):
     - Firebase/CoreOnly
     - Google-Mobile-Ads-SDK (~> 7.66)
-  - Firebase/Analytics (7.6.0):
+  - Firebase/Analytics (7.8.1):
     - Firebase/Core
-  - Firebase/Auth (7.6.0):
+  - Firebase/Auth (7.8.1):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 7.6.0)
-  - Firebase/Core (7.6.0):
+    - FirebaseAuth (~> 7.8.0)
+  - Firebase/Core (7.8.1):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 7.6.0)
-  - Firebase/CoreOnly (7.6.0):
-    - FirebaseCore (= 7.6.0)
-  - Firebase/Crashlytics (7.6.0):
+    - FirebaseAnalytics (= 7.8.1)
+  - Firebase/CoreOnly (7.8.1):
+    - FirebaseCore (= 7.8.0)
+  - Firebase/Crashlytics (7.8.1):
     - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 7.6.0)
-  - Firebase/Messaging (7.6.0):
+    - FirebaseCrashlytics (~> 7.8.0)
+  - Firebase/Messaging (7.8.1):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 7.6.0)
-  - FirebaseAnalytics (7.6.0):
+    - FirebaseMessaging (~> 7.8.0)
+  - FirebaseAnalytics (7.8.1):
     - FirebaseCore (~> 7.0)
     - FirebaseInstallations (~> 7.0)
-    - GoogleAppMeasurement (= 7.6.0)
+    - GoogleAppMeasurement (= 7.8.1)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
     - GoogleUtilities/MethodSwizzler (~> 7.0)
     - GoogleUtilities/Network (~> 7.0)
     - "GoogleUtilities/NSData+zlib (~> 7.0)"
     - nanopb (~> 2.30907.0)
-  - FirebaseAuth (7.6.0):
+  - FirebaseAuth (7.8.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GTMSessionFetcher/Core (~> 1.4)
-  - FirebaseCore (7.6.0):
+  - FirebaseCore (7.8.0):
     - FirebaseCoreDiagnostics (~> 7.4)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
-  - FirebaseCoreDiagnostics (7.8.0):
+  - FirebaseCoreDiagnostics (7.9.0):
     - GoogleDataTransport (~> 8.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30907.0)
-  - FirebaseCrashlytics (7.6.0):
+  - FirebaseCrashlytics (7.8.0):
     - FirebaseCore (~> 7.0)
     - FirebaseInstallations (~> 7.0)
     - GoogleDataTransport (~> 8.0)
     - nanopb (~> 2.30907.0)
     - PromisesObjC (~> 1.2)
-  - FirebaseInstallations (7.8.0):
+  - FirebaseInstallations (7.9.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
     - PromisesObjC (~> 1.2)
-  - FirebaseInstanceID (7.8.0):
+  - FirebaseInstanceID (7.9.0):
     - FirebaseCore (~> 7.0)
     - FirebaseInstallations (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
-  - FirebaseMessaging (7.6.0):
+  - FirebaseMessaging (7.8.0):
     - FirebaseCore (~> 7.0)
     - FirebaseInstanceID (~> 7.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
@@ -141,7 +141,7 @@ PODS:
   - Google-Mobile-Ads-SDK (7.69.0):
     - GoogleAppMeasurement (~> 7.0)
     - GoogleUserMessagingPlatform (~> 1.1)
-  - GoogleAppMeasurement (7.6.0):
+  - GoogleAppMeasurement (7.8.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
     - GoogleUtilities/MethodSwizzler (~> 7.0)
     - GoogleUtilities/Network (~> 7.0)
@@ -503,30 +503,30 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
-  - RNDeviceInfo (7.3.1):
+  - RNDeviceInfo (8.0.7):
     - React-Core
-  - RNFBAdMob (10.8.1):
-    - Firebase/AdMob (~> 7.6.0)
+  - RNFBAdMob (11.1.2):
+    - Firebase/AdMob (= 7.8.1)
     - PersonalizedAdConsent (~> 1.0.4)
     - React-Core
     - RNFBApp
-  - RNFBAnalytics (10.8.1):
-    - Firebase/Analytics (~> 7.6.0)
+  - RNFBAnalytics (11.1.2):
+    - Firebase/Analytics (= 7.8.1)
     - React-Core
     - RNFBApp
-  - RNFBApp (10.8.1):
-    - Firebase/CoreOnly (~> 7.6.0)
+  - RNFBApp (11.1.2):
+    - Firebase/CoreOnly (= 7.8.1)
     - React-Core
-  - RNFBAuth (10.8.1):
-    - Firebase/Auth (~> 7.6.0)
-    - React-Core
-    - RNFBApp
-  - RNFBCrashlytics (10.8.1):
-    - Firebase/Crashlytics (~> 7.6.0)
+  - RNFBAuth (11.1.2):
+    - Firebase/Auth (= 7.8.1)
     - React-Core
     - RNFBApp
-  - RNFBMessaging (10.8.1):
-    - Firebase/Messaging (~> 7.6.0)
+  - RNFBCrashlytics (11.1.2):
+    - Firebase/Crashlytics (= 7.8.1)
+    - React-Core
+    - RNFBApp
+  - RNFBMessaging (11.1.2):
+    - Firebase/Messaging (= 7.8.1)
     - React-Core
     - RNFBApp
   - RNFS (2.16.6):
@@ -551,14 +551,14 @@ PODS:
     - React-Core
   - RNVectorIcons (8.0.0):
     - React-Core
-  - RNZipArchive (5.0.6):
-    - React
-    - RNZipArchive/Core (= 5.0.6)
-    - SSZipArchive (= 2.2.2)
-  - RNZipArchive/Core (5.0.6):
-    - React
-    - SSZipArchive (= 2.2.2)
-  - SSZipArchive (2.2.2)
+  - RNZipArchive (6.0.2):
+    - React-Core
+    - RNZipArchive/Core (= 6.0.2)
+    - SSZipArchive (= 2.2.3)
+  - RNZipArchive/Core (6.0.2):
+    - React-Core
+    - SSZipArchive (= 2.2.3)
+  - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -843,15 +843,15 @@ SPEC CHECKSUMS:
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
   FBReactNativeSpec: 843235bd5a83ae5a4a9ff7690ac698478d9cc33c
-  Firebase: e1e089d9aac215a52442583f818ab61de3c4581b
-  FirebaseAnalytics: 9f8f4feab1f3fddf4e4515f8f022fe6aa9e51043
-  FirebaseAuth: 0a1df88dc32569db509e6269c3e4bf2a168e8ae8
-  FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
-  FirebaseCoreDiagnostics: 066f996579cf097bdad3d7dc9a918d6b9e129c50
-  FirebaseCrashlytics: 1e87b25303b1840b3c99c37ee427c3e9564a4be1
-  FirebaseInstallations: 7f7ed0e7e27fb51f57291e1876e2ddb1524126c1
-  FirebaseInstanceID: aaecc93b4528bbcafea12c477e26827719ca1183
-  FirebaseMessaging: 4b9b2850fcfcaac2820097ee3703ba6cfff3df84
+  Firebase: d59ad4129167f9f0d2a4f6c1f0c462254b6002c8
+  FirebaseAnalytics: 3b98b563d7d64c07900511198b4805cfd9f9f61c
+  FirebaseAuth: 667e576a716f6f9fe31687791406f61135002d47
+  FirebaseCore: 049029df3096e5c118917029be7da75ee16f3b1b
+  FirebaseCoreDiagnostics: 3d36e05da74cb8b7ce30e6594a8f201b982c725c
+  FirebaseCrashlytics: d07e61d85aabc7d38a68f94ff99995f8557ea8d0
+  FirebaseInstallations: 5e777e6640fa060405cc7632447b6c5ca5af4742
+  FirebaseInstanceID: 53140c03b9f6136f890d7901399f85a4c90ab2d0
+  FirebaseMessaging: 1d5cac3728c042d3d4700ecb56bbac893660a963
   Flipper: d3da1aa199aad94455ae725e9f3aa43f3ec17021
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: f7a3caafbd74bda4827954fd7a6e000e36355489
@@ -862,7 +862,7 @@ SPEC CHECKSUMS:
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   Google-Mobile-Ads-SDK: 2f288748a42920d1c744946a460896a95b0e9110
-  GoogleAppMeasurement: c542a2feaac9ab98fd074e8f1a02c3585bbfbd47
+  GoogleAppMeasurement: 50a254ee92c1b94fbe2abea7e3da35e4c6dedce0
   GoogleDataTransport: b006084b73915a42c28a3466961a4edda3065da6
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUserMessagingPlatform: b168e8c46cd8f92aa3e34b584c4ca78a411ce367
@@ -921,13 +921,13 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
-  RNDeviceInfo: 6ecb1d1c87d20e4c62354be0348de23362824dcd
-  RNFBAdMob: 11365dcc37bcadea3afcdf04e1b82906a501d3b6
-  RNFBAnalytics: 454b17745d3824156cb906e2777d85f6848bf3e1
-  RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
-  RNFBAuth: 16f2b91bf53f398d83a15cff0dd52225967c1d78
-  RNFBCrashlytics: 0e6347d4e2251c6656b43ce8544662d1bac7deff
-  RNFBMessaging: 1823217d31e942531cc3f51fb5367dcbc69c1e10
+  RNDeviceInfo: 55463fa6e252ca3f0e2ba6001a7b82f879914338
+  RNFBAdMob: ce4a579be0f0c1888fd9d7487845e1255afb4b7a
+  RNFBAnalytics: b924aec7a5b8289dbc4f3a961c3222cd7705f236
+  RNFBApp: bb830cc7f7598e46437b833adc841df345e19e2f
+  RNFBAuth: d011f1b1a066a8bceba63c42369de9c5ce68de5e
+  RNFBCrashlytics: 47278b69b418d41e71f3b64673eaded59d4dee63
+  RNFBMessaging: ec695fc0b561e06afa33a731d86f7fa3ae49f4c1
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
@@ -938,8 +938,8 @@ SPEC CHECKSUMS:
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNShare: 8af5349f05fc042d230674dd650d19789187ff9c
   RNVectorIcons: f67a1abce2ec73e62fe4606e8110e95a832bc859
-  RNZipArchive: 9dfdaa1d1ad49a423e83df505f292e0ae8126a5d
-  SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
+  RNZipArchive: 3dd2de5b7f590d79e83270508b78870bf5a54f36
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
