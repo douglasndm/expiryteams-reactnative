@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 import RNFS, {
-    copyFile,
     DocumentDirectoryPath,
     exists,
     mkdir,
@@ -25,14 +24,14 @@ async function genereteZipImagesFolder(): Promise<string> {
     try {
         const allProducts = await getAllProducts({});
 
-        const productsWithPics = allProducts.filter((p) => p.photo);
+        const productsWithPics = allProducts.filter(p => p.photo);
         const dir = await readDir(DocumentDirectoryPath);
 
         const files: Array<IProductImage> = [];
 
-        productsWithPics.forEach((p) => {
+        productsWithPics.forEach(p => {
             const findedPic = dir.find(
-                (file) => file.name === p.photo || file.path === p.photo
+                file => file.name === p.photo || file.path === p.photo
             );
 
             if (findedPic) {
@@ -49,6 +48,11 @@ async function genereteZipImagesFolder(): Promise<string> {
 
         if (await exists(targetPath)) {
             await unlink(targetPath);
+        }
+
+        // this will force the creation of images folder if it has been created, to avoid more verifications
+        if (!(await exists(sourcePath))) {
+            await mkdir(sourcePath);
         }
 
         const zipPath = await zip(sourcePath, targetPath);
@@ -149,7 +153,7 @@ export async function importBackupFile(): Promise<void> {
             }
 
             const dir = await readDir(backupDir);
-            const backupFile = dir.find((item) => {
+            const backupFile = dir.find(item => {
                 const [, ext] = item.name.split('.');
 
                 if (ext === 'cvbf') return true;
