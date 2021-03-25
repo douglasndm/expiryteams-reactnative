@@ -204,11 +204,11 @@ PODS:
     - RNPermissions
   - PersonalizedAdConsent (1.0.5)
   - PromisesObjC (1.2.12)
-  - Purchases (3.9.2):
-    - PurchasesCoreSwift (= 3.9.2)
-  - PurchasesCoreSwift (3.9.2)
-  - PurchasesHybridCommon (1.5.0):
-    - Purchases (= 3.9.2)
+  - Purchases (3.10.6):
+    - PurchasesCoreSwift (= 3.10.6)
+  - PurchasesCoreSwift (3.10.6)
+  - PurchasesHybridCommon (1.6.1):
+    - Purchases (= 3.10.6)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -540,8 +540,8 @@ PODS:
     - React-Core
   - RNPermissions (3.0.0):
     - React-Core
-  - RNPurchases (4.0.1):
-    - PurchasesHybridCommon (= 1.5.0)
+  - RNPurchases (4.1.0):
+    - PurchasesHybridCommon (= 1.6.1)
     - React-Core
   - RNReanimated (1.13.2):
     - React-Core
@@ -880,9 +880,9 @@ SPEC CHECKSUMS:
   Permission-Notifications: 5c69bf2f6c1e30345af4f25e2981dc1c8dafbc22
   PersonalizedAdConsent: dbecabb3467df967c16d9cebc2ef4a8890e4bbd8
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Purchases: d8a798c9c7552fe66b550bf314a143e94ffa70c8
-  PurchasesCoreSwift: ea4eabae180416e580ac60366f41aa1fefec0693
-  PurchasesHybridCommon: d9bfb34309db4c9ba82a6f7f3a6275c13befdca7
+  Purchases: 520fdb59140fed96932a30d02a3ec04858cb541c
+  PurchasesCoreSwift: 31c2a3d7394432abbe64d46f0933835de0b33033
+  PurchasesHybridCommon: 013c8072b73e752a206779747e88c068fbf999ec
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 2f8cb5b7533219bf4218a045f92768129cf7050a
   RCTTypeSafety: 512728b73549e72ad7330b92f3d42936f2a4de5b
@@ -933,7 +933,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
-  RNPurchases: 726fdc2b22fb24a5fb664d832f95c489c3a9190a
+  RNPurchases: e438e025eeeee2c37f3ef6e7c224a92ed7caa85f
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNShare: 8af5349f05fc042d230674dd650d19789187ff9c
