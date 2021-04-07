@@ -50,7 +50,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         if (Platform.OS === 'ios') {
-            getAllowedToReadIDFA().then((response) => {
+            getAllowedToReadIDFA().then(response => {
                 if (response === null) {
                     reset({
                         routes: [{ name: 'TrackingPermission' }],
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
     }, []);
 
     const handleOnCodeRead = useCallback(
-        (code) => {
+        code => {
             setSearchString(code);
             handleSearchChange(code);
             setEnableBarCodeReader(false);
@@ -161,6 +161,12 @@ const Home: React.FC = () => {
                 <Container>
                     <Header />
 
+                    {!userPreferences.isUserPremium && (
+                        <AdContainer>
+                            <BannerAd unitId={adUnit} size={bannerSize} />
+                        </AdContainer>
+                    )}
+
                     {products.length > 0 && (
                         <InputTextContainer>
                             <InputSearch
@@ -177,12 +183,6 @@ const Home: React.FC = () => {
                     )}
 
                     <ListProducts products={productsSearch} isHome />
-
-                    {!userPreferences.isUserPremium && (
-                        <AdContainer>
-                            <BannerAd unitId={adUnit} size={bannerSize} />
-                        </AdContainer>
-                    )}
 
                     {!!error && (
                         <Notification
