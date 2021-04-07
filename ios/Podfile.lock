@@ -488,7 +488,7 @@ PODS:
     - React-cxxreact (= 0.64.0)
     - React-jsi (= 0.64.0)
     - React-perflogger (= 0.64.0)
-  - RealmJS (10.1.4):
+  - RealmJS (10.3.0):
     - GCDWebServer
     - React
   - RNAppleAuthentication (2.1.0):
@@ -499,7 +499,7 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.9.10):
+  - RNCPicker (1.14.0):
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
@@ -914,12 +914,12 @@ SPEC CHECKSUMS:
   React-RCTVibration: 0fd6b21751a33cb72fce1a4a33ab9678416d307a
   React-runtimeexecutor: cad74a1eaa53ee6e7a3620231939d8fe2c6afcf0
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
-  RealmJS: 0b841607e0327c1bb58b97dd21eee16658a07d65
+  RealmJS: ca9b0c1677d5248c6c360bc1b733ed087d345c2f
   RNAppleAuthentication: 46cbc67739bae83ca229497f9b0038f3f5431443
   RNBackgroundFetch: 5d7af5d9fa5f0a56a301d3124e11b25edb1995c5
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: 77183d9b1cd80ae55505322f8ad09ba0036e29ba
+  RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDeviceInfo: 55463fa6e252ca3f0e2ba6001a7b82f879914338
   RNFBAdMob: ce4a579be0f0c1888fd9d7487845e1255afb4b7a
