@@ -9,13 +9,13 @@ import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import EnvConfig from 'react-native-config';
+import { exists, unlink } from 'react-native-fs';
 import {
     InterstitialAd,
     AdEventType,
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { exists, unlink } from 'react-native-fs';
 import { translate } from '~/Locales';
 
 import {
@@ -48,7 +48,7 @@ import {
     InputTextTip,
     CameraButtonContainer,
     CameraButtonIcon,
-    NumericInputField,
+    Currency,
     InputGroup,
     MoreInformationsContainer,
     MoreInformationsTitle,
@@ -212,10 +212,10 @@ const Add: React.FC = () => {
     ]);
 
     useEffect(() => {
-        getAllCategories().then((allCategories) => {
+        getAllCategories().then(allCategories => {
             const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach((cat) =>
+            allCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -228,7 +228,7 @@ const Add: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent((type) => {
+        const eventListener = interstitialAd.onAdEvent(type => {
             if (type === AdEventType.LOADED) {
                 setAdReady(true);
             }
@@ -249,11 +249,11 @@ const Add: React.FC = () => {
         };
     }, []);
 
-    const handleCategoryChange = useCallback((value) => {
+    const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
     }, []);
 
-    const handleAmountChange = useCallback((value) => {
+    const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
 
         if (value === '' || regex.test(value)) {
@@ -354,6 +354,10 @@ const Add: React.FC = () => {
         [handleCheckProductCode]
     );
 
+    const handlePriceChange = useCallback((value: number) => {
+        setPrice(value);
+    }, []);
+
     return (
         <>
             {isCameraEnabled ? (
@@ -417,7 +421,7 @@ const Add: React.FC = () => {
                                                         'View_AddProduct_InputAccessibility_Name'
                                                     )}
                                                     value={name}
-                                                    onChangeText={(value) => {
+                                                    onChangeText={value => {
                                                         setName(value);
                                                         setNameFieldError(
                                                             false
@@ -456,7 +460,7 @@ const Add: React.FC = () => {
                                                     'View_AddProduct_InputAccessibility_Code'
                                                 )}
                                                 value={code}
-                                                onChangeText={(value) => {
+                                                onChangeText={value => {
                                                     setCode(value);
                                                     setCodeFieldError(false);
                                                 }}
@@ -505,7 +509,7 @@ const Add: React.FC = () => {
                                                             'View_AddProduct_InputAccessibility_Batch'
                                                         )}
                                                         value={lote}
-                                                        onChangeText={(value) =>
+                                                        onChangeText={value =>
                                                             setLote(value)
                                                         }
                                                         onFocus={() => {
@@ -540,13 +544,15 @@ const Add: React.FC = () => {
                                                 </InputTextContainer>
                                             </InputGroup>
 
-                                            <NumericInputField
-                                                type="currency"
-                                                locale={locale}
-                                                currency={currency}
+                                            <Currency
                                                 value={price}
-                                                onUpdate={(value: number) =>
-                                                    setPrice(value)
+                                                onChangeValue={
+                                                    handlePriceChange
+                                                }
+                                                delimiter={
+                                                    currency === 'BRL'
+                                                        ? ','
+                                                        : '.'
                                                 }
                                                 placeholder={translate(
                                                     'View_AddProduct_InputPlacehoder_UnitPrice'
@@ -592,9 +598,7 @@ const Add: React.FC = () => {
                                                                 );
                                                             }}
                                                             value={store}
-                                                            onChangeText={(
-                                                                value
-                                                            ) =>
+                                                            onChangeText={value =>
                                                                 setStore(value)
                                                             }
                                                         />
@@ -615,7 +619,7 @@ const Add: React.FC = () => {
                                                     'View_AddProduct_CalendarAccessibilityDescription'
                                                 )}
                                                 date={expDate}
-                                                onDateChange={(value) => {
+                                                onDateChange={value => {
                                                     setExpDate(value);
                                                 }}
                                                 locale={locale}

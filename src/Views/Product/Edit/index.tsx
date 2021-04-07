@@ -107,7 +107,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             const allCategories = await getAllCategories();
             const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach((cat) =>
+            allCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -143,10 +143,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     }, [productId]);
 
     useEffect(() => {
-        getAllCategories().then((allCategories) => {
+        getAllCategories().then(allCategories => {
             const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach((cat) =>
+            allCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -158,7 +158,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         });
     }, []);
 
-    const handleCategoryChange = useCallback((value) => {
+    const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
     }, []);
 
@@ -314,7 +314,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         'View_EditProduct_InputAccessibility_Name'
                                                     )}
                                                     value={name}
-                                                    onChangeText={(value) => {
+                                                    onChangeText={value => {
                                                         setName(value);
                                                         setNameFieldError(
                                                             false
@@ -348,7 +348,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     'View_EditProduct_InputAccessibility_Code'
                                                 )}
                                                 value={code}
-                                                onChangeText={(value) =>
+                                                onChangeText={value =>
                                                     setCode(value)
                                                 }
                                             />
@@ -399,9 +399,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                                 'View_EditProduct_InputAccessibility_Store'
                                                             )}
                                                             value={store}
-                                                            onChangeText={(
-                                                                value
-                                                            ) => {
+                                                            onChangeText={value => {
                                                                 setStore(value);
                                                             }}
                                                         />

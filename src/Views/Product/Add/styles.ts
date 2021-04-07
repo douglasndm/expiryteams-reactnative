@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import DatePicker from 'react-native-date-picker';
-import NumericInput from '@wwdrew/react-native-numeric-textinput';
+import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
@@ -93,7 +93,7 @@ export const ProductImage = styled.Image`
     height: 150px;
 `;
 
-export const NumericInputField = styled(NumericInput).attrs(props => ({
+export const Currency = styled(CurrencyInput).attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`
     border: 1px solid rgba(0, 0, 0, 0.1);
