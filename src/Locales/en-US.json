@@ -97,6 +97,9 @@
     "View_AllProducts_SearchPlaceholder": "Search for a product",
 
     "View_Store_List_PageTitle": "Stores",
+    "View_Store_List_AddNewStore_Placeholder": "Add new store",
+    "View_Store_List_AddNewStore_Error_TextEmpty": "Type the store's name",
+    "View_Store_List_NoStore": "No store",
 
     "View_Auth_SignIn_PageTitle": "Identify yourself",
     "View_Auth_SignIn_Text_LoginRequired": "An authentication is necessary to continue.",
@@ -233,6 +236,7 @@
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
 
     "View_AllProductByStore_BeforeStoreName": "All products by store ",
+    "View_AllProductByStore_StoreName": "Products by store {STORE}",
     "View_AllProductByStore_NoStore": "no store",
 
     "View_Success_BatchCreated": "Batch created",

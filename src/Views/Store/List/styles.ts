@@ -4,7 +4,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
     flex: 1;
-    background-color: ${(props) => props.theme.colors.background};
+    background-color: ${props => props.theme.colors.background};
 `;
 
 export const ListCategories = styled.FlatList`
@@ -13,7 +13,7 @@ export const ListCategories = styled.FlatList`
 `;
 
 export const CategoryItemContainer = styled(RectButton)`
-    background-color: ${(props) => props.theme.colors.inputBackground};
+    background-color: ${props => props.theme.colors.inputBackground};
     padding: 20px;
     margin-bottom: 10px;
     border-radius: 12px;
@@ -23,7 +23,7 @@ export const CategoryItemContainer = styled(RectButton)`
 `;
 
 export const CategoryItemTitle = styled.Text`
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     font-size: 18px;
 `;
 

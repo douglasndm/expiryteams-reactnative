@@ -97,6 +97,9 @@
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
     "View_Store_List_PageTitle": "Todas as lojas",
+    "View_Store_List_AddNewStore_Placeholder": "Adicionar nova loja",
+    "View_Store_List_AddNewStore_Error_TextEmpty": "Digite o nome da loja",
+    "View_Store_List_NoStore": "Sem loja",
 
     "View_Auth_SignIn_PageTitle": "Identifique-se",
     "View_Auth_SignIn_Text_LoginRequired": "Autenticação é necessária para continuar",
@@ -235,6 +238,7 @@
     "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",
 
     "View_AllProductByStore_BeforeStoreName": "Todos os produtos por loja",
+    "View_AllProductByStore_StoreName": "Produtos da loja {STORE}",
     "View_AllProductByStore_NoStore": "sem loja",
 
     "View_Success_BatchCreated": "Lote criado",

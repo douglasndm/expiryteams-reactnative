@@ -1,23 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import {
-    getAllProductsByStore,
-    getAllProductsWithoutStore,
-} from '../../Functions/Store';
+import { getAllProductsWithoutStore } from '~/Functions/Store';
+import { getAllProductsByStore, getStore } from '~/Functions/Stores';
 
-import Loading from '../../Components/Loading';
-import Header from '../../Components/Header';
-import ListProducts from '../../Components/ListProducts';
-import Notification from '../../Components/Notification';
+import Loading from '~/Components/Loading';
+import Header from '~/Components/Header';
+import ListProducts from '~/Components/ListProducts';
+import Notification from '~/Components/Notification';
 
 import { Container, StoreTitle } from './styles';
 
 interface RequestProps {
     route: {
         params: {
-            storeName: string;
+            store: string; // can be the name too
         };
     };
 }
@@ -26,19 +24,29 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
+    const [storeName, setStoreName] = useState<string>('');
     const [products, setProducts] = useState<IProduct[]>([]);
 
-    const { storeName } = route.params;
+    const { store } = route.params;
 
     const loadData = useCallback(async () => {
         setIsLoading(true);
         try {
             let results: Array<IProduct> = [];
 
-            if (storeName === 'Sem loja') {
-                results = await getAllProductsWithoutStore();
+            if (store === '000') {
+                setStoreName(translate('View_AllProductByStore_NoStore'));
+                results = await getAllProductsByStore(null);
             } else {
-                results = await getAllProductsByStore({ store: storeName });
+                results = await getAllProductsByStore(store);
+
+                const s = await getStore(store);
+
+                if (s) {
+                    setStoreName(s.name);
+                } else {
+                    setStoreName(store);
+                }
             }
 
             setProducts(results);
@@ -47,7 +55,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
         } finally {
             setIsLoading(false);
         }
-    }, [storeName]);
+    }, [store]);
 
     useEffect(() => {
         loadData();
@@ -64,10 +72,10 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             <Header />
 
             <StoreTitle>
-                {translate('View_AllProductByStore_BeforeStoreName')}{' '}
-                {storeName === 'Sem loja'
-                    ? translate('View_AllProductByStore_NoStore')
-                    : storeName}
+                {translate('View_AllProductByStore_StoreName').replace(
+                    '{STORE}',
+                    storeName
+                )}
             </StoreTitle>
 
             <ListProducts products={products} />
