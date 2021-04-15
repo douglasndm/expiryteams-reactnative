@@ -18,6 +18,7 @@ import {
 
 import { translate } from '~/Locales';
 
+import { getAllStores } from '~/Functions/Stores';
 import {
     checkIfProductAlreadyExistsByCode,
     getProductByCode,
@@ -25,6 +26,7 @@ import {
 } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
 import { getAllCategories } from '~/Functions/Category';
+import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -65,7 +67,6 @@ import {
     BannerText,
     Icons,
 } from './styles';
-import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 let adUnit = TestIds.INTERSTITIAL;
 
@@ -78,6 +79,11 @@ if (Platform.OS === 'ios' && !__DEV__) {
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 interface ICategoryItem {
+    label: string;
+    value: string;
+    key: string;
+}
+interface IStoreItem {
     label: string;
     value: string;
     key: string;
@@ -114,10 +120,11 @@ const Add: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
-    const [store, setStore] = useState<string>();
+    const [selectedStore, setSelectedStore] = useState<string | null>(null);
     const [expDate, setExpDate] = useState(new Date());
 
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
@@ -146,10 +153,15 @@ const Add: React.FC = () => {
                 prodCategories.push(selectedCategory);
             }
 
+            const tempStore =
+                selectedStore && selectedStore !== 'null'
+                    ? selectedStore
+                    : undefined;
+
             const newProduct: Omit<IProduct, 'id'> = {
                 name,
                 code,
-                store,
+                store: tempStore,
                 photo: picFileName,
                 categories: prodCategories,
                 lotes: [],
@@ -207,7 +219,7 @@ const Add: React.FC = () => {
         price,
         reset,
         selectedCategory,
-        store,
+        selectedStore,
         userPreferences.isUserPremium,
     ]);
 
@@ -224,6 +236,28 @@ const Add: React.FC = () => {
             );
 
             setCategories(categoriesArray);
+        });
+
+        getAllStores().then(allStores => {
+            const storesArray: Array<IStoreItem> = [];
+
+            allStores.forEach(sto => {
+                if (sto.id) {
+                    storesArray.push({
+                        key: sto.id,
+                        label: sto.name,
+                        value: sto.id,
+                    });
+                }
+            });
+
+            // storesArray.push({
+            //     key: 'newStore',
+            //     label: 'Create new store',
+            //     value: 'newStore',
+            // });
+
+            setStores(storesArray);
         });
     }, []);
 
@@ -251,6 +285,10 @@ const Add: React.FC = () => {
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
+    }, []);
+
+    const handleStoreChange = useCallback(value => {
+        setSelectedStore(value);
     }, []);
 
     const handleAmountChange = useCallback(value => {
@@ -318,7 +356,7 @@ const Add: React.FC = () => {
             if (theCode) {
                 const prodExist = await checkIfProductAlreadyExistsByCode({
                     productCode: theCode,
-                    productStore: store || undefined,
+                    productStore: selectedStore || undefined,
                 });
 
                 if (prodExist) {
@@ -326,13 +364,13 @@ const Add: React.FC = () => {
 
                     const existProd = await getProductByCode(
                         theCode,
-                        store || undefined
+                        selectedStore || undefined
                     );
                     setExistentProduct(existProd.id);
                 }
             }
         },
-        [code, store]
+        [code, selectedStore]
     );
 
     const handleNavigateToExistProduct = useCallback(async () => {
@@ -580,30 +618,25 @@ const Add: React.FC = () => {
                                             )}
 
                                             {userPreferences.multiplesStores && (
-                                                <InputGroup>
-                                                    <InputTextContainer>
-                                                        <InputText
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                            placeholder={translate(
+                                                <PickerContainer
+                                                    style={{
+                                                        marginBottom: 10,
+                                                    }}
+                                                >
+                                                    <Picker
+                                                        items={stores}
+                                                        onValueChange={
+                                                            handleStoreChange
+                                                        }
+                                                        value={selectedStore}
+                                                        placeholder={{
+                                                            label: translate(
                                                                 'View_AddProduct_InputPlacehoder_Store'
-                                                            )}
-                                                            accessibilityLabel={translate(
-                                                                'View_AddProduct_InputAccessibility_Store'
-                                                            )}
-                                                            onFocus={() => {
-                                                                setIsBarCodeEnabled(
-                                                                    false
-                                                                );
-                                                            }}
-                                                            value={store}
-                                                            onChangeText={value =>
-                                                                setStore(value)
-                                                            }
-                                                        />
-                                                    </InputTextContainer>
-                                                </InputGroup>
+                                                            ),
+                                                            value: 'null',
+                                                        }}
+                                                    />
+                                                </PickerContainer>
                                             )}
                                         </MoreInformationsContainer>
 
