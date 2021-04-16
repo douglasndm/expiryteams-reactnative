@@ -108,7 +108,7 @@ export async function createProduct({
                 );
             }
 
-            productLotes.map(async (l) => {
+            productLotes.map(async l => {
                 await createLote({
                     productCode: product.code,
                     lote: l,
@@ -155,7 +155,7 @@ interface updateProductProps {
     id: number;
     name?: string;
     code?: string;
-    store?: string;
+    store?: string | null;
     photo?: string;
     categories?: Array<string>;
     lotes?: Array<ILote>;

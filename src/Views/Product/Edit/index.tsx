@@ -19,7 +19,7 @@ import {
     deleteProduct,
 } from '~/Functions/Product';
 import { getAllCategories } from '~/Functions/Category';
-import { getAllStores } from '~/Functions/Stores';
+import { getAllStores, getStore } from '~/Functions/Stores';
 import {
     saveProductImage,
     getProductImagePath,
@@ -160,6 +160,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 setSelectedCategory(product.categories[0]);
             }
 
+            if (product.store) {
+                const store = await getStore(product.store);
+
+                if (store) {
+                    setSelectedStore(store?.id);
+                }
+            }
+
             setIsLoading(false);
         }
         getProductData();
@@ -204,11 +212,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 prodCategories.push(selectedCategory);
             }
 
+            const tempStore =
+                selectedStore && selectedStore !== 'null'
+                    ? selectedStore
+                    : null;
+
             updateProduct({
                 id: productId,
                 name,
                 code,
-                store: selectedStore || undefined,
+                store: tempStore,
 
                 categories: prodCategories,
                 photo: photoFileName,

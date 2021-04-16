@@ -156,7 +156,7 @@ const Add: React.FC = () => {
             const tempStore =
                 selectedStore && selectedStore !== 'null'
                     ? selectedStore
-                    : undefined;
+                    : null;
 
             const newProduct: Omit<IProduct, 'id'> = {
                 name,
