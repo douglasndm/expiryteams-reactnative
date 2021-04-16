@@ -130,7 +130,7 @@
     "View_EditProduct_PageTitle": "Edit Product",
     "View_EditProduct_InputPlacehoder_Name": "Product's name",
     "View_EditProduct_InputPlacehoder_Code": "Product's code",
-    "View_EditProduct_InputPlacehoder_Store": "Product's store",
+    "View_EditProduct_InputPlacehoder_Store": "Select the store",
     "View_EditProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
