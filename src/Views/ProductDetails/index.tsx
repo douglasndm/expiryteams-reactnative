@@ -25,6 +25,7 @@ import Notification from '~/Components/Notification';
 
 import { getProductById } from '~/Functions/Product';
 import { sortLoteByExpDate } from '~/Functions/Lotes';
+import { getStore } from '~/Functions/Stores';
 import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
@@ -101,6 +102,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [code, setCode] = useState('');
     const [photo, setPhoto] = useState<string | null>(null);
     const [product, setProduct] = useState<IProduct>();
+    const [storeName, setStoreName] = useState<string | null>();
 
     const [lotes, setLotes] = useState<Array<ILote>>([]);
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
@@ -146,6 +148,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             setIsLoading(false);
         }
     }, [productId, goBack]);
+
+    useEffect(() => {
+        if (product?.store) {
+            getStore(product.store).then(response =>
+                setStoreName(response?.name)
+            );
+        }
+    }, [product]);
 
     const addNewLote = useCallback(() => {
         navigate('AddLote', { productId });
@@ -235,12 +245,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     </ProductCode>
                                 )}
                                 {userPreferences.multiplesStores &&
-                                    !!product?.store && (
+                                    !!storeName && (
                                         <ProductStore>
                                             {translate(
                                                 'View_ProductDetails_Store'
                                             )}
-                                            : {product.store}
+                                            : {storeName}
                                         </ProductStore>
                                     )}
 
