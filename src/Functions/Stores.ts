@@ -29,6 +29,17 @@ export async function getAllStores(): Promise<Array<IStore>> {
 
         const oldStores = await allStores();
 
+        const regularExpression = new RegExp(
+            /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
+        );
+
+        const filtedOldStores = oldStores.filter(store => {
+            if (regularExpression.test(store)) {
+                return false;
+            }
+            return true;
+        });
+
         const realm = await Realm();
 
         const realmResponse = realm.objects<IStore>('Store').slice();
@@ -38,7 +49,7 @@ export async function getAllStores(): Promise<Array<IStore>> {
         });
 
         // Check de old version of store
-        oldStores.forEach(store => {
+        filtedOldStores.forEach(store => {
             const alreadyInList = stores.find(s => s.name === store);
 
             if (!alreadyInList) {
