@@ -101,14 +101,6 @@
     "View_Store_List_AddNewStore_Error_TextEmpty": "Type the store's name",
     "View_Store_List_NoStore": "No store",
 
-    "View_Auth_SignIn_PageTitle": "Identify yourself",
-    "View_Auth_SignIn_Text_LoginRequired": "An authentication is necessary to continue.",
-    "View_Auth_SignIn_Text_WhyLogin": "We need to know who are you to use that to identify you when you restore your app in a new phone or when you reset this one.",
-    "View_Auth_SignIn_Text_Benefits": "With that we can restore your subscription without you need to subscribe it again.",
-    "View_Auth_SignIn_Text_Login": "Continue with your account",
-    "View_Auth_SignIn_Text_AllDone": "All done!",
-    "View_Auth_SignIn_Button_ContinueToSubscription": "Continue to subscription",
-
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
     "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
     "View_EditBatch_PageTitle": "Update batch",

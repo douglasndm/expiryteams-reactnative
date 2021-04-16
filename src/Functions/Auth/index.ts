@@ -1,12 +1,11 @@
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { getUserId, setUserId, setUserInfo } from '../User';
+import { getUserId, setUserId } from '../User';
 
-import { getAppleUser, signInWithApple } from './Apple';
+import { getAppleUser } from './Apple';
 import {
     isUserSignedInWithGoogle,
-    signInWithGoogle,
     signOutGoogle,
     getUserWithGoogle,
 } from './Google';
@@ -52,35 +51,6 @@ export async function isUserSignedIn(): Promise<boolean> {
     } catch (err) {
         throw new Error(err.message);
     }
-}
-
-export async function signIn(
-    provider: 'Google' | 'Apple'
-): Promise<IFirebaseUser> {
-    if (provider === 'Apple') {
-        const user = await signInWithApple();
-
-        await AsyncStorage.setItem('AuthenticationProvider', 'Apple');
-
-        await setUserInfo({
-            name: user.displayName,
-            email: user.email,
-            photo: user.photoURL,
-        });
-
-        return user;
-    }
-
-    const user = await signInWithGoogle();
-    await AsyncStorage.setItem('AuthenticationProvider', 'Google');
-
-    await setUserInfo({
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-    });
-
-    return user;
 }
 
 export async function getUser(): Promise<IUser | null> {

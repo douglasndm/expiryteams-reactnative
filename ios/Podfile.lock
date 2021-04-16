@@ -28,9 +28,6 @@ PODS:
     - Google-Mobile-Ads-SDK (~> 7.66)
   - Firebase/Analytics (7.8.1):
     - Firebase/Core
-  - Firebase/Auth (7.8.1):
-    - Firebase/CoreOnly
-    - FirebaseAuth (~> 7.8.0)
   - Firebase/Core (7.8.1):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 7.8.1)
@@ -51,11 +48,6 @@ PODS:
     - GoogleUtilities/Network (~> 7.0)
     - "GoogleUtilities/NSData+zlib (~> 7.0)"
     - nanopb (~> 2.30907.0)
-  - FirebaseAuth (7.8.0):
-    - FirebaseCore (~> 7.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GTMSessionFetcher/Core (~> 1.4)
   - FirebaseCore (7.8.0):
     - FirebaseCoreDiagnostics (~> 7.4)
     - GoogleUtilities/Environment (~> 7.0)
@@ -491,8 +483,6 @@ PODS:
   - RealmJS (10.3.0):
     - GCDWebServer
     - React
-  - RNAppleAuthentication (2.1.0):
-    - React-Core
   - RNBackgroundFetch (4.0.1):
     - React-Core
   - RNCAsyncStorage (1.13.2):
@@ -517,10 +507,6 @@ PODS:
   - RNFBApp (11.1.2):
     - Firebase/CoreOnly (= 7.8.1)
     - React-Core
-  - RNFBAuth (11.1.2):
-    - Firebase/Auth (= 7.8.1)
-    - React-Core
-    - RNFBApp
   - RNFBCrashlytics (11.1.2):
     - Firebase/Crashlytics (= 7.8.1)
     - React-Core
@@ -627,7 +613,6 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RealmJS (from `../node_modules/realm`)
-  - RNAppleAuthentication (from `../node_modules/AppleAuth`)
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
@@ -637,7 +622,6 @@ DEPENDENCIES:
   - "RNFBAdMob (from `../node_modules/@react-native-firebase/admob`)"
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
-  - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNFS (from `../node_modules/react-native-fs`)
@@ -661,7 +645,6 @@ SPEC REPOS:
     - CocoaAsyncSocket
     - Firebase
     - FirebaseAnalytics
-    - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
@@ -782,8 +765,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RealmJS:
     :path: "../node_modules/realm"
-  RNAppleAuthentication:
-    :path: "../node_modules/AppleAuth"
   RNBackgroundFetch:
     :path: "../node_modules/react-native-background-fetch"
   RNCAsyncStorage:
@@ -802,8 +783,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
-  RNFBAuth:
-    :path: "../node_modules/@react-native-firebase/auth"
   RNFBCrashlytics:
     :path: "../node_modules/@react-native-firebase/crashlytics"
   RNFBMessaging:
@@ -845,7 +824,6 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 843235bd5a83ae5a4a9ff7690ac698478d9cc33c
   Firebase: d59ad4129167f9f0d2a4f6c1f0c462254b6002c8
   FirebaseAnalytics: 3b98b563d7d64c07900511198b4805cfd9f9f61c
-  FirebaseAuth: 667e576a716f6f9fe31687791406f61135002d47
   FirebaseCore: 049029df3096e5c118917029be7da75ee16f3b1b
   FirebaseCoreDiagnostics: 3d36e05da74cb8b7ce30e6594a8f201b982c725c
   FirebaseCrashlytics: d07e61d85aabc7d38a68f94ff99995f8557ea8d0
@@ -915,7 +893,6 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: cad74a1eaa53ee6e7a3620231939d8fe2c6afcf0
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
   RealmJS: ca9b0c1677d5248c6c360bc1b733ed087d345c2f
-  RNAppleAuthentication: 46cbc67739bae83ca229497f9b0038f3f5431443
   RNBackgroundFetch: 5d7af5d9fa5f0a56a301d3124e11b25edb1995c5
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
@@ -925,7 +902,6 @@ SPEC CHECKSUMS:
   RNFBAdMob: ce4a579be0f0c1888fd9d7487845e1255afb4b7a
   RNFBAnalytics: b924aec7a5b8289dbc4f3a961c3222cd7705f236
   RNFBApp: bb830cc7f7598e46437b833adc841df345e19e2f
-  RNFBAuth: d011f1b1a066a8bceba63c42369de9c5ce68de5e
   RNFBCrashlytics: 47278b69b418d41e71f3b64673eaded59d4dee63
   RNFBMessaging: ec695fc0b561e06afa33a731d86f7fa3ae49f4c1
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df

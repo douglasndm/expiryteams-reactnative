@@ -101,14 +101,6 @@
     "View_Store_List_AddNewStore_Error_TextEmpty": "Digite o nome da loja",
     "View_Store_List_NoStore": "Sem loja",
 
-    "View_Auth_SignIn_PageTitle": "Identifique-se",
-    "View_Auth_SignIn_Text_LoginRequired": "Autenticação é necessária para continuar",
-    "View_Auth_SignIn_Text_WhyLogin": "Nós precisamos saber quem você é para identificar você caso você restaure este telefone ou troque ele.",
-    "View_Auth_SignIn_Text_Benefits": "Deste modo, podemos restaurar sua assinatura PRO sem a necessidade de realizar uma nova assinatura",
-    "View_Auth_SignIn_Text_Login": "Entre com sua conta",
-    "View_Auth_SignIn_Text_AllDone": "Tudo certo!",
-    "View_Auth_SignIn_Button_ContinueToSubscription": "Continuar para a assinatura",
-
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",
     "View_EditBatch_PageTitle": "Atualizar lote",
