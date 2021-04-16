@@ -7,17 +7,25 @@ import Realm from '~/Services/Realm';
 
 import { getAllStores as allStores } from './Store';
 
-export async function getStore(id: string): Promise<IStore | null> {
+const regularExpression = new RegExp(
+    /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
+);
+
+export async function getStore(idOrName: string): Promise<IStore | null> {
     try {
         const realm = await Realm();
 
-        const realmResponse = realm
-            .objects<IStore>('Store')
-            .filtered(`id = "${id}"`);
+        if (regularExpression.test(idOrName)) {
+            const realmResponse = realm
+                .objects<IStore>('Store')
+                .filtered(`id = "${idOrName}"`);
 
-        if (realmResponse.length <= 0) return null;
+            if (realmResponse.length <= 0) return null;
 
-        return realmResponse[0];
+            return realmResponse[0];
+        }
+
+        return { id: '', name: idOrName };
     } catch (err) {
         throw new Error(err.message);
     }
@@ -28,10 +36,6 @@ export async function getAllStores(): Promise<Array<IStore>> {
         const stores: Array<IStore> = [];
 
         const oldStores = await allStores();
-
-        const regularExpression = new RegExp(
-            /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
-        );
 
         const filtedOldStores = oldStores.filter(store => {
             if (regularExpression.test(store)) {
