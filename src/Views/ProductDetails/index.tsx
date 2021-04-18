@@ -5,26 +5,37 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { ScrollView } from 'react-native';
+import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import { getLocales } from 'react-native-localize';
+import { format } from 'date-fns';
+import EnvConfig from 'react-native-config';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import StatusBar from '../../Components/StatusBar';
-import Loading from '../../Components/Loading';
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-import Notification from '../../Components/Notification';
+import StatusBar from '~/Components/StatusBar';
+import Loading from '~/Components/Loading';
+import BackButton from '~/Components/BackButton';
+import Notification from '~/Components/Notification';
 
-import { getProductById } from '../../Functions/Product';
-import { sortLoteByExpDate } from '../../Functions/Lotes';
+import { getProductById } from '~/Functions/Product';
+import { sortLoteByExpDate } from '~/Functions/Lotes';
+import { getStore } from '~/Functions/Stores';
+import { ShareProductImageWithText } from '~/Functions/Share';
+import { getProductImagePath } from '~/Functions/Products/Image';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import { ProBanner, ProText } from '~/Components/ListProducts/styles';
 
 import {
     Container,
+    ScrollView,
     PageHeader,
     ProductContainer,
     PageTitleContent,
@@ -41,14 +52,12 @@ import {
     Icons,
     CategoryDetails,
     CategoryDetailsText,
+    AdContainer,
     TableContainer,
     FloatButton,
 } from './styles';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
-
 import BatchTable from './Components/BatchesTable';
-import { getProductImagePath } from '~/Functions/Products/Image';
 
 interface Request {
     route: {
@@ -70,14 +79,38 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
+    const dateFormat = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    }, []);
+
+    const adUnit = useMemo(() => {
+        if (__DEV__) {
+            return TestIds.BANNER;
+        }
+
+        if (Platform.OS === 'ios') {
+            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+        }
+
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+    }, []);
+
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [photo, setPhoto] = useState<string | null>(null);
     const [product, setProduct] = useState<IProduct>();
+    const [storeName, setStoreName] = useState<string | null>();
 
     const [lotes, setLotes] = useState<Array<ILote>>([]);
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
+
+    const choosenAdText = useMemo(() => {
+        return Math.floor(Math.random() * 3) + 1;
+    }, []);
 
     const getProduct = useCallback(async () => {
         setIsLoading(true);
@@ -116,6 +149,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         }
     }, [productId, goBack]);
 
+    useEffect(() => {
+        if (product?.store) {
+            getStore(product.store).then(response =>
+                setStoreName(response?.name)
+            );
+        }
+    }, [product]);
+
     const addNewLote = useCallback(() => {
         navigate('AddLote', { productId });
     }, [navigate, productId]);
@@ -129,12 +170,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [getProduct]);
 
     useEffect(() => {
-        setLotesTratados(() =>
-            lotes.filter((lote) => lote.status === 'Tratado')
-        );
+        setLotesTratados(() => lotes.filter(lote => lote.status === 'Tratado'));
 
         setLotesNaoTratados(() =>
-            lotes.filter((lote) => lote.status !== 'Tratado')
+            lotes.filter(lote => lote.status !== 'Tratado')
         );
     }, [lotes]);
 
@@ -149,6 +188,26 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             });
         }
     }, [navigate, product, productId]);
+
+    const handleNavigateToPro = useCallback(() => {
+        navigate('Pro');
+    }, [navigate]);
+
+    const handleShare = useCallback(async () => {
+        if (product) {
+            if (lotesNaoTratados.length > 0) {
+                const expireDate = lotesNaoTratados[0].exp_date;
+
+                await ShareProductImageWithText({
+                    productId,
+                    title: translate('View_ShareProduct_Title'),
+                    text: translate('View_ShareProduct_Message')
+                        .replace('{PRODUCT}', product.name)
+                        .replace('{DATE}', format(expireDate, dateFormat)),
+                });
+            }
+        }
+    }, [productId, product, lotesNaoTratados, dateFormat]);
 
     return isLoading ? (
         <Loading />
@@ -186,12 +245,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     </ProductCode>
                                 )}
                                 {userPreferences.multiplesStores &&
-                                    !!product?.store && (
+                                    !!storeName && (
                                         <ProductStore>
                                             {translate(
                                                 'View_ProductDetails_Store'
                                             )}
-                                            : {product.store}
+                                            : {storeName}
                                         </ProductStore>
                                     )}
 
@@ -209,6 +268,23 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             'View_ProductDetails_Button_UpdateProduct'
                                         )}
                                     </ActionButton>
+
+                                    {userPreferences.isUserPremium &&
+                                        lotesNaoTratados.length > 0 && (
+                                            <ActionButton
+                                                icon={() => (
+                                                    <Icons
+                                                        name="share-social-outline"
+                                                        size={22}
+                                                    />
+                                                )}
+                                                onPress={handleShare}
+                                            >
+                                                {translate(
+                                                    'View_ProductDetails_Button_ShareProduct'
+                                                )}
+                                            </ActionButton>
+                                        )}
                                 </ActionsButtonContainer>
                             </ProductInformationContent>
                         </ProductContainer>
@@ -232,6 +308,23 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             </TableContainer>
                         )}
 
+                        {!userPreferences.isUserPremium && (
+                            <AdContainer>
+                                <BannerAd
+                                    unitId={adUnit}
+                                    size={BannerAdSize.MEDIUM_RECTANGLE}
+                                />
+
+                                <ProBanner onPress={handleNavigateToPro}>
+                                    <ProText>
+                                        {translate(
+                                            `ProBanner_Text${choosenAdText}`
+                                        )}
+                                    </ProText>
+                                </ProBanner>
+                            </AdContainer>
+                        )}
+
                         {lotesTratados.length > 0 && (
                             <>
                                 <CategoryDetails>
@@ -248,17 +341,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 />
                             </>
                         )}
-
-                        <GenericButton
-                            text={translate(
-                                'View_ProductDetails_Button_AddNewBatch'
-                            )}
-                            onPress={() => {
-                                navigate('AddLote', {
-                                    productId,
-                                });
-                            }}
-                        />
                     </PageContent>
                 </ScrollView>
                 {!!error && (

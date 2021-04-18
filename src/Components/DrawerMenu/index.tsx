@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, Image } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
@@ -9,10 +9,10 @@ import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import UserInfo from './UserInfo';
-
 import {
     Container,
+    LogoContainer,
+    Logo,
     MenuItemContainer,
     MenuContent,
     MenuItemText,
@@ -51,7 +51,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     }, [navigation]);
 
     const navigateToAllProductsByStore = useCallback(() => {
-        navigation.navigate('AllProductsByStore');
+        navigation.navigate('StoreList');
     }, [navigation]);
 
     const navigateToCategories = useCallback(() => {
@@ -70,11 +70,9 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         <Container>
             <DrawerContentScrollView {...props}>
                 <View>
-                    <UserInfo
-                        isUserPro={userPreferences.isUserPremium}
-                        navigate={navigation.navigate}
-                    />
-
+                    <LogoContainer>
+                        <Logo />
+                    </LogoContainer>
                     <DrawerSection>
                         <MenuItemContainer
                             onPress={() => navigation.navigate('Home')}
@@ -116,9 +114,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 <MenuContent>
                                     <Icons name="list-outline" />
                                     <MenuItemText>
-                                        {translate(
-                                            'Menu_Button_GoToAllProductsByStore'
-                                        )}
+                                        {translate('Menu_Button_GoToStores')}
                                     </MenuItemText>
                                 </MenuContent>
 
@@ -149,11 +145,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <LabelGroup>
                                 <LabelContainer>
                                     <Label>{translate('Menu_Label_PRO')}</Label>
-                                </LabelContainer>
-                                <LabelContainer>
-                                    <Label>
-                                        {translate('Menu_Label_Beta')}
-                                    </Label>
                                 </LabelContainer>
                             </LabelGroup>
                         </MenuItemContainer>

@@ -9,15 +9,16 @@ import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import EnvConfig from 'react-native-config';
+import { exists, unlink } from 'react-native-fs';
 import {
     InterstitialAd,
     AdEventType,
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { exists, unlink } from 'react-native-fs';
 import { translate } from '~/Locales';
 
+import { getAllStores } from '~/Functions/Stores';
 import {
     checkIfProductAlreadyExistsByCode,
     getProductByCode,
@@ -25,6 +26,7 @@ import {
 } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
 import { getAllCategories } from '~/Functions/Category';
+import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -48,7 +50,7 @@ import {
     InputTextTip,
     CameraButtonContainer,
     CameraButtonIcon,
-    NumericInputField,
+    Currency,
     InputGroup,
     MoreInformationsContainer,
     MoreInformationsTitle,
@@ -65,7 +67,6 @@ import {
     BannerText,
     Icons,
 } from './styles';
-import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 let adUnit = TestIds.INTERSTITIAL;
 
@@ -78,6 +79,11 @@ if (Platform.OS === 'ios' && !__DEV__) {
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 interface ICategoryItem {
+    label: string;
+    value: string;
+    key: string;
+}
+interface IStoreItem {
     label: string;
     value: string;
     key: string;
@@ -114,10 +120,11 @@ const Add: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
-    const [store, setStore] = useState<string>();
+    const [selectedStore, setSelectedStore] = useState<string | null>(null);
     const [expDate, setExpDate] = useState(new Date());
 
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
@@ -146,10 +153,15 @@ const Add: React.FC = () => {
                 prodCategories.push(selectedCategory);
             }
 
+            const tempStore =
+                selectedStore && selectedStore !== 'null'
+                    ? selectedStore
+                    : null;
+
             const newProduct: Omit<IProduct, 'id'> = {
                 name,
                 code,
-                store,
+                store: tempStore,
                 photo: picFileName,
                 categories: prodCategories,
                 lotes: [],
@@ -203,19 +215,19 @@ const Add: React.FC = () => {
         lote,
         name,
         nameFieldError,
-        photoFileName,
+        photoPath,
         price,
         reset,
         selectedCategory,
-        store,
+        selectedStore,
         userPreferences.isUserPremium,
     ]);
 
     useEffect(() => {
-        getAllCategories().then((allCategories) => {
+        getAllCategories().then(allCategories => {
             const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach((cat) =>
+            allCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -225,10 +237,32 @@ const Add: React.FC = () => {
 
             setCategories(categoriesArray);
         });
+
+        getAllStores().then(allStores => {
+            const storesArray: Array<IStoreItem> = [];
+
+            allStores.forEach(sto => {
+                if (sto.id) {
+                    storesArray.push({
+                        key: sto.id,
+                        label: sto.name,
+                        value: sto.id,
+                    });
+                }
+            });
+
+            // storesArray.push({
+            //     key: 'newStore',
+            //     label: 'Create new store',
+            //     value: 'newStore',
+            // });
+
+            setStores(storesArray);
+        });
     }, []);
 
     useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent((type) => {
+        const eventListener = interstitialAd.onAdEvent(type => {
             if (type === AdEventType.LOADED) {
                 setAdReady(true);
             }
@@ -249,11 +283,15 @@ const Add: React.FC = () => {
         };
     }, []);
 
-    const handleCategoryChange = useCallback((value) => {
+    const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
     }, []);
 
-    const handleAmountChange = useCallback((value) => {
+    const handleStoreChange = useCallback(value => {
+        setSelectedStore(value);
+    }, []);
+
+    const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
 
         if (value === '' || regex.test(value)) {
@@ -261,16 +299,16 @@ const Add: React.FC = () => {
         }
     }, []);
 
-    const handleOnCodeRead = useCallback((codeRead: string) => {
-        setCode(codeRead);
-        setIsBarCodeEnabled(false);
-    }, []);
-
     const handleDimissNotification = useCallback(() => {
         setError('');
     }, []);
 
     const handleEnableCamera = useCallback(async () => {
+        if (!userPreferences.isUserPremium) {
+            navigate('Pro');
+            return;
+        }
+
         if (photoPath) {
             if (await exists(photoPath)) {
                 await unlink(photoPath);
@@ -278,7 +316,7 @@ const Add: React.FC = () => {
         }
         setIsBarCodeEnabled(false);
         setIsCameraEnabled(true);
-    }, [photoPath]);
+    }, [photoPath, navigate, userPreferences.isUserPremium]);
 
     const handleDisableCamera = useCallback(() => {
         setIsCameraEnabled(false);
@@ -305,19 +343,35 @@ const Add: React.FC = () => {
         [handleDisableCamera]
     );
 
-    const handleCheckProductCode = useCallback(async () => {
-        const prodExist = await checkIfProductAlreadyExistsByCode({
-            productCode: code,
-            productStore: store || undefined,
-        });
+    const handleCheckProductCode = useCallback(
+        async (anotherCode?: string) => {
+            let theCode;
 
-        if (prodExist) {
-            setCodeFieldError(true);
+            if (code) {
+                theCode = code;
+            } else if (anotherCode) {
+                theCode = anotherCode;
+            }
 
-            const existProd = await getProductByCode(code, store || undefined);
-            setExistentProduct(existProd.id);
-        }
-    }, [code, store]);
+            if (theCode) {
+                const prodExist = await checkIfProductAlreadyExistsByCode({
+                    productCode: theCode,
+                    productStore: selectedStore || undefined,
+                });
+
+                if (prodExist) {
+                    setCodeFieldError(true);
+
+                    const existProd = await getProductByCode(
+                        theCode,
+                        selectedStore || undefined
+                    );
+                    setExistentProduct(existProd.id);
+                }
+            }
+        },
+        [code, selectedStore]
+    );
 
     const handleNavigateToExistProduct = useCallback(async () => {
         if (existentProduct) {
@@ -328,6 +382,19 @@ const Add: React.FC = () => {
     const handleNavigateToPro = useCallback(() => {
         navigate('Pro');
     }, [navigate]);
+
+    const handleOnCodeRead = useCallback(
+        async (codeRead: string) => {
+            setCode(codeRead);
+            setIsBarCodeEnabled(false);
+            await handleCheckProductCode(codeRead);
+        },
+        [handleCheckProductCode]
+    );
+
+    const handlePriceChange = useCallback((value: number) => {
+        setPrice(value);
+    }, []);
 
     return (
         <>
@@ -392,7 +459,7 @@ const Add: React.FC = () => {
                                                         'View_AddProduct_InputAccessibility_Name'
                                                     )}
                                                     value={name}
-                                                    onChangeText={(value) => {
+                                                    onChangeText={value => {
                                                         setName(value);
                                                         setNameFieldError(
                                                             false
@@ -408,9 +475,6 @@ const Add: React.FC = () => {
 
                                             <CameraButtonContainer
                                                 onPress={handleEnableCamera}
-                                                enabled={
-                                                    userPreferences.isUserPremium
-                                                }
                                             >
                                                 <CameraButtonIcon />
                                             </CameraButtonContainer>
@@ -434,7 +498,7 @@ const Add: React.FC = () => {
                                                     'View_AddProduct_InputAccessibility_Code'
                                                 )}
                                                 value={code}
-                                                onChangeText={(value) => {
+                                                onChangeText={value => {
                                                     setCode(value);
                                                     setCodeFieldError(false);
                                                 }}
@@ -461,75 +525,77 @@ const Add: React.FC = () => {
                                             </InputTextTip>
                                         )}
 
-                                        <InputGroup>
-                                            <InputTextContainer
-                                                style={{
-                                                    flex: 5,
-                                                    marginRight: 10,
-                                                }}
-                                            >
-                                                <InputText
-                                                    placeholder={translate(
-                                                        'View_AddProduct_InputPlacehoder_Batch'
-                                                    )}
-                                                    accessibilityLabel={translate(
-                                                        'View_AddProduct_InputAccessibility_Batch'
-                                                    )}
-                                                    value={lote}
-                                                    onChangeText={(value) =>
-                                                        setLote(value)
-                                                    }
-                                                    onFocus={() => {
-                                                        setIsBarCodeEnabled(
-                                                            false
-                                                        );
-                                                    }}
-                                                />
-                                            </InputTextContainer>
-                                            <InputTextContainer>
-                                                <InputText
-                                                    style={{
-                                                        flex: 4,
-                                                    }}
-                                                    placeholder={translate(
-                                                        'View_AddProduct_InputPlacehoder_Amount'
-                                                    )}
-                                                    accessibilityLabel={translate(
-                                                        'View_AddProduct_InputAccessibility_Amount'
-                                                    )}
-                                                    keyboardType="numeric"
-                                                    value={String(amount)}
-                                                    onChangeText={
-                                                        handleAmountChange
-                                                    }
-                                                    onFocus={() => {
-                                                        setIsBarCodeEnabled(
-                                                            false
-                                                        );
-                                                    }}
-                                                />
-                                            </InputTextContainer>
-                                        </InputGroup>
-
-                                        <NumericInputField
-                                            type="currency"
-                                            locale={locale}
-                                            currency={currency}
-                                            value={price}
-                                            onUpdate={(value: number) =>
-                                                setPrice(value)
-                                            }
-                                            placeholder={translate(
-                                                'View_AddProduct_InputPlacehoder_UnitPrice'
-                                            )}
-                                        />
-
                                         <MoreInformationsContainer>
                                             <MoreInformationsTitle>
                                                 {translate(
                                                     'View_AddProduct_MoreInformation_Label'
                                                 )}
                                             </MoreInformationsTitle>
+
+                                            <InputGroup>
+                                                <InputTextContainer
+                                                    style={{
+                                                        flex: 5,
+                                                        marginRight: 10,
+                                                    }}
+                                                >
+                                                    <InputText
+                                                        placeholder={translate(
+                                                            'View_AddProduct_InputPlacehoder_Batch'
+                                                        )}
+                                                        accessibilityLabel={translate(
+                                                            'View_AddProduct_InputAccessibility_Batch'
+                                                        )}
+                                                        value={lote}
+                                                        onChangeText={value =>
+                                                            setLote(value)
+                                                        }
+                                                        onFocus={() => {
+                                                            setIsBarCodeEnabled(
+                                                                false
+                                                            );
+                                                        }}
+                                                    />
+                                                </InputTextContainer>
+                                                <InputTextContainer>
+                                                    <InputText
+                                                        style={{
+                                                            flex: 4,
+                                                        }}
+                                                        placeholder={translate(
+                                                            'View_AddProduct_InputPlacehoder_Amount'
+                                                        )}
+                                                        accessibilityLabel={translate(
+                                                            'View_AddProduct_InputAccessibility_Amount'
+                                                        )}
+                                                        keyboardType="numeric"
+                                                        value={String(amount)}
+                                                        onChangeText={
+                                                            handleAmountChange
+                                                        }
+                                                        onFocus={() => {
+                                                            setIsBarCodeEnabled(
+                                                                false
+                                                            );
+                                                        }}
+                                                    />
+                                                </InputTextContainer>
+                                            </InputGroup>
+
+                                            <Currency
+                                                value={price}
+                                                onChangeValue={
+                                                    handlePriceChange
+                                                }
+                                                delimiter={
+                                                    currency === 'BRL'
+                                                        ? ','
+                                                        : '.'
+                                                }
+                                                placeholder={translate(
+                                                    'View_AddProduct_InputPlacehoder_UnitPrice'
+                                                )}
+                                            />
 
                                             {userPreferences.isUserPremium && (
                                                 <PickerContainer
@@ -552,32 +618,25 @@ const Add: React.FC = () => {
                                             )}
 
                                             {userPreferences.multiplesStores && (
-                                                <InputGroup>
-                                                    <InputTextContainer>
-                                                        <InputText
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                            placeholder={translate(
+                                                <PickerContainer
+                                                    style={{
+                                                        marginBottom: 10,
+                                                    }}
+                                                >
+                                                    <Picker
+                                                        items={stores}
+                                                        onValueChange={
+                                                            handleStoreChange
+                                                        }
+                                                        value={selectedStore}
+                                                        placeholder={{
+                                                            label: translate(
                                                                 'View_AddProduct_InputPlacehoder_Store'
-                                                            )}
-                                                            accessibilityLabel={translate(
-                                                                'View_AddProduct_InputAccessibility_Store'
-                                                            )}
-                                                            onFocus={() => {
-                                                                setIsBarCodeEnabled(
-                                                                    false
-                                                                );
-                                                            }}
-                                                            value={store}
-                                                            onChangeText={(
-                                                                value
-                                                            ) =>
-                                                                setStore(value)
-                                                            }
-                                                        />
-                                                    </InputTextContainer>
-                                                </InputGroup>
+                                                            ),
+                                                            value: 'null',
+                                                        }}
+                                                    />
+                                                </PickerContainer>
                                             )}
                                         </MoreInformationsContainer>
 
@@ -593,7 +652,7 @@ const Add: React.FC = () => {
                                                     'View_AddProduct_CalendarAccessibilityDescription'
                                                 )}
                                                 date={expDate}
-                                                onDateChange={(value) => {
+                                                onDateChange={value => {
                                                     setExpDate(value);
                                                 }}
                                                 locale={locale}

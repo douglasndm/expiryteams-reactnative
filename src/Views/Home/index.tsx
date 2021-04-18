@@ -1,32 +1,41 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    useContext,
+} from 'react';
+import { Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import EnvConfig from 'react-native-config';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import {
-    searchForAProductInAList,
-    GetAllProducts,
-    getAllProducts,
-} from '../../Functions/Products';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import Loading from '../../Components/Loading';
-import Header from '../../Components/Header';
-import Notification from '../../Components/Notification';
-import ListProducts from '../../Components/ListProducts';
-import BarCodeReader from '../../Components/BarCodeReader';
+import { getAllowedToReadIDFA } from '~/Functions/Privacy';
+import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
+
+import Loading from '~/Components/Loading';
+import Header from '~/Components/Header';
+import Notification from '~/Components/Notification';
+import ListProducts from '~/Components/ListProducts';
+import BarCodeReader from '~/Components/BarCodeReader';
 
 import {
     Container,
+    AdContainer,
     InputSearch,
     InputTextContainer,
     InputTextIcon,
     InputTextIconContainer,
-    FloatButton,
-    Icons,
 } from './styles';
 
 const Home: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { reset } = useNavigation();
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -39,7 +48,39 @@ const Home: React.FC = () => {
         false
     );
 
-    async function getProduts() {
+    useEffect(() => {
+        if (Platform.OS === 'ios') {
+            getAllowedToReadIDFA().then(response => {
+                if (response === null) {
+                    reset({
+                        routes: [{ name: 'TrackingPermission' }],
+                    });
+                }
+            });
+        }
+    }, [reset]);
+
+    const adUnit = useMemo(() => {
+        if (__DEV__) {
+            return TestIds.BANNER;
+        }
+
+        if (Platform.OS === 'ios') {
+            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_HOME;
+        }
+
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_HOME;
+    }, []);
+
+    const bannerSize = useMemo(() => {
+        if (PixelRatio.get() < 2) {
+            return BannerAdSize.BANNER;
+        }
+
+        return BannerAdSize.LARGE_BANNER;
+    }, []);
+
+    const getProduts = useCallback(async () => {
         try {
             setIsLoading(true);
             const allProducts = await getAllProducts({
@@ -55,26 +96,22 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }
+    }, []);
 
     useEffect(() => {
         getProduts();
-    }, []);
+    }, [getProduts]);
 
     useEffect(() => {
         setProductsSearch(products);
     }, [products]);
-
-    const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct');
-    }, [navigate]);
 
     const handleSearchChange = useCallback(
         async (search: string) => {
             setSearchString(search);
 
             if (search && search !== '') {
-                const allProducts = await GetAllProducts();
+                const allProducts = await getAllProducts({});
 
                 const findProducts = searchForAProductInAList({
                     products: allProducts,
@@ -99,7 +136,7 @@ const Home: React.FC = () => {
     }, []);
 
     const handleOnCodeRead = useCallback(
-        (code) => {
+        code => {
             setSearchString(code);
             handleSearchChange(code);
             setEnableBarCodeReader(false);
@@ -123,6 +160,12 @@ const Home: React.FC = () => {
             ) : (
                 <Container>
                     <Header />
+
+                    {!userPreferences.isUserPremium && (
+                        <AdContainer>
+                            <BannerAd unitId={adUnit} size={bannerSize} />
+                        </AdContainer>
+                    )}
 
                     {products.length > 0 && (
                         <InputTextContainer>
@@ -148,15 +191,6 @@ const Home: React.FC = () => {
                             onPress={handleDimissNotification}
                         />
                     )}
-
-                    <FloatButton
-                        icon={() => (
-                            <Icons name="add-outline" color="white" size={22} />
-                        )}
-                        small
-                        label={translate('View_FloatMenu_AddProduct')}
-                        onPress={handleNavigateAddProduct}
-                    />
                 </Container>
             )}
         </>

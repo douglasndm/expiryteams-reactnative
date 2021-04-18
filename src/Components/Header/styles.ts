@@ -21,7 +21,7 @@ export const HeaderContainer = styled.View`
     `}
     ${Platform.OS === 'android' &&
     css`
-        padding-top: 20px;
+        padding-top: 10px;
     `}
 `;
 

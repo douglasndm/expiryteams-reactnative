@@ -12,21 +12,20 @@ Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 export async function isSubscriptionActive(): Promise<boolean> {
     const userSigned = await isUserSignedIn();
 
-    if (!userSigned) {
-        return false;
-    }
-
     try {
-        const localUserId = await getUserId();
+        if (userSigned) {
+            const localUserId = await getUserId();
 
-        if (!localUserId) {
-            throw new Error('User is not signed');
+            if (!localUserId) {
+                throw new Error('User is not signed');
+            }
+
+            Purchases.identify(localUserId);
         }
 
-        const purchaserInfo = await Purchases.identify(localUserId);
-        // access latest purchaserInfo
+        const purchaserInfo = await Purchases.getPurchaserInfo();
 
-        if (purchaserInfo.activeSubscriptions.length > 0) {
+        if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
             await setEnableProVersion(true);
             return true;
         }
@@ -37,72 +36,58 @@ export async function isSubscriptionActive(): Promise<boolean> {
     }
 }
 
-export async function getSubscriptionDetails(): Promise<PurchasesPackage> {
+export async function getSubscriptionDetails(): Promise<
+    Array<PurchasesPackage>
+> {
     const userSigned = await isUserSignedIn();
 
-    if (!userSigned) {
-        throw new Error('User is not logged');
-    }
-
     try {
-        const userId = await getUserId();
-        await Purchases.identify(userId);
-
+        if (userSigned) {
+            const userId = await getUserId();
+            await Purchases.identify(userId);
+        }
         const offerings = await Purchases.getOfferings();
 
-        if (offerings.current && offerings.current.monthly !== null) {
-            if (!__DEV__) {
-                await Analytics().logEvent('user_get_offerings_monthly');
-            }
+        const packages: Array<PurchasesPackage> = [];
 
-            return offerings.current.monthly;
+        if (offerings.current && offerings.current.monthly !== null) {
+            packages.push(offerings.current.monthly);
         }
 
         if (offerings.current && offerings.current.threeMonth !== null) {
-            if (!__DEV__) {
-                await Analytics().logEvent('user_get_offerings_three_month');
-            }
-
-            return offerings.current.threeMonth;
+            packages.push(offerings.current.threeMonth);
         }
 
-        if (!__DEV__) {
-            await Analytics().logEvent('app_didnt_show_any_offerings');
+        if (offerings.current && offerings.current.annual !== null) {
+            packages.push(offerings.current.annual);
         }
-        throw new Error('We didt find any offers');
+
+        return packages;
     } catch (err) {
         throw new Error(err);
     }
 }
 
-export async function makeSubscription(): Promise<void> {
+export async function makeSubscription(
+    purchasePackage: PurchasesPackage
+): Promise<void> {
     if (!__DEV__) {
         await Analytics().logEvent('started_susbscription_process');
     }
 
     const userSigned = await isUserSignedIn();
 
-    if (!userSigned) {
-        if (!__DEV__) {
-            await Analytics().logEvent(
-                'started_susbscription_process_but_user_not_signed'
-            );
-        }
-
-        throw new Error('User is not logged');
-    }
-
     try {
-        const userId = await getUserId();
+        if (userSigned) {
+            const userId = await getUserId();
 
-        await Purchases.identify(userId);
-
-        const offerings = await getSubscriptionDetails();
+            await Purchases.identify(userId);
+        }
 
         const {
             purchaserInfo,
             // productIdentifier,
-        } = await Purchases.purchasePackage(offerings);
+        } = await Purchases.purchasePackage(purchasePackage);
 
         // console.log(productIdentifier);
         // console.log(purchaserInfo);
@@ -123,8 +108,19 @@ export async function makeSubscription(): Promise<void> {
     }
 }
 
+export async function RestorePurchasers(): Promise<void> {
+    try {
+        const restore = await Purchases.restoreTransactions();
+        // ... check restored purchaserInfo to see if entitlement is now active
+
+        if (restore.activeSubscriptions.length > 0) {
+            await setEnableProVersion(true);
+        }
+    } catch (e) {
+        throw new Error(e.message);
+    }
+}
+
 // Chama a função para verificar se usuário tem inscrição ativa (como o arquivo é importado
 // na home ele verifica e já marca nas configurações a resposta)
-isSubscriptionActive()
-    .then(() => console.log('Subscription checked'))
-    .catch(() => console.log('User is not signed in'));
+isSubscriptionActive().then(() => console.log('Subscription checked'));

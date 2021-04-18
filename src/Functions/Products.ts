@@ -9,13 +9,17 @@ export function sortProductsLotesByLotesExpDate(
     const productsLotesSorted = listProducts.map((prod) => {
         const prodLotesSorted = sortLoteByExpDate(prod.lotes);
 
-        return {
+        const product: IProduct = {
             id: prod.id,
             name: prod.name,
             code: prod.code,
             store: prod.store,
+            photo: prod.photo,
+            categories: prod.categories,
             lotes: prodLotesSorted,
         };
+
+        return product;
     });
 
     return productsLotesSorted;
@@ -49,13 +53,16 @@ export function removeAllLotesTratadosFromAllProduts(
     listProducts: Array<IProduct>
 ): Array<IProduct> {
     const results = listProducts.map((prod) => {
-        return {
+        const product: IProduct = {
             id: prod.id,
             name: prod.name,
             code: prod.code,
             store: prod.store,
+            photo: prod.photo,
+            categories: prod.categories,
             lotes: removeLotesTratados(prod.lotes),
         };
+        return product;
     });
 
     return results;
@@ -74,26 +81,46 @@ export async function getAllProducts({
     sortProductsByExpDate,
     limit,
 }: getAllProductsProps): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
     try {
-        let allProducts = realm.objects<IProduct>('Product').slice();
+        const realm = await Realm();
 
-        if (removeTreatedBatch) {
-            allProducts = allProducts.filter((product) => {
-                const batches = product.lotes.filter(
-                    (batch) => batch.status !== 'Tratado'
-                );
+        const allProducts = realm.objects<IProduct>('Product').slice();
+        let filtertedProducts: Array<IProduct> = allProducts;
 
-                if (batches.length > 0) {
-                    return true;
-                }
-                return false;
-            });
+        if (removeProductsWithoutBatches) {
+            const prodWithBachesOnly = filtertedProducts.filter(
+                (p) => p.lotes.length > 0
+            );
+
+            filtertedProducts = prodWithBachesOnly;
         }
 
-        if (removeProductsWithoutBatches && sortProductsByExpDate) {
-            const productsWithBatches = allProducts.filter(
+        if (removeTreatedBatch) {
+            const prodsWithNonThreatedBatches = filtertedProducts.map(
+                (product) => {
+                    const batches = product.lotes.filter(
+                        (batch) => batch.status !== 'Tratado'
+                    );
+
+                    const prod: IProduct = {
+                        id: product.id,
+                        name: product.name,
+                        code: product.code,
+                        store: product.store,
+                        photo: product.photo,
+                        categories: product.categories,
+                        lotes: batches,
+                    };
+
+                    return prod;
+                }
+            );
+
+            filtertedProducts = prodsWithNonThreatedBatches;
+        }
+
+        if (sortProductsByExpDate) {
+            const productsWithBatches = filtertedProducts.filter(
                 (p) => p.lotes.length > 0
             );
 
@@ -107,62 +134,15 @@ export async function getAllProducts({
             // DE QUAL ESTÁ MAIS PRÓXIMO
             const results = sortProductsByFisrtLoteExpDate(resultsTemp);
 
-            if (limit) {
-                const productsLimited = results.slice(0, limit);
-                return productsLimited;
-            }
-
-            return results;
-        }
-
-        if (removeProductsWithoutBatches) {
-            const prodWithBachesOnly = allProducts.filter(
-                (p) => p.lotes.length > 0
-            );
-
-            if (limit) {
-                const productsLimited = prodWithBachesOnly.slice(0, limit);
-                return productsLimited;
-            }
-
-            return prodWithBachesOnly;
-        }
-
-        if (sortProductsByExpDate) {
-            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-            const resultsTemp = sortProductsLotesByLotesExpDate(allProducts);
-
-            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
-            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
-            // DE QUAL ESTÁ MAIS PRÓXIMO
-            const sortedProducts = sortProductsByFisrtLoteExpDate(resultsTemp);
-
-            if (limit) {
-                const productsLimited = sortedProducts.slice(0, limit);
-                return productsLimited;
-            }
-
-            return sortedProducts;
+            filtertedProducts = results;
         }
 
         if (limit) {
-            const productsLimited = allProducts.slice(0, limit);
-            return productsLimited;
+            const productsLimited = filtertedProducts.slice(0, limit);
+            filtertedProducts = productsLimited;
         }
 
-        return allProducts;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function GetAllProducts(): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
-    try {
-        const results = realm.objects<IProduct>('Product').slice();
-
-        return results;
+        return filtertedProducts;
     } catch (err) {
         throw new Error(err);
     }

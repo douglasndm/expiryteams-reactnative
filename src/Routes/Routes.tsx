@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from '~/Views/Home';
@@ -8,18 +9,20 @@ import EditProduct from '~/Views/Product/Edit';
 import EditLote from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/ProductDetails';
 import AllProducts from '~/Views/AllProducts';
-import AllProductsByStore from '~/Views/AllProductsByStore';
 import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import ProSubscription from '~/Views/ProSubscription';
-import ProOfferings from '~/Views/ProSubscription/Offerings';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
+
+import StoreList from '~/Views/Store/List';
+
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
+import CategoryEdit from '~/Views/Category/Edit';
 
-import SignIn from '~/Views/Auth/SignIn';
+import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
 
@@ -31,10 +34,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
-            <Stack.Screen
-                name="AllProductsByStore"
-                component={AllProductsByStore}
-            />
+
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
@@ -49,9 +49,16 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />
+            <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
-            <Stack.Screen name="SignIn" component={SignIn} />
-            <Stack.Screen name="ProOfferings" component={ProOfferings} />
+            <Stack.Screen name="StoreList" component={StoreList} />
+
+            {Platform.OS === 'ios' && (
+                <Stack.Screen
+                    name="TrackingPermission"
+                    component={TrackingPermission}
+                />
+            )}
         </Stack.Navigator>
     );
 };

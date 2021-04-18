@@ -1,5 +1,5 @@
-import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
+import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
@@ -7,17 +7,17 @@ import {
     NavigationContainer,
     getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
-import EnvConfig from 'react-native-config';
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 
 import './Locales';
 
+import './Services/BackgroundJobs';
 import './Services/Admob';
 import './Services/Analytics';
 
-import './Functions/MultiplesStoresLegacyUsers';
 import './Functions/ProMode';
+import './Functions/Stores'; // This is just a "hack" do call a method to migrate old stores model
 import { getAllUserPreferences } from './Functions/UserPreferences';
 import { NotificationCadency } from './Functions/Settings';
 
@@ -29,13 +29,6 @@ import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
-
-if (!__DEV__) {
-    Sentry.init({
-        dsn: EnvConfig.SENTRY_DSN,
-        enableAutoSessionTracking: true,
-    });
-}
 
 const App: React.FC = () => {
     const [previousRoute, setPreviousRoute] = useState('Home');
@@ -50,20 +43,16 @@ const App: React.FC = () => {
         isUserSignedIn: false,
     });
 
-    useEffect(() => {
-        async function getData() {
-            const userPreferences = await getAllUserPreferences();
+    const loadInitialData = useCallback(async () => {
+        const userPreferences = await getAllUserPreferences();
 
-            setPreferences(userPreferences);
+        setPreferences(userPreferences);
 
-            SplashScreen.hide();
-        }
-
-        getData();
+        SplashScreen.hide();
     }, []);
 
     const handleOnScreenChange = useCallback(
-        async (state) => {
+        async state => {
             const route = state.routes[0] || 'undefined';
             const focusedRouteName = getFocusedRouteNameFromRoute(route);
 
@@ -82,6 +71,10 @@ const App: React.FC = () => {
         },
         [previousRoute]
     );
+
+    useEffect(() => {
+        loadInitialData();
+    }, [loadInitialData]);
 
     return (
         <PreferencesContext.Provider
@@ -108,4 +101,9 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+const codePushOptions: CodePushOptions = {
+    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+    mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+};
+
+export default CodePush(codePushOptions)(App);

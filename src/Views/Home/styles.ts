@@ -1,11 +1,16 @@
 import styled from 'styled-components/native';
-import { FAB } from 'react-native-paper';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
     flex: 1;
-    background: ${(props) => props.theme.colors.background};
+    background: ${props => props.theme.colors.background};
+`;
+
+export const AdContainer = styled.View`
+    align-items: center;
+    margin-top: 5px;
 `;
 
 export const InputTextContainer = styled.View`
@@ -21,29 +26,17 @@ export const InputTextContainer = styled.View`
 
 export const InputTextIconContainer = styled(RectButton)``;
 
-export const InputTextIcon = styled(Ionicons).attrs((props) => ({
+export const InputTextIcon = styled(Ionicons).attrs(props => ({
     name: 'barcode-outline',
     size: 36,
     color: props.theme.colors.text,
 }))``;
 
-export const InputSearch = styled.TextInput.attrs((props) => ({
+export const InputSearch = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`
-    color: ${(props) => props.theme.colors.inputText};
+    color: ${props => props.theme.colors.inputText};
     flex: 1;
     padding: 12px;
     font-size: 16px;
 `;
-
-export const FloatButton = styled(FAB).attrs(() => ({
-    color: 'white',
-}))`
-    background-color: ${({ theme }) => theme.colors.accent};
-
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-`;
-
-export const Icons = styled(Ionicons)``;

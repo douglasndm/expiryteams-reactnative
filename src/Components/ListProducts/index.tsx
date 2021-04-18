@@ -17,6 +17,8 @@ import {
     CategoryDetailsText,
     EmptyListText,
     InvisibleComponent,
+    FloatButton,
+    Icons,
 } from './styles';
 
 interface RequestProps {
@@ -40,6 +42,10 @@ const ListProducts: React.FC<RequestProps> = ({
         navigate('Pro');
     }, [navigate]);
 
+    const handleNavigateAddProduct = useCallback(() => {
+        navigate('AddProduct');
+    }, [navigate]);
+
     const choosenAdText = useMemo(() => {
         return Math.floor(Math.random() * 3) + 1;
     }, []);
@@ -50,7 +56,9 @@ const ListProducts: React.FC<RequestProps> = ({
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
                         <ProText>
-                            {translate(`ProBanner_Text${choosenAdText}`)}
+                            {translate(
+                                `ProBanner_Text${choosenAdText}`
+                            ).toLocaleUpperCase()}
                         </ProText>
                     </ProBanner>
                 )}
@@ -106,12 +114,21 @@ const ListProducts: React.FC<RequestProps> = ({
         <Container>
             <FlatList
                 data={products}
-                keyExtractor={(item) => String(item.id)}
+                keyExtractor={item => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
                 initialNumToRender={10}
+            />
+
+            <FloatButton
+                icon={() => (
+                    <Icons name="add-outline" color="white" size={22} />
+                )}
+                small
+                label={translate('View_FloatMenu_AddProduct')}
+                onPress={handleNavigateAddProduct}
             />
         </Container>
     );

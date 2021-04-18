@@ -19,6 +19,7 @@ import {
     deleteProduct,
 } from '~/Functions/Product';
 import { getAllCategories } from '~/Functions/Category';
+import { getAllStores, getStore } from '~/Functions/Stores';
 import {
     saveProductImage,
     getProductImagePath,
@@ -73,6 +74,12 @@ interface ICategoryItem {
     key: string;
 }
 
+interface IStoreItem {
+    label: string;
+    value: string;
+    key: string;
+}
+
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { userPreferences } = useContext(PreferencesContext);
 
@@ -88,12 +95,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState<string>('');
-    const [store, setStore] = useState<string>('');
+    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [stores, setStores] = useState<Array<IStoreItem>>([]);
+
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
-
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [selectedStore, setSelectedStore] = useState<string | null>(null);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
@@ -107,7 +115,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             const allCategories = await getAllCategories();
             const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach((cat) =>
+            allCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -115,6 +123,22 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 })
             );
             setCategories(categoriesArray);
+
+            getAllStores().then(allStores => {
+                const storesArray: Array<IStoreItem> = [];
+
+                allStores.forEach(sto => {
+                    if (sto.id) {
+                        storesArray.push({
+                            key: sto.id,
+                            label: sto.name,
+                            value: sto.id,
+                        });
+                    }
+                });
+
+                setStores(storesArray);
+            });
 
             const product = await getProductById(productId);
 
@@ -126,7 +150,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
             setName(product.name);
             if (product.code) setCode(product.code);
-            if (product.store) setStore(product.store);
 
             const path = await getProductImagePath(productId);
             if (path) {
@@ -137,16 +160,24 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 setSelectedCategory(product.categories[0]);
             }
 
+            if (product.store) {
+                const store = await getStore(product.store);
+
+                if (store) {
+                    setSelectedStore(store?.id);
+                }
+            }
+
             setIsLoading(false);
         }
         getProductData();
     }, [productId]);
 
     useEffect(() => {
-        getAllCategories().then((allCategories) => {
+        getAllCategories().then(allCategories => {
             const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach((cat) =>
+            allCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -158,8 +189,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         });
     }, []);
 
-    const handleCategoryChange = useCallback((value) => {
+    const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
+    }, []);
+
+    const handleStoreChange = useCallback(value => {
+        setSelectedStore(value);
     }, []);
 
     const updateProd = useCallback(async () => {
@@ -177,11 +212,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 prodCategories.push(selectedCategory);
             }
 
+            const tempStore =
+                selectedStore && selectedStore !== 'null'
+                    ? selectedStore
+                    : null;
+
             updateProduct({
                 id: productId,
                 name,
                 code,
-                store,
+                store: tempStore,
 
                 categories: prodCategories,
                 photo: photoFileName,
@@ -200,7 +240,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } catch (err) {
             setError(err.message);
         }
-    }, [code, name, photoPath, productId, reset, selectedCategory, store]);
+    }, [
+        code,
+        name,
+        photoPath,
+        productId,
+        reset,
+        selectedCategory,
+        selectedStore,
+    ]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
@@ -314,7 +362,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         'View_EditProduct_InputAccessibility_Name'
                                                     )}
                                                     value={name}
-                                                    onChangeText={(value) => {
+                                                    onChangeText={value => {
                                                         setName(value);
                                                         setNameFieldError(
                                                             false
@@ -348,7 +396,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     'View_EditProduct_InputAccessibility_Code'
                                                 )}
                                                 value={code}
-                                                onChangeText={(value) =>
+                                                onChangeText={value =>
                                                     setCode(value)
                                                 }
                                             />
@@ -389,24 +437,25 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                             )}
 
                                             {userPreferences.multiplesStores && (
-                                                <InputGroup>
-                                                    <InputTextContainer>
-                                                        <InputText
-                                                            placeholder={translate(
-                                                                'View_EditProduct_InputPlacehoder_Store'
-                                                            )}
-                                                            accessibilityLabel={translate(
-                                                                'View_EditProduct_InputAccessibility_Store'
-                                                            )}
-                                                            value={store}
-                                                            onChangeText={(
-                                                                value
-                                                            ) => {
-                                                                setStore(value);
-                                                            }}
-                                                        />
-                                                    </InputTextContainer>
-                                                </InputGroup>
+                                                <PickerContainer
+                                                    style={{
+                                                        marginBottom: 10,
+                                                    }}
+                                                >
+                                                    <Picker
+                                                        items={stores}
+                                                        onValueChange={
+                                                            handleStoreChange
+                                                        }
+                                                        value={selectedStore}
+                                                        placeholder={{
+                                                            label: translate(
+                                                                'View_AddProduct_InputPlacehoder_Store'
+                                                            ),
+                                                            value: 'null',
+                                                        }}
+                                                    />
+                                                </PickerContainer>
                                             )}
                                         </MoreInformationsContainer>
 

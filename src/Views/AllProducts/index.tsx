@@ -1,26 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import Loading from '../../Components/Loading';
-import Header from '../../Components/Header';
-import ListProducts from '../../Components/ListProducts';
-import BarCodeReader from '../../Components/BarCodeReader';
-import Notification from '../../Components/Notification';
+import Loading from '~/Components/Loading';
+import Header from '~/Components/Header';
+import ListProducts from '~/Components/ListProducts';
+import BarCodeReader from '~/Components/BarCodeReader';
+import Notification from '~/Components/Notification';
 
-import {
-    getAllProducts,
-    searchForAProductInAList,
-} from '../../Functions/Products';
+import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';
 
 import {
     InputSearch,
     InputTextContainer,
     InputTextIconContainer,
     InputTextIcon,
-    FloatButton,
-    Icons,
 } from '../Home/styles';
 
 import { Container } from './styles';
@@ -149,15 +144,6 @@ const AllProducts: React.FC = () => {
                             />
                         )}
                     </Container>
-
-                    <FloatButton
-                        icon={() => (
-                            <Icons name="add-outline" color="white" size={22} />
-                        )}
-                        small
-                        label={translate('View_FloatMenu_AddProduct')}
-                        onPress={handleNavigateAddProduct}
-                    />
                 </>
             )}
         </>

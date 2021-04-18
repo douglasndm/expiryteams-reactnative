@@ -35,7 +35,7 @@ export async function getProductImagePath(
             }
 
             const filesDir = await readDir(imagesPath);
-            const findedFile = filesDir.find((file) => {
+            const findedFile = filesDir.find(file => {
                 const productImage = product.photo?.split('/');
 
                 if (productImage) {
@@ -79,7 +79,7 @@ export async function saveProductImage({
         } else {
             const filesDir = await readDir(`${DocumentDirectoryPath}/images`);
 
-            const findedFile = filesDir.find((file) => file.name === fileName);
+            const findedFile = filesDir.find(file => file.name === fileName);
 
             if (!findedFile) {
                 throw new Error('File was not find');

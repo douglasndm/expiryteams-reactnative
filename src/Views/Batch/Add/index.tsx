@@ -36,7 +36,7 @@ import {
     InputContainer,
     InputTextContainer,
     InputText,
-    NumericInputField,
+    Currency,
     InputGroup,
     ExpDateGroup,
     ExpDateLabel,
@@ -141,7 +141,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     ]);
 
     useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent((type) => {
+        const eventListener = interstitialAd.onAdEvent(type => {
             if (type === AdEventType.LOADED) {
                 setAdReady(true);
             }
@@ -175,7 +175,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         getProduct();
     }, [productId]);
 
-    const handleAmountChange = useCallback((value) => {
+    const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
 
         if (value === '' || regex.test(value)) {
@@ -185,6 +185,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
     const handleDimissNotification = useCallback(() => {
         setNotification('');
+    }, []);
+
+    const handlePriceChange = useCallback((value: number) => {
+        setPrice(value);
     }, []);
 
     return (
@@ -217,7 +221,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                                         'View_AddBatch_InputPlacehoder_Batch'
                                     )}
                                     value={lote}
-                                    onChangeText={(value) => setLote(value)}
+                                    onChangeText={value => setLote(value)}
                                 />
                             </InputTextContainer>
                             <InputTextContainer
@@ -236,12 +240,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                             </InputTextContainer>
                         </InputGroup>
 
-                        <NumericInputField
-                            type="currency"
-                            locale={locale}
-                            currency={currency}
+                        <Currency
                             value={price}
-                            onUpdate={(value: number) => setPrice(value)}
+                            onChangeValue={handlePriceChange}
+                            delimiter={currency === 'BRL' ? ',' : '.'}
                             placeholder={translate(
                                 'View_AddBatch_InputPlacehoder_UnitPrice'
                             )}
@@ -253,7 +255,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                             </ExpDateLabel>
                             <CustomDatePicker
                                 date={expDate}
-                                onDateChange={(value) => {
+                                onDateChange={value => {
                                     setExpDate(value);
                                 }}
                                 locale={locale}

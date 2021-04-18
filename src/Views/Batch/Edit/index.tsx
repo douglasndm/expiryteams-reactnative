@@ -23,7 +23,7 @@ import {
     InputContainer,
     InputTextContainer,
     InputText,
-    NumericInputField,
+    Currency,
     InputGroup,
     ExpDateGroup,
     ExpDateLabel,
@@ -98,7 +98,7 @@ const EditBatch: React.FC = () => {
 
             if (!response) return;
 
-            const loteResult = response.lotes.find((l) => l.id === loteId);
+            const loteResult = response.lotes.find(l => l.id === loteId);
 
             if (!loteResult) {
                 setError(translate('View_EditBatch_Error_BatchDidntFound'));
@@ -166,7 +166,7 @@ const EditBatch: React.FC = () => {
         }
     }, [loteId, reset]);
 
-    const handleAmountChange = useCallback((value) => {
+    const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
 
         if (value === '' || regex.test(value)) {
@@ -176,6 +176,10 @@ const EditBatch: React.FC = () => {
 
     const handleDimissNotification = useCallback(() => {
         setError('');
+    }, []);
+
+    const handlePriceChange = useCallback((value: number) => {
+        setPrice(value);
     }, []);
 
     return isLoading ? (
@@ -228,7 +232,7 @@ const EditBatch: React.FC = () => {
                                             'View_EditBatch_InputPlacehoder_Batch'
                                         )}
                                         value={lote}
-                                        onChangeText={(value) => setLote(value)}
+                                        onChangeText={value => setLote(value)}
                                     />
                                 </InputTextContainer>
                                 <InputTextContainer
@@ -247,12 +251,10 @@ const EditBatch: React.FC = () => {
                                 </InputTextContainer>
                             </InputGroup>
 
-                            <NumericInputField
-                                type="currency"
-                                locale="pt-BR"
-                                currency={currency}
+                            <Currency
                                 value={price}
-                                onUpdate={(value: number) => setPrice(value)}
+                                onChangeValue={handlePriceChange}
+                                delimiter={currency === 'BRL' ? ',' : '.'}
                                 placeholder={translate(
                                     'View_EditBatch_InputPlacehoder_UnitPrice'
                                 )}
@@ -314,7 +316,7 @@ const EditBatch: React.FC = () => {
                                 </ExpDateLabel>
                                 <CustomDatePicker
                                     date={expDate}
-                                    onDateChange={(value) => {
+                                    onDateChange={value => {
                                         setExpDate(value);
                                     }}
                                     locale={locale}

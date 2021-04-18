@@ -5,6 +5,7 @@ import {
     setMilliseconds,
     parseISO,
 } from 'date-fns';
+import { UpdateMode } from 'realm';
 
 import Realm from '../Services/Realm';
 
@@ -209,7 +210,7 @@ export async function updateLote(lote: ILote): Promise<void> {
 
     try {
         realm.write(() => {
-            realm.create('Lote', lote, 'modified');
+            realm.create('Lote', lote, UpdateMode.Modified);
         });
     } catch (err) {
         throw new Error(err);

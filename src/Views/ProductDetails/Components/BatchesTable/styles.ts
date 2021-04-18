@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components/native';
 import { DataTable } from 'react-native-paper';
 
-interface IProduct {
+interface IProductProps {
     expired?: boolean;
     nextToExp?: boolean;
-    expiredOrNext?: boolean;
+    treated?: boolean;
 }
 
 export const Table = styled(DataTable)`
@@ -34,29 +34,29 @@ export const TableRow = styled(DataTable.Row)<TableRowProps>`
         css`
             background: ${({ theme }) =>
                 theme.colors.productNextToExpBackground};
-        `}
+        `};
 
     ${(props) =>
         props.expired &&
         css`
             background: ${({ theme }) => theme.colors.productExpiredBackground};
-        `}
+        `};
 
     ${(props) =>
-        props.treated === true &&
+        props.treated &&
         css`
             background-color: #47c914;
-        `}
+        `};
 `;
 
 export const TableCell = styled(DataTable.Cell)``;
 
-export const Text = styled.Text<IProduct>`
+export const Text = styled.Text<IProductProps>`
     color: ${(props) => props.theme.colors.text};
 
     ${(props) =>
-        props.expiredOrNext &&
+        (props.expired || props.nextToExp || props.treated) &&
         css`
             color: white;
-        `}
+        `};
 `;

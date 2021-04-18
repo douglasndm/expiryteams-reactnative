@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import BackgroundJob from 'react-native-background-fetch';
+import Analytics from '@react-native-firebase/analytics';
 
 import {
     isTimeForANotification,
@@ -26,11 +27,19 @@ const handleSetNotification = async () => {
 };
 
 async function configureBackgroundJob() {
+    let period = 15;
+
+    // This is set alarm mode, and will cost more battery so, on android we will use 1 hour to check
+    // updates, ios and dev still continue with 15 minutes
+    if (Platform.OS === 'android' && !__DEV__) {
+        period = 60;
+    }
+
     BackgroundJob.configure(
         {
-            minimumFetchInterval: 15,
+            minimumFetchInterval: period, // <-- minutes (15 is minimum allowed)
             // Android options
-            forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
+            forceAlarmManager: true, // <-- Set true to bypass JobScheduler.
             stopOnTerminate: false,
             startOnBoot: true,
             requiredNetworkType: BackgroundJob.NETWORK_TYPE_NONE, // Default
@@ -46,13 +55,19 @@ async function configureBackgroundJob() {
             );
             await handleSetNotification();
 
+            await Analytics().logEvent('Notification_sent');
+
             // Required: Signal completion of your task to native code
             // If you fail to do this, the OS can terminate your app
             // or assign battery-blame for consuming too much background-time
             BackgroundJob.finish(taskId);
         },
-        (error) => {
+        async (error) => {
             console.log(`[js] RNBackgroundFetch failed to start: ${error}`);
+
+            await Analytics().logEvent('Error_while_send_Notification', {
+                error,
+            });
         }
     );
 

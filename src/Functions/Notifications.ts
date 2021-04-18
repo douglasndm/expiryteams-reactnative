@@ -32,6 +32,7 @@ export async function isTimeForANotification(): Promise<boolean> {
         const timestamp = await AsyncStorage.getItem('timeForNextNotification');
 
         if (timestamp) {
+            console.log(`Time for next update => ${timestamp}`);
             const date = fromUnixTime(Number(timestamp));
 
             if (new Date() > date) {

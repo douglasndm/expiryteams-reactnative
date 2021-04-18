@@ -16,6 +16,6 @@ module.exports = {
             }
           }
         ],
-        'jest-hoist'
+        'jest-hoist',
     ]
 };

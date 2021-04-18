@@ -1,23 +1,22 @@
 {
-    "AppName": "Expiration checker",
-    "AppName_ProVersion": "Premium",
+    "AppName": "Expiry Checker",
+    "AppName_ProVersion": "PRO Mode",
 
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",
-    "Menu_Button_GoToAllProductsByStore": "All products by store",
+    "Menu_Button_GoToStores": "Stores",
     "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToProPage": "Become PRO",
     "Menu_Button_GoToSettings": "Settings",
     "Menu_Button_GoToAbout": "About",
-    "Menu_Button_KnowOthersApps": "Discovery others apps",
+    "Menu_Button_KnowOthersApps": "Others apps",
     "Menu_Button_GoToTest": "Test",
 
     "Menu_UserProfile_Button_login": "Sign in",
     "Menu_UserProfile_Label": "PRO User",
 
     "Menu_Label_PRO": "PRO",
-    "Menu_Label_Beta": "BETA",
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
@@ -31,9 +30,10 @@
     "Component_Camera_Button_TakeAnotherPicture": "Take another picture",
     "Component_Camera_Button_SavePicture": "Looks good",
 
-    "ProBanner_Text1": "PRO users can take photos of products, do you want more?",
+    "ProBanner_Text1": "PRO users can take photos of products!",
     "ProBanner_Text2": "Discover the benefits of PRO",
     "ProBanner_Text3": "We don't have ads on PRO, meet more advantages",
+    "ProBanner_Text4": "Test PRO monthly for free for 7 days",
 
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
@@ -61,8 +61,6 @@
     "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo made by",
-    "View_About_DonateDescription": "Do you like this app? Is this useful for you? Contribute with any amount to help keep it working and bringing new functions like the iPhone version.",
-    "View_About_Button_Donate": "Donate",
 
     "View_AddBatch_AlertTypeBatchName": "Type the batch's name",
     "View_AddBatch_PageTitle": "Add new batch",
@@ -79,7 +77,7 @@
     "View_AddProduct_InputPlacehoder_Batch": "Batch",
     "View_AddProduct_InputPlacehoder_Amount": "Amount",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Unit price",
-    "View_AddProduct_InputPlacehoder_Store": "Store",
+    "View_AddProduct_InputPlacehoder_Store": "Select the store",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Select the category",
     "View_AddProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_AddProduct_InputAccessibility_Code": "Field to type the Product's code",
@@ -98,15 +96,10 @@
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
 
-    "View_AllProductsByStore_PageTitle": "All products by store",
-
-    "View_Auth_SignIn_PageTitle": "Identify yourself",
-    "View_Auth_SignIn_Text_LoginRequired": "An authentication is necessary to continue.",
-    "View_Auth_SignIn_Text_WhyLogin": "We need to know who are you to use that to identify you when you restore your app in a new phone or when you reset this one.",
-    "View_Auth_SignIn_Text_Benefits": "With that we can restore your subscription without you need to subscribe it again.",
-    "View_Auth_SignIn_Text_Login": "Continue with your account",
-    "View_Auth_SignIn_Text_AllDone": "All done!",
-    "View_Auth_SignIn_Button_ContinueToSubscription": "Continue to subscription",
+    "View_Store_List_PageTitle": "Stores",
+    "View_Store_List_AddNewStore_Placeholder": "Add new store",
+    "View_Store_List_AddNewStore_Error_TextEmpty": "Type the store's name",
+    "View_Store_List_NoStore": "No store",
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
     "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
@@ -129,7 +122,7 @@
     "View_EditProduct_PageTitle": "Edit Product",
     "View_EditProduct_InputPlacehoder_Name": "Product's name",
     "View_EditProduct_InputPlacehoder_Code": "Product's code",
-    "View_EditProduct_InputPlacehoder_Store": "Product's store",
+    "View_EditProduct_InputPlacehoder_Store": "Select the store",
     "View_EditProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
@@ -143,10 +136,10 @@
     "View_ProductDetails_Code": "Code",
     "View_ProductDetails_Store": "Store",
     "View_ProductDetails_Button_UpdateProduct": "Update",
+    "View_ProductDetails_Button_ShareProduct": "Share",
     "View_ProductDetails_Button_DeleteProduct": "Delete",
     "View_ProductDetails_TableTitle_NotTreatedBatches": "Not treated batches yet",
     "View_ProductDetails_TableTitle_TreatedBatches": "Treated batches",
-    "View_ProductDetails_Button_AddNewBatch": "Add a new batch",
     "View_ProductDetails_FloatButton_AddNewBatch": "Add batch",
     "View_ProductDetails_WarningDelete_Title": "Are you sure?",
     "View_ProductDetails_WarningDelete_Message": "If you continue you will delete this product",
@@ -156,6 +149,9 @@
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Expire in",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Amount",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Total price",
+
+    "View_ShareProduct_Title": "Check this product",
+    "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
 
     "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",
@@ -169,12 +165,27 @@
     "View_ProPage_UserAlreadyPro": "You are already PRO",
     "View_ProPage_BeforeIntroPrice": "SUBSCRIBE FOR ONLY",
     "View_ProPage_AfterIntroPrice": " IN THE FIRST MONTH AND THEN",
-    "View_ProPage_SubscribePeriod_Quarterly": "QUARTERLY",
-    "View_ProPage_SubscribePeriod_Monthly": "MONTHLY",
-    "View_ProPage_UserNeedToSignIn": "You need to sign in first.",
-    "View_ProPage_Button_ClickToSignIn": "Click here to sign in.",
+
+    "View_ProPage_SubscribePeriod_Monthly": "Monthly",
+    "View_ProPage_SubscribePeriod_ThreeMonths": "3 months",
+    "View_ProPage_SubscribePeriod_OneYear": "Annual",
+
+
+    "View_ProPage_AfterDaysFreeTest": " days free",
+    "View_ProPage_AfterIntroPrice_Monthly": " on the first month, then ",
+    "View_ProPage_AfterPrice_Monthly": " monthly",
+
+    "View_ProPage_AfterIntroPrice_ThreeMonths": " for 3 months, then ",
+    "View_ProPage_AfterPrice_ThreeMonths": " every three months",
+
+    "View_ProPage_AfterIntroPrice_OneYear": " in the first year, then ",
+    "View_ProPage_AfterPrice_OneYear": " yearly",
+
+    "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
+    "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
+    "View_ProPage_Button_Subscribe": "Continue",
     "View_ProPage_Button_GoBackToHome": "Go home",
-    "View_ProPage_SubscriptionNotAvailable": "Subscription is not available now, check you internet connection.",
+    "View_ProPage_SubscriptionNotAvailable": "Subscriptions are not available now",
 
 
     "View_Settings_PageTitle": "Settings",
@@ -212,7 +223,12 @@
     "View_Settings_Notifications_Cadency_Month": "Monthly",
     "View_Settings_Notifications_Cadency_Never": "Never",
 
+    "View_PROView_Subscription_RestoreButton": "Already a PRO? Restore subscription",
+    "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
+    "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
+
     "View_AllProductByStore_BeforeStoreName": "All products by store ",
+    "View_AllProductByStore_StoreName": "Products by store {STORE}",
     "View_AllProductByStore_NoStore": "no store",
 
     "View_Success_BatchCreated": "Batch created",
@@ -239,6 +255,17 @@
     "View_Category_List_View_BeforeCategoryName": "Category ",
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
+
+    "View_Category_Edit_PageTitle": "Edit category",
+    "View_Category_Edit_InputNamePlaceholder": "Category name",
+    "View_Category_Edit_ButtonSave": "Save",
+    "View_Category_Edit_SuccessText": "Success",
+    "View_Category_Edit_ErrorEmtpyName": "Type the category name",
+
+    "View_Permissions_AppleAT_PageTitle": "We need your permission",
+    "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to track you in sites and apps that you use to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
+    "View_Permissions_AppleAT_SwitchAllowTracking": "Use unique device identification",
+    "View_Permissions_AppleAT_Button_Continue": "Continue",
 
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
@@ -271,5 +298,10 @@
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",
     "AskUserReview_Button_No": "Not now",
-    "AskUserReview_Button_Yes": "Sure, let's do it"
+    "AskUserReview_Button_Yes": "Sure, let's do it",
+
+    "BeforeTermsAndPrivacy": "By using this app you are acception our ",
+    "BetweenTermsAndPrivacy": " and ",
+    "Terms": "Terms of service",
+    "PrivacyPolicy": "Privacy Policy"
 }

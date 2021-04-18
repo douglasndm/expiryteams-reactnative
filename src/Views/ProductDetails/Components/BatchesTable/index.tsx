@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
@@ -31,26 +31,26 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
 
     const { navigate } = useNavigation();
 
-    const [languageCode] = useState(() => {
+    const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
             return enUS;
         }
         return ptBR;
-    });
+    }, []);
 
-    const [dateFormat] = useState(() => {
+    const dateFormat = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
             return 'MM/dd/yyyy';
         }
         return 'dd/MM/yyyy';
-    });
-    const [currencyPrefix] = useState(() => {
+    }, []);
+    const currencyPrefix = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
             return '$';
         }
 
         return 'R$';
-    });
+    }, []);
 
     return (
         <Table>
@@ -85,7 +85,6 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         userPreferences.howManyDaysToBeNextToExpire
                     ) > batch.exp_date;
 
-                const expiredOrNext = !!(expired || nextToExp);
                 const treated = batch.status === 'Tratado';
 
                 return (
@@ -102,25 +101,41 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         }}
                     >
                         <TableCell>
-                            <Text expiredOrNext={expiredOrNext}>
+                            <Text
+                                expired={expired}
+                                nextToExp={nextToExp}
+                                treated={treated}
+                            >
                                 {batch.lote}
                             </Text>
                         </TableCell>
                         <TableCell>
-                            <Text expiredOrNext={expiredOrNext}>
+                            <Text
+                                expired={expired}
+                                nextToExp={nextToExp}
+                                treated={treated}
+                            >
                                 {format(batch.exp_date, dateFormat, {
                                     locale: languageCode,
                                 })}
                             </Text>
                         </TableCell>
                         <TableCell>
-                            <Text expiredOrNext={expiredOrNext}>
+                            <Text
+                                expired={expired}
+                                nextToExp={nextToExp}
+                                treated={treated}
+                            >
                                 {batch.amount}
                             </Text>
                         </TableCell>
                         {!!batch.amount && !!batch.price && batch.price > 0 && (
                             <TableCell>
-                                <Text expiredOrNext={expiredOrNext}>
+                                <Text
+                                    expired={expired}
+                                    nextToExp={nextToExp}
+                                    treated={treated}
+                                >
                                     <NumberFormat
                                         value={batch.amount * batch.price}
                                         displayType="text"

@@ -5,6 +5,20 @@ import { translate } from '~/Locales';
 
 import Realm from '~/Services/Realm';
 
+export async function getCategory(id: string): Promise<ICategory> {
+    try {
+        const realm = await Realm();
+
+        const realmResponse = realm
+            .objects<ICategory>('Category')
+            .filtered(`id = "${id}"`)[0];
+
+        return realmResponse;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
+
 export async function getAllCategories(): Promise<Array<ICategory>> {
     try {
         const realm = await Realm();
@@ -49,6 +63,18 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
         return category;
     } catch (err) {
         throw new Error(err.message);
+    }
+}
+
+export async function updateCategory(category: ICategory): Promise<void> {
+    try {
+        const realm = await Realm();
+
+        realm.write(() => {
+            realm.create('Category', category, UpdateMode.Modified);
+        });
+    } catch (err) {
+        throw new Error(err);
     }
 }
 

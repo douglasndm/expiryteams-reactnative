@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Linking, Platform } from 'react-native';
+import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
 
@@ -26,14 +26,16 @@ const About: React.FC = () => {
     const { goBack } = useNavigation();
     const [userId, setUserId] = useState<string>('');
 
-    const handleLinkedinPress = useCallback(async () => {
-        await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
+    const navigateToTerms = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/terms');
     }, []);
 
-    const handleDonatePress = useCallback(async () => {
-        await Linking.openURL(
-            'https://www.paypal.com/donate?hosted_button_id=L68N3E8YGSTW2'
-        );
+    const navigateToPrivacy = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/privacy');
+    }, []);
+
+    const handleLinkedinPress = useCallback(async () => {
+        await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
     }, []);
 
     const handleFlatIconPress = useCallback(async () => {
@@ -69,19 +71,21 @@ const About: React.FC = () => {
             </AboutSection>
 
             <AboutSection>
+                <Text>
+                    {translate('BeforeTermsAndPrivacy')}
+                    <Link onPress={navigateToTerms}>{translate('Terms')}</Link>
+                    {translate('BetweenTermsAndPrivacy')}
+                    <Link onPress={navigateToPrivacy}>
+                        {translate('PrivacyPolicy')}
+                    </Link>
+                    .
+                </Text>
+            </AboutSection>
+
+            <AboutSection>
                 <Text>{translate('View_About_DevelopedBy')}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
             </AboutSection>
-
-            {/* Apple does not allow links to any kind of payment outside App Store */}
-            {Platform.OS !== 'ios' && (
-                <AboutSection>
-                    <Text>{translate('View_About_DonateDescription')}</Text>
-                    <Link onPress={handleDonatePress}>
-                        {translate('View_About_Button_Donate')}
-                    </Link>
-                </AboutSection>
-            )}
 
             <AboutSection>
                 <Text>{translate('View_About_LogoMadeBy')}</Text>

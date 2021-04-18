@@ -16,6 +16,7 @@ import { translate } from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getProductImagePath } from '~/Functions/Products/Image';
+import { getStore } from '~/Functions/Stores';
 
 import {
     Card,
@@ -40,6 +41,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [imagePath, setImagePath] = useState<string>('');
+    const [storeName, setStoreName] = useState<string | null>();
 
     const [languageCode] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -66,12 +68,22 @@ const Product = ({ product, expired, nextToExp }: Request) => {
     }, [expired, nextToExp]);
 
     useEffect(() => {
-        getProductImagePath(product.id).then((path) => {
+        getProductImagePath(product.id).then(path => {
             if (path) {
                 setImagePath(`file://${path}`);
             }
         });
-    }, [product.id]);
+
+        if (product.store) {
+            getStore(product.store).then(store => {
+                if (store?.name) {
+                    setStoreName(store.name);
+                } else {
+                    setStoreName(null);
+                }
+            });
+        }
+    }, [product.id, product.store]);
 
     const handleNavigateToProduct = useCallback(() => {
         navigate('ProductDetails', { id: product.id });
@@ -107,10 +119,10 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductInfoItem>
                         )}
 
-                        {userPreferences.multiplesStores && !!product.store && (
+                        {userPreferences.multiplesStores && !!storeName && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {translate('ProductCardComponent_ProductStore')}
-                                : {product.store}
+                                : {storeName}
                             </ProductInfoItem>
                         )}
 
