@@ -53,14 +53,25 @@ export async function getAllStores(): Promise<Array<IStore>> {
         });
 
         // Check de old version of store
-        filtedOldStores.forEach(store => {
-            const alreadyInList = stores.find(s => s.name === store);
+        filtedOldStores.forEach(async store => {
+            const alreadyInList = stores.find(
+                s => s.name.toLowerCase() === store.toLowerCase()
+            );
 
             if (!alreadyInList) {
-                stores.push({
-                    id: '',
+                // This will add old store format to the new format
+                const storeUUID = await UUID.getRandomUUID();
+
+                const s: IStore = {
+                    id: storeUUID,
                     name: store,
+                };
+
+                realm.write(() => {
+                    realm.create<IStore>('Store', s, UpdateMode.Never);
                 });
+
+                stores.push(s);
             }
         });
 
@@ -152,3 +163,5 @@ export async function getAllProductsByStore(
         throw new Error(err.message);
     }
 }
+
+getAllStores();
