@@ -196,11 +196,11 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - OpenSSL-Universal (1.1.180)
-  - Permission-AppTrackingTransparency (3.0.0):
+  - Permission-AppTrackingTransparency (3.0.1):
     - RNPermissions
-  - Permission-Camera (3.0.0):
+  - Permission-Camera (3.0.1):
     - RNPermissions
-  - Permission-Notifications (3.0.0):
+  - Permission-Notifications (3.0.1):
     - RNPermissions
   - PersonalizedAdConsent (1.0.5)
   - PromisesObjC (1.2.12)
@@ -491,8 +491,8 @@ PODS:
   - RealmJS (10.3.0):
     - GCDWebServer
     - React
-  - RNBackgroundFetch (4.0.2):
-    - React-Core
+  - RNBackgroundFetch (3.1.0):
+    - React
   - RNCAsyncStorage (1.13.2):
     - React
   - RNCMaskedView (0.1.10):
@@ -536,7 +536,7 @@ PODS:
     - React-Core
   - RNLocalize (2.0.1):
     - React-Core
-  - RNPermissions (3.0.0):
+  - RNPermissions (3.0.1):
     - React-Core
   - RNPurchases (4.1.0):
     - PurchasesHybridCommon (= 1.6.1)
@@ -870,9 +870,9 @@ SPEC CHECKSUMS:
   lottie-react-native: 1fb4ce21d6ad37dab8343eaff8719df76035bd93
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  Permission-AppTrackingTransparency: 15da2933d9d04f5106fa19407eb452fa1b4e8059
-  Permission-Camera: 119b01de97a5b3edb637999e38476b68143b9d17
-  Permission-Notifications: 5c69bf2f6c1e30345af4f25e2981dc1c8dafbc22
+  Permission-AppTrackingTransparency: b529454e0fa560f0dcb7c4fd74399417cc1e674b
+  Permission-Camera: b2e50546c095139bb1264be9c34c796332340d32
+  Permission-Notifications: 504dcbc12f929b72cdab0c89a4245816d53d1452
   PersonalizedAdConsent: dbecabb3467df967c16d9cebc2ef4a8890e4bbd8
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Purchases: 520fdb59140fed96932a30d02a3ec04858cb541c
@@ -910,7 +910,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: cad74a1eaa53ee6e7a3620231939d8fe2c6afcf0
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
   RealmJS: ca9b0c1677d5248c6c360bc1b733ed087d345c2f
-  RNBackgroundFetch: 635d82e1e185b235c1fe787f29517507f87450e0
+  RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
@@ -926,7 +926,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
-  RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
+  RNPermissions: 4c8a37b4dde50f1f152bf8cd08c4a43d2355829e
   RNPurchases: e438e025eeeee2c37f3ef6e7c224a92ed7caa85f
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
