@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUnixTime, fromUnixTime, addDays, addMinutes } from 'date-fns';
+import { getUnixTime, fromUnixTime, addHours, addMinutes } from 'date-fns';
 
 import {
     getNotificationCadency,
@@ -7,7 +7,9 @@ import {
 } from '~/Functions/Settings';
 
 export async function setTimeForNextNotification(): Promise<void> {
-    const date = __DEV__ ? addMinutes(new Date(), 15) : addDays(new Date(), 1);
+    const date = __DEV__
+        ? addMinutes(new Date(), 15)
+        : addHours(new Date(), 12);
 
     const timestamp = getUnixTime(date);
 
