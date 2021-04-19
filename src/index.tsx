@@ -18,6 +18,7 @@ import './Services/Analytics';
 
 import './Functions/ProMode';
 import './Functions/Stores'; // This is just a "hack" do call a method to migrate old stores model
+import './Functions/PushNotifications';
 import { getAllUserPreferences } from './Functions/UserPreferences';
 import { NotificationCadency } from './Functions/Settings';
 

@@ -48,7 +48,7 @@ async function configureBackgroundJob() {
             requiresBatteryNotLow: false, // Default
             requiresStorageNotLow: false, // Default
         },
-        async (taskId) => {
+        async taskId => {
             console.log(
                 `${Platform.OS} => [js] Received background-fetch event: `,
                 taskId
@@ -62,7 +62,7 @@ async function configureBackgroundJob() {
             // or assign battery-blame for consuming too much background-time
             BackgroundJob.finish(taskId);
         },
-        async (error) => {
+        async error => {
             console.log(`[js] RNBackgroundFetch failed to start: ${error}`);
 
             await Analytics().logEvent('Error_while_send_Notification', {
@@ -72,7 +72,7 @@ async function configureBackgroundJob() {
     );
 
     // Optional: Query the authorization status.
-    BackgroundJob.status((status) => {
+    BackgroundJob.status(status => {
         switch (status) {
             case BackgroundJob.STATUS_RESTRICTED:
                 console.log('BackgroundFetch restricted');

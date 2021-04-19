@@ -491,8 +491,8 @@ PODS:
   - RealmJS (10.3.0):
     - GCDWebServer
     - React
-  - RNBackgroundFetch (3.1.0):
-    - React
+  - RNBackgroundFetch (4.0.2):
+    - React-Core
   - RNCAsyncStorage (1.13.2):
     - React
   - RNCMaskedView (0.1.10):
@@ -910,7 +910,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: cad74a1eaa53ee6e7a3620231939d8fe2c6afcf0
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
   RealmJS: ca9b0c1677d5248c6c360bc1b733ed087d345c2f
-  RNBackgroundFetch: 8dbb63141792f1473e863a0797ffbd5d987af2fc
+  RNBackgroundFetch: 635d82e1e185b235c1fe787f29517507f87450e0
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
