@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import StatusBar from '../../Components/StatusBar';
-import BackButton from '../../Components/BackButton';
-
-import { getUserId } from '../../Functions/User';
+import StatusBar from '~/Components/StatusBar';
+import BackButton from '~/Components/BackButton';
 
 import {
     Container,
@@ -17,14 +15,12 @@ import {
     ApplicationVersion,
     AboutSection,
     ApplicationName,
-    UserId,
     Text,
     Link,
 } from './styles';
 
 const About: React.FC = () => {
     const { goBack } = useNavigation();
-    const [userId, setUserId] = useState<string>('');
 
     const navigateToTerms = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev/terms');
@@ -42,16 +38,6 @@ const About: React.FC = () => {
         await Linking.openURL('https://www.flaticon.com/authors/srip');
     }, []);
 
-    const loaddata = useCallback(async () => {
-        const id = await getUserId();
-
-        setUserId(id);
-    }, []);
-
-    useEffect(() => {
-        loaddata();
-    }, [loaddata]);
-
     return (
         <Container>
             <StatusBar />
@@ -62,9 +48,7 @@ const About: React.FC = () => {
 
             <AboutSection>
                 <ApplicationName>{translate('AppName')}</ApplicationName>
-                <UserId>
-                    {translate('View_About_UID')} {userId}
-                </UserId>
+
                 <ApplicationVersion>
                     {translate('View_About_AppVersion') + getVersion()}
                 </ApplicationVersion>
