@@ -22,6 +22,8 @@ import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
 
+import Export from '~/Views/Export';
+
 import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
@@ -52,6 +54,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
             <Stack.Screen name="StoreList" component={StoreList} />
+
+            <Stack.Screen name="Export" component={Export} />
 
             {Platform.OS === 'ios' && (
                 <Stack.Screen

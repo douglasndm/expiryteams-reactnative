@@ -8,8 +8,7 @@ import { translate } from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { isSubscriptionActive } from '~/Functions/ProMode';
-import { importBackupFile, exportBackupFile } from '~/Functions/Backup';
-import { exportToExcel } from '~/Functions/Excel';
+import { importBackupFile } from '~/Functions/Backup';
 
 import Button from '~/Components/Button';
 import Notification from '~/Components/Notification';
@@ -35,8 +34,6 @@ const Pro: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
-    const [isExportLoading, setIsExportLoading] = useState<boolean>(false);
-    const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
     const [error, setError] = useState('');
 
     const { navigate, reset } = useNavigation();
@@ -88,28 +85,6 @@ const Pro: React.FC = () => {
         }
     }, []);
 
-    const handleExportBackup = useCallback(async () => {
-        try {
-            setIsExportLoading(true);
-            await exportBackupFile();
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsExportLoading(false);
-        }
-    }, []);
-
-    const handleExportToExcel = useCallback(async () => {
-        try {
-            setIsExcelLoading(true);
-            await exportToExcel();
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsExcelLoading(false);
-        }
-    }, []);
-
     const onDimissError = useCallback(() => {
         setError('');
     }, []);
@@ -155,41 +130,6 @@ const Pro: React.FC = () => {
                                         <ButtonPremiumText>
                                             {translate(
                                                 'View_Settings_Button_ImportFile'
-                                            )}
-                                        </ButtonPremiumText>
-                                    )}
-                                </ButtonPremium>
-                                <ButtonPremium
-                                    enabled={
-                                        userPreferences.isUserPremium &&
-                                        !isExportLoading
-                                    }
-                                    onPress={handleExportBackup}
-                                >
-                                    {isExportLoading ? (
-                                        <Loading />
-                                    ) : (
-                                        <ButtonPremiumText>
-                                            {translate(
-                                                'View_Settings_Button_ExportFile'
-                                            )}
-                                        </ButtonPremiumText>
-                                    )}
-                                </ButtonPremium>
-
-                                <ButtonPremium
-                                    enabled={
-                                        userPreferences.isUserPremium &&
-                                        !isExcelLoading
-                                    }
-                                    onPress={handleExportToExcel}
-                                >
-                                    {isExcelLoading ? (
-                                        <Loading />
-                                    ) : (
-                                        <ButtonPremiumText>
-                                            {translate(
-                                                'View_Settings_Button_ExportToExcel'
                                             )}
                                         </ButtonPremiumText>
                                     )}

@@ -37,7 +37,11 @@ function sortProducts(products: Array<exportModel>): Array<exportModel> {
     return sorted;
 }
 
-export async function exportToExcel(): Promise<void> {
+interface exportProps {
+    sortBy: 'created_date' | 'expire_date';
+}
+
+export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
     let dateFormat = 'dd/MM/yyyy';
 
     if (getLocales()[0].languageCode === 'en') {
@@ -51,8 +55,8 @@ export async function exportToExcel(): Promise<void> {
 
         const allProducts = await getAllProducts({});
 
-        allProducts.forEach((p) => {
-            p.lotes.forEach((l) => {
+        allProducts.forEach(p => {
+            p.lotes.forEach(l => {
                 excelExport.push({
                     product: p,
                     batch: l,
@@ -60,11 +64,17 @@ export async function exportToExcel(): Promise<void> {
             });
         });
 
-        const sortedProducts = sortProducts(excelExport);
+        let sortedProducts;
+
+        if (sortBy === 'expire_date') {
+            sortedProducts = sortProducts(excelExport);
+        } else {
+            sortedProducts = excelExport;
+        }
 
         const excelRows: Array<ExcelRowProps> = [];
 
-        sortedProducts.forEach((item) => {
+        sortedProducts.forEach(item => {
             const row: any = {};
 
             row[translate('Function_Excel_ColumnName_ProductName')] =
