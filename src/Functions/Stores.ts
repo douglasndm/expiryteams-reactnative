@@ -136,7 +136,9 @@ export async function getAllProductsByStore(
         const products = realm.objects<IProduct>('Product').slice();
 
         if (storeUUID === null) {
-            const prods = products.filter(p => p.store === null);
+            const prods = products.filter(
+                p => p.store === null || p.store === ''
+            );
 
             return prods;
         }

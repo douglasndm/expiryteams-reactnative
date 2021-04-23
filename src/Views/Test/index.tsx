@@ -9,6 +9,7 @@ import {
     TestIds,
     RewardedAdEventType,
 } from '@react-native-firebase/admob';
+import messaging from '@react-native-firebase/messaging';
 
 import Realm from '../../Services/Realm';
 
@@ -110,14 +111,14 @@ const Test: React.FC = () => {
     const logFiles = useCallback(async () => {
         const allProducts = await getAllProducts({});
 
-        const productsWithPics = allProducts.filter((p) => p.photo);
+        const productsWithPics = allProducts.filter(p => p.photo);
         const dir = await readDir(DocumentDirectoryPath);
 
         const files: Array<IProductImage> = [];
 
-        productsWithPics.forEach((p) => {
+        productsWithPics.forEach(p => {
             const findedPic = dir.find(
-                (file) => file.name === p.photo || file.path === p.photo
+                file => file.name === p.photo || file.path === p.photo
             );
 
             if (findedPic) {
@@ -137,13 +138,6 @@ const Test: React.FC = () => {
         console.log(zipPath);
     }, []);
 
-    const rewardAd = useCallback(() => {
-        if (loaded) {
-            rewardedAd.show();
-            rewardedAd.load();
-        }
-    }, [loaded]);
-
     const handleNotification = useCallback(async () => {
         await setTimeForNextNotification();
 
@@ -152,6 +146,12 @@ const Test: React.FC = () => {
         if (notification) {
             sendNotification(notification);
         }
+    }, []);
+
+    useEffect(() => {
+        messaging()
+            .getToken()
+            .then(response => console.log(response));
     }, []);
 
     const handleDeletePrivacySetting = useCallback(async () => {
@@ -171,12 +171,10 @@ const Test: React.FC = () => {
 
                     <Button text="Log files" onPress={logFiles} />
 
-                    <Button text="Show rewards ad" onPress={rewardAd} />
-
                     <Button
                         text="Log is time to notificaiton"
                         onPress={() =>
-                            isTimeForANotification().then((response) =>
+                            isTimeForANotification().then(response =>
                                 console.log(response)
                             )
                         }
