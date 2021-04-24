@@ -18,6 +18,11 @@ import ListProducts from '~/Components/ListProducts';
 import Notification from '~/Components/Notification';
 
 import {
+    FloatButton,
+    Icons as FloatIcon,
+} from '~/Components/ListProducts/styles';
+
+import {
     Container,
     CategoryTitle,
     ActionsButtonContainer,
@@ -78,6 +83,10 @@ const CategoryView: React.FC = () => {
         navigate('CategoryEdit', { id: routeParams.id });
     }, [navigate, routeParams.id]);
 
+    const handleNavigateAddProduct = useCallback(() => {
+        navigate('AddProduct', { category: routeParams.id });
+    }, [navigate, routeParams.id]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -102,7 +111,16 @@ const CategoryView: React.FC = () => {
                 </ActionButton>
             </ActionsButtonContainer>
 
-            <ListProducts products={products} />
+            <ListProducts products={products} deactiveFloatButton />
+
+            <FloatButton
+                icon={() => (
+                    <FloatIcon name="add-outline" color="white" size={22} />
+                )}
+                small
+                label={translate('View_FloatMenu_AddProduct')}
+                onPress={handleNavigateAddProduct}
+            />
 
             {!!error && (
                 <Notification

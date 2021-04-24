@@ -24,11 +24,13 @@ import {
 interface RequestProps {
     products: Array<IProduct>;
     isHome?: boolean;
+    deactiveFloatButton?: boolean;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
     products,
     isHome,
+    deactiveFloatButton,
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
@@ -122,14 +124,16 @@ const ListProducts: React.FC<RequestProps> = ({
                 initialNumToRender={10}
             />
 
-            <FloatButton
-                icon={() => (
-                    <Icons name="add-outline" color="white" size={22} />
-                )}
-                small
-                label={translate('View_FloatMenu_AddProduct')}
-                onPress={handleNavigateAddProduct}
-            />
+            {!deactiveFloatButton && (
+                <FloatButton
+                    icon={() => (
+                        <Icons name="add-outline" color="white" size={22} />
+                    )}
+                    small
+                    label={translate('View_FloatMenu_AddProduct')}
+                    onPress={handleNavigateAddProduct}
+                />
+            )}
         </Container>
     );
 };
