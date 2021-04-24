@@ -4,6 +4,10 @@ import { translate } from '~/Locales';
 
 import { getAllProductsWithoutStore } from '~/Functions/Store';
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
+import {
+    sortProductsByFisrtLoteExpDate,
+    sortProductsLotesByLotesExpDate,
+} from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -49,7 +53,17 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                 }
             }
 
-            setProducts(results);
+            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+            const sortedProds = sortProductsLotesByLotesExpDate(results);
+
+            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+            // DE QUAL ESTÁ MAIS PRÓXIMO
+            const sortedProductsFinal = sortProductsByFisrtLoteExpDate(
+                sortedProds
+            );
+
+            setProducts(sortedProductsFinal);
         } catch (err) {
             setError(err.message);
         } finally {
