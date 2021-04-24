@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
@@ -13,6 +14,10 @@ import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import Notification from '~/Components/Notification';
+import {
+    FloatButton,
+    Icons as FloatIcon,
+} from '~/Components/ListProducts/styles';
 
 import { Container, StoreTitle } from './styles';
 
@@ -25,6 +30,8 @@ interface RequestProps {
 }
 
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
+    const { navigate } = useNavigation();
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
@@ -75,6 +82,10 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
         loadData();
     }, [loadData]);
 
+    const handleNavigateAddProduct = useCallback(() => {
+        navigate('AddProduct', { store });
+    }, [navigate, store]);
+
     const handleDimissNotification = useCallback(() => {
         setError('');
     }, []);
@@ -92,7 +103,16 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                 )}
             </StoreTitle>
 
-            <ListProducts products={products} />
+            <ListProducts products={products} deactiveFloatButton />
+
+            <FloatButton
+                icon={() => (
+                    <FloatIcon name="add-outline" color="white" size={22} />
+                )}
+                small
+                label={translate('View_FloatMenu_AddProduct')}
+                onPress={handleNavigateAddProduct}
+            />
 
             {!!error && (
                 <Notification
