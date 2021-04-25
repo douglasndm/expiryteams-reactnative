@@ -247,6 +247,8 @@
     "View_Success_BatchDeletedDescription": "Batch was deleted",
     "View_Success_ProductDeletedDescription": "Product was deleted",
 
+    "View_Success_Button_GoToCategory": "Go to category",
+    "View_Success_Button_GoToStore": "Go to store",
     "View_Success_Button_GoToHome": "Go home",
     "View_Success_Button_NavigateToProduct": "Go to product",
 

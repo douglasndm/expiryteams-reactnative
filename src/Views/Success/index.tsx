@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
@@ -9,7 +10,7 @@ import { translate } from '../../Locales';
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import StatusBar from '../../Components/StatusBar';
-import Button from '../../Components/Button';
+import FloatButton from '~/Components/FloatButton';
 
 import {
     Container,
@@ -17,6 +18,8 @@ import {
     Title,
     Description,
     ButtonContainer,
+    Button,
+    ButtonText,
 } from './styles';
 
 interface Props {
@@ -28,6 +31,9 @@ interface Props {
         | 'delete_batch'
         | 'delete_product';
     productId?: number;
+
+    category_id?: string;
+    store_id?: string;
 }
 
 const Success: React.FC = () => {
@@ -42,6 +48,59 @@ const Success: React.FC = () => {
         return routeParams.type;
     }, [routeParams]);
 
+    const productId = useMemo(() => {
+        if (routeParams.productId) {
+            return routeParams.productId;
+        }
+        return undefined;
+    }, [routeParams.productId]);
+
+    const category_id = useMemo(() => {
+        if (!routeParams.category_id || routeParams.category_id === 'null') {
+            return null;
+        }
+        return routeParams.category_id;
+    }, [routeParams.category_id]);
+
+    const store_id = useMemo(() => {
+        if (!routeParams.store_id || routeParams.store_id === 'null') {
+            return null;
+        }
+        return routeParams.store_id;
+    }, [routeParams.store_id]);
+
+    const handleNavigateToCategory = useCallback(() => {
+        reset({
+            routes: [
+                {
+                    name: 'Home',
+                },
+                {
+                    name: 'CategoryView',
+                    params: {
+                        id: category_id,
+                    },
+                },
+            ],
+        });
+    }, [category_id, reset]);
+
+    const handleNavigateToStore = useCallback(() => {
+        reset({
+            routes: [
+                {
+                    name: 'Home',
+                },
+                {
+                    name: 'StoreDetails',
+                    params: {
+                        store: store_id,
+                    },
+                },
+            ],
+        });
+    }, [store_id, reset]);
+
     const animation = useMemo(() => {
         switch (type) {
             case 'delete_batch':
@@ -55,6 +114,10 @@ const Success: React.FC = () => {
 
     const adUnitId = useMemo(() => {
         if (__DEV__) return TestIds.BANNER;
+
+        if (Platform.OS === 'ios') {
+            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
+        }
 
         return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
     }, []);
@@ -155,23 +218,40 @@ const Success: React.FC = () => {
                 )}
 
                 <ButtonContainer>
-                    <Button
-                        text={translate('View_Success_Button_GoToHome')}
-                        onPress={handleNavigateHome}
-                    />
+                    {userPreferences.isUserPremium && category_id && (
+                        <Button onPress={handleNavigateToCategory}>
+                            <ButtonText>
+                                {translate('View_Success_Button_GoToCategory')}
+                            </ButtonText>
+                        </Button>
+                    )}
+
+                    {userPreferences.isUserPremium && store_id && (
+                        <Button onPress={handleNavigateToStore}>
+                            <ButtonText>
+                                {translate('View_Success_Button_GoToStore')}
+                            </ButtonText>
+                        </Button>
+                    )}
+
+                    <Button onPress={handleNavigateHome}>
+                        <ButtonText>
+                            {translate('View_Success_Button_GoToHome')}
+                        </ButtonText>
+                    </Button>
 
                     {(type === 'create_batch' ||
                         type === 'create_product' ||
                         type === 'edit_batch' ||
                         type === 'edit_product') &&
                         !!routeParams.productId && (
-                            <Button
-                                text={translate(
-                                    'View_Success_Button_NavigateToProduct'
-                                )}
-                                onPress={handleNavigateToProduct}
-                                contentStyle={{ marginLeft: 10 }}
-                            />
+                            <Button onPress={handleNavigateToProduct}>
+                                <ButtonText>
+                                    {translate(
+                                        'View_Success_Button_NavigateToProduct'
+                                    )}
+                                </ButtonText>
+                            </Button>
                         )}
                 </ButtonContainer>
 
@@ -179,6 +259,13 @@ const Success: React.FC = () => {
                     <BannerAd size={bannerSize} unitId={adUnitId} />
                 )}
             </SuccessMessageContainer>
+
+            {type === 'create_product' && (
+                <FloatButton navigateTo="AddProduct" />
+            )}
+            {type === 'create_batch' && productId && (
+                <FloatButton navigateTo="AddBatch" productId={productId} />
+            )}
         </Container>
     );
 };

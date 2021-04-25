@@ -249,6 +249,8 @@
     "View_Success_BatchDeletedDescription": "O lote foi deletado.",
     "View_Success_ProductDeletedDescription": "O produto foi deletado.",
 
+    "View_Success_Button_GoToCategory": "Ir para categoria",
+    "View_Success_Button_GoToStore": "Ir para loja",
     "View_Success_Button_GoToHome": "Ir para o início",
     "View_Success_Button_NavigateToProduct": "Ir para o produto",
 

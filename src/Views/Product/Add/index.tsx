@@ -217,6 +217,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                             params: {
                                 type: 'create_product',
                                 productId: productCreatedId,
+
+                                category_id: selectedCategory,
+                                store_id: selectedStore,
                             },
                         },
                     ],
