@@ -55,6 +55,9 @@
     "ProductCardComponent_ProductExpireIn": "Vence",
     "ProductCardComponent_ProductExpiredIn": "Venceu",
 
+    "Component_FloatButton_AddProduct": "Novo produto",
+    "Component_FloatButton_AddBatch": "Novo lote",
+
     "StoreGroupComponent_Button_ShowAllProductFromStore": "Mostrar todos os produtos da loja",
 
     "View_About_PageTitle": "Sobre",

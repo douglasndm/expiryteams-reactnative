@@ -55,6 +55,9 @@
     "ProductCardComponent_ProductExpireIn": "Expire",
     "ProductCardComponent_ProductExpiredIn": "Expired",
 
+    "Component_FloatButton_AddProduct": "New product",
+    "Component_FloatButton_AddBatch": "New batch",
+
     "StoreGroupComponent_Button_ShowAllProductFromStore": "Show all products from store",
 
     "View_About_PageTitle": "About",
