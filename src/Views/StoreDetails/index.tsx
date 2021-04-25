@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
-import { getAllProductsWithoutStore } from '~/Functions/Store';
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
 import {
     sortProductsByFisrtLoteExpDate,
