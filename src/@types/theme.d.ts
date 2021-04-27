@@ -19,6 +19,7 @@ declare module 'styled-components' {
 
             productExpiredBackground: string;
             productNextToExpBackground: string;
+            productThreatedBackground: string;
             productNextOrExpiredText: string;
         };
     }
@@ -42,6 +43,7 @@ interface ITheme {
 
         productExpiredBackground: string;
         productNextToExpBackground: string;
+        productThreatedBackground: string;
         productNextOrExpiredText: string;
     };
 }

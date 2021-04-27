@@ -18,6 +18,7 @@ const Florest: DefaultTheme = {
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',
+        productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
     },
 };

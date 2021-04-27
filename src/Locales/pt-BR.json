@@ -49,6 +49,7 @@
 
     "ProductCardComponent_ProductCode": "Código",
     "ProductCardComponent_ProductBatch": "Lote",
+    "ProductCardComponent_OthersBatches": "outros lotes",
     "ProductCardComponent_ProductStore": "Loja",
     "ProductCardComponent_ProductAmount": "Quantidade",
     "ProductCardComponent_ProductPrice": "Preço total",

@@ -19,6 +19,7 @@ const Dark: DefaultTheme = {
 
         productExpiredBackground: darken(0.1, '#CC4B4B'),
         productNextToExpBackground: darken(0.1, '#DDE053'),
+        productThreatedBackground: darken(0.1, '#b0b0b0'),
         productNextOrExpiredText: '#FFF',
     },
 };
