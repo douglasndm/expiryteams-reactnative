@@ -260,12 +260,14 @@ const Success: React.FC = () => {
                 )}
             </SuccessMessageContainer>
 
-            {type === 'create_product' && (
+            {type === 'create_product' && userPreferences.isUserPremium && (
                 <FloatButton navigateTo="AddProduct" />
             )}
-            {type === 'create_batch' && productId && (
-                <FloatButton navigateTo="AddBatch" productId={productId} />
-            )}
+            {type === 'create_batch' &&
+                userPreferences.isUserPremium &&
+                productId && (
+                    <FloatButton navigateTo="AddBatch" productId={productId} />
+                )}
         </Container>
     );
 };
