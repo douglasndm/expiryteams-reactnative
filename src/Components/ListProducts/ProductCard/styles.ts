@@ -66,10 +66,11 @@ export const ProductName = styled.Text<IProductInfo>`
 
 export const ProductInfoItem = styled.Text<IProductInfo>`
     color: rgba(0, 0, 0, 0.3);
-    font-size: 12px;
+    font-size: 13px;
     margin-left: 2px;
 
     font-family: 'Open Sans';
+    font-weight: bold;
 
     color: ${props =>
         props.expiredOrNext
