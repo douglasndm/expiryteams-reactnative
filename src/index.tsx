@@ -9,6 +9,7 @@ import {
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
+import messaging from '@react-native-firebase/messaging';
 
 import './Locales';
 
@@ -31,7 +32,22 @@ import PreferencesContext from './Contexts/PreferencesContext';
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
 
+async function requestUserPermission() {
+    const authorizationStatus = await messaging().requestPermission({
+        alert: true,
+        badge: true,
+        announcement: true,
+        sound: true,
+    });
+
+    if (authorizationStatus) {
+        console.log('Permission status:', authorizationStatus);
+    }
+}
+
 const App: React.FC = () => {
+    requestUserPermission();
+
     const [previousRoute, setPreviousRoute] = useState('Home');
 
     const [preferences, setPreferences] = useState({
