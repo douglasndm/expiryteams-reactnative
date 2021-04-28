@@ -99,7 +99,6 @@ export async function exportBackupFile(): Promise<void> {
 
         await Share.open({
             title: translate('Function_Share_SaveFileTitle'),
-            message: translate('Function_Share_SaveFileDescription'),
             url: `file://${zipPath}`,
         });
 
