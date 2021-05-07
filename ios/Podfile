@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'controledevalidade' do
+target 'Expiry Checker for Business' do
   config = use_native_modules!
 
   use_react_native!(
@@ -17,7 +17,7 @@ target 'controledevalidade' do
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
   pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
 
-  target 'controledevalidadeTests' do
+  target 'Expiry Checker for BusinessTests' do
     inherit! :complete
     # Pods for testing
   end

@@ -19,13 +19,13 @@
 		4FC7F1102593EC6000112252 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */; };
 		4FF2A01525B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */; };
 		54393D10A095445299A2FFD4 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1706DDDD3D36483EBB1E83DB /* OpenSans-SemiBold.ttf */; };
-		6D025C1AFFCE3DFEF28A11E5 /* libPods-controledevalidade-controledevalidadeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E595662963FA744842CB02 /* libPods-controledevalidade-controledevalidadeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		987BDF2B9550209C8C4388C8 /* libPods-controledevalidade.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A94E1A1CE4F3AEFF2108EE1F /* libPods-controledevalidade.a */; };
 		9C6A2F9AC9D24DBFB7B9D4FA /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6C9DE39E59D4B4EB75EB0D8 /* Roboto-Regular.ttf */; };
 		BFFE7E5E82094BA59E2D3037 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44D558C29B5B4E65B1ED4030 /* OpenSans-Bold.ttf */; };
 		C692F7558DBE4FF6BC3F19B9 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 445564B8F5864E5C9AE60D6E /* Roboto-Medium.ttf */; };
 		CBF0D71C82DD4BC1A8E1C0D0 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7E2B94A65434F26B645AC23 /* Roboto-Light.ttf */; };
+		D74C84F09FD3211D1D40F001 /* libPods-Expiry Checker for Business.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCFC0AFD01611D0C1205B24A /* libPods-Expiry Checker for Business.a */; };
+		E213A2A5BBCAAE1DC7E5E10D /* libPods-Expiry Checker for Business-Expiry Checker for BusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8844CF8059128A53D18347FD /* libPods-Expiry Checker for Business-Expiry Checker for BusinessTests.a */; };
 		EACD3FE593F446A9BCB27F61 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1106891E19A4C95B6239447 /* Roboto-Bold.ttf */; };
 		FEBC59048C02432D8256BA37 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58C9C3C8D58247CF8267EEB7 /* OpenSans-Regular.ttf */; };
 /* End PBXBuildFile section */
@@ -53,14 +53,17 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = controledevalidade/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = controledevalidade/main.m; sourceTree = "<group>"; };
 		1706DDDD3D36483EBB1E83DB /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../src/Assets/Fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		1A067A0B5C9EDFBC3546467B /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.staging.xcconfig"; path = "Target Support Files/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.staging.xcconfig"; sourceTree = "<group>"; };
 		1B3D5E340C354118BC219CC0 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		204124BFADA04999827E7BFF /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		2CF1710EA7C44AB68C647EC7 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../src/Assets/Fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		2E432E1DB1364D9BB6F733DF /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		37B1DF09001B4265BBDCBEC2 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		4063D917AA7ECC7169F7437C /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.release.xcconfig"; path = "Target Support Files/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.release.xcconfig"; sourceTree = "<group>"; };
 		445564B8F5864E5C9AE60D6E /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../src/Assets/Fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		44D558C29B5B4E65B1ED4030 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/Assets/Fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		465575EC9E104D4FBE9DD049 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		4875839B346E7EDC04420820 /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.debug.xcconfig"; path = "Target Support Files/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4BFB04DA8838458F9DA6D6E0 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		4F1D6B5425FD5564009BA07C /* controledevalidade-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "controledevalidade-Bridging-Header.h"; sourceTree = "<group>"; };
 		4F1D6B5525FD5564009BA07C /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -75,17 +78,17 @@
 		4FF2A01425B629CC007F6B6A /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		4FF2A1C825B64CE6007F6B6A /* controledevalidade.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = controledevalidade.entitlements; path = controledevalidade/controledevalidade.entitlements; sourceTree = "<group>"; };
 		529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-controledevalidadeTests.release.xcconfig"; path = "Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests.release.xcconfig"; sourceTree = "<group>"; };
-		53E595662963FA744842CB02 /* libPods-controledevalidade-controledevalidadeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-controledevalidadeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		58C9C3C8D58247CF8267EEB7 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../src/Assets/Fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		5910A6BBC09B4391905145EC /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		5E2CC2D9B1E74C78B1985BA6 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		63D69BCF82F5413FA9F6C6F5 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		684C462E6CAEB492CF96616D /* Pods-Expiry Checker for Business.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Expiry Checker for Business.staging.xcconfig"; path = "Target Support Files/Pods-Expiry Checker for Business/Pods-Expiry Checker for Business.staging.xcconfig"; sourceTree = "<group>"; };
 		7438FE3D3C8F4721B93F8E87 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		7C63167689CE49039C56A32D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = controledevalidade/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8844CF8059128A53D18347FD /* libPods-Expiry Checker for Business-Expiry Checker for BusinessTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Expiry Checker for Business-Expiry Checker for BusinessTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F5E7C37D9BD49CF8F3451F4 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		99E15B2747B0961A01CD027D /* Pods-controledevalidade.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade.staging.xcconfig"; path = "Target Support Files/Pods-controledevalidade/Pods-controledevalidade.staging.xcconfig"; sourceTree = "<group>"; };
-		A94E1A1CE4F3AEFF2108EE1F /* libPods-controledevalidade.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEDB098E6E57BAE61D9C18BD /* libPods-controledevalidade-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6C9DE39E59D4B4EB75EB0D8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/Assets/Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		B7E2B94A65434F26B645AC23 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../src/Assets/Fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
@@ -94,12 +97,15 @@
 		D1E2E8B9A172068309F1A51A /* libPods-controledevalidade-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5C6892D4C2A4226B5D5F24A /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		D6B490CD3FDC34E4BC2AE842 /* Pods-controledevalidade-controledevalidadeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-controledevalidadeTests.debug.xcconfig"; path = "Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D87CE2E1B8D01AC53CA4C7E2 /* Pods-Expiry Checker for Business.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Expiry Checker for Business.release.xcconfig"; path = "Target Support Files/Pods-Expiry Checker for Business/Pods-Expiry Checker for Business.release.xcconfig"; sourceTree = "<group>"; };
 		DB7B4D626BF8E117E9AC72B6 /* Pods-controledevalidade-controledevalidadeTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade-controledevalidadeTests.staging.xcconfig"; path = "Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests.staging.xcconfig"; sourceTree = "<group>"; };
 		DF4B9FEBA596270CB8E1C6A2 /* Pods-controledevalidade.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade.debug.xcconfig"; path = "Target Support Files/Pods-controledevalidade/Pods-controledevalidade.debug.xcconfig"; sourceTree = "<group>"; };
+		E06BDE34D93913613BD7F064 /* Pods-Expiry Checker for Business.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Expiry Checker for Business.debug.xcconfig"; path = "Target Support Files/Pods-Expiry Checker for Business/Pods-Expiry Checker for Business.debug.xcconfig"; sourceTree = "<group>"; };
 		E254D4538B9941CB968D0FB8 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EDEC5E602D0C4E219AD2858A /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		FCFC0AFD01611D0C1205B24A /* libPods-Expiry Checker for Business.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Expiry Checker for Business.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D025C1AFFCE3DFEF28A11E5 /* libPods-controledevalidade-controledevalidadeTests.a in Frameworks */,
+				E213A2A5BBCAAE1DC7E5E10D /* libPods-Expiry Checker for Business-Expiry Checker for BusinessTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				987BDF2B9550209C8C4388C8 /* libPods-controledevalidade.a in Frameworks */,
+				D74C84F09FD3211D1D40F001 /* libPods-Expiry Checker for Business.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,10 +166,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				A94E1A1CE4F3AEFF2108EE1F /* libPods-controledevalidade.a */,
-				53E595662963FA744842CB02 /* libPods-controledevalidade-controledevalidadeTests.a */,
 				AEDB098E6E57BAE61D9C18BD /* libPods-controledevalidade-tvOS.a */,
 				D1E2E8B9A172068309F1A51A /* libPods-controledevalidade-tvOSTests.a */,
+				FCFC0AFD01611D0C1205B24A /* libPods-Expiry Checker for Business.a */,
+				8844CF8059128A53D18347FD /* libPods-Expiry Checker for Business-Expiry Checker for BusinessTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -257,6 +263,12 @@
 				529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */,
 				99E15B2747B0961A01CD027D /* Pods-controledevalidade.staging.xcconfig */,
 				DB7B4D626BF8E117E9AC72B6 /* Pods-controledevalidade-controledevalidadeTests.staging.xcconfig */,
+				E06BDE34D93913613BD7F064 /* Pods-Expiry Checker for Business.debug.xcconfig */,
+				D87CE2E1B8D01AC53CA4C7E2 /* Pods-Expiry Checker for Business.release.xcconfig */,
+				684C462E6CAEB492CF96616D /* Pods-Expiry Checker for Business.staging.xcconfig */,
+				4875839B346E7EDC04420820 /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.debug.xcconfig */,
+				4063D917AA7ECC7169F7437C /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.release.xcconfig */,
+				1A067A0B5C9EDFBC3546467B /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.staging.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -399,7 +411,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-controledevalidade/Pods-controledevalidade-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business/Pods-Expiry Checker for Business-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -408,7 +420,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-controledevalidade/Pods-controledevalidade-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business/Pods-Expiry Checker for Business-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		485A689C247213B08E9FEFC2 /* [CP-User] [RNFB] Core Configuration */ = {
@@ -430,9 +442,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-controledevalidade/Pods-controledevalidade-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business/Pods-Expiry Checker for Business-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -453,8 +463,6 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -475,7 +483,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-controledevalidade/Pods-controledevalidade-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business/Pods-Expiry Checker for Business-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		910151F32D4273F7310CA666 /* [CP-User] [RNFB] Crashlytics Configuration */ = {
@@ -498,9 +506,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -521,8 +527,6 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -543,7 +547,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B7D526976A3E693C9CAAFB68 /* [CP] Check Pods Manifest.lock */ = {
@@ -561,7 +565,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-controledevalidade-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Expiry Checker for Business-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -583,7 +587,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-controledevalidade-controledevalidadeTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -596,7 +600,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -605,7 +609,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-controledevalidade-controledevalidadeTests/Pods-controledevalidade-controledevalidadeTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests/Pods-Expiry Checker for Business-Expiry Checker for BusinessTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -674,7 +678,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6B490CD3FDC34E4BC2AE842 /* Pods-controledevalidade-controledevalidadeTests.debug.xcconfig */;
+			baseConfigurationReference = 4875839B346E7EDC04420820 /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -699,7 +703,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 529328DE62F89AE909010F80 /* Pods-controledevalidade-controledevalidadeTests.release.xcconfig */;
+			baseConfigurationReference = 4063D917AA7ECC7169F7437C /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -721,7 +725,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF4B9FEBA596270CB8E1C6A2 /* Pods-controledevalidade.debug.xcconfig */;
+			baseConfigurationReference = E06BDE34D93913613BD7F064 /* Pods-Expiry Checker for Business.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -748,7 +752,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8331357B60652B803839D69 /* Pods-controledevalidade.release.xcconfig */;
+			baseConfigurationReference = D87CE2E1B8D01AC53CA4C7E2 /* Pods-Expiry Checker for Business.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -832,7 +836,7 @@
 		};
 		4F99437825B5325A00542397 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99E15B2747B0961A01CD027D /* Pods-controledevalidade.staging.xcconfig */;
+			baseConfigurationReference = 684C462E6CAEB492CF96616D /* Pods-Expiry Checker for Business.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -857,7 +861,7 @@
 		};
 		4F99437925B5325A00542397 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB7B4D626BF8E117E9AC72B6 /* Pods-controledevalidade-controledevalidadeTests.staging.xcconfig */;
+			baseConfigurationReference = 1A067A0B5C9EDFBC3546467B /* Pods-Expiry Checker for Business-Expiry Checker for BusinessTests.staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
