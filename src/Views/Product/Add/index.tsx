@@ -89,7 +89,16 @@ interface IStoreItem {
     key: string;
 }
 
-const Add: React.FC = () => {
+interface Request {
+    route: {
+        params: {
+            store?: string;
+            category?: string;
+        };
+    };
+}
+
+const Add: React.FC<Request> = ({ route }: Request) => {
     const { goBack, navigate, reset } = useNavigation();
 
     const locale = useMemo(() => {
@@ -112,16 +121,26 @@ const Add: React.FC = () => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
-    const [photoFileName, setPhotoFileName] = useState('');
     const [photoPath, setPhotoPath] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
     const [price, setPrice] = useState(0);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(
-        null
-    );
-    const [selectedStore, setSelectedStore] = useState<string | null>(null);
     const [expDate, setExpDate] = useState(new Date());
+
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(
+        () => {
+            if (route.params && route.params.category) {
+                return route.params.category;
+            }
+            return null;
+        }
+    );
+    const [selectedStore, setSelectedStore] = useState<string | null>(() => {
+        if (route.params && route.params.store) {
+            return route.params.store;
+        }
+        return null;
+    });
 
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
@@ -198,6 +217,9 @@ const Add: React.FC = () => {
                             params: {
                                 type: 'create_product',
                                 productId: productCreatedId,
+
+                                category_id: selectedCategory,
+                                store_id: selectedStore,
                             },
                         },
                     ],
@@ -335,7 +357,6 @@ const Add: React.FC = () => {
         async ({ fileName, filePath }: onPhotoTakedProps) => {
             if (await exists(filePath)) {
                 setPhotoPath(filePath);
-                setPhotoFileName(fileName);
             }
 
             handleDisableCamera();

@@ -574,7 +574,7 @@ PODS:
     - Yoga
   - RNScreens (3.1.1):
     - React-Core
-  - RNShare (5.1.4):
+  - RNShare (6.0.1):
     - React-Core
   - RNVectorIcons (8.1.0):
     - React-Core
@@ -959,7 +959,7 @@ SPEC CHECKSUMS:
   RNPurchases: ffe3b7fd393642f35695907947f2cdb84b282ebb
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
   RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
-  RNShare: 8af5349f05fc042d230674dd650d19789187ff9c
+  RNShare: 755de6bac084428f8fd8fb54c376f126f40e560c
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   RNZipArchive: 3dd2de5b7f590d79e83270508b78870bf5a54f36
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9

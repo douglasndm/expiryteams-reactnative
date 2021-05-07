@@ -67,6 +67,14 @@ const Product = ({ product, expired, nextToExp }: Request) => {
         return !!(expired || nextToExp);
     }, [expired, nextToExp]);
 
+    const batch = useMemo(() => {
+        if (product.lotes[0]) {
+            return product.lotes[0];
+        }
+
+        return null;
+    }, [product.lotes]);
+
     useEffect(() => {
         getProductImagePath(product.id).then(path => {
             if (path) {
@@ -93,6 +101,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
         <Card
             expired={expired}
             nextToExp={nextToExp}
+            threated={batch?.status === 'Tratado'}
             onPress={handleNavigateToProduct}
         >
             <Content>
@@ -116,6 +125,14 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {translate('ProductCardComponent_ProductBatch')}
                                 : {product.lotes[0].lote}
+                            </ProductInfoItem>
+                        )}
+
+                        {product.lotes.length > 1 && (
+                            <ProductInfoItem expiredOrNext={expiredOrNext}>
+                                {`${product.lotes.length - 1} ${translate(
+                                    'ProductCardComponent_OthersBatches'
+                                )}`}
                             </ProductInfoItem>
                         )}
 

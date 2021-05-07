@@ -1,14 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
-import { getAllProductsWithoutStore } from '~/Functions/Store';
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
+import {
+    sortProductsByFisrtLoteExpDate,
+    sortProductsLotesByLotesExpDate,
+} from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import Notification from '~/Components/Notification';
+import {
+    FloatButton,
+    Icons as FloatIcon,
+} from '~/Components/ListProducts/styles';
 
 import { Container, StoreTitle } from './styles';
 
@@ -21,6 +29,8 @@ interface RequestProps {
 }
 
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
+    const { navigate } = useNavigation();
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
@@ -49,7 +59,17 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                 }
             }
 
-            setProducts(results);
+            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+            const sortedProds = sortProductsLotesByLotesExpDate(results);
+
+            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+            // DE QUAL ESTÁ MAIS PRÓXIMO
+            const sortedProductsFinal = sortProductsByFisrtLoteExpDate(
+                sortedProds
+            );
+
+            setProducts(sortedProductsFinal);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -60,6 +80,10 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
     useEffect(() => {
         loadData();
     }, [loadData]);
+
+    const handleNavigateAddProduct = useCallback(() => {
+        navigate('AddProduct', { store });
+    }, [navigate, store]);
 
     const handleDimissNotification = useCallback(() => {
         setError('');
@@ -78,7 +102,16 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                 )}
             </StoreTitle>
 
-            <ListProducts products={products} />
+            <ListProducts products={products} deactiveFloatButton />
+
+            <FloatButton
+                icon={() => (
+                    <FloatIcon name="add-outline" color="white" size={22} />
+                )}
+                small
+                label={translate('View_FloatMenu_AddProduct')}
+                onPress={handleNavigateAddProduct}
+            />
 
             {!!error && (
                 <Notification

@@ -19,6 +19,7 @@ const UltraViolet: DefaultTheme = {
 
         productExpiredBackground: darken(0.1, '#e01010'),
         productNextToExpBackground: darken(0.1, '#eded1f'),
+        productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
     },
 };

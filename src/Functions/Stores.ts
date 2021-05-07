@@ -7,6 +7,7 @@ import Realm from '~/Services/Realm';
 
 import { getAllStores as allStores } from './Store';
 
+// This is to detect UUID
 const regularExpression = new RegExp(
     /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
 );

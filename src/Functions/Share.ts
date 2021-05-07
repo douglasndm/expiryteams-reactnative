@@ -32,7 +32,6 @@ export async function shareFile({
 
         await Share.open({
             title: translate('Function_Share_SaveFileTitle'),
-            message: translate('Function_Share_SaveFileDescription'),
             url: `file://${path}`,
         });
     } catch (err) {

@@ -5,8 +5,9 @@
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",
-    "Menu_Button_GoToStores": "Stores",
     "Menu_Button_GoToCategories": "Categories",
+    "Menu_Button_GoToStores": "Stores",
+    "Menu_Button_GoToExport": "Export",
     "Menu_Button_GoToProPage": "Become PRO",
     "Menu_Button_GoToSettings": "Settings",
     "Menu_Button_GoToAbout": "About",
@@ -48,11 +49,15 @@
 
     "ProductCardComponent_ProductCode": "Code",
     "ProductCardComponent_ProductBatch": "Batch",
+    "ProductCardComponent_OthersBatches": "other batches",
     "ProductCardComponent_ProductStore": "Store",
     "ProductCardComponent_ProductAmount": "Amount",
     "ProductCardComponent_ProductPrice": "Total price",
     "ProductCardComponent_ProductExpireIn": "Expire",
     "ProductCardComponent_ProductExpiredIn": "Expired",
+
+    "Component_FloatButton_AddProduct": "New product",
+    "Component_FloatButton_AddBatch": "New batch",
 
     "StoreGroupComponent_Button_ShowAllProductFromStore": "Show all products from store",
 
@@ -199,8 +204,6 @@
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
-    "View_Settings_Button_ExportFile": "Export backup file",
-    "View_Settings_Button_ExportToExcel": "Export to Excel",
     "View_Settings_Button_BecobeProToUnlockNewFeatures": "BECOME A PRO USER TO UNLOCK NEW FEATURES",
     "View_Settings_Button_CancelSubscribe": "Cancel subscribe",
     "View_Settings_AccountDescription": "Manage your account linked to the app",
@@ -245,6 +248,8 @@
     "View_Success_BatchDeletedDescription": "Batch was deleted",
     "View_Success_ProductDeletedDescription": "Product was deleted",
 
+    "View_Success_Button_GoToCategory": "Go to category",
+    "View_Success_Button_GoToStore": "Go to store",
     "View_Success_Button_GoToHome": "Go home",
     "View_Success_Button_NavigateToProduct": "Go to product",
 
@@ -262,6 +267,15 @@
     "View_Category_Edit_SuccessText": "Success",
     "View_Category_Edit_ErrorEmtpyName": "Type the category name",
 
+    "View_Export_PageTitle": "Export",
+    "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",
+    "View_Export_SortTitle": "Sort products by",
+    "View_Export_SortByCreatedDate": "Created date",
+    "View_Export_SortByExpireDate": "Expiry date",
+    "View_Export_Explain_Backup": "If you need to restore or change your phone, you'll need this file to restore all your products in your need phone.",
+    "View_Export_Button_ExportExcel": "Export to Excel",
+    "View_Export_Button_ExportBackup": "Export to backup",
+
     "View_Permissions_AppleAT_PageTitle": "We need your permission",
     "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to track you in sites and apps that you use to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
     "View_Permissions_AppleAT_SwitchAllowTracking": "Use unique device identification",
@@ -276,7 +290,6 @@
     "Function_Import_Error_InvalidExtesion": "Invalid extension",
 
     "Function_Share_SaveFileTitle": "Save file",
-    "Function_Share_SaveFileDescription": "Choose a place to save the file",
 
     "Function_Notification_ItOnlyHasProductsNextToExpTitle": "You have products that will expire soon.",
     "Function_Notification_ItOnlyHasExpiredProductsTitle": "YOU HAVE EXPIRED PRODUCTS!",

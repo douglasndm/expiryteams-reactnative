@@ -7,11 +7,20 @@ import {
     getAllCategories,
     getAllProductsByCategory,
 } from '~/Functions/Category';
+import {
+    sortProductsByFisrtLoteExpDate,
+    sortProductsLotesByLotesExpDate,
+} from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import Notification from '~/Components/Notification';
+
+import {
+    FloatButton,
+    Icons as FloatIcon,
+} from '~/Components/ListProducts/styles';
 
 import {
     Container,
@@ -46,7 +55,7 @@ const CategoryView: React.FC = () => {
         try {
             setIsLoading(true);
             const categories = await getAllCategories();
-            const findCat = categories.find((c) => c.id === routeParams.id);
+            const findCat = categories.find(c => c.id === routeParams.id);
 
             if (findCat) {
                 setCategoryName(findCat.name);
@@ -54,7 +63,15 @@ const CategoryView: React.FC = () => {
 
             const prods = await getAllProductsByCategory(routeParams.id);
 
-            setProducts(prods);
+            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+            const sortedProds = sortProductsLotesByLotesExpDate(prods);
+
+            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+            // DE QUAL ESTÁ MAIS PRÓXIMO
+            const results = sortProductsByFisrtLoteExpDate(sortedProds);
+
+            setProducts(results);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -64,6 +81,10 @@ const CategoryView: React.FC = () => {
 
     const handleEdit = useCallback(() => {
         navigate('CategoryEdit', { id: routeParams.id });
+    }, [navigate, routeParams.id]);
+
+    const handleNavigateAddProduct = useCallback(() => {
+        navigate('AddProduct', { category: routeParams.id });
     }, [navigate, routeParams.id]);
 
     useEffect(() => {
@@ -90,7 +111,16 @@ const CategoryView: React.FC = () => {
                 </ActionButton>
             </ActionsButtonContainer>
 
-            <ListProducts products={products} />
+            <ListProducts products={products} deactiveFloatButton />
+
+            <FloatButton
+                icon={() => (
+                    <FloatIcon name="add-outline" color="white" size={22} />
+                )}
+                small
+                label={translate('View_FloatMenu_AddProduct')}
+                onPress={handleNavigateAddProduct}
+            />
 
             {!!error && (
                 <Notification

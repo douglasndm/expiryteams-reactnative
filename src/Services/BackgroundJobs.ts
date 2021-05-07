@@ -11,7 +11,7 @@ import { getNotificationForAllProductsCloseToExp } from '../Functions/ProductsNo
 
 import { sendNotification } from './Notifications';
 
-const handleSetNotification = async () => {
+export const handleSetNotification = async (): Promise<void> => {
     const notificationTime = await isTimeForANotification();
 
     if (notificationTime) {

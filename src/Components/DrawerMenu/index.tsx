@@ -50,12 +50,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('AllProducts');
     }, [navigation]);
 
+    const navigateToCategories = useCallback(() => {
+        navigation.navigate('ListCategory');
+    }, [navigation]);
+
     const navigateToAllProductsByStore = useCallback(() => {
         navigation.navigate('StoreList');
     }, [navigation]);
 
-    const navigateToCategories = useCallback(() => {
-        navigation.navigate('ListCategory');
+    const navigateToExport = useCallback(() => {
+        navigation.navigate('Export');
     }, [navigation]);
 
     const navigateToPRO = useCallback(() => {
@@ -103,6 +107,27 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
+                        <MenuItemContainer
+                            onPress={
+                                userPreferences.isUserPremium
+                                    ? navigateToCategories
+                                    : navigateToPRO
+                            }
+                        >
+                            <MenuContent>
+                                <Icons name="file-tray-full-outline" />
+                                <MenuItemText>
+                                    {translate('Menu_Button_GoToCategories')}
+                                </MenuItemText>
+                            </MenuContent>
+
+                            <LabelGroup>
+                                <LabelContainer>
+                                    <Label>{translate('Menu_Label_PRO')}</Label>
+                                </LabelContainer>
+                            </LabelGroup>
+                        </MenuItemContainer>
+
                         {shouldShowMultiplesStores && (
                             <MenuItemContainer
                                 onPress={
@@ -131,14 +156,14 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuItemContainer
                             onPress={
                                 userPreferences.isUserPremium
-                                    ? navigateToCategories
+                                    ? navigateToExport
                                     : navigateToPRO
                             }
                         >
                             <MenuContent>
-                                <Icons name="file-tray-full-outline" />
+                                <Icons name="download-outline" />
                                 <MenuItemText>
-                                    {translate('Menu_Button_GoToCategories')}
+                                    {translate('Menu_Button_GoToExport')}
                                 </MenuItemText>
                             </MenuContent>
 
