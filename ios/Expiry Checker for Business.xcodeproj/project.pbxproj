@@ -42,11 +42,11 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* controledevalidadeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = controledevalidadeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* Expiry Checker for BusinessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Expiry Checker for BusinessTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* controledevalidadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = controledevalidadeTests.m; sourceTree = "<group>"; };
 		10A53A25B3D3400195CA1B48 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* controledevalidade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = controledevalidade.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Expiry Checker for Business.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Expiry Checker for Business.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = controledevalidade/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = controledevalidade/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = controledevalidade/Images.xcassets; sourceTree = "<group>"; };
@@ -211,8 +211,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* controledevalidade.app */,
-				00E356EE1AD99517003FC87E /* controledevalidadeTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Expiry Checker for Business.app */,
+				00E356EE1AD99517003FC87E /* Expiry Checker for BusinessTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -264,9 +264,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* controledevalidadeTests */ = {
+		00E356ED1AD99517003FC87E /* Expiry Checker for BusinessTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "controledevalidadeTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "Expiry Checker for BusinessTests" */;
 			buildPhases = (
 				C28CF1E10C68265CE2FDA1E6 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -280,14 +280,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = controledevalidadeTests;
+			name = "Expiry Checker for BusinessTests";
 			productName = controledevalidadeTests;
-			productReference = 00E356EE1AD99517003FC87E /* controledevalidadeTests.xctest */;
+			productReference = 00E356EE1AD99517003FC87E /* Expiry Checker for BusinessTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* controledevalidade */ = {
+		13B07F861A680F5B00A75B9A /* Expiry Checker for Business */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "controledevalidade" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Expiry Checker for Business" */;
 			buildPhases = (
 				B7D526976A3E693C9CAAFB68 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -304,9 +304,9 @@
 			);
 			dependencies = (
 			);
-			name = controledevalidade;
+			name = "Expiry Checker for Business";
 			productName = controledevalidade;
-			productReference = 13B07F961A680F5B00A75B9A /* controledevalidade.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Expiry Checker for Business.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -327,7 +327,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "controledevalidade" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Expiry Checker for Business" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -341,8 +341,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* controledevalidade */,
-				00E356ED1AD99517003FC87E /* controledevalidadeTests */,
+				13B07F861A680F5B00A75B9A /* Expiry Checker for Business */,
+				00E356ED1AD99517003FC87E /* Expiry Checker for BusinessTests */,
 			);
 		};
 /* End PBXProject section */
@@ -654,7 +654,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* controledevalidade */;
+			target = 13B07F861A680F5B00A75B9A /* Expiry Checker for Business */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -693,7 +693,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/controledevalidade.app/controledevalidade";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Expiry Checker for Business.app/Expiry Checker for Business";
 			};
 			name = Debug;
 		};
@@ -715,7 +715,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/controledevalidade.app/controledevalidade";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Expiry Checker for Business.app/Expiry Checker for Business";
 			};
 			name = Release;
 		};
@@ -726,19 +726,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.8.10;
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.controledevalidade;
-				PRODUCT_NAME = controledevalidade;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.douglasndm.expirychecker.business;
+				PRODUCT_NAME = "Expiry Checker for Business";
 				SWIFT_OBJC_BRIDGING_HEADER = "controledevalidade-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -753,18 +753,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.8.10;
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.controledevalidade;
-				PRODUCT_NAME = controledevalidade;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.douglasndm.expirychecker.business;
+				PRODUCT_NAME = "Expiry Checker for Business";
 				SWIFT_OBJC_BRIDGING_HEADER = "controledevalidade-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -837,18 +837,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.8.10;
+				MARKETING_VERSION = 0.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.controledevalidade;
-				PRODUCT_NAME = controledevalidade;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.douglasndm.expirychecker.business;
+				PRODUCT_NAME = "Expiry Checker for Business";
 				SWIFT_OBJC_BRIDGING_HEADER = "controledevalidade-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -873,7 +873,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/controledevalidade.app/controledevalidade";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Expiry Checker for Business.app/Expiry Checker for Business";
 			};
 			name = Staging;
 		};
@@ -1005,7 +1005,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "controledevalidadeTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "Expiry Checker for BusinessTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1015,7 +1015,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "controledevalidade" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Expiry Checker for Business" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1025,7 +1025,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "controledevalidade" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Expiry Checker for Business" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

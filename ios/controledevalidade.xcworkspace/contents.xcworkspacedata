@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:controledevalidade.xcodeproj">
+      location = "group:/Users/douglasndm/Projects/ReactNative/expirybusiness/ios/Expiry Checker for Business.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
