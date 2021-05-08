@@ -9,8 +9,6 @@ import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Notification from '~/Components/Notification';
 
-import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';
-
 import {
     InputSearch,
     InputTextContainer,
@@ -89,7 +87,7 @@ const AllProducts: React.FC = () => {
     );
 
     const handleOnCodeRead = useCallback(
-        (code) => {
+        code => {
             setSearchString(code);
             handleSearchChange(code);
             setEnableBarCodeReader(false);

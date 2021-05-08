@@ -3,8 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
-import { getAllCategories, createCategory } from '~/Functions/Category';
-
 import Header from '~/Components/Header';
 
 import {
@@ -36,10 +34,10 @@ const List: React.FC = () => {
     const [categories, setCategories] = useState<Array<ICategory>>([]);
 
     useEffect(() => {
-        getAllCategories().then((response) => setCategories(response));
+        getAllCategories().then(response => setCategories(response));
     }, []);
 
-    const handleOnTextChange = useCallback((value) => {
+    const handleOnTextChange = useCallback(value => {
         setInputHasError(false);
         setInputErrorMessage('');
         setNewCategoryName(value);
@@ -126,7 +124,7 @@ const List: React.FC = () => {
 
             <ListCategories
                 data={categories}
-                keyExtractor={(item) => item.id}
+                keyExtractor={item => item.id}
                 renderItem={renderCategory}
             />
         </Container>

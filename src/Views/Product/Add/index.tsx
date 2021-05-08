@@ -10,22 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import EnvConfig from 'react-native-config';
 import { exists, unlink } from 'react-native-fs';
-import {
-    InterstitialAd,
-    AdEventType,
-    TestIds,
-} from '@react-native-firebase/admob';
 
 import { translate } from '~/Locales';
 
-import { getAllStores } from '~/Functions/Stores';
-import {
-    checkIfProductAlreadyExistsByCode,
-    getProductByCode,
-    createProduct,
-} from '~/Functions/Product';
-import { createLote } from '~/Functions/Lotes';
-import { getAllCategories } from '~/Functions/Category';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 import StatusBar from '~/Components/StatusBar';
@@ -67,16 +54,6 @@ import {
     BannerText,
     Icons,
 } from './styles';
-
-let adUnit = TestIds.INTERSTITIAL;
-
-if (Platform.OS === 'ios' && !__DEV__) {
-    adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_PRODUCT;
-} else if (Platform.OS === 'android' && !__DEV__) {
-    adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
-}
-
-const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 interface ICategoryItem {
     label: string;

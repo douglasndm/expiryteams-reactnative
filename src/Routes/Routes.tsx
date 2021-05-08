@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from '~/Views/Home';
@@ -12,7 +11,6 @@ import AllProducts from '~/Views/AllProducts';
 import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
-import ProSubscription from '~/Views/ProSubscription';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 
@@ -23,8 +21,6 @@ import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
 
 import Export from '~/Views/Export';
-
-import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
 
@@ -45,7 +41,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditLote" component={EditLote} />
             <Stack.Screen name="Test" component={Test} />
-            <Stack.Screen name="Pro" component={ProSubscription} />
             <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
@@ -56,13 +51,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="StoreList" component={StoreList} />
 
             <Stack.Screen name="Export" component={Export} />
-
-            {Platform.OS === 'ios' && (
-                <Stack.Screen
-                    name="TrackingPermission"
-                    component={TrackingPermission}
-                />
-            )}
         </Stack.Navigator>
     );
 };

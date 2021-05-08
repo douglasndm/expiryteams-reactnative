@@ -7,8 +7,6 @@ import {
     copyFile,
 } from 'react-native-fs';
 
-import { getProductById, updateProduct } from '../Product';
-
 export function getImageFileNameFromPath(path: string): string {
     const productImage = path.split('/');
 

@@ -9,7 +9,6 @@ import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import { getLocales } from 'react-native-localize';
 import { format } from 'date-fns';
 import EnvConfig from 'react-native-config';
@@ -23,9 +22,6 @@ import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import Notification from '~/Components/Notification';
 
-import { getProductById } from '~/Functions/Product';
-import { sortLoteByExpDate } from '~/Functions/Lotes';
-import { getStore } from '~/Functions/Stores';
 import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
@@ -84,18 +80,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             return 'MM/dd/yyyy';
         }
         return 'dd/MM/yyyy';
-    }, []);
-
-    const adUnit = useMemo(() => {
-        if (__DEV__) {
-            return TestIds.BANNER;
-        }
-
-        if (Platform.OS === 'ios') {
-            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
-        }
-
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
     }, []);
 
     const [name, setName] = useState('');

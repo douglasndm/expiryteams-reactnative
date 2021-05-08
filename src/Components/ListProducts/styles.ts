@@ -1,24 +1,9 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 import { FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
     flex: 1;
-`;
-
-export const ProBanner = styled(RectButton)`
-    background-color: #ffffff;
-    border-radius: 12px;
-    margin: 5px 10px 5px 10px;
-`;
-
-export const ProText = styled.Text`
-    font-size: 13px;
-    font-weight: bold;
-    text-align: center;
-    color: #454545;
-    margin: 15px;
 `;
 
 export const CategoryDetails = styled.View`

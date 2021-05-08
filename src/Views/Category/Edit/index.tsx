@@ -4,8 +4,6 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
-import { getCategory, updateCategory } from '~/Functions/Category';
-
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
 
@@ -35,10 +33,10 @@ const Edit: React.FC = () => {
     const handleDeleteCategory = useCallback(async () => {}, []);
 
     useEffect(() => {
-        getCategory(routeParams.id).then((response) => setName(response.name));
+        getCategory(routeParams.id).then(response => setName(response.name));
     }, [routeParams.id]);
 
-    const onNameChange = useCallback((value) => {
+    const onNameChange = useCallback(value => {
         setErrorName('');
         setName(value);
     }, []);

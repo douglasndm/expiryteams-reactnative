@@ -25,9 +25,5 @@ public class MainActivity extends ReactActivity {
         SplashScreen.show(this, R.style.SplashScreenTheme);
         // super.onCreate(savedInstance);
         super.onCreate(null);
-
-        // RUN MEDIATION TEST SUITE. JUST UNCOMENT
-        // String appId = ""; // APP ID FROM ADMOB
-        // MediationTestSuite.launch(MainActivity.this, appId);
   }
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -11,8 +11,6 @@ import GenericButton from '../Button';
 
 import {
     Container,
-    ProBanner,
-    ProText,
     CategoryDetails,
     CategoryDetailsText,
     EmptyListText,
@@ -34,37 +32,17 @@ const ListProducts: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
-
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
-    }, [navigate]);
-
-    const handleNavigateProPage = useCallback(() => {
-        navigate('Pro');
     }, [navigate]);
 
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
     }, [navigate]);
 
-    const choosenAdText = useMemo(() => {
-        return Math.floor(Math.random() * 3) + 1;
-    }, []);
-
     const ListHeader = useCallback(() => {
         return (
             <View>
-                {userPreferences.isUserPremium !== true && (
-                    <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>
-                            {translate(
-                                `ProBanner_Text${choosenAdText}`
-                            ).toLocaleUpperCase()}
-                        </ProText>
-                    </ProBanner>
-                )}
-
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
                     <CategoryDetails>
@@ -77,12 +55,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [
-        products,
-        handleNavigateProPage,
-        userPreferences.isUserPremium,
-        choosenAdText,
-    ]);
+    }, [products]);
 
     const EmptyList = useCallback(() => {
         return (

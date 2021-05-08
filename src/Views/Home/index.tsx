@@ -1,21 +1,6 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useMemo,
-    useContext,
-} from 'react';
-import { Platform, PixelRatio } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
-import EnvConfig from 'react-native-config';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { translate } from '~/Locales';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import { getAllowedToReadIDFA } from '~/Functions/Privacy';
-import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -25,7 +10,6 @@ import BarCodeReader from '~/Components/BarCodeReader';
 
 import {
     Container,
-    AdContainer,
     InputSearch,
     InputTextContainer,
     InputTextIcon,
@@ -33,10 +17,6 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation();
-
-    const { userPreferences } = useContext(PreferencesContext);
-
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
@@ -48,49 +28,11 @@ const Home: React.FC = () => {
         false
     );
 
-    useEffect(() => {
-        if (Platform.OS === 'ios') {
-            getAllowedToReadIDFA().then(response => {
-                if (response === null) {
-                    reset({
-                        routes: [{ name: 'TrackingPermission' }],
-                    });
-                }
-            });
-        }
-    }, [reset]);
-
-    const adUnit = useMemo(() => {
-        if (__DEV__) {
-            return TestIds.BANNER;
-        }
-
-        if (Platform.OS === 'ios') {
-            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_HOME;
-        }
-
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_HOME;
-    }, []);
-
-    const bannerSize = useMemo(() => {
-        if (PixelRatio.get() < 2) {
-            return BannerAdSize.BANNER;
-        }
-
-        return BannerAdSize.LARGE_BANNER;
-    }, []);
-
     const getProduts = useCallback(async () => {
         try {
             setIsLoading(true);
-            const allProducts = await getAllProducts({
-                limit: 20,
-                removeProductsWithoutBatches: true,
-                removeTreatedBatch: true,
-                sortProductsByExpDate: true,
-            });
 
-            setProducts(allProducts);
+            setProducts([]);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -160,12 +102,6 @@ const Home: React.FC = () => {
             ) : (
                 <Container>
                     <Header />
-
-                    {!userPreferences.isUserPremium && (
-                        <AdContainer>
-                            <BannerAd unitId={adUnit} size={bannerSize} />
-                        </AdContainer>
-                    )}
 
                     {products.length > 0 && (
                         <InputTextContainer>

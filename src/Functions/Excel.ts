@@ -5,7 +5,6 @@ import { getLocales } from 'react-native-localize';
 import { translate } from '../Locales';
 
 import { shareFile } from './Share';
-import { getAllProducts } from './Products';
 
 interface ExcelRowProps {
     produto: string;

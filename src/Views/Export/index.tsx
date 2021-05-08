@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 
 import { translate } from '~/Locales';
 
-import { exportBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
 
 import Header from '~/Components/Header';

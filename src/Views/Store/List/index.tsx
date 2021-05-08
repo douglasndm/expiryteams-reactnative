@@ -3,8 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
-import { createStore, getAllStores } from '~/Functions/Stores';
-
 import Header from '~/Components/Header';
 
 import {
@@ -34,17 +32,6 @@ const List: React.FC = () => {
     const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
 
     const [stores, setStores] = useState<Array<IStore>>([]);
-
-    useEffect(() => {
-        getAllStores().then(response => {
-            const noStore: IStore = {
-                id: '000',
-                name: translate('View_Store_List_NoStore'),
-            };
-
-            setStores([...response, noStore]);
-        });
-    }, []);
 
     const handleOnTextChange = useCallback(value => {
         setInputHasError(false);

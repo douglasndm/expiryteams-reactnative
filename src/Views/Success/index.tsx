@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
 import { translate } from '../../Locales';
@@ -111,20 +110,6 @@ const Success: React.FC = () => {
                 return require('../../Assets/Animations/success.json');
         }
     }, [type]);
-
-    const adUnitId = useMemo(() => {
-        if (__DEV__) return TestIds.BANNER;
-
-        if (Platform.OS === 'ios') {
-            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
-        }
-
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
-    }, []);
-
-    const bannerSize = useMemo(() => {
-        return BannerAdSize.MEDIUM_RECTANGLE;
-    }, []);
 
     const handleNavigateHome = useCallback(() => {
         reset({
@@ -254,10 +239,6 @@ const Success: React.FC = () => {
                             </Button>
                         )}
                 </ButtonContainer>
-
-                {!userPreferences.isUserPremium && (
-                    <BannerAd size={bannerSize} unitId={adUnitId} />
-                )}
             </SuccessMessageContainer>
 
             {type === 'create_product' && userPreferences.isUserPremium && (

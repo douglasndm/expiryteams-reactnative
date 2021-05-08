@@ -14,13 +14,6 @@ import BarCodeReader from '~/Components/BarCodeReader';
 import Notification from '~/Components/Notification';
 
 import {
-    getProductById,
-    updateProduct,
-    deleteProduct,
-} from '~/Functions/Product';
-import { getAllCategories } from '~/Functions/Category';
-import { getAllStores, getStore } from '~/Functions/Stores';
-import {
     saveProductImage,
     getProductImagePath,
     getImageFileNameFromPath,

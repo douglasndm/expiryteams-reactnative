@@ -16,7 +16,6 @@ import { translate } from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getProductImagePath } from '~/Functions/Products/Image';
-import { getStore } from '~/Functions/Stores';
 
 import {
     Card,

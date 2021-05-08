@@ -10,11 +10,6 @@ import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import crashlytics from '@react-native-firebase/crashlytics';
 import EnvConfig from 'react-native-config';
-import {
-    InterstitialAd,
-    AdEventType,
-    TestIds,
-} from '@react-native-firebase/admob';
 
 import { translate } from '~/Locales';
 
@@ -22,9 +17,6 @@ import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
 import Notification from '~/Components/Notification';
-
-import { createLote } from '~/Functions/Lotes';
-import { getProductById } from '~/Functions/Product';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -51,16 +43,6 @@ interface Props {
         };
     };
 }
-
-let adUnit = TestIds.INTERSTITIAL;
-
-if (Platform.OS === 'ios' && !__DEV__) {
-    adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_BATCH;
-} else if (Platform.OS === 'android' && !__DEV__) {
-    adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDLOTE;
-}
-
-const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;

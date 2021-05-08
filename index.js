@@ -8,7 +8,6 @@ import messaging from '@react-native-firebase/messaging';
 import { name as appName } from './app.json';
 import App from './src';
 import './src/Functions/OpenAppTimes';
-import {handleSetNotification} from '~/Services/BackgroundJobs';
 
 // Register background handler
 messaging().setBackgroundMessageHandler(async remoteMessage => {

@@ -7,9 +7,6 @@ import { useTheme } from 'styled-components';
 
 import { translate } from '~/Locales';
 
-import { updateLote, deleteLote } from '~/Functions/Lotes';
-import { getProductById } from '~/Functions/Product';
-
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';

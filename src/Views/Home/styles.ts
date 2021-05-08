@@ -8,11 +8,6 @@ export const Container = styled.View`
     background: ${props => props.theme.colors.background};
 `;
 
-export const AdContainer = styled.View`
-    align-items: center;
-    margin-top: 5px;
-`;
-
 export const InputTextContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;

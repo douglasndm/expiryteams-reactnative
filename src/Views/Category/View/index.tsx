@@ -3,15 +3,6 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
-import {
-    getAllCategories,
-    getAllProductsByCategory,
-} from '~/Functions/Category';
-import {
-    sortProductsByFisrtLoteExpDate,
-    sortProductsLotesByLotesExpDate,
-} from '~/Functions/Products';
-
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';

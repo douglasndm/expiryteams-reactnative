@@ -12,13 +12,11 @@ import NotificationError from '../../Components/Notification';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
-import Pro from './Components/Pro';
 
 import {
     setHowManyDaysToBeNextExp,
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
-import { isUserSignedIn, signOut } from '~/Functions/Auth';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -155,7 +153,7 @@ const Settings: React.FC = () => {
                                     keyboardType="numeric"
                                     placeholder="Quantidade de dias"
                                     value={daysToBeNext}
-                                    onChangeText={(v) => {
+                                    onChangeText={v => {
                                         const regex = /^[0-9\b]+$/;
 
                                         if (v === '' || regex.test(v)) {
