@@ -1,6 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-
-import { addDays, isPast } from 'date-fns';
+import { addDays, isPast, parseISO } from 'date-fns';
 
 import ProductCard from '~/Components/ListProducts/ProductCard';
 
@@ -17,17 +16,31 @@ const ProductContainer: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { userPreferences } = useContext(PreferencesContext);
 
+    const exp_date = useMemo(() => {
+        if (product.batches[0]) {
+            return parseISO(product.batches[0].exp_date);
+        }
+
+        return null;
+    }, [product.batches]);
+
     const expired = useMemo(() => {
-        return product.lotes[0] && isPast(product.lotes[0].exp_date);
-    }, [product.lotes]);
+        if (exp_date && isPast(exp_date)) {
+            return true;
+        }
+        return false;
+    }, [exp_date]);
 
     const nextToExp = useMemo(() => {
-        return (
-            product.lotes[0] &&
+        if (
+            exp_date &&
             addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
-                product.lotes[0].exp_date
-        );
-    }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
+                exp_date
+        )
+            return true;
+
+        return false;
+    }, [userPreferences.howManyDaysToBeNextToExpire, exp_date]);
 
     return (
         <Container>

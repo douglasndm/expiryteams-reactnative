@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { translate } from '~/Locales';
 
+import { getAllProducts } from '~/Functions/Products/Products';
+
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import Notification from '~/Components/Notification';
@@ -31,8 +33,11 @@ const Home: React.FC = () => {
     const getProduts = useCallback(async () => {
         try {
             setIsLoading(true);
+            const productsResponse = await getAllProducts({
+                team_id: 'a45ebbee-1031-4d83-bcf5-25c6c552bd9b',
+            });
 
-            setProducts([]);
+            setProducts(productsResponse);
         } catch (err) {
             setError(err.message);
         } finally {

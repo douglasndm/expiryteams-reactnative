@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
+import { format, formatDistanceToNow, parseISO } from 'date-fns'; // eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 
 
@@ -56,41 +56,23 @@ const Product = ({ product, expired, nextToExp }: Request) => {
     });
 
     const exp_date = useMemo(() => {
-        if (product.lotes[0]) {
-            return product.lotes[0].exp_date;
+        if (product.batches[0]) {
+            return parseISO(product.batches[0].exp_date);
         }
         return null;
-    }, [product.lotes]);
+    }, [product.batches]);
 
     const expiredOrNext = useMemo(() => {
         return !!(expired || nextToExp);
     }, [expired, nextToExp]);
 
     const batch = useMemo(() => {
-        if (product.lotes[0]) {
-            return product.lotes[0];
+        if (product.batches[0]) {
+            return product.batches[0];
         }
 
         return null;
-    }, [product.lotes]);
-
-    useEffect(() => {
-        getProductImagePath(product.id).then(path => {
-            if (path) {
-                setImagePath(`file://${path}`);
-            }
-        });
-
-        if (product.store) {
-            getStore(product.store).then(store => {
-                if (store?.name) {
-                    setStoreName(store.name);
-                } else {
-                    setStoreName(null);
-                }
-            });
-        }
-    }, [product.id, product.store]);
+    }, [product.batches]);
 
     const handleNavigateToProduct = useCallback(() => {
         navigate('ProductDetails', { id: product.id });
@@ -100,7 +82,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
         <Card
             expired={expired}
             nextToExp={nextToExp}
-            threated={batch?.status === 'Tratado'}
+            threated={batch?.status === 'checked'}
             onPress={handleNavigateToProduct}
         >
             <Content>
@@ -115,21 +97,25 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                     <ProductDetails>
                         {!!product.code && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {translate('ProductCardComponent_ProductCode')}:
-                                {product.code}
+                                {`${translate(
+                                    'ProductCardComponent_ProductCode'
+                                )}: ${product.code}`}
                             </ProductInfoItem>
                         )}
 
-                        {product.lotes.length > 0 && !!product.lotes[0].lote && (
-                            <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {translate('ProductCardComponent_ProductBatch')}
-                                : {product.lotes[0].lote}
-                            </ProductInfoItem>
-                        )}
+                        {product.batches.length > 0 &&
+                            !!product.batches[0].name && (
+                                <ProductInfoItem expiredOrNext={expiredOrNext}>
+                                    {translate(
+                                        'ProductCardComponent_ProductBatch'
+                                    )}
+                                    : {product.batches[0].name}
+                                </ProductInfoItem>
+                            )}
 
-                        {product.lotes.length > 1 && (
+                        {product.batches.length > 1 && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {`${product.lotes.length - 1} ${translate(
+                                {`${product.batches.length - 1} ${translate(
                                     'ProductCardComponent_OthersBatches'
                                 )}`}
                             </ProductInfoItem>
@@ -142,12 +128,12 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductInfoItem>
                         )}
 
-                        {product.lotes.length > 0 &&
-                            !!product.lotes[0].amount && (
+                        {product.batches.length > 0 &&
+                            !!product.batches[0].amount && (
                                 <ProductInfoItem expiredOrNext={expiredOrNext}>
                                     {`${translate(
                                         'ProductCardComponent_ProductAmount'
-                                    )}: ${product.lotes[0].amount}`}
+                                    )}: ${product.batches[0].amount}`}
                                 </ProductInfoItem>
                             )}
                     </ProductDetails>

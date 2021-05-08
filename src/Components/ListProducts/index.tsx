@@ -1,10 +1,8 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../Locales';
-
-import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
