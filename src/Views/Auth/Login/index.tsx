@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import api from '~/Services/API';
 
-import { saveUserSession } from '~/Functions/Auth/Login';
+import { getUserSession, saveUserSession } from '~/Functions/Auth/Login';
 
 import Button from '~/Components/Button';
 
@@ -20,6 +20,16 @@ const Login: React.FC = () => {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
+    const checkUserAlreadySigned = useCallback(async () => {
+        const session = await getUserSession();
+
+        if (session) {
+            reset({
+                routes: [{ name: 'Home' }],
+            });
+        }
+    }, [reset]);
 
     const handleLogin = useCallback(async () => {
         if (email.trim() === '' || password.trim() === '') {
@@ -52,6 +62,10 @@ const Login: React.FC = () => {
         (value: string) => setPassword(value),
         []
     );
+
+    useEffect(() => {
+        checkUserAlreadySigned();
+    }, [checkUserAlreadySigned]);
 
     return (
         <Container>
