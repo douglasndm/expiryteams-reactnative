@@ -465,7 +465,7 @@ PODS:
     - React-perflogger (= 0.64.1)
   - RNBackgroundFetch (4.0.2):
     - React-Core
-  - RNCAsyncStorage (1.15.3):
+  - RNCAsyncStorage (1.15.4):
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
@@ -878,7 +878,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: ff951a0c241bfaefc4940a3f1f1a229e7cb32fa6
   ReactCommon: bedc99ed4dae329c4fcf128d0c31b9115e5365ca
   RNBackgroundFetch: 635d82e1e185b235c1fe787f29517507f87450e0
-  RNCAsyncStorage: 9924d6b4affe9081f08073f354ec6b09c839ff31
+  RNCAsyncStorage: f47a7e8f927f7c9da947491fc55752eb9ce17f2d
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191

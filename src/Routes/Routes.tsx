@@ -22,6 +22,9 @@ import CategoryEdit from '~/Views/Category/Edit';
 
 import Export from '~/Views/Export';
 
+// Auth routes
+import Login from '~/Views/Auth/Login';
+
 import Test from '~/Views/Test';
 
 const Stack = createStackNavigator();
@@ -29,6 +32,7 @@ const Stack = createStackNavigator();
 const Routes: React.FC = () => {
     return (
         <Stack.Navigator headerMode="none">
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
