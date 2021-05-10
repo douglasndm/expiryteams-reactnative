@@ -15,3 +15,7 @@ export async function getUserSession(): Promise<ISessionResponse | null> {
 
     return userSession;
 }
+
+export async function clearUserSession(): Promise<void> {
+    await AsyncStorage.removeItem('userSession');
+}

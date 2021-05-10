@@ -8,7 +8,7 @@ interface getAllProductsProps {
 
 export async function getAllProducts({
     team_id,
-}: getAllProductsProps): Promise<Array<IProduct>> {
+}: getAllProductsProps): Promise<Array<IProduct> | IAPIError> {
     try {
         const userSession = await getUserSession();
         const token = userSession?.token;
@@ -28,6 +28,11 @@ export async function getAllProducts({
 
         return response.data.products;
     } catch (err) {
-        throw new Error(err.message);
+        const error: IAPIError = {
+            status: err.response.status,
+            error: err.response.data.error,
+        };
+
+        return error;
     }
 }
