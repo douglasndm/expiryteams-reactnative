@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
 import { getAllProducts } from '~/Functions/Products/Products';
 import { clearUserSession } from '~/Functions/Auth/Login';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -21,6 +23,8 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+    const { userPreferences } = useContext(PreferencesContext);
+
     const { reset } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,7 +42,7 @@ const Home: React.FC = () => {
         try {
             setIsLoading(true);
             const productsResponse = await getAllProducts({
-                team_id: 'a45ebbee-1031-4d83-bcf5-25c6c552bd9b',
+                team_id: userPreferences.selectedTeam.team.id,
             });
 
             if ('error' in productsResponse) {
@@ -64,7 +68,7 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [reset]);
 
     useEffect(() => {
         getProduts();
@@ -127,7 +131,7 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <Container>
-                    <Header />
+                    <Header title={userPreferences.selectedTeam.team.name} />
 
                     {products.length > 0 && (
                         <InputTextContainer>

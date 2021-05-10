@@ -6,5 +6,5 @@ interface IUserPreferences {
     enableNotifications: boolean;
     notificationCadency: NotificationCadency;
     isUserSignedIn: boolean;
-    selectedTeam: IUserRoles | null;
+    selectedTeam: IUserRoles;
 }

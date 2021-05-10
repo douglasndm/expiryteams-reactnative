@@ -52,7 +52,13 @@ const App: React.FC = () => {
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
         isUserSignedIn: false,
-        selectedTeam: null,
+        selectedTeam: {
+            role: '',
+            team: {
+                id: '',
+                name: '',
+            },
+        },
     });
 
     const loadInitialData = useCallback(async () => {
