@@ -8,6 +8,8 @@ export const Container = styled.View`
 `;
 
 export const FormTitle = styled.Text`
+    color: ${props => props.theme.colors.text};
+
     margin-bottom: 15px;
     font-size: 26px;
     text-align: left;
@@ -25,6 +27,9 @@ export const InputContainer = styled.View`
     border-radius: 12px;
 `;
 
-export const InputText = styled.TextInput`
+export const InputText = styled.TextInput.attrs(props => ({
+    placeholderTextColor: props.theme.colors.subText,
+}))`
     margin: 5px 0;
+    color: ${props => props.theme.colors.text};
 `;

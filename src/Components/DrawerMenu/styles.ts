@@ -32,15 +32,3 @@ export const Icons = styled(Ionicons).attrs(() => ({
 `;
 
 export const DrawerSection = styled(Drawer.Section)``;
-
-export const LabelGroup = styled.View`
-    flex-direction: row;
-`;
-
-export const LabelContainer = styled.View`
-    padding: 5px 10px;
-    background-color: #eaeaea;
-    margin-right: 5px;
-`;
-
-export const Label = styled.Text``;

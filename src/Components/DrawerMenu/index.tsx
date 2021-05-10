@@ -16,9 +16,6 @@ import {
     MenuItemText,
     Icons,
     DrawerSection,
-    LabelGroup,
-    LabelContainer,
-    Label,
 } from './styles';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
@@ -38,12 +35,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('ListCategory');
     }, [navigation]);
 
-    const navigateToAllProductsByStore = useCallback(() => {
+    const navigateToTeamList = useCallback(() => {
         navigation.navigate('TeamList');
     }, [navigation]);
 
     const navigateToExport = useCallback(() => {
         navigation.navigate('Export');
+    }, [navigation]);
+
+    const handleLogout = useCallback(async () => {
+        navigation.navigate('Logout');
     }, [navigation]);
 
     const handleNavigateToSite = useCallback(async () => {
@@ -95,9 +96,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
-                        <MenuItemContainer
-                            onPress={navigateToAllProductsByStore}
-                        >
+                        <MenuItemContainer onPress={navigateToTeamList}>
                             <MenuContent>
                                 <Icons name="list-outline" />
                                 <MenuItemText>
@@ -135,6 +134,15 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <Icons name="globe-outline" />
                         <MenuItemText>
                             {translate('Menu_Button_KnowOthersApps')}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
+
+                <MenuItemContainer onPress={handleLogout}>
+                    <MenuContent>
+                        <Icons name="log-out-outline" />
+                        <MenuItemText>
+                            {translate('Menu_Button_Logout')}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>

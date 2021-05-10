@@ -24,6 +24,7 @@ import Export from '~/Views/Export';
 
 // Auth routes
 import Login from '~/Views/Auth/Login';
+import Logout from '~/Views/Auth/Logout';
 
 import Test from '~/Views/Test';
 
@@ -55,6 +56,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="TeamList" component={TeamList} />
 
             <Stack.Screen name="Export" component={Export} />
+
+            <Stack.Screen name="Logout" component={Logout} />
         </Stack.Navigator>
     );
 };

@@ -14,3 +14,7 @@ export async function getSelectedTeam(): Promise<IUserRoles> {
 export async function setSelectedTeam(userRole: IUserRoles): Promise<void> {
     await AsyncStorage.setItem('selectedTeam', JSON.stringify(userRole));
 }
+
+export async function clearSelectedteam(): Promise<void> {
+    await AsyncStorage.removeItem('selectedTeam');
+}
