@@ -5,6 +5,6 @@ interface IUserPreferences {
     appTheme: DefaultTheme;
     enableNotifications: boolean;
     notificationCadency: NotificationCadency;
-    isUserSignedIn: boolean;
+    user: IUser;
     selectedTeam: IUserRoles;
 }

@@ -8,8 +8,6 @@ import React, {
 
 import { translate } from '~/Locales';
 
-import { getUserSession } from '~/Functions/Auth/Login';
-
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
@@ -28,12 +26,8 @@ const UserInfo: React.FC = () => {
     const [user, setUser] = useState<IUser | null>(null);
 
     const loadData = useCallback(async () => {
-        const currentSession = await getUserSession();
-
-        if (currentSession && currentSession.user) {
-            setUser(currentSession.user);
-        }
-    }, []);
+        setUser(userPreferences.user);
+    }, [userPreferences.user]);
 
     const userRole = useMemo(() => {
         if (userPreferences.selectedTeam) {

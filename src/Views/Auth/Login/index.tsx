@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import api from '~/Services/API';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getUserSession, saveUserSession } from '~/Functions/Auth/Login';
 
@@ -18,18 +20,34 @@ import {
 const Login: React.FC = () => {
     const { reset } = useNavigation();
 
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
+    const handleNavigateUser = useCallback(
+        (sesion: ISessionResponse) => {
+            setUserPreferences({
+                ...userPreferences,
+                user: sesion.user,
+            });
+
+            reset({
+                routes: [{ name: 'TeamList' }],
+            });
+        },
+        [reset, userPreferences, setUserPreferences]
+    );
 
     const checkUserAlreadySigned = useCallback(async () => {
         const session = await getUserSession();
 
         if (session) {
-            reset({
-                routes: [{ name: 'TeamList' }],
-            });
+            handleNavigateUser(session);
         }
-    }, [reset]);
+    }, [handleNavigateUser]);
 
     const handleLogin = useCallback(async () => {
         if (email.trim() === '' || password.trim() === '') {
@@ -43,14 +61,11 @@ const Login: React.FC = () => {
             });
 
             await saveUserSession(response.data);
-
-            reset({
-                routes: [{ name: 'TeamList' }],
-            });
+            handleNavigateUser(response.data);
         } catch (err) {
             throw new Error(err);
         }
-    }, [email, password, reset]);
+    }, [email, password, handleNavigateUser]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value),

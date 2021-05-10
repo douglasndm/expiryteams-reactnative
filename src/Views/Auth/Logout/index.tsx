@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View } from 'react-native';
+
+import { Container } from './styles';
 
 import { clearUserSession } from '~/Functions/Auth/Login';
 import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
@@ -20,7 +21,7 @@ const Logout: React.FC = () => {
     useEffect(() => {
         handleLogout();
     }, [handleLogout]);
-    return <View />;
+    return <Container />;
 };
 
 export default Logout;

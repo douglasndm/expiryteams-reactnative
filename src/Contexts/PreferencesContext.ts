@@ -9,7 +9,12 @@ const PreferencesContext = createContext({
         appTheme: Themes.Light,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
-        isUserSignedIn: false,
+        user: {
+            id: '',
+            name: '',
+            lastName: '',
+            email: '',
+        },
         selectedTeam: {
             role: '',
             team: {
@@ -23,7 +28,7 @@ const PreferencesContext = createContext({
         appTheme,
         enableNotifications,
         notificationCadency,
-        isUserSignedIn,
+        user,
         selectedTeam,
     }: IUserPreferences) => {},
 });

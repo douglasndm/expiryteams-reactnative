@@ -7,6 +7,7 @@ import {
     getHowManyDaysToBeNextExp,
 } from './Settings';
 import { getAppTheme } from './Themes';
+import { getUserSession } from '~/Functions/Auth/Login';
 import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
@@ -15,6 +16,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
         const settingTheme = await getAppTheme();
         const settingNotification = await getEnableNotifications();
         const settingNotificationCadency = await getNotificationCadency();
+        const userSession = await getUserSession();
         const selectedTeam = await getSelectedTeam();
 
         const settings: IUserPreferences = {
@@ -22,8 +24,8 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
             appTheme: getThemeByName(settingTheme),
             enableNotifications: settingNotification,
             notificationCadency: settingNotificationCadency,
+            user: userSession?.user,
             selectedTeam,
-            isUserSignedIn: true,
         };
 
         return settings;

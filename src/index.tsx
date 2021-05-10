@@ -51,7 +51,12 @@ const App: React.FC = () => {
         appTheme: Themes.Light,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
-        isUserSignedIn: false,
+        user: {
+            id: '',
+            name: '',
+            lastName: '',
+            email: '',
+        },
         selectedTeam: {
             role: '',
             team: {
