@@ -1,12 +1,8 @@
-import React, { useCallback, useContext, useMemo } from 'react';
-import { Platform } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
-import EnvConfig from 'react-native-config';
 
 import { translate } from '../../Locales';
-
-import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import StatusBar from '../../Components/StatusBar';
 import FloatButton from '~/Components/FloatButton';
@@ -39,8 +35,6 @@ const Success: React.FC = () => {
     const route = useRoute();
     const { reset } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
-
     const routeParams = route.params as Props;
 
     const type = useMemo(() => {
@@ -61,13 +55,6 @@ const Success: React.FC = () => {
         return routeParams.category_id;
     }, [routeParams.category_id]);
 
-    const store_id = useMemo(() => {
-        if (!routeParams.store_id || routeParams.store_id === 'null') {
-            return null;
-        }
-        return routeParams.store_id;
-    }, [routeParams.store_id]);
-
     const handleNavigateToCategory = useCallback(() => {
         reset({
             routes: [
@@ -83,22 +70,6 @@ const Success: React.FC = () => {
             ],
         });
     }, [category_id, reset]);
-
-    const handleNavigateToStore = useCallback(() => {
-        reset({
-            routes: [
-                {
-                    name: 'Home',
-                },
-                {
-                    name: 'StoreDetails',
-                    params: {
-                        store: store_id,
-                    },
-                },
-            ],
-        });
-    }, [store_id, reset]);
 
     const animation = useMemo(() => {
         switch (type) {
@@ -203,18 +174,10 @@ const Success: React.FC = () => {
                 )}
 
                 <ButtonContainer>
-                    {userPreferences.isUserPremium && category_id && (
+                    {category_id && (
                         <Button onPress={handleNavigateToCategory}>
                             <ButtonText>
                                 {translate('View_Success_Button_GoToCategory')}
-                            </ButtonText>
-                        </Button>
-                    )}
-
-                    {userPreferences.isUserPremium && store_id && (
-                        <Button onPress={handleNavigateToStore}>
-                            <ButtonText>
-                                {translate('View_Success_Button_GoToStore')}
                             </ButtonText>
                         </Button>
                     )}
@@ -241,14 +204,12 @@ const Success: React.FC = () => {
                 </ButtonContainer>
             </SuccessMessageContainer>
 
-            {type === 'create_product' && userPreferences.isUserPremium && (
+            {type === 'create_product' && (
                 <FloatButton navigateTo="AddProduct" />
             )}
-            {type === 'create_batch' &&
-                userPreferences.isUserPremium &&
-                productId && (
-                    <FloatButton navigateTo="AddBatch" productId={productId} />
-                )}
+            {type === 'create_batch' && productId && (
+                <FloatButton navigateTo="AddBatch" productId={productId} />
+            )}
         </Container>
     );
 };

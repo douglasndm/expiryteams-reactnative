@@ -1,24 +1,20 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
-import { Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import StatusBar from '../../Components/StatusBar';
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-import NotificationError from '../../Components/Notification';
+import StatusBar from '~/Components/StatusBar';
+import BackButton from '~/Components/BackButton';
+import GenericButton from '~/Components/Button';
+import NotificationError from '~/Components/Notification';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
 
-import {
-    setHowManyDaysToBeNextExp,
-    setEnableMultipleStoresMode,
-} from '../../Functions/Settings';
+import { setHowManyDaysToBeNextExp } from '~/Functions/Settings';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -37,7 +33,6 @@ const Settings: React.FC = () => {
     const [error, setError] = useState<string>('');
 
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
-    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
@@ -59,15 +54,6 @@ const Settings: React.FC = () => {
         [setUserPreferences, userPreferences]
     );
 
-    const handleMultiStoresEnableSwitch = useCallback(async () => {
-        await setEnableMultipleStoresMode(!multipleStoresState);
-
-        setUserPreferences({
-            ...userPreferences,
-            multiplesStores: !userPreferences.multiplesStores,
-        });
-    }, [multipleStoresState, setUserPreferences, userPreferences]);
-
     const loadData = useCallback(async () => {
         const isSigned = await isUserSignedIn();
         setUserSigned(isSigned);
@@ -75,7 +61,6 @@ const Settings: React.FC = () => {
 
     useEffect(() => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
-        setMultipleStoresState(userPreferences.multiplesStores);
 
         loadData();
     }, [userPreferences, loadData]);
@@ -162,24 +147,6 @@ const Settings: React.FC = () => {
                                     }}
                                 />
                                 <Notifications />
-
-                                {userPreferences.isUserPremium && (
-                                    <SettingContainer>
-                                        <SettingDescription>
-                                            {translate(
-                                                'View_Settings_SettingName_EnableMultiplesStores'
-                                            )}
-                                        </SettingDescription>
-                                        <Switch
-                                            value={
-                                                userPreferences.multiplesStores
-                                            }
-                                            onValueChange={
-                                                handleMultiStoresEnableSwitch
-                                            }
-                                        />
-                                    </SettingContainer>
-                                )}
                             </CategoryOptions>
                         </Category>
 

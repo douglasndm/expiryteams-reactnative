@@ -340,7 +340,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 )}
                                             </MoreInformationsTitle>
 
-                                            {userPreferences.isUserPremium && (
+                                            {true === false && (
                                                 <PickerContainer
                                                     style={{ marginBottom: 10 }}
                                                 >
