@@ -48,39 +48,37 @@ const Appearance: React.FC = () => {
             key: 'dark',
         });
 
-        if (userPreferences.isUserPremium) {
-            availableThemes.push({
-                label: translate('View_Settings_Appearance_Theme_UltraViolet'),
-                value: 'ultraviolet',
-                key: 'ultraviolet',
-            });
-            availableThemes.push({
-                label: translate('View_Settings_Appearance_Theme_DarkGreen'),
-                value: 'darkgreen',
-                key: 'darkgreen',
-            });
-            availableThemes.push({
-                label: translate('View_Settings_Appearance_Theme_HappyPink'),
-                value: 'happypink',
-                key: 'happypink',
-            });
-            availableThemes.push({
-                label: translate('View_Settings_Appearance_Theme_OceanBlue'),
-                value: 'oceanblue',
-                key: 'oceanblue',
-            });
-            availableThemes.push({
-                label: translate('View_Settings_Appearance_Theme_Relax'),
-                value: 'relax',
-                key: 'relax',
-            });
-        }
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_UltraViolet'),
+            value: 'ultraviolet',
+            key: 'ultraviolet',
+        });
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_DarkGreen'),
+            value: 'darkgreen',
+            key: 'darkgreen',
+        });
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_HappyPink'),
+            value: 'happypink',
+            key: 'happypink',
+        });
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_OceanBlue'),
+            value: 'oceanblue',
+            key: 'oceanblue',
+        });
+        availableThemes.push({
+            label: translate('View_Settings_Appearance_Theme_Relax'),
+            value: 'relax',
+            key: 'relax',
+        });
 
         return availableThemes;
-    }, [userPreferences.isUserPremium]);
+    }, []);
 
     useEffect(() => {
-        getAppTheme().then((response) => setSelectedTheme(response));
+        getAppTheme().then(response => setSelectedTheme(response));
     }, []);
 
     const handleThemeChange = useCallback(

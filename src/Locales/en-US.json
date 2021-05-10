@@ -1,6 +1,5 @@
 {
     "AppName": "Expiry Checker",
-    "AppName_ProVersion": "PRO Mode",
 
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
@@ -8,16 +7,10 @@
     "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToTeamSelect": "Teams",
     "Menu_Button_GoToExport": "Export",
-    "Menu_Button_GoToProPage": "Become PRO",
     "Menu_Button_GoToSettings": "Settings",
     "Menu_Button_GoToAbout": "About",
     "Menu_Button_KnowOthersApps": "Others apps",
     "Menu_Button_GoToTest": "Test",
-
-    "Menu_UserProfile_Button_login": "Sign in",
-    "Menu_UserProfile_Label": "PRO User",
-
-    "Menu_Label_PRO": "PRO",
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
@@ -91,7 +84,6 @@
     "View_AddProduct_Button_Save": "Save",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Button to save the new product",
     "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
-    "View_AddProduct_Banner_UnlockCamera": "Become PRO and unlock the camera",
 
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
@@ -152,41 +144,6 @@
     "View_ShareProduct_Title": "Check this product",
     "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
 
-    "View_ProPage_MeetPRO": "Meet the",
-    "View_ProPage_ProLabel": "PRO",
-    "View_ProPage_AdvantageOne": "NO ADS.",
-    "View_ProPage_AdvantageTwo": "SAVE YOUR PRODUCTS INTO EXCEL FORMAT.",
-    "View_ProPage_AdvantageThree": "SAVE YOUR DATA TO KEEP IT SAVE IF YOU NEED TO RESET OR CHANGE YOUR PHONE.",
-    "View_ProPage_AdvantageFour": "EXCLUSIVES THEMES.",
-    "View_ProPage_AdvantageFive": "SMALL PRICE, GREAT ADVANTAGES.",
-    "View_ProPage_AdvantageSix": "SAVE PRODUCTS FOR MULTIPLES STORES.",
-    "View_ProPage_AdvantageSeven": "TAKE PHOTOS OF PRODUCTS.",
-    "View_ProPage_UserAlreadyPro": "You are already PRO",
-    "View_ProPage_BeforeIntroPrice": "SUBSCRIBE FOR ONLY",
-    "View_ProPage_AfterIntroPrice": " IN THE FIRST MONTH AND THEN",
-
-    "View_ProPage_SubscribePeriod_Monthly": "Monthly",
-    "View_ProPage_SubscribePeriod_ThreeMonths": "3 months",
-    "View_ProPage_SubscribePeriod_OneYear": "Annual",
-
-
-    "View_ProPage_AfterDaysFreeTest": " days free",
-    "View_ProPage_AfterIntroPrice_Monthly": " on the first month, then ",
-    "View_ProPage_AfterPrice_Monthly": " monthly",
-
-    "View_ProPage_AfterIntroPrice_ThreeMonths": " for 3 months, then ",
-    "View_ProPage_AfterPrice_ThreeMonths": " every three months",
-
-    "View_ProPage_AfterIntroPrice_OneYear": " in the first year, then ",
-    "View_ProPage_AfterPrice_OneYear": " yearly",
-
-    "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
-    "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
-    "View_ProPage_Button_Subscribe": "Continue",
-    "View_ProPage_Button_GoBackToHome": "Go home",
-    "View_ProPage_SubscriptionNotAvailable": "Subscriptions are not available now",
-
-
     "View_Settings_PageTitle": "Settings",
     "View_Settings_CategoryName_General": "General",
     "View_Settings_CategoryName_Appearance": "Appearance",
@@ -198,20 +155,18 @@
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
-    "View_Settings_Button_BecobeProToUnlockNewFeatures": "BECOME A PRO USER TO UNLOCK NEW FEATURES",
-    "View_Settings_Button_CancelSubscribe": "Cancel subscribe",
     "View_Settings_AccountDescription": "Manage your account linked to the app",
     "View_Settings_Button_SignOut": "Sign out",
 
     "View_Settings_Appearance_Theme_System": "System (Default)",
     "View_Settings_Appearance_Theme_Light": "Light",
     "View_Settings_Appearance_Theme_Dark": "Dark",
-    "View_Settings_Appearance_Theme_UltraViolet": "Ultra violet (PRO)",
-    "View_Settings_Appearance_Theme_DarkGreen": "Dark Green (PRO)",
-    "View_Settings_Appearance_Theme_HappyPink": "Happy Pink (PRO)",
-    "View_Settings_Appearance_Theme_OceanBlue": "Ocean Blue (PRO)",
-    "View_Settings_Appearance_Theme_Relax": "Relax (PRO)",
-    "View_Settings_Appearance_Theme_Florest": "Florest (PRO)",
+    "View_Settings_Appearance_Theme_UltraViolet": "Ultra violet",
+    "View_Settings_Appearance_Theme_DarkGreen": "Dark Green",
+    "View_Settings_Appearance_Theme_HappyPink": "Happy Pink",
+    "View_Settings_Appearance_Theme_OceanBlue": "Ocean Blue",
+    "View_Settings_Appearance_Theme_Relax": "Relax",
+    "View_Settings_Appearance_Theme_Florest": "Florest",
 
     "View_Settings_Notifications_Title": "Notification frequency",
     "View_Settings_Notifications_Cadency_Hour": "Every hour",
@@ -219,10 +174,6 @@
     "View_Settings_Notifications_Cadency_Week": "Weekly",
     "View_Settings_Notifications_Cadency_Month": "Monthly",
     "View_Settings_Notifications_Cadency_Never": "Never",
-
-    "View_PROView_Subscription_RestoreButton": "Already a PRO? Restore subscription",
-    "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
-    "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
 
     "View_AllProductByStore_BeforeStoreName": "All products by store ",
     "View_AllProductByStore_StoreName": "Products by store {STORE}",
@@ -269,11 +220,6 @@
     "View_Export_Explain_Backup": "If you need to restore or change your phone, you'll need this file to restore all your products in your need phone.",
     "View_Export_Button_ExportExcel": "Export to Excel",
     "View_Export_Button_ExportBackup": "Export to backup",
-
-    "View_Permissions_AppleAT_PageTitle": "We need your permission",
-    "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to track you in sites and apps that you use to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
-    "View_Permissions_AppleAT_SwitchAllowTracking": "Use unique device identification",
-    "View_Permissions_AppleAT_Button_Continue": "Continue",
 
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",

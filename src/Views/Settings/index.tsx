@@ -185,8 +185,6 @@ const Settings: React.FC = () => {
 
                         <Appearance />
 
-                        <Pro />
-
                         {userSigned && (
                             <Category>
                                 <CategoryTitle>

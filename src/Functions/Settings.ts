@@ -4,8 +4,6 @@ interface ISetSettingProps {
     type:
         | 'HowManyDaysToBeNextExp'
         | 'EnableNotifications'
-        | 'EnableMultipleStores'
-        | 'EnableProVersion'
         | 'NotificationCadency'
         | 'HowManyTimesAppWasOpen';
     value: string;
@@ -52,22 +50,6 @@ export async function setNotificationCadency(
     await setSetting({
         type: 'NotificationCadency',
         value: cadency,
-    });
-}
-
-export async function setEnableMultipleStoresMode(
-    enable: boolean
-): Promise<void> {
-    await setSetting({
-        type: 'EnableMultipleStores',
-        value: String(enable),
-    });
-}
-
-export async function setEnableProVersion(enable: boolean): Promise<void> {
-    await setSetting({
-        type: 'EnableProVersion',
-        value: String(enable),
     });
 }
 
@@ -124,26 +106,6 @@ export async function getNotificationCadency(): Promise<NotificationCadency> {
         }
     }
     return NotificationCadency.Day;
-}
-
-export async function getEnableProVersion(): Promise<boolean> {
-    const setting = await getSetting({ type: 'EnableProVersion' });
-
-    if (setting === 'true') {
-        return true;
-    }
-    return false;
-}
-
-export async function getEnableMultipleStoresMode(): Promise<boolean> {
-    const setting = await getSetting({ type: 'EnableMultipleStores' });
-
-    if (await getEnableProVersion()) {
-        if (setting === 'true') return true;
-        return false;
-    }
-
-    return false;
 }
 
 export async function getHowManyTimesAppWasOpen(): Promise<number | null> {
