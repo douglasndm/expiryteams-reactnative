@@ -7,6 +7,8 @@ import { useTheme } from 'styled-components';
 
 import { translate } from '~/Locales';
 
+import { getBatch, updateBatch } from '~/Functions/Products/Batches/Batch';
+
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
@@ -38,8 +40,8 @@ import {
 } from './styles';
 
 interface Props {
-    productId: number;
-    loteId: number;
+    productId: string;
+    batchId: string;
 }
 
 const EditBatch: React.FC = () => {
@@ -65,72 +67,70 @@ const EditBatch: React.FC = () => {
         return 'BRL';
     });
 
-    const [product, setProduct] = useState<IProduct | null>(null);
-
     const productId = useMemo(() => {
         return routeParams.productId;
     }, [routeParams]);
 
-    const loteId = useMemo(() => {
-        return routeParams.loteId;
+    const batchId = useMemo(() => {
+        return routeParams.batchId;
     }, [routeParams]);
 
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const theme = useTheme();
 
-    const [lote, setLote] = useState('');
-    const [amount, setAmount] = useState(0);
-    const [price, setPrice] = useState(0);
+    const [product, setProduct] = useState<IProduct | null>(null);
+    const [batch, setBatch] = useState('');
+    const [amount, setAmount] = useState<number | null>(null);
+    const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
-    const [tratado, setTratado] = useState(false);
+    const [status, setStatus] = useState<'checked' | 'unchecked'>('unchecked');
 
-    useEffect(() => {
-        async function getData() {
+    const loadData = useCallback(async () => {
+        try {
             setIsLoading(true);
 
-            const response = await getProductById(productId);
-            setProduct(response);
+            const response = await getBatch({ batch_id: batchId });
 
-            if (!response) return;
-
-            const loteResult = response.lotes.find(l => l.id === loteId);
-
-            if (!loteResult) {
-                setError(translate('View_EditBatch_Error_BatchDidntFound'));
+            if ('error' in response) {
+                console.log(response.error);
                 return;
             }
 
-            const loteStatus = loteResult.status === 'Tratado';
-
-            setLote(loteResult.lote);
-            setExpDate(loteResult.exp_date);
-            setTratado(loteStatus);
-
-            if (loteResult.amount) setAmount(loteResult.amount);
-            if (loteResult.price) setPrice(loteResult.price);
+            setProduct(response.product);
+            setBatch(response.batch.name);
+            setStatus(response.batch.status);
+            if (response.batch.amount) setAmount(response.batch.amount);
+        } catch (err) {
+            console.log(err);
+        } finally {
             setIsLoading(false);
         }
+    }, [batchId]);
 
-        getData();
-    }, [productId, loteId]);
-
-    async function handleSave() {
-        if (!lote || lote.trim() === '') {
+    const handleUpdate = useCallback(async () => {
+        if (!batch || batch.trim() === '') {
             Alert.alert(translate('View_EditBatch_Error_BatchWithNoName'));
             return;
         }
 
         try {
-            await updateLote({
-                id: loteId,
-                lote,
-                amount: Number(amount),
-                exp_date: expDate,
-                price,
-                status: tratado ? 'Tratado' : 'Não tratado',
+            const response = await updateBatch({
+                batch: {
+                    id: batchId,
+                    name: batch,
+                    amount: Number(amount),
+                    exp_date: String(expDate),
+                    price: price || undefined,
+                    status,
+                },
             });
+
+            if ('error' in response) {
+                setError(response.error);
+                return;
+            }
 
             reset({
                 index: 1,
@@ -145,7 +145,11 @@ const EditBatch: React.FC = () => {
         } catch (err) {
             setError(err.message);
         }
-    }
+    }, [amount, batch, batchId, expDate, price, productId, reset, status]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
 
     const handleDelete = useCallback(async () => {
         try {
@@ -161,7 +165,11 @@ const EditBatch: React.FC = () => {
         } catch (err) {
             setError(err.message);
         }
-    }, [loteId, reset]);
+    }, [batchId, reset]);
+
+    const handleBatchChange = useCallback(value => {
+        setBatch(value);
+    }, []);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
@@ -176,6 +184,10 @@ const EditBatch: React.FC = () => {
     }, []);
 
     const handlePriceChange = useCallback((value: number) => {
+        if (value <= 0) {
+            setPrice(null);
+            return;
+        }
         setPrice(value);
     }, []);
 
@@ -228,8 +240,8 @@ const EditBatch: React.FC = () => {
                                         placeholder={translate(
                                             'View_EditBatch_InputPlacehoder_Batch'
                                         )}
-                                        value={lote}
-                                        onChangeText={value => setLote(value)}
+                                        value={batch}
+                                        onChangeText={handleBatchChange}
                                     />
                                 </InputTextContainer>
                                 <InputTextContainer
@@ -270,13 +282,13 @@ const EditBatch: React.FC = () => {
                                     }}
                                 >
                                     <RadioButton
-                                        value="tratado"
+                                        value="checked"
                                         status={
-                                            tratado === true
+                                            status === 'checked'
                                                 ? 'checked'
                                                 : 'unchecked'
                                         }
-                                        onPress={() => setTratado(true)}
+                                        onPress={() => setStatus('checked')}
                                     />
                                     <RadioButtonText>
                                         {translate(
@@ -291,13 +303,13 @@ const EditBatch: React.FC = () => {
                                     }}
                                 >
                                     <RadioButton
-                                        value="Não tratado"
+                                        value="unchecked"
                                         status={
-                                            tratado === !true
+                                            status !== 'checked'
                                                 ? 'checked'
                                                 : 'unchecked'
                                         }
-                                        onPress={() => setTratado(false)}
+                                        onPress={() => setStatus('unchecked')}
                                     />
                                     <RadioButtonText>
                                         {translate(
@@ -323,7 +335,7 @@ const EditBatch: React.FC = () => {
 
                         <GenericButton
                             text={translate('View_EditBatch_Button_Save')}
-                            onPress={handleSave}
+                            onPress={handleUpdate}
                         />
                     </PageContent>
                 </ScrollView>
