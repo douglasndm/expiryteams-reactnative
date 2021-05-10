@@ -1,13 +1,11 @@
-import React, { useCallback, useContext, useMemo } from 'react';
-import { View, Linking, Image } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Linking } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
 } from '@react-navigation/drawer';
 
 import { translate } from '~/Locales';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -28,20 +26,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 ) => {
     const { navigation } = props;
 
-    const { userPreferences } = useContext(PreferencesContext);
-
-    const shouldShowMultiplesStores = useMemo(() => {
-        if (!userPreferences.isUserPremium) {
-            return true;
-        }
-
-        if (userPreferences.isUserPremium && userPreferences.multiplesStores) {
-            return true;
-        }
-
-        return false;
-    }, [userPreferences]);
-
     const navigateToAddProduct = useCallback(() => {
         navigation.navigate('AddProduct');
     }, [navigation]);
@@ -55,15 +39,11 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     }, [navigation]);
 
     const navigateToAllProductsByStore = useCallback(() => {
-        navigation.navigate('StoreList');
+        navigation.navigate('TeamList');
     }, [navigation]);
 
     const navigateToExport = useCallback(() => {
         navigation.navigate('Export');
-    }, [navigation]);
-
-    const navigateToPRO = useCallback(() => {
-        navigation.navigate('Pro');
     }, [navigation]);
 
     const handleNavigateToSite = useCallback(async () => {
@@ -107,13 +87,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
-                        <MenuItemContainer
-                            onPress={
-                                userPreferences.isUserPremium
-                                    ? navigateToCategories
-                                    : navigateToPRO
-                            }
-                        >
+                        <MenuItemContainer onPress={navigateToCategories}>
                             <MenuContent>
                                 <Icons name="file-tray-full-outline" />
                                 <MenuItemText>
@@ -128,38 +102,24 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </LabelGroup>
                         </MenuItemContainer>
 
-                        {shouldShowMultiplesStores && (
-                            <MenuItemContainer
-                                onPress={
-                                    userPreferences.isUserPremium
-                                        ? navigateToAllProductsByStore
-                                        : navigateToPRO
-                                }
-                            >
-                                <MenuContent>
-                                    <Icons name="list-outline" />
-                                    <MenuItemText>
-                                        {translate('Menu_Button_GoToStores')}
-                                    </MenuItemText>
-                                </MenuContent>
-
-                                <LabelGroup>
-                                    <LabelContainer>
-                                        <Label>
-                                            {translate('Menu_Label_PRO')}
-                                        </Label>
-                                    </LabelContainer>
-                                </LabelGroup>
-                            </MenuItemContainer>
-                        )}
-
                         <MenuItemContainer
-                            onPress={
-                                userPreferences.isUserPremium
-                                    ? navigateToExport
-                                    : navigateToPRO
-                            }
+                            onPress={navigateToAllProductsByStore}
                         >
+                            <MenuContent>
+                                <Icons name="list-outline" />
+                                <MenuItemText>
+                                    {translate('Menu_Button_GoToStores')}
+                                </MenuItemText>
+                            </MenuContent>
+
+                            <LabelGroup>
+                                <LabelContainer>
+                                    <Label>{translate('Menu_Label_PRO')}</Label>
+                                </LabelContainer>
+                            </LabelGroup>
+                        </MenuItemContainer>
+
+                        <MenuItemContainer onPress={navigateToExport}>
                             <MenuContent>
                                 <Icons name="download-outline" />
                                 <MenuItemText>
@@ -173,19 +133,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 </LabelContainer>
                             </LabelGroup>
                         </MenuItemContainer>
-
-                        {!userPreferences.isUserPremium && (
-                            <MenuItemContainer
-                                onPress={() => navigation.navigate('Pro')}
-                            >
-                                <MenuContent>
-                                    <Icons name="analytics-outline" />
-                                    <MenuItemText>
-                                        {translate('Menu_Button_GoToProPage')}
-                                    </MenuItemText>
-                                </MenuContent>
-                            </MenuItemContainer>
-                        )}
                     </DrawerSection>
                 </View>
             </DrawerContentScrollView>
