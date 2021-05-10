@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
-
 import { exists } from 'react-native-fs';
+
 import { translate } from '~/Locales';
+
+import { getProduct, updateProduct } from '~/Functions/Products/Product';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -56,18 +58,12 @@ import {
 interface RequestParams {
     route: {
         params: {
-            productId: number;
+            productId: string;
         };
     };
 }
 
 interface ICategoryItem {
-    label: string;
-    value: string;
-    key: string;
-}
-
-interface IStoreItem {
     label: string;
     value: string;
     key: string;
@@ -86,109 +82,54 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const [name, setName] = useState('');
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState<string | undefined>('');
     const [photoPath, setPhotoPath] = useState<string>('');
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
-    const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
-    const [selectedStore, setSelectedStore] = useState<string | null>(null);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
-    useEffect(() => {
-        async function getProductData() {
+    const loadData = useCallback(async () => {
+        try {
             setIsLoading(true);
 
-            const allCategories = await getAllCategories();
-            const categoriesArray: Array<ICategoryItem> = [];
+            const response = await getProduct({ productId });
 
-            allCategories.forEach(cat =>
-                categoriesArray.push({
-                    key: cat.id,
-                    label: cat.name,
-                    value: cat.id,
-                })
-            );
-            setCategories(categoriesArray);
-
-            getAllStores().then(allStores => {
-                const storesArray: Array<IStoreItem> = [];
-
-                allStores.forEach(sto => {
-                    if (sto.id) {
-                        storesArray.push({
-                            key: sto.id,
-                            label: sto.name,
-                            value: sto.id,
-                        });
-                    }
-                });
-
-                setStores(storesArray);
-            });
-
-            const product = await getProductById(productId);
-
-            if (!product) {
-                throw new Error(
-                    translate('View_EditProduct_Error_ProductNotFound')
-                );
+            if ('error' in response) {
+                console.log(response.error);
+                return;
             }
 
-            setName(product.name);
-            if (product.code) setCode(product.code);
-
-            const path = await getProductImagePath(productId);
-            if (path) {
-                setPhotoPath(`${path}`);
-            }
-
-            if (product.categories.length > 0) {
-                setSelectedCategory(product.categories[0]);
-            }
-
-            if (product.store) {
-                const store = await getStore(product.store);
-
-                if (store) {
-                    setSelectedStore(store?.id);
-                }
-            }
-
+            setName(response.name);
+            setCode(response.code);
+        } catch (err) {
+            console.log(err);
+        } finally {
             setIsLoading(false);
         }
-        getProductData();
     }, [productId]);
 
-    useEffect(() => {
-        getAllCategories().then(allCategories => {
-            const categoriesArray: Array<ICategoryItem> = [];
+    // useEffect(() => {
+    //     getAllCategories().then(allCategories => {
+    //         const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach(cat =>
-                categoriesArray.push({
-                    key: cat.id,
-                    label: cat.name,
-                    value: cat.id,
-                })
-            );
+    //         allCategories.forEach(cat =>
+    //             categoriesArray.push({
+    //                 key: cat.id,
+    //                 label: cat.name,
+    //                 value: cat.id,
+    //             })
+    //         );
 
-            setCategories(categoriesArray);
-        });
-    }, []);
-
-    const handleCategoryChange = useCallback(value => {
-        setSelectedCategory(value);
-    }, []);
-
-    const handleStoreChange = useCallback(value => {
-        setSelectedStore(value);
-    }, []);
+    //         setCategories(categoriesArray);
+    //     });
+    // }, []);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -197,28 +138,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
 
         try {
-            const photoFileName = getImageFileNameFromPath(photoPath);
-
-            const prodCategories: Array<string> = [];
-
-            if (selectedCategory && selectedCategory !== 'null') {
-                prodCategories.push(selectedCategory);
-            }
-
-            const tempStore =
-                selectedStore && selectedStore !== 'null'
-                    ? selectedStore
-                    : null;
-
-            updateProduct({
-                id: productId,
-                name,
-                code,
-                store: tempStore,
-
-                categories: prodCategories,
-                photo: photoFileName,
+            const updatedProduct = await updateProduct({
+                product: {
+                    id: productId,
+                    name,
+                    code,
+                },
             });
+
+            if ('error' in updatedProduct) {
+                console.log(updatedProduct.error);
+                return;
+            }
 
             reset({
                 index: 1,
@@ -233,15 +164,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } catch (err) {
             setError(err.message);
         }
-    }, [
-        code,
-        name,
-        photoPath,
-        productId,
-        reset,
-        selectedCategory,
-        selectedStore,
-    ]);
+    }, [code, name, photoPath, productId, reset, selectedCategory]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
@@ -268,6 +191,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const handleDisableBarCodeReader = useCallback(() => {
         setIsBarCodeEnabled(false);
+    }, []);
+
+    const handleCategoryChange = useCallback(value => {
+        setSelectedCategory(value);
     }, []);
 
     const onPhotoTaked = useCallback(
@@ -300,6 +227,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setError(err.message);
         }
     }, [productId, reset]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
 
     return isLoading ? (
         <Loading />
@@ -422,28 +353,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         placeholder={{
                                                             label: translate(
                                                                 'View_AddProduct_InputPlaceholder_SelectCategory'
-                                                            ),
-                                                            value: 'null',
-                                                        }}
-                                                    />
-                                                </PickerContainer>
-                                            )}
-
-                                            {userPreferences.multiplesStores && (
-                                                <PickerContainer
-                                                    style={{
-                                                        marginBottom: 10,
-                                                    }}
-                                                >
-                                                    <Picker
-                                                        items={stores}
-                                                        onValueChange={
-                                                            handleStoreChange
-                                                        }
-                                                        value={selectedStore}
-                                                        placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlacehoder_Store'
                                                             ),
                                                             value: 'null',
                                                         }}

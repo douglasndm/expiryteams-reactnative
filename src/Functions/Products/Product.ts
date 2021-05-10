@@ -75,3 +75,42 @@ export async function createProduct({
         return error;
     }
 }
+
+interface updateProductProps {
+    product: Omit<IProduct, 'batches'>;
+}
+
+export async function updateProduct({
+    product,
+}: updateProductProps): Promise<IProduct | IAPIError> {
+    try {
+        const userSession = await getUserSession();
+        const token = userSession?.token;
+
+        if (!token) {
+            throw new Error('Token is missing');
+        }
+
+        const response = await api.put<IProduct>(
+            `/products/${product.id}`,
+            {
+                name: product.name,
+                code: product.code,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        return response.data;
+    } catch (err) {
+        const error: IAPIError = {
+            status: err.response.status,
+            error: err.response.data.error,
+        };
+
+        return error;
+    }
+}
