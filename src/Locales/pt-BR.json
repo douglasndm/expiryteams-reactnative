@@ -1,9 +1,9 @@
 {
     "AppName": "Controle de Validade",
 
-    "Menu_UserInfo_Role_Manager": "Gerente",
-    "Menu_UserInfo_Role_Supervisor": "Supervisor",
-    "Menu_UserInfo_Role_Repositor": "Repositor",
+    "UserInfo_Role_Manager": "Gerente",
+    "UserInfo_Role_Supervisor": "Supervisor",
+    "UserInfo_Role_Repositor": "Repositor",
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
@@ -94,10 +94,6 @@
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
-    "View_Team_List_PageTitle": "Todos os times",
-    "View_Team_List_AddNewTeam_Placeholder": "Criar novo time",
-    "View_Team_List_AddNewTeam_Error_TextEmpty": "Digite o nome do time",
-
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",
     "View_EditBatch_PageTitle": "Atualizar lote",
@@ -162,6 +158,8 @@
     "View_Settings_Button_ImportFile": "Importar aquivo de backup",
     "View_Settings_AccountDescription": "Gerencie sua conta associada ao aplicativo.",
     "View_Settings_Button_SignOut": "Sair",
+
+    "View_TeamList_PageTitle": "Selecione um time",
 
     "View_Settings_Appearance_Theme_System": "Baseado no sistema (padrão)",
     "View_Settings_Appearance_Theme_Light": "Claro",

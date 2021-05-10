@@ -52,6 +52,7 @@ const App: React.FC = () => {
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
         isUserSignedIn: false,
+        selectedTeam: null,
     });
 
     const loadInitialData = useCallback(async () => {

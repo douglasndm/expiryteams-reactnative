@@ -26,7 +26,7 @@ const Login: React.FC = () => {
 
         if (session) {
             reset({
-                routes: [{ name: 'Home' }],
+                routes: [{ name: 'TeamList' }],
             });
         }
     }, [reset]);
@@ -45,10 +45,9 @@ const Login: React.FC = () => {
             await saveUserSession(response.data);
 
             reset({
-                routes: [{ name: 'Home' }],
+                routes: [{ name: 'TeamList' }],
             });
         } catch (err) {
-            console.log(err);
             throw new Error(err);
         }
     }, [email, password, reset]);

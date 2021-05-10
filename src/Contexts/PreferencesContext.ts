@@ -10,6 +10,7 @@ const PreferencesContext = createContext({
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
         isUserSignedIn: false,
+        selectedTeam: null,
     },
     setUserPreferences: ({
         howManyDaysToBeNextToExpire,
@@ -17,6 +18,7 @@ const PreferencesContext = createContext({
         enableNotifications,
         notificationCadency,
         isUserSignedIn,
+        selectedTeam,
     }: IUserPreferences) => {},
 });
 

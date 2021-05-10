@@ -1,14 +1,16 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
 
 import { getUserTeams } from '~/Functions/Team/Users';
+import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
-import Header from '~/Components/Header';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
+    Title,
     ListCategories,
     TeamItemContainer,
     TeamItemTitle,
@@ -16,7 +18,11 @@ import {
 } from './styles';
 
 const List: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { reset } = useNavigation();
+
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
 
@@ -31,13 +37,25 @@ const List: React.FC = () => {
         setTeams(response);
     }, []);
 
-    const handleNavigateToStore = useCallback(
-        (store: IStore | string) => {
-            navigate('StoreDetails', {
-                store,
+    const handleSetTeam = useCallback(
+        async (teamId: string) => {
+            const selectedTeam = teams.find(t => t.team.id === teamId);
+
+            if (!selectedTeam) {
+                throw new Error('Team not found');
+            }
+
+            await setSelectedTeam(selectedTeam);
+            setUserPreferences({
+                ...userPreferences,
+                selectedTeam,
+            });
+
+            reset({
+                routes: [{ name: 'Home' }],
             });
         },
-        [navigate]
+        [teams, setUserPreferences, reset, userPreferences]
     );
 
     interface renderProps {
@@ -50,14 +68,14 @@ const List: React.FC = () => {
 
             return (
                 <TeamItemContainer
-                    onPress={() => handleNavigateToStore(teamToNavigate)}
+                    onPress={() => handleSetTeam(teamToNavigate)}
                 >
                     <TeamItemTitle>{item.team.name}</TeamItemTitle>
                     <TeamItemRole>{item.role}</TeamItemRole>
                 </TeamItemContainer>
             );
         },
-        [handleNavigateToStore]
+        [handleSetTeam]
     );
 
     useEffect(() => {
@@ -66,8 +84,7 @@ const List: React.FC = () => {
 
     return (
         <Container>
-            <Header title={translate('View_Team_List_PageTitle')} />
-
+            <Title>{translate('View_TeamList_PageTitle')}</Title>
             <ListCategories
                 data={teams}
                 keyExtractor={(item, index) => String(index)}

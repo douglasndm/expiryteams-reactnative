@@ -8,7 +8,7 @@ export async function getSelectedTeam(): Promise<IUserRoles> {
     }
     const selectedTeam: IUserRoles = JSON.parse(selectedTeamAsString);
 
-    console.log(selectedTeam);
+    return selectedTeam;
 }
 
 export async function setSelectedTeam(userRole: IUserRoles): Promise<void> {
