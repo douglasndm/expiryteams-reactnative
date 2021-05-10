@@ -1,15 +1,8 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    useMemo,
-} from 'react';
-import { Alert, ScrollView, Platform } from 'react-native';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import crashlytics from '@react-native-firebase/crashlytics';
-import EnvConfig from 'react-native-config';
 
 import { translate } from '~/Locales';
 
@@ -18,7 +11,9 @@ import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
 import Notification from '~/Components/Notification';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { clearUserSession } from '~/Functions/Auth/Login';
+import { getProduct } from '~/Functions/Products/Product';
+import { createBatch } from '~/Functions/Products/Batches/Batch';
 
 import {
     Container,
@@ -39,7 +34,7 @@ import { ProductHeader, ProductName, ProductCode } from './styles';
 interface Props {
     route: {
         params: {
-            productId: number;
+            productId: string;
         };
     };
 }
@@ -62,11 +57,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         return 'BRL';
     }, []);
 
-    const { userPreferences } = useContext(PreferencesContext);
-
     const [notification, setNotification] = useState<string>();
-
-    const [adReady, setAdReady] = useState(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -82,19 +73,32 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
             return;
         }
         try {
-            await createLote({
+            const response = await createBatch({
                 productId,
-                lote: {
-                    lote,
+                batch: {
+                    name: lote,
                     amount: Number(amount),
-                    exp_date: expDate,
+                    exp_date: String(expDate),
                     price,
-                    status: 'Não tratado',
+                    status: 'unchecked',
                 },
             });
 
-            if (!userPreferences.isUserPremium && adReady) {
-                await interstitialAd.show();
+            if ('error' in response) {
+                setNotification(response.error);
+
+                if (response.status === 401) {
+                    await clearUserSession();
+
+                    reset({
+                        routes: [
+                            {
+                                name: 'Login',
+                            },
+                        ],
+                    });
+                }
+                return;
             }
 
             reset({
@@ -111,51 +115,36 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
             crashlytics().recordError(err);
             setNotification(err);
         }
-    }, [
-        amount,
-        productId,
-        expDate,
-        lote,
-        reset,
-        price,
-        adReady,
-        userPreferences.isUserPremium,
-    ]);
+    }, [amount, productId, expDate, lote, reset, price]);
 
-    useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent(type => {
-            if (type === AdEventType.LOADED) {
-                setAdReady(true);
+    const loadData = useCallback(async () => {
+        const prod = await getProduct({ productId });
+
+        if ('error' in prod) {
+            if (prod.status === 401) {
+                await clearUserSession();
+
+                reset({
+                    routes: [
+                        {
+                            name: 'Login',
+                        },
+                    ],
+                });
             }
-            if (type === AdEventType.CLOSED) {
-                setAdReady(false);
-            }
-            if (type === AdEventType.ERROR) {
-                setAdReady(false);
-            }
-        });
-
-        // Start loading the interstitial straight away
-        interstitialAd.load();
-
-        // Unsubscribe from events on unmount
-        return () => {
-            eventListener();
-        };
-    }, []);
-
-    useEffect(() => {
-        async function getProduct() {
-            const prod = await getProductById(productId);
-
-            if (prod) {
-                setName(prod.name);
-
-                if (prod.code) setCode(prod.code);
-            }
+            return;
         }
-        getProduct();
-    }, [productId]);
+
+        if (prod) {
+            setName(prod.name);
+
+            if (prod.code) setCode(prod.code);
+        }
+    }, [productId, reset]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
