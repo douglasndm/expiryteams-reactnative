@@ -6,7 +6,7 @@
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",
     "Menu_Button_GoToCategories": "Categories",
-    "Menu_Button_GoToStores": "Stores",
+    "Menu_Button_GoToTeamSelect": "Teams",
     "Menu_Button_GoToExport": "Export",
     "Menu_Button_GoToProPage": "Become PRO",
     "Menu_Button_GoToSettings": "Settings",
@@ -96,10 +96,9 @@
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
 
-    "View_Store_List_PageTitle": "Stores",
-    "View_Store_List_AddNewStore_Placeholder": "Add new store",
-    "View_Store_List_AddNewStore_Error_TextEmpty": "Type the store's name",
-    "View_Store_List_NoStore": "No store",
+    "View_Team_List_PageTitle": "All teams",
+    "View_Team_List_AddNewTeam_Placeholder": "Add nem team",
+    "View_Team_List_AddNewTeam_Error_TextEmpty": "Enter the team name",
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
     "View_EditBatch_Error_BatchWithNoName": "Type the batch name",

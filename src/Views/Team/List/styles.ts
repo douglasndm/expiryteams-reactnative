@@ -12,7 +12,7 @@ export const ListCategories = styled.FlatList`
     margin-top: 15px;
 `;
 
-export const CategoryItemContainer = styled(RectButton)`
+export const TeamItemContainer = styled(RectButton)`
     background-color: ${props => props.theme.colors.inputBackground};
     padding: 20px;
     margin-bottom: 10px;
@@ -22,9 +22,14 @@ export const CategoryItemContainer = styled(RectButton)`
     justify-content: space-between;
 `;
 
-export const CategoryItemTitle = styled.Text`
+export const TeamItemTitle = styled.Text`
     color: ${props => props.theme.colors.text};
     font-size: 18px;
+`;
+
+export const TeamItemRole = styled.Text`
+    color: ${props => props.theme.colors.text};
+    font-size: 15px;
 `;
 
 export const Icons = styled(Ionicons).attrs(() => ({

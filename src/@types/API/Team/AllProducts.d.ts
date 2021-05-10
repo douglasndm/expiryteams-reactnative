@@ -1,9 +1,4 @@
 interface IAllTeamProducts {
-    team: {
-        id: string;
-        name: string;
-        created_at: Date;
-        updated_at: Date;
-    };
+    team: ITeam;
     products: Array<IProduct>;
 }

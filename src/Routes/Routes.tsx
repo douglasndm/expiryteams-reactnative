@@ -14,7 +14,7 @@ import About from '~/Views/About';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 
-import StoreList from '~/Views/Store/List';
+import TeamList from '~/Views/Team/List';
 
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
@@ -52,7 +52,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CategoryView" component={CategoryView} />
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
-            <Stack.Screen name="StoreList" component={StoreList} />
+            <Stack.Screen name="TeamList" component={TeamList} />
 
             <Stack.Screen name="Export" component={Export} />
         </Stack.Navigator>

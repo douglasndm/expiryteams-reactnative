@@ -6,7 +6,7 @@
     "Menu_Button_GoToAddProduct": "Adicionar produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
     "Menu_Button_GoToCategories": "Categorias",
-    "Menu_Button_GoToStores": "Lojas",
+    "Menu_Button_GoToTeamSelect": "Times",
     "Menu_Button_GoToExport": "Exportar",
     "Menu_Button_GoToProPage": "SEJA PRO",
     "Menu_Button_GoToSettings": "Configurações",
@@ -97,10 +97,9 @@
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
-    "View_Store_List_PageTitle": "Todas as lojas",
-    "View_Store_List_AddNewStore_Placeholder": "Adicionar nova loja",
-    "View_Store_List_AddNewStore_Error_TextEmpty": "Digite o nome da loja",
-    "View_Store_List_NoStore": "Sem loja",
+    "View_Team_List_PageTitle": "Todos os times",
+    "View_Team_List_AddNewTeam_Placeholder": "Criar novo time",
+    "View_Team_List_AddNewTeam_Error_TextEmpty": "Digite o nome do time",
 
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",

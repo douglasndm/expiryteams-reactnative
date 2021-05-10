@@ -108,7 +108,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <MenuContent>
                                 <Icons name="list-outline" />
                                 <MenuItemText>
-                                    {translate('Menu_Button_GoToStores')}
+                                    {translate('Menu_Button_GoToTeamSelect')}
                                 </MenuItemText>
                             </MenuContent>
 
