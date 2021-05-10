@@ -1,6 +1,10 @@
 {
     "AppName": "Controle de Validade",
 
+    "Menu_UserInfo_Role_Manager": "Gerente",
+    "Menu_UserInfo_Role_Supervisor": "Supervisor",
+    "Menu_UserInfo_Role_Repositor": "Repositor",
+
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",

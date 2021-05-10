@@ -1,6 +1,10 @@
 {
     "AppName": "Expiry Checker",
 
+    "Menu_UserInfo_Role_Manager": "Manager",
+    "Menu_UserInfo_Role_Supervisor": "Supervisor",
+    "Menu_UserInfo_Role_Repositor": "Repositor",
+
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",

@@ -7,10 +7,10 @@ import {
 
 import { translate } from '~/Locales';
 
+import UserInfo from './UserInfo';
+
 import {
     Container,
-    LogoContainer,
-    Logo,
     MenuItemContainer,
     MenuContent,
     MenuItemText,
@@ -54,9 +54,8 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         <Container>
             <DrawerContentScrollView {...props}>
                 <View>
-                    <LogoContainer>
-                        <Logo />
-                    </LogoContainer>
+                    <UserInfo />
+
                     <DrawerSection>
                         <MenuItemContainer
                             onPress={() => navigation.navigate('Home')}
@@ -94,12 +93,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                     {translate('Menu_Button_GoToCategories')}
                                 </MenuItemText>
                             </MenuContent>
-
-                            <LabelGroup>
-                                <LabelContainer>
-                                    <Label>{translate('Menu_Label_PRO')}</Label>
-                                </LabelContainer>
-                            </LabelGroup>
                         </MenuItemContainer>
 
                         <MenuItemContainer
@@ -111,12 +104,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                     {translate('Menu_Button_GoToTeamSelect')}
                                 </MenuItemText>
                             </MenuContent>
-
-                            <LabelGroup>
-                                <LabelContainer>
-                                    <Label>{translate('Menu_Label_PRO')}</Label>
-                                </LabelContainer>
-                            </LabelGroup>
                         </MenuItemContainer>
 
                         <MenuItemContainer onPress={navigateToExport}>
@@ -126,12 +113,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                     {translate('Menu_Button_GoToExport')}
                                 </MenuItemText>
                             </MenuContent>
-
-                            <LabelGroup>
-                                <LabelContainer>
-                                    <Label>{translate('Menu_Label_PRO')}</Label>
-                                </LabelContainer>
-                            </LabelGroup>
                         </MenuItemContainer>
                     </DrawerSection>
                 </View>

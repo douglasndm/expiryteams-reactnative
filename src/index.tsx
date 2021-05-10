@@ -48,9 +48,7 @@ const App: React.FC = () => {
 
     const [preferences, setPreferences] = useState({
         howManyDaysToBeNextToExpire: 30,
-        isUserPremium: false,
         appTheme: Themes.Light,
-        multiplesStores: false,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
         isUserSignedIn: false,
