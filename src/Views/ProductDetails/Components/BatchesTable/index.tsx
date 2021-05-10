@@ -1,13 +1,13 @@
 import React, { useContext, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
+import { isPast, addDays, format, parseISO } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
-import { translate } from '../../../../Locales';
+import { translate } from '~/Locales';
 
-import PreferencesContext from '../../../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Table,
@@ -19,8 +19,8 @@ import {
 } from './styles';
 
 interface BatchesTableProps {
-    productId: number;
-    batches: Array<ILote>;
+    productId: string;
+    batches: Array<IBatch>;
 }
 
 const BatchesTable: React.FC<BatchesTableProps> = ({
@@ -77,15 +77,17 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                 </TableTitle>
             </TableHeader>
 
-            {batches.map((batch) => {
-                const expired = isPast(batch.exp_date);
+            {batches.map(batch => {
+                const exp_date = parseISO(batch.exp_date);
+
+                const expired = isPast(exp_date);
                 const nextToExp =
                     addDays(
                         new Date(),
                         userPreferences.howManyDaysToBeNextToExpire
-                    ) > batch.exp_date;
+                    ) > exp_date;
 
-                const treated = batch.status === 'Tratado';
+                const treated = batch.status === 'checked';
 
                 return (
                     <TableRow
@@ -106,7 +108,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                                 nextToExp={nextToExp}
                                 treated={treated}
                             >
-                                {batch.lote}
+                                {batch.name}
                             </Text>
                         </TableCell>
                         <TableCell>
@@ -115,7 +117,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                                 nextToExp={nextToExp}
                                 treated={treated}
                             >
-                                {format(batch.exp_date, dateFormat, {
+                                {format(exp_date, dateFormat, {
                                     locale: languageCode,
                                 })}
                             </Text>
@@ -141,7 +143,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                                         displayType="text"
                                         thousandSeparator
                                         prefix={currencyPrefix}
-                                        renderText={(value) => value}
+                                        renderText={value => value}
                                         decimalScale={2}
                                     />
                                 </Text>

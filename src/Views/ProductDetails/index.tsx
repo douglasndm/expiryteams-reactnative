@@ -5,14 +5,11 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
 import { getLocales } from 'react-native-localize';
 import { format } from 'date-fns';
-import EnvConfig from 'react-native-config';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { translate } from '~/Locales';
@@ -22,12 +19,13 @@ import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import Notification from '~/Components/Notification';
 
+import { getProduct } from '~/Functions/Products/Product';
+import { clearUserSession } from '~/Functions/Auth/Login';
+
 import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import { ProBanner, ProText } from '~/Components/ListProducts/styles';
 
 import {
     Container,
@@ -39,7 +37,6 @@ import {
     ProductInformationContent,
     ProductName,
     ProductCode,
-    ProductStore,
     ProductImageContainer,
     ProductImage,
     ActionsButtonContainer,
@@ -48,7 +45,6 @@ import {
     Icons,
     CategoryDetails,
     CategoryDetailsText,
-    AdContainer,
     TableContainer,
     FloatButton,
 } from './styles';
@@ -58,7 +54,7 @@ import BatchTable from './Components/BatchesTable';
 interface Request {
     route: {
         params: {
-            id: number;
+            id: string;
         };
     };
 }
@@ -66,7 +62,7 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    const { navigate, goBack } = useNavigation();
+    const { navigate, reset, goBack } = useNavigation();
 
     const productId = useMemo(() => {
         return route.params.id;
@@ -82,64 +78,42 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         return 'dd/MM/yyyy';
     }, []);
 
-    const [name, setName] = useState('');
-    const [code, setCode] = useState('');
     const [photo, setPhoto] = useState<string | null>(null);
     const [product, setProduct] = useState<IProduct>();
-    const [storeName, setStoreName] = useState<string | null>();
 
-    const [lotes, setLotes] = useState<Array<ILote>>([]);
-    const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
-    const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
+    const [lotesTratados, setLotesTratados] = useState<Array<IBatch>>([]);
+    const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
 
-    const choosenAdText = useMemo(() => {
-        return Math.floor(Math.random() * 3) + 1;
-    }, []);
-
-    const getProduct = useCallback(async () => {
+    const loadData = useCallback(async () => {
         setIsLoading(true);
         try {
-            const result = await getProductById(productId);
+            const response = await getProduct({ productId });
 
-            if (result.photo) {
-                const imagePath = await getProductImagePath(productId);
+            if ('error' in response) {
+                setError(response.error);
 
-                if (imagePath) {
-                    const fileExists = await exists(imagePath);
-                    if (fileExists) {
-                        setPhoto(`file://${imagePath}`);
-                    }
+                if (response.status === 401) {
+                    await clearUserSession();
+
+                    reset({
+                        routes: [
+                            {
+                                name: 'Login',
+                            },
+                        ],
+                    });
                 }
-            }
-
-            if (!result || result === null) {
-                goBack();
                 return;
             }
 
-            setProduct(result);
-
-            setName(result.name);
-            if (result.code) setCode(result.code);
-
-            const lotesSorted = sortLoteByExpDate(result.lotes);
-
-            setLotes(lotesSorted);
+            setProduct(response);
         } catch (err) {
             crashlytics().recordError(err);
             setError(err.message);
         } finally {
             setIsLoading(false);
         }
-    }, [productId, goBack]);
-
-    useEffect(() => {
-        if (product?.store) {
-            getStore(product.store).then(response =>
-                setStoreName(response?.name)
-            );
-        }
-    }, [product]);
+    }, [productId, reset]);
 
     const addNewLote = useCallback(() => {
         navigate('AddLote', { productId });
@@ -150,16 +124,20 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [navigate, productId]);
 
     useEffect(() => {
-        getProduct();
-    }, [getProduct]);
+        loadData();
+    }, [loadData]);
 
     useEffect(() => {
-        setLotesTratados(() => lotes.filter(lote => lote.status === 'Tratado'));
+        if (product) {
+            setLotesTratados(() =>
+                product?.batches.filter(batch => batch.status === 'checked')
+            );
 
-        setLotesNaoTratados(() =>
-            lotes.filter(lote => lote.status !== 'Tratado')
-        );
-    }, [lotes]);
+            setLotesNaoTratados(() =>
+                product?.batches.filter(batch => batch.status !== 'checked')
+            );
+        }
+    }, [product]);
 
     const handleDimissNotification = useCallback(() => {
         setError('');
@@ -172,10 +150,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             });
         }
     }, [navigate, product, productId]);
-
-    const handleNavigateToPro = useCallback(() => {
-        navigate('Pro');
-    }, [navigate]);
 
     const handleShare = useCallback(async () => {
         if (product) {
@@ -221,22 +195,15 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 </ProductImageContainer>
                             )}
                             <ProductInformationContent>
-                                <ProductName>{name}</ProductName>
-                                {!!code && (
+                                <ProductName>
+                                    {!!product && product?.name}
+                                </ProductName>
+                                {!!product && product?.code && (
                                     <ProductCode>
                                         {translate('View_ProductDetails_Code')}:{' '}
-                                        {code}
+                                        {product.code}
                                     </ProductCode>
                                 )}
-                                {userPreferences.multiplesStores &&
-                                    !!storeName && (
-                                        <ProductStore>
-                                            {translate(
-                                                'View_ProductDetails_Store'
-                                            )}
-                                            : {storeName}
-                                        </ProductStore>
-                                    )}
 
                                 <ActionsButtonContainer>
                                     <ActionButton
@@ -253,22 +220,21 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                         )}
                                     </ActionButton>
 
-                                    {userPreferences.isUserPremium &&
-                                        lotesNaoTratados.length > 0 && (
-                                            <ActionButton
-                                                icon={() => (
-                                                    <Icons
-                                                        name="share-social-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={handleShare}
-                                            >
-                                                {translate(
-                                                    'View_ProductDetails_Button_ShareProduct'
-                                                )}
-                                            </ActionButton>
-                                        )}
+                                    {lotesNaoTratados.length > 0 && (
+                                        <ActionButton
+                                            icon={() => (
+                                                <Icons
+                                                    name="share-social-outline"
+                                                    size={22}
+                                                />
+                                            )}
+                                            onPress={handleShare}
+                                        >
+                                            {translate(
+                                                'View_ProductDetails_Button_ShareProduct'
+                                            )}
+                                        </ActionButton>
+                                    )}
                                 </ActionsButtonContainer>
                             </ProductInformationContent>
                         </ProductContainer>
@@ -290,23 +256,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     productId={productId}
                                 />
                             </TableContainer>
-                        )}
-
-                        {!userPreferences.isUserPremium && (
-                            <AdContainer>
-                                <BannerAd
-                                    unitId={adUnit}
-                                    size={BannerAdSize.MEDIUM_RECTANGLE}
-                                />
-
-                                <ProBanner onPress={handleNavigateToPro}>
-                                    <ProText>
-                                        {translate(
-                                            `ProBanner_Text${choosenAdText}`
-                                        )}
-                                    </ProText>
-                                </ProBanner>
-                            </AdContainer>
                         )}
 
                         {lotesTratados.length > 0 && (

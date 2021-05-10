@@ -65,13 +65,6 @@ export const ProductCode = styled.Text`
     color: ${({ theme }) => theme.colors.text};
 `;
 
-export const ProductStore = styled.Text`
-    font-size: 14px;
-    margin-left: 15px;
-
-    color: ${({ theme }) => theme.colors.text};
-`;
-
 export const ProductImageContainer = styled(RectButton)``;
 
 export const ProductImage = styled.Image`
@@ -84,7 +77,7 @@ export const ActionsButtonContainer = styled.View`
     flex-direction: row;
 `;
 
-export const ActionButton = styled(Button).attrs((props) => ({
+export const ActionButton = styled(Button).attrs(props => ({
     color: props.theme.colors.accent,
 }))``;
 
@@ -104,13 +97,8 @@ export const CategoryDetails = styled.View`
 `;
 
 export const CategoryDetailsText = styled.Text`
-    color: ${(props) => props.theme.colors.accent};
+    color: ${props => props.theme.colors.accent};
     font-size: 18px;
-`;
-
-export const AdContainer = styled.View`
-    align-self: center;
-    margin: 20px 0px;
 `;
 
 export const TableContainer = styled.View``;
