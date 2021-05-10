@@ -182,62 +182,66 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             </PageTitle>
                         </PageTitleContent>
 
-                        <ProductContainer>
-                            {userPreferences.isUserPremium && !!photo && (
-                                <ProductImageContainer
-                                    onPress={handleOnPhotoPress}
-                                >
-                                    <ProductImage
-                                        source={{
-                                            uri: photo,
-                                        }}
-                                    />
-                                </ProductImageContainer>
-                            )}
-                            <ProductInformationContent>
-                                <ProductName>
-                                    {!!product && product?.name}
-                                </ProductName>
-                                {!!product && product?.code && (
-                                    <ProductCode>
-                                        {translate('View_ProductDetails_Code')}:{' '}
-                                        {product.code}
-                                    </ProductCode>
-                                )}
-
-                                <ActionsButtonContainer>
-                                    <ActionButton
-                                        icon={() => (
-                                            <Icons
-                                                name="create-outline"
-                                                size={22}
-                                            />
-                                        )}
-                                        onPress={handleEdit}
+                        {!!product && (
+                            <ProductContainer>
+                                {userPreferences.isUserPremium && !!photo && (
+                                    <ProductImageContainer
+                                        onPress={handleOnPhotoPress}
                                     >
-                                        {translate(
-                                            'View_ProductDetails_Button_UpdateProduct'
-                                        )}
-                                    </ActionButton>
+                                        <ProductImage
+                                            source={{
+                                                uri: photo,
+                                            }}
+                                        />
+                                    </ProductImageContainer>
+                                )}
+                                <ProductInformationContent>
+                                    <ProductName>
+                                        {!!product && product?.name}
+                                    </ProductName>
+                                    {!!product.code && product?.code && (
+                                        <ProductCode>
+                                            {translate(
+                                                'View_ProductDetails_Code'
+                                            )}
+                                            : {product.code}
+                                        </ProductCode>
+                                    )}
 
-                                    {lotesNaoTratados.length > 0 && (
+                                    <ActionsButtonContainer>
                                         <ActionButton
                                             icon={() => (
                                                 <Icons
-                                                    name="share-social-outline"
+                                                    name="create-outline"
                                                     size={22}
                                                 />
                                             )}
-                                            onPress={handleShare}
+                                            onPress={handleEdit}
                                         >
                                             {translate(
-                                                'View_ProductDetails_Button_ShareProduct'
+                                                'View_ProductDetails_Button_UpdateProduct'
                                             )}
                                         </ActionButton>
-                                    )}
-                                </ActionsButtonContainer>
-                            </ProductInformationContent>
-                        </ProductContainer>
+
+                                        {lotesNaoTratados.length > 0 && (
+                                            <ActionButton
+                                                icon={() => (
+                                                    <Icons
+                                                        name="share-social-outline"
+                                                        size={22}
+                                                    />
+                                                )}
+                                                onPress={handleShare}
+                                            >
+                                                {translate(
+                                                    'View_ProductDetails_Button_ShareProduct'
+                                                )}
+                                            </ActionButton>
+                                        )}
+                                    </ActionsButtonContainer>
+                                </ProductInformationContent>
+                            </ProductContainer>
+                        )}
                     </PageHeader>
 
                     <PageContent>

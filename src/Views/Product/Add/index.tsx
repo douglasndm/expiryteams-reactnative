@@ -5,14 +5,16 @@ import React, {
     useCallback,
     useMemo,
 } from 'react';
-import { ScrollView, Platform } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import EnvConfig from 'react-native-config';
+
 import { exists, unlink } from 'react-native-fs';
 
 import { translate } from '~/Locales';
 
+import { createProduct } from '~/Functions/Products/Product';
+import { createBatch } from '~/Functions/Products/Batches/Batch';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 import StatusBar from '~/Components/StatusBar';
@@ -50,9 +52,6 @@ import {
     InputCodeTextIcon,
     InputCodeText,
     InputTextIconContainer,
-    BannerContainer,
-    BannerText,
-    Icons,
 } from './styles';
 
 interface ICategoryItem {
@@ -94,14 +93,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [adReady, setAdReady] = useState(false);
-
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState('');
-    const [lote, setLote] = useState('');
+    const [batch, setBatch] = useState('');
     const [amount, setAmount] = useState('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
     const [expDate, setExpDate] = useState(new Date());
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
@@ -112,15 +109,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             return null;
         }
     );
-    const [selectedStore, setSelectedStore] = useState<string | null>(() => {
-        if (route.params && route.params.store) {
-            return route.params.store;
-        }
-        return null;
-    });
 
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
-    const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
@@ -149,145 +139,84 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 prodCategories.push(selectedCategory);
             }
 
-            const tempStore =
-                selectedStore && selectedStore !== 'null'
-                    ? selectedStore
-                    : null;
-
-            const newProduct: Omit<IProduct, 'id'> = {
-                name,
-                code,
-                store: tempStore,
-                photo: picFileName,
-                categories: prodCategories,
-                lotes: [],
-            };
-
-            const newLote: Omit<ILote, 'id'> = {
-                lote,
-                exp_date: expDate,
-                amount: Number(amount),
-                price,
-                status: 'Não tratado',
-            };
-
-            const productCreatedId = await createProduct({
-                product: newProduct,
+            const createdProduct = await createProduct({
+                team_id: 'a45ebbee-1031-4d83-bcf5-25c6c552bd9b',
+                product: {
+                    name,
+                    code,
+                    batches: [],
+                },
             });
 
-            if (productCreatedId) {
-                await createLote({
-                    lote: newLote,
-                    productId: productCreatedId,
-                });
-
-                if (!userPreferences.isUserPremium && adReady) {
-                    interstitialAd.show();
-                }
-
-                reset({
-                    index: 1,
-                    routes: [
-                        { name: 'Home' },
-                        {
-                            name: 'Success',
-                            params: {
-                                type: 'create_product',
-                                productId: productCreatedId,
-
-                                category_id: selectedCategory,
-                                store_id: selectedStore,
-                            },
-                        },
-                    ],
-                });
+            if ('error' in createdProduct) {
+                setError(createdProduct.error);
+                return;
             }
+
+            const createdBatch = await createBatch({
+                productId: createdProduct.id,
+                batch: {
+                    name: batch || '01',
+                    exp_date: String(expDate),
+                    amount: Number(amount),
+                    price: Number(price),
+                    status: 'unchecked',
+                },
+            });
+
+            if ('error' in createdBatch) {
+                setError(createdBatch.error);
+                return;
+            }
+
+            reset({
+                index: 1,
+                routes: [
+                    { name: 'Home' },
+                    {
+                        name: 'Success',
+                        params: {
+                            type: 'create_product',
+                            productId: createdProduct.id,
+
+                            category_id: selectedCategory,
+                        },
+                    },
+                ],
+            });
         } catch (error) {
             setError(error.message);
         }
     }, [
-        adReady,
         amount,
         code,
         codeFieldError,
         expDate,
-        lote,
+        batch,
         name,
         nameFieldError,
         photoPath,
         price,
         reset,
         selectedCategory,
-        selectedStore,
-        userPreferences.isUserPremium,
     ]);
 
     useEffect(() => {
-        getAllCategories().then(allCategories => {
-            const categoriesArray: Array<ICategoryItem> = [];
-
-            allCategories.forEach(cat =>
-                categoriesArray.push({
-                    key: cat.id,
-                    label: cat.name,
-                    value: cat.id,
-                })
-            );
-
-            setCategories(categoriesArray);
-        });
-
-        getAllStores().then(allStores => {
-            const storesArray: Array<IStoreItem> = [];
-
-            allStores.forEach(sto => {
-                if (sto.id) {
-                    storesArray.push({
-                        key: sto.id,
-                        label: sto.name,
-                        value: sto.id,
-                    });
-                }
-            });
-
-            // storesArray.push({
-            //     key: 'newStore',
-            //     label: 'Create new store',
-            //     value: 'newStore',
-            // });
-
-            setStores(storesArray);
-        });
-    }, []);
-
-    useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent(type => {
-            if (type === AdEventType.LOADED) {
-                setAdReady(true);
-            }
-            if (type === AdEventType.CLOSED) {
-                setAdReady(false);
-            }
-            if (type === AdEventType.ERROR) {
-                setAdReady(false);
-            }
-        });
-
-        // Start loading the interstitial straight away
-        interstitialAd.load();
-
-        // Unsubscribe from events on unmount
-        return () => {
-            eventListener();
-        };
+        // getAllCategories().then(allCategories => {
+        //     const categoriesArray: Array<ICategoryItem> = [];
+        //     allCategories.forEach(cat =>
+        //         categoriesArray.push({
+        //             key: cat.id,
+        //             label: cat.name,
+        //             value: cat.id,
+        //         })
+        //     );
+        //     setCategories(categoriesArray);
+        // });
     }, []);
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
-    }, []);
-
-    const handleStoreChange = useCallback(value => {
-        setSelectedStore(value);
     }, []);
 
     const handleAmountChange = useCallback(value => {
@@ -303,11 +232,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     }, []);
 
     const handleEnableCamera = useCallback(async () => {
-        if (!userPreferences.isUserPremium) {
-            navigate('Pro');
-            return;
-        }
-
         if (photoPath) {
             if (await exists(photoPath)) {
                 await unlink(photoPath);
@@ -315,7 +239,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         }
         setIsBarCodeEnabled(false);
         setIsCameraEnabled(true);
-    }, [photoPath, navigate, userPreferences.isUserPremium]);
+    }, [photoPath]);
 
     const handleDisableCamera = useCallback(() => {
         setIsCameraEnabled(false);
@@ -354,7 +278,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             if (theCode) {
                 const prodExist = await checkIfProductAlreadyExistsByCode({
                     productCode: theCode,
-                    productStore: selectedStore || undefined,
+                    productStore: undefined,
                 });
 
                 if (prodExist) {
@@ -362,13 +286,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
                     const existProd = await getProductByCode(
                         theCode,
-                        selectedStore || undefined
+                        undefined
                     );
                     setExistentProduct(existProd.id);
                 }
             }
         },
-        [code, selectedStore]
+        [code]
     );
 
     const handleNavigateToExistProduct = useCallback(async () => {
@@ -376,10 +300,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             navigate('AddLote', { productId: existentProduct });
         }
     }, [existentProduct, navigate]);
-
-    const handleNavigateToPro = useCallback(() => {
-        navigate('Pro');
-    }, [navigate]);
 
     const handleOnCodeRead = useCallback(
         async (codeRead: string) => {
@@ -391,6 +311,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     );
 
     const handlePriceChange = useCallback((value: number) => {
+        if (value <= 0) {
+            setPrice(null);
+            return;
+        }
         setPrice(value);
     }, []);
 
@@ -431,20 +355,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                         )}
 
                                     <InputContainer>
-                                        {!userPreferences.isUserPremium && (
-                                            <BannerContainer
-                                                onPress={handleNavigateToPro}
-                                            >
-                                                <BannerText>
-                                                    {translate(
-                                                        'View_AddProduct_Banner_UnlockCamera'
-                                                    )}
-                                                </BannerText>
-
-                                                <Icons name="arrow-down-outline" />
-                                            </BannerContainer>
-                                        )}
-
                                         <InputGroup>
                                             <InputTextContainer
                                                 hasError={nameFieldError}
@@ -471,11 +381,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                 />
                                             </InputTextContainer>
 
-                                            <CameraButtonContainer
+                                            {/* <CameraButtonContainer
                                                 onPress={handleEnableCamera}
                                             >
                                                 <CameraButtonIcon />
-                                            </CameraButtonContainer>
+                                            </CameraButtonContainer> */}
                                         </InputGroup>
                                         {nameFieldError && (
                                             <InputTextTip>
@@ -544,9 +454,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         accessibilityLabel={translate(
                                                             'View_AddProduct_InputAccessibility_Batch'
                                                         )}
-                                                        value={lote}
+                                                        value={batch}
                                                         onChangeText={value =>
-                                                            setLote(value)
+                                                            setBatch(value)
                                                         }
                                                         onFocus={() => {
                                                             setIsBarCodeEnabled(
@@ -608,28 +518,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         placeholder={{
                                                             label: translate(
                                                                 'View_AddProduct_InputPlaceholder_SelectCategory'
-                                                            ),
-                                                            value: 'null',
-                                                        }}
-                                                    />
-                                                </PickerContainer>
-                                            )}
-
-                                            {userPreferences.multiplesStores && (
-                                                <PickerContainer
-                                                    style={{
-                                                        marginBottom: 10,
-                                                    }}
-                                                >
-                                                    <Picker
-                                                        items={stores}
-                                                        onValueChange={
-                                                            handleStoreChange
-                                                        }
-                                                        value={selectedStore}
-                                                        placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlacehoder_Store'
                                                             ),
                                                             value: 'null',
                                                         }}

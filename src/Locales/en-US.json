@@ -59,7 +59,6 @@
 
     "View_About_PageTitle": "About",
     "View_About_AppVersion": "",
-    "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo made by",
 
@@ -73,8 +72,8 @@
 
     "View_AddProduct_AlertTypeProductName": "Type the product name",
     "View_AddProduct_PageTitle": "Add new product",
-    "View_AddProduct_InputPlacehoder_Name": "Product's name",
-    "View_AddProduct_InputPlacehoder_Code": "Product's code",
+    "View_AddProduct_InputPlacehoder_Name": "Name",
+    "View_AddProduct_InputPlacehoder_Code": "Code",
     "View_AddProduct_InputPlacehoder_Batch": "Batch",
     "View_AddProduct_InputPlacehoder_Amount": "Amount",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Unit price",

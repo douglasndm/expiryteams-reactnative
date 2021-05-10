@@ -196,24 +196,3 @@ export const CustomDatePicker = styled(DatePicker).attrs(props => ({
     background: ${({ theme }) => theme.colors.productBackground};
     z-index: 1;
 `;
-
-export const BannerContainer = styled(RectButton)`
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: ${({ theme }) => theme.colors.accent};
-    padding: 15px 10px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-`;
-
-export const BannerText = styled.Text`
-    font-size: 18px;
-    font-weight: bold;
-
-    color: #fff;
-`;
-
-export const Icons = styled(Ionicons).attrs(() => ({
-    size: 22,
-    color: '#fff',
-}))``;
