@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
 import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -31,11 +33,13 @@ const CategoryView: React.FC = () => {
     const { params } = useRoute();
     const { navigate } = useNavigation();
 
+    const { userPreferences } = useContext(PreferencesContext);
+
     const routeParams = params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [categoryName, setCategoryName] = useState<string>('CategoryTitle');
+    const [categoryName, setCategoryName] = useState<string>('');
 
     const [products, setProducts] = useState<IProduct[]>([]);
 
@@ -91,14 +95,16 @@ const CategoryView: React.FC = () => {
                 {categoryName}
             </CategoryTitle>
 
-            <ActionsButtonContainer>
-                <ActionButton
-                    icon={() => <Icons name="create-outline" size={22} />}
-                    onPress={handleEdit}
-                >
-                    {translate('View_ProductDetails_Button_UpdateProduct')}
-                </ActionButton>
-            </ActionsButtonContainer>
+            {userPreferences.selectedTeam.role.toLowerCase() === 'manager' && (
+                <ActionsButtonContainer>
+                    <ActionButton
+                        icon={() => <Icons name="create-outline" size={22} />}
+                        onPress={handleEdit}
+                    >
+                        {translate('View_ProductDetails_Button_UpdateProduct')}
+                    </ActionButton>
+                </ActionsButtonContainer>
+            )}
 
             <ListProducts products={products} deactiveFloatButton />
 
