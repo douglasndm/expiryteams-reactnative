@@ -6,7 +6,6 @@ import { translate } from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
-import GenericButton from '~/Components/Button';
 import NotificationError from '~/Components/Notification';
 
 import Appearance from './Components/Appearance';
@@ -37,8 +36,6 @@ const Settings: React.FC = () => {
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
     );
-    const [userSigned, setUserSigned] = useState<boolean>(false);
-    const [isOnLogout, setIsOnLogout] = useState<boolean>(false);
 
     const { goBack } = useNavigation();
 
@@ -54,16 +51,9 @@ const Settings: React.FC = () => {
         [setUserPreferences, userPreferences]
     );
 
-    const loadData = useCallback(async () => {
-        const isSigned = await isUserSignedIn();
-        setUserSigned(isSigned);
-    }, []);
-
     useEffect(() => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
-
-        loadData();
-    }, [userPreferences, loadData]);
+    }, [userPreferences]);
 
     useEffect(() => {
         async function SetNewDays() {
@@ -86,22 +76,6 @@ const Settings: React.FC = () => {
         setSettingDaysToBeNext,
         userPreferences.howManyDaysToBeNextToExpire,
     ]);
-
-    const handleLogout = useCallback(async () => {
-        try {
-            setIsOnLogout(true);
-            await signOut();
-
-            setUserPreferences({
-                ...userPreferences,
-                isUserSignedIn: false,
-            });
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setIsOnLogout(false);
-        }
-    }, [setUserPreferences, userPreferences]);
 
     const onDimissError = useCallback(() => {
         setError('');
@@ -151,30 +125,6 @@ const Settings: React.FC = () => {
                         </Category>
 
                         <Appearance />
-
-                        {userSigned && (
-                            <Category>
-                                <CategoryTitle>
-                                    {translate(
-                                        'View_Settings_CategoryName_Account'
-                                    )}
-                                </CategoryTitle>
-
-                                <SettingDescription>
-                                    {translate(
-                                        'View_Settings_AccountDescription'
-                                    )}
-                                </SettingDescription>
-
-                                <GenericButton
-                                    text={translate(
-                                        'View_Settings_Button_SignOut'
-                                    )}
-                                    onPress={handleLogout}
-                                    isLoading={isOnLogout}
-                                />
-                            </Category>
-                        )}
                     </SettingsContent>
                 </ScrollView>
             </Container>

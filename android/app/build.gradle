@@ -140,7 +140,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "dev.douglasndm.expirycheck.business"
+        applicationId "dev.douglasndm.expirychecker.business"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
