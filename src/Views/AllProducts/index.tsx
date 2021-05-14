@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 
 import { translate } from '~/Locales';
+
+import { getAllProducts } from '~/Functions/Products/Products';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -19,7 +22,7 @@ import {
 import { Container } from './styles';
 
 const AllProducts: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { userPreferences } = useContext(PreferencesContext);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -32,12 +35,17 @@ const AllProducts: React.FC = () => {
     );
     const [error, setError] = useState<string>('');
 
-    const getProducts = useCallback(async () => {
+    const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
             const allProducts = await getAllProducts({
-                sortProductsByExpDate: true,
+                team_id: userPreferences.selectedTeam.team.id,
             });
+
+            if ('error' in allProducts) {
+                console.log(allProducts.error);
+                return;
+            }
 
             setProducts(allProducts);
         } catch (err) {
@@ -45,11 +53,11 @@ const AllProducts: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [userPreferences.selectedTeam.team.id]);
 
     useEffect(() => {
-        getProducts();
-    }, [getProducts]);
+        loadData();
+    }, [loadData]);
 
     useEffect(() => {
         setProductsSearch(products);
@@ -62,10 +70,6 @@ const AllProducts: React.FC = () => {
     const handleOnBarCodeReaderClose = useCallback(() => {
         setEnableBarCodeReader(false);
     }, []);
-
-    const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct');
-    }, [navigate]);
 
     const handleSearchChange = useCallback(
         async (search: string) => {
