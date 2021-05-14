@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
+
+import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
-import Notification from '~/Components/Notification';
 
 import {
     FloatButton,
@@ -32,39 +34,35 @@ const CategoryView: React.FC = () => {
     const routeParams = params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [categoryName, setCategoryName] = useState<string>('CategoryTitle');
 
     const [products, setProducts] = useState<IProduct[]>([]);
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
-
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const categories = await getAllCategories();
-            const findCat = categories.find(c => c.id === routeParams.id);
 
-            if (findCat) {
-                setCategoryName(findCat.name);
+            const prods = await getAllProductsFromCategory({
+                category_id: routeParams.id,
+            });
+
+            if ('error' in prods) {
+                showMessage({
+                    message: prods.error,
+                    type: 'danger',
+                });
+                return;
             }
 
-            const prods = await getAllProductsByCategory(routeParams.id);
-
-            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-            const sortedProds = sortProductsLotesByLotesExpDate(prods);
-
-            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
-            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
-            // DE QUAL ESTÁ MAIS PRÓXIMO
-            const results = sortProductsByFisrtLoteExpDate(sortedProds);
-
-            setProducts(results);
+            setCategoryName(prods.category);
+            setProducts(prods.products);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+                duration: 5000,
+            });
         } finally {
             setIsLoading(false);
         }
@@ -113,13 +111,7 @@ const CategoryView: React.FC = () => {
                 onPress={handleNavigateAddProduct}
             />
 
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
+            <FlashMessage position="top" />
         </Container>
     );
 };
