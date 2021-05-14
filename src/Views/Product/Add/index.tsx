@@ -140,7 +140,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             }
 
             const createdProduct = await createProduct({
-                team_id: 'a45ebbee-1031-4d83-bcf5-25c6c552bd9b',
+                team_id: userPreferences.selectedTeam.team.id,
                 product: {
                     name,
                     code,
@@ -199,6 +199,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         price,
         reset,
         selectedCategory,
+        userPreferences.selectedTeam.team.id,
     ]);
 
     useEffect(() => {
