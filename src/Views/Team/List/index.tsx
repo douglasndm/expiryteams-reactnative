@@ -5,6 +5,7 @@ import { translate } from '~/Locales';
 
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
+import { clearUserSession } from '~/Functions/Auth/Login';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -30,7 +31,12 @@ const List: React.FC = () => {
         const response = await getUserTeams();
 
         if ('error' in response) {
-            console.log(response.error);
+            if (response.status === 401) {
+                await clearUserSession();
+                reset({
+                    routes: [{ name: 'Login' }],
+                });
+            }
             return;
         }
 
