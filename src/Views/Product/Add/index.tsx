@@ -8,6 +8,7 @@ import React, {
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import { exists, unlink } from 'react-native-fs';
 
@@ -15,6 +16,7 @@ import { translate } from '~/Locales';
 
 import { createProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
+import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 import StatusBar from '~/Components/StatusBar';
@@ -22,7 +24,6 @@ import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
-import Notification from '~/Components/Notification';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -119,7 +120,30 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
-    const [erro, setError] = useState<string>('');
+
+    const loadData = useCallback(async () => {
+        const response = await getAllCategoriesFromTeam({
+            team_id: userPreferences.selectedTeam.team.id,
+        });
+
+        if ('error' in response) {
+            showMessage({
+                message: response.error,
+                type: 'default',
+            });
+            return;
+        }
+
+        const categoriesArray: Array<ICategoryItem> = [];
+        response.forEach(cat =>
+            categoriesArray.push({
+                key: cat.id,
+                label: cat.name,
+                value: cat.id,
+            })
+        );
+        setCategories(categoriesArray);
+    }, [userPreferences.selectedTeam.team.id]);
 
     const handleSave = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -203,18 +227,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     ]);
 
     useEffect(() => {
-        // getAllCategories().then(allCategories => {
-        //     const categoriesArray: Array<ICategoryItem> = [];
-        //     allCategories.forEach(cat =>
-        //         categoriesArray.push({
-        //             key: cat.id,
-        //             label: cat.name,
-        //             value: cat.id,
-        //         })
-        //     );
-        //     setCategories(categoriesArray);
-        // });
-    }, []);
+        loadData();
+    }, [loadData]);
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
@@ -226,10 +240,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         if (value === '' || regex.test(value)) {
             setAmount(value);
         }
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
     }, []);
 
     const handleEnableCamera = useCallback(async () => {
@@ -506,25 +516,23 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                 )}
                                             />
 
-                                            {userPreferences.isUserPremium && (
-                                                <PickerContainer
-                                                    style={{ marginBottom: 10 }}
-                                                >
-                                                    <Picker
-                                                        items={categories}
-                                                        onValueChange={
-                                                            handleCategoryChange
-                                                        }
-                                                        value={selectedCategory}
-                                                        placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlaceholder_SelectCategory'
-                                                            ),
-                                                            value: 'null',
-                                                        }}
-                                                    />
-                                                </PickerContainer>
-                                            )}
+                                            <PickerContainer
+                                                style={{ marginBottom: 10 }}
+                                            >
+                                                <Picker
+                                                    items={categories}
+                                                    onValueChange={
+                                                        handleCategoryChange
+                                                    }
+                                                    value={selectedCategory}
+                                                    placeholder={{
+                                                        label: translate(
+                                                            'View_AddProduct_InputPlaceholder_SelectCategory'
+                                                        ),
+                                                        value: 'null',
+                                                    }}
+                                                />
+                                            </PickerContainer>
                                         </MoreInformationsContainer>
 
                                         <ExpDateGroup>
@@ -558,13 +566,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     />
                                 </PageContent>
                             </ScrollView>
-                            {!!erro && (
-                                <Notification
-                                    NotificationType="error"
-                                    NotificationMessage={erro}
-                                    onPress={handleDimissNotification}
-                                />
-                            )}
+
+                            <FlashMessage position="top" />
                         </Container>
                     )}
                 </>

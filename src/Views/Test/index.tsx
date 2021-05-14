@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import FlashMessage, {
+    showMessage,
+    hideMessage,
+} from 'react-native-flash-message';
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -21,20 +24,27 @@ const Test: React.FC = () => {
             .then(response => console.log(response));
     }, []);
 
-    const handleDeletePrivacySetting = useCallback(async () => {
-        await AsyncStorage.removeItem('Privacy/canUseIDFA');
+    const handleShowAlert = useCallback(() => {
+        showMessage({
+            message: 'Hello',
+        });
+    }, []);
+
+    const handleHideAlert = useCallback(() => {
+        hideMessage();
     }, []);
 
     return (
         <Container>
             <ScrollView>
                 <Category>
-                    <Button
-                        text="Delete privacy setting"
-                        onPress={handleDeletePrivacySetting}
-                    />
+                    <Button text="Show alert" onPress={handleShowAlert} />
+
+                    <Button text="Hide alert" onPress={handleHideAlert} />
                 </Category>
             </ScrollView>
+
+            <FlashMessage position="top" />
         </Container>
     );
 };
