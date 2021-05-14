@@ -1,7 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
+
+import {
+    getAllCategoriesFromTeam,
+    createCategory,
+} from '~/Functions/Categories';
+
+import PreferenceContext from '~/Contexts/PreferencesContext';
 
 import Header from '~/Components/Header';
 
@@ -24,6 +31,8 @@ import {
 const List: React.FC = () => {
     const { navigate } = useNavigation();
 
+    const { userPreferences } = useContext(PreferenceContext);
+
     const [newCategoryName, setNewCategoryName] = useState<
         string | undefined
     >();
@@ -33,9 +42,21 @@ const List: React.FC = () => {
 
     const [categories, setCategories] = useState<Array<ICategory>>([]);
 
+    const loadData = useCallback(async () => {
+        const response = await getAllCategoriesFromTeam({
+            team_id: userPreferences.selectedTeam.team.id,
+        });
+
+        if ('error' in response) {
+            throw new Error('Error while loading categories');
+        }
+
+        setCategories(response);
+    }, [userPreferences.selectedTeam.team.id]);
+
     useEffect(() => {
-        getAllCategories().then(response => setCategories(response));
-    }, []);
+        loadData();
+    }, [loadData]);
 
     const handleOnTextChange = useCallback(value => {
         setInputHasError(false);
@@ -47,13 +68,23 @@ const List: React.FC = () => {
         try {
             if (!newCategoryName) {
                 setInputHasError(true);
-                setInputErrorMessage('Digite o nome da categoria');
+                setInputErrorMessage(
+                    translate('View_Category_List_InputAdd_Error_EmptyText')
+                );
                 return;
             }
 
             setIsAdding(true);
 
-            const newCategory = await createCategory(newCategoryName);
+            const newCategory = await createCategory({
+                name: newCategoryName,
+                team_id: userPreferences.selectedTeam.team.id,
+            });
+
+            if ('error' in newCategory) {
+                setInputErrorMessage(newCategory.error);
+                return;
+            }
 
             setCategories([...categories, newCategory]);
             setNewCategoryName('');
@@ -62,7 +93,7 @@ const List: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [newCategoryName, categories]);
+    }, [newCategoryName, categories, userPreferences.selectedTeam.team.id]);
 
     const handleNavigateToCategory = useCallback(
         (categoryId: string) => {
@@ -89,34 +120,36 @@ const List: React.FC = () => {
         <Container>
             <Header title={translate('View_Category_List_PageTitle')} />
 
-            <AddCategoryContent>
-                <InputContainer>
-                    <InputTextContainer hasError={inputHasError}>
-                        <InputText
-                            value={newCategoryName}
-                            onChangeText={handleOnTextChange}
-                            placeholder={translate(
-                                'View_Category_List_InputAdd_Placeholder'
+            {userPreferences.selectedTeam.role.toLowerCase() === 'manager' && (
+                <AddCategoryContent>
+                    <InputContainer>
+                        <InputTextContainer hasError={inputHasError}>
+                            <InputText
+                                value={newCategoryName}
+                                onChangeText={handleOnTextChange}
+                                placeholder={translate(
+                                    'View_Category_List_InputAdd_Placeholder'
+                                )}
+                            />
+                        </InputTextContainer>
+
+                        <AddCategoryButtonContainer
+                            onPress={handleSaveCategory}
+                            enabled={!isAdding}
+                        >
+                            {isAdding ? (
+                                <LoadingIcon />
+                            ) : (
+                                <Icons name="add-circle-outline" />
                             )}
-                        />
-                    </InputTextContainer>
+                        </AddCategoryButtonContainer>
+                    </InputContainer>
 
-                    <AddCategoryButtonContainer
-                        onPress={handleSaveCategory}
-                        enabled={!isAdding}
-                    >
-                        {isAdding ? (
-                            <LoadingIcon />
-                        ) : (
-                            <Icons name="add-circle-outline" />
-                        )}
-                    </AddCategoryButtonContainer>
-                </InputContainer>
-
-                {!!inputErrorMessage && (
-                    <InputTextTip>{inputErrorMessage}</InputTextTip>
-                )}
-            </AddCategoryContent>
+                    {!!inputErrorMessage && (
+                        <InputTextTip>{inputErrorMessage}</InputTextTip>
+                    )}
+                </AddCategoryContent>
+            )}
 
             <ListTitle>
                 {translate('View_Category_List_AllCategories_Label')}

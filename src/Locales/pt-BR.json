@@ -208,6 +208,7 @@
 
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
+    "View_Category_List_InputAdd_Error_EmptyText": "Digite o nome da categoria",
     "View_Category_List_AllCategories_Label": "Todas as categorias",
 
     "View_Category_List_View_BeforeCategoryName": "Categoria ",
