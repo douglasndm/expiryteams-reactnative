@@ -173,7 +173,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             });
 
             if ('error' in createdProduct) {
-                setError(createdProduct.error);
+                showMessage({
+                    message: createdProduct.error,
+                    type: 'danger',
+                });
                 return;
             }
 
@@ -189,7 +192,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             });
 
             if ('error' in createdBatch) {
-                setError(createdBatch.error);
+                showMessage({
+                    message: createdBatch.error,
+                    type: 'danger',
+                });
                 return;
             }
 
@@ -209,7 +215,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 ],
             });
         } catch (error) {
-            setError(error.message);
+            showMessage({
+                message: error.message,
+                type: 'danger',
+            });
         }
     }, [
         amount,
@@ -567,7 +576,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                 </PageContent>
                             </ScrollView>
 
-                            <FlashMessage position="top" />
+                            <FlashMessage duration={5000} position="top" />
                         </Container>
                     )}
                 </>

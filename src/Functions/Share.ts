@@ -40,7 +40,7 @@ export async function shareFile({
 }
 
 interface ShareProductImageWithTextProps {
-    productId: number;
+    productId: string;
     title: string;
     text: string;
 }
@@ -51,22 +51,22 @@ export async function ShareProductImageWithText({
     text,
 }: ShareProductImageWithTextProps): Promise<void> {
     try {
-        const imagePath = await getProductImagePath(productId);
+        // const imagePath = await getProductImagePath(productId);
 
-        let shareOptions = {
+        const shareOptions = {
             title,
             message: text,
             url: '',
         };
 
-        if (imagePath !== null) {
-            if (await RNFS.exists(imagePath)) {
-                shareOptions = {
-                    ...shareOptions,
-                    url: `file://${imagePath}`,
-                };
-            }
-        }
+        // if (imagePath !== null) {
+        //     if (await RNFS.exists(imagePath)) {
+        //         shareOptions = {
+        //             ...shareOptions,
+        //             url: `file://${imagePath}`,
+        //         };
+        //     }
+        // }
 
         Share.open(shareOptions).then(async () => {
             if (!__DEV__) {
