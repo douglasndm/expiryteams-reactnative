@@ -8,7 +8,6 @@ import EditProduct from '~/Views/Product/Edit';
 import EditLote from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/ProductDetails';
 import AllProducts from '~/Views/AllProducts';
-import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import Success from '~/Views/Success';
@@ -41,7 +40,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
-            <Stack.Screen name="StoreDetails" component={StoreDetails} />
             <Stack.Screen name="AddLote" component={AddLote} />
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditLote" component={EditLote} />
