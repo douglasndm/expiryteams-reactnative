@@ -9,15 +9,15 @@ import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
 import { getLocales } from 'react-native-localize';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
-import Notification from '~/Components/Notification';
 
 import { getProduct } from '~/Functions/Products/Product';
 import { clearUserSession } from '~/Functions/Auth/Login';
@@ -69,7 +69,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [route.params.id]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const dateFormat = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -90,7 +89,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             const response = await getProduct({ productId });
 
             if ('error' in response) {
-                setError(response.error);
+                showMessage({
+                    message: response.error,
+                    type: 'danger',
+                });
 
                 if (response.status === 401) {
                     await clearUserSession();
@@ -109,7 +111,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             setProduct(response);
         } catch (err) {
             crashlytics().recordError(err);
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -139,10 +144,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         }
     }, [product]);
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
-
     const handleOnPhotoPress = useCallback(() => {
         if (product && product.photo) {
             navigate('PhotoView', {
@@ -161,7 +162,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     title: translate('View_ShareProduct_Title'),
                     text: translate('View_ShareProduct_Message')
                         .replace('{PRODUCT}', product.name)
-                        .replace('{DATE}', format(expireDate, dateFormat)),
+                        .replace(
+                            '{DATE}',
+                            format(parseISO(expireDate), dateFormat)
+                        ),
                 });
             }
         }
@@ -280,13 +284,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         )}
                     </PageContent>
                 </ScrollView>
-                {!!error && (
-                    <Notification
-                        NotificationMessage={error}
-                        NotificationType="error"
-                        onPress={handleDimissNotification}
-                    />
-                )}
+                <FlashMessage duration={5000} position="top" />
             </Container>
 
             <FloatButton

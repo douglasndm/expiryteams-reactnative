@@ -41,7 +41,7 @@ const List: React.FC = () => {
         }
 
         setTeams(response);
-    }, []);
+    }, [reset]);
 
     const handleSetTeam = useCallback(
         async (teamId: string) => {
