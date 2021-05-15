@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -23,18 +24,6 @@ const Export: React.FC = () => {
     const [checked, setChecked] = React.useState('created_at');
 
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
-    const [isBackupLoading, setIsBackupLoading] = useState<boolean>(false);
-
-    const handleExportBackup = useCallback(async () => {
-        try {
-            setIsBackupLoading(true);
-            await exportBackupFile();
-        } catch (err) {
-            console.log(err.message);
-        } finally {
-            setIsBackupLoading(false);
-        }
-    }, []);
 
     const handleExportToExcel = useCallback(async () => {
         try {
@@ -46,7 +35,10 @@ const Export: React.FC = () => {
                 await exportToExcel({ sortBy: 'expire_date' });
             }
         } catch (err) {
-            console.log(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsExcelLoading(false);
         }
@@ -102,18 +94,9 @@ const Export: React.FC = () => {
                         isLoading={isExcelLoading}
                     />
                 </ExportOptionContainer>
-
-                <ExportOptionContainer>
-                    <ExportExplain>
-                        {translate('View_Export_Explain_Backup')}
-                    </ExportExplain>
-                    <Button
-                        text={translate('View_Export_Button_ExportBackup')}
-                        onPress={handleExportBackup}
-                        isLoading={isBackupLoading}
-                    />
-                </ExportOptionContainer>
             </Content>
+
+            <FlashMessage duration={5000} position="top" />
         </Container>
     );
 };

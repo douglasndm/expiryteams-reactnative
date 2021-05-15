@@ -221,9 +221,8 @@
     "View_Export_SortTitle": "Sort products by",
     "View_Export_SortByCreatedDate": "Created date",
     "View_Export_SortByExpireDate": "Expiry date",
-    "View_Export_Explain_Backup": "If you need to restore or change your phone, you'll need this file to restore all your products in your need phone.",
     "View_Export_Button_ExportExcel": "Export to Excel",
-    "View_Export_Button_ExportBackup": "Export to backup",
+
 
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
