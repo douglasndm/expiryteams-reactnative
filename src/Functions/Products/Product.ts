@@ -120,3 +120,13 @@ export async function updateProduct({
         return error;
     }
 }
+
+interface deleteProductProps {
+    product_id: string;
+}
+
+export async function deleteProduct({
+    product_id,
+}: deleteProductProps): Promise<void> {
+    throw new Error('Server does not implement this function yet');
+}

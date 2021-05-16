@@ -1,13 +1,23 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 import { exists } from 'react-native-fs';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
-import { getProduct, updateProduct } from '~/Functions/Products/Product';
+import {
+    deleteProduct,
+    getProduct,
+    updateProduct,
+} from '~/Functions/Products/Product';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 
 import StatusBar from '~/Components/StatusBar';
@@ -15,7 +25,6 @@ import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
-import Notification from '~/Components/Notification';
 
 import {
     saveProductImage,
@@ -74,13 +83,16 @@ interface ICategoryItem {
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { userPreferences } = useContext(PreferencesContext);
 
+    const userRole = useMemo(() => {
+        return userPreferences.selectedTeam.role.toLowerCase();
+    }, [userPreferences.selectedTeam.role]);
+
     const { productId } = route.params;
 
     const { reset, goBack } = useNavigation();
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const [name, setName] = useState('');
@@ -178,17 +190,37 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [code, name, productId, reset, selectedCategory]);
+
+    const handleDeleteProduct = useCallback(async () => {
+        try {
+            await deleteProduct({ product_id: productId });
+
+            reset({
+                index: 1,
+                routes: [
+                    { name: 'Home' },
+                    { name: 'Success', params: { type: 'delete_product' } },
+                ],
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setDeleteComponentVisible(false);
+        }
+    }, [productId, reset]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
         setIsBarCodeEnabled(false);
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
     }, []);
 
     const handleEnableCamera = useCallback(() => {
@@ -227,22 +259,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         },
         [handleDisableCamera, productId]
     );
-
-    const handleDeleteProduct = useCallback(async () => {
-        try {
-            await deleteProduct(productId);
-
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    { name: 'Success', params: { type: 'delete_product' } },
-                ],
-            });
-        } catch (err) {
-            setError(err.message);
-        }
-    }, [productId, reset]);
 
     useEffect(() => {
         loadData();
@@ -389,23 +405,28 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     'View_EditProduct_Button_Save'
                                                 )}
                                             </ButtonPaper>
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="trash-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={() => {
-                                                    setDeleteComponentVisible(
-                                                        true
-                                                    );
-                                                }}
-                                            >
-                                                {translate(
-                                                    'View_ProductDetails_Button_DeleteProduct'
-                                                )}
-                                            </ButtonPaper>
+
+                                            {(userRole === 'manager' ||
+                                                userRole === 'supervisor') && (
+                                                <ButtonPaper
+                                                    icon={() => (
+                                                        <Icons
+                                                            name="trash-outline"
+                                                            size={22}
+                                                        />
+                                                    )}
+                                                    onPress={() => {
+                                                        setDeleteComponentVisible(
+                                                            true
+                                                        );
+                                                    }}
+                                                >
+                                                    {translate(
+                                                        'View_ProductDetails_Button_DeleteProduct'
+                                                    )}
+                                                </ButtonPaper>
+                                            )}
+
                                             <ButtonPaper
                                                 icon={() => (
                                                     <Icons
@@ -422,14 +443,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </ActionsButtonContainer>
                                     </InputContainer>
                                 </PageContent>
-
-                                {!!error && (
-                                    <Notification
-                                        NotificationMessage={error}
-                                        NotificationType="error"
-                                        onPress={handleDimissNotification}
-                                    />
-                                )}
                             </Container>
                             <DialogPaper
                                 visible={deleteComponentVisible}
@@ -476,7 +489,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     )}
                 </>
             )}
-            <FlashMessage position="top" duration={5000} />
         </>
     );
 };

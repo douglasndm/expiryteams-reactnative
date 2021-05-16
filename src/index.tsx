@@ -9,6 +9,7 @@ import {
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
+import FlashMessage from 'react-native-flash-message';
 import messaging from '@react-native-firebase/messaging';
 
 import './Locales';
@@ -117,6 +118,7 @@ const App: React.FC = () => {
 
                             <AskReview />
                         </NavigationContainer>
+                        <FlashMessage duration={5000} />
                     </Portal>
                 </PaperProvider>
             </ThemeProvider>
