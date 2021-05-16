@@ -243,7 +243,7 @@
 
     "Function_Excel_ColumnName_ProductName": "Product",
     "Function_Excel_ColumnName_ProductCode": "Code",
-    "Function_Excel_ColumnName_ProductStore": "Store",
+    "Function_Excel_ColumnName_ProductTeam": "Team",
     "Function_Excel_ColumnName_BatchName": "Batch",
     "Function_Excel_ColumnName_BatchPrice": "Price",
     "Function_Excel_ColumnName_BatchAmount": "Amount",

@@ -4,6 +4,8 @@ import { getLocales } from 'react-native-localize';
 
 import { translate } from '../Locales';
 
+import { getAllProducts } from './Products/Products';
+import { getSelectedTeam } from './Team/SelectedTeam';
 import { shareFile } from './Share';
 
 interface ExcelRowProps {
@@ -17,8 +19,8 @@ interface ExcelRowProps {
 }
 
 interface exportModel {
-    product: Omit<IProduct, 'Lotes'>;
-    batch: ILote;
+    product: Omit<IProduct, 'batches'>;
+    batch: IBatch;
 }
 
 function sortProducts(products: Array<exportModel>): Array<exportModel> {
@@ -47,15 +49,23 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
         dateFormat = 'MM/dd/yyyy';
     }
 
+    const selectedTeam = await getSelectedTeam();
+
     try {
         const excelExport: Array<exportModel> = [];
 
         const workbook = XLSX.utils.book_new();
 
-        const allProducts = await getAllProducts({});
+        const allProducts = await getAllProducts({
+            team_id: selectedTeam.team.id,
+        });
+
+        if ('error' in allProducts) {
+            throw new Error(allProducts.error);
+        }
 
         allProducts.forEach(p => {
-            p.lotes.forEach(l => {
+            p.batches.forEach(l => {
                 excelExport.push({
                     product: p,
                     batch: l,
@@ -80,19 +90,17 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
                 item.product.name;
             row[translate('Function_Excel_ColumnName_ProductCode')] =
                 item.product.code || '';
-            row[translate('Function_Excel_ColumnName_ProductStore')] =
-                item.product.store || '';
             row[translate('Function_Excel_ColumnName_BatchName')] =
-                item.batch.lote;
+                item.batch.name;
             row[translate('Function_Excel_ColumnName_BatchPrice')] =
                 item.batch.price || 0;
             row[translate('Function_Excel_ColumnName_BatchAmount')] =
                 item.batch.amount || 0;
             row[translate('Function_Excel_ColumnName_BatchExpDate')] = format(
-                item.batch.exp_date,
+                new Date(item.batch.exp_date),
                 dateFormat
             );
-            row.Tratado = item.batch.status === 'Tratado' ? 'Sim' : 'Não';
+            row.Tratado = item.batch.status === 'checked' ? 'Sim' : 'Não';
 
             excelRows.push(row);
         });

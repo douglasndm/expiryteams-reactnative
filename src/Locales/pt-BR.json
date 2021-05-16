@@ -244,7 +244,7 @@
 
     "Function_Excel_ColumnName_ProductName": "Produto",
     "Function_Excel_ColumnName_ProductCode": "Código",
-    "Function_Excel_ColumnName_ProductStore": "Loja",
+    "Function_Excel_ColumnName_ProductTeam": "Time",
     "Function_Excel_ColumnName_BatchName": "Lote",
     "Function_Excel_ColumnName_BatchPrice": "Preço",
     "Function_Excel_ColumnName_BatchAmount": "Quantidade",
