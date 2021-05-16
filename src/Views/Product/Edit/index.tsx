@@ -3,10 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 import { exists } from 'react-native-fs';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
 import { getProduct, updateProduct } from '~/Functions/Products/Product';
+import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -102,34 +104,45 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             const response = await getProduct({ productId });
 
             if ('error' in response) {
-                console.log(response.error);
+                showMessage({
+                    message: response.error,
+                    type: 'danger',
+                });
                 return;
             }
 
             setName(response.name);
             setCode(response.code);
+
+            const categoriesResponse = await getAllCategoriesFromTeam({
+                team_id: userPreferences.selectedTeam.team.id,
+            });
+
+            if ('error' in categoriesResponse) {
+                showMessage({
+                    message: categoriesResponse.error,
+                    type: 'danger',
+                });
+                return;
+            }
+
+            const categoriesArray: Array<ICategoryItem> = [];
+            categoriesResponse.forEach(cat =>
+                categoriesArray.push({
+                    key: cat.id,
+                    label: cat.name,
+                    value: cat.id,
+                })
+            );
+            setCategories(categoriesArray);
         } catch (err) {
-            console.log(err);
+            showMessage({
+                message: err.message,
+            });
         } finally {
             setIsLoading(false);
         }
-    }, [productId]);
-
-    // useEffect(() => {
-    //     getAllCategories().then(allCategories => {
-    //         const categoriesArray: Array<ICategoryItem> = [];
-
-    //         allCategories.forEach(cat =>
-    //             categoriesArray.push({
-    //                 key: cat.id,
-    //                 label: cat.name,
-    //                 value: cat.id,
-    //             })
-    //         );
-
-    //         setCategories(categoriesArray);
-    //     });
-    // }, []);
+    }, [productId, userPreferences.selectedTeam.team.id]);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -143,11 +156,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     id: productId,
                     name,
                     code,
+                    categories: [{ id: selectedCategory || '', name: '' }],
                 },
             });
 
             if ('error' in updatedProduct) {
-                console.log(updatedProduct.error);
+                showMessage({
+                    message: updatedProduct.error,
+                });
                 return;
             }
 
@@ -164,7 +180,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } catch (err) {
             setError(err.message);
         }
-    }, [code, name, photoPath, productId, reset, selectedCategory]);
+    }, [code, name, productId, reset, selectedCategory]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
@@ -340,25 +356,23 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 )}
                                             </MoreInformationsTitle>
 
-                                            {true === false && (
-                                                <PickerContainer
-                                                    style={{ marginBottom: 10 }}
-                                                >
-                                                    <Picker
-                                                        items={categories}
-                                                        onValueChange={
-                                                            handleCategoryChange
-                                                        }
-                                                        value={selectedCategory}
-                                                        placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlaceholder_SelectCategory'
-                                                            ),
-                                                            value: 'null',
-                                                        }}
-                                                    />
-                                                </PickerContainer>
-                                            )}
+                                            <PickerContainer
+                                                style={{ marginBottom: 10 }}
+                                            >
+                                                <Picker
+                                                    items={categories}
+                                                    onValueChange={
+                                                        handleCategoryChange
+                                                    }
+                                                    value={selectedCategory}
+                                                    placeholder={{
+                                                        label: translate(
+                                                            'View_AddProduct_InputPlaceholder_SelectCategory'
+                                                        ),
+                                                        value: 'null',
+                                                    }}
+                                                />
+                                            </PickerContainer>
                                         </MoreInformationsContainer>
 
                                         <ActionsButtonContainer>
@@ -462,6 +476,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     )}
                 </>
             )}
+            <FlashMessage position="top" duration={5000} />
         </>
     );
 };

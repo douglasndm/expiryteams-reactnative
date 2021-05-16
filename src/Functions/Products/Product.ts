@@ -94,11 +94,14 @@ export async function updateProduct({
             throw new Error('Token is missing');
         }
 
+        const categories = product.categories.map(c => c.id);
+
         const response = await api.put<IProduct>(
             `/products/${product.id}`,
             {
                 name: product.name,
                 code: product.code,
+                categories,
             },
             {
                 headers: {
