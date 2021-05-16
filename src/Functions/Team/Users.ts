@@ -27,6 +27,9 @@ export async function getUserTeams(): Promise<Array<IUserRoles> | IAPIError> {
 
         return userRoles;
     } catch (err) {
+        if (err.message === 'Network Error') {
+            throw new Error(err);
+        }
         const error: IAPIError = {
             status: err.response.status,
             error: err.response.data.error,

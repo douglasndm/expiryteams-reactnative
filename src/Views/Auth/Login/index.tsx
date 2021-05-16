@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import api from '~/Services/API';
 
@@ -63,7 +64,10 @@ const Login: React.FC = () => {
             await saveUserSession(response.data);
             handleNavigateUser(response.data);
         } catch (err) {
-            throw new Error(err);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [email, password, handleNavigateUser]);
 

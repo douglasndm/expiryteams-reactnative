@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -28,19 +29,33 @@ const List: React.FC = () => {
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
 
     const loadData = useCallback(async () => {
-        const response = await getUserTeams();
+        try {
+            const response = await getUserTeams();
 
-        if ('error' in response) {
-            if (response.status === 401) {
+            if ('error' in response) {
+                if (response.status === 401) {
+                    await clearUserSession();
+                    reset({
+                        routes: [{ name: 'Login' }],
+                    });
+                }
+                return;
+            }
+
+            setTeams(response);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+
+            if (String(err.message).includes('Network Error')) {
                 await clearUserSession();
                 reset({
                     routes: [{ name: 'Login' }],
                 });
             }
-            return;
         }
-
-        setTeams(response);
     }, [reset]);
 
     const handleSetTeam = useCallback(
