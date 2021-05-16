@@ -168,6 +168,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 product: {
                     name,
                     code,
+                    categories: [{ id: selectedCategory || '', name: '' }],
                     batches: [],
                 },
             });

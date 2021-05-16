@@ -51,12 +51,15 @@ export async function createProduct({
             throw new Error('Token is missing');
         }
 
+        const categories = product.categories.map(c => c.id);
+
         const response = await api.post<IProduct>(
             `/products`,
             {
                 team_id,
                 name: product.name,
                 code: product.code,
+                categories,
             },
             {
                 headers: {
