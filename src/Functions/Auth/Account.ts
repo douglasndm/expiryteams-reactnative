@@ -32,3 +32,10 @@ export async function createAccount({
 
     return response.data;
 }
+
+export async function isEmailConfirmed(): Promise<boolean> {
+    await auth().currentUser?.reload();
+    const confirmed = auth().currentUser?.emailVerified;
+
+    return confirmed || false;
+}

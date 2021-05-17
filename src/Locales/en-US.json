@@ -64,6 +64,12 @@
     "View_Login_Label_ForgotPassword": "Forgot your password?",
     "View_Login_Label_CreateAccount": "Are you new here? Create an account.",
 
+    "View_ConfirmEmail_WaitingTitle": "Waiting e-mail confirmation",
+    "View_ConfirmEmail_WaitingDescription": "Click on link we sent to your e-mail to confirm your account. If you can't find it, check your spam folder.",
+    "View_ConfirmEmail_Button_Confirmed": "I've confirmed",
+    "View_ConfirmEmail_Button_Logout": "Logout",
+    "View_ConfirmEmail_Error_EmailNotConfirmed": "E-mail wasn't confirmed yet.",
+
     "View_About_PageTitle": "About",
     "View_About_AppVersion": "",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",

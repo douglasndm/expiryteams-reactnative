@@ -81,14 +81,18 @@ const Login: React.FC = () => {
                 password,
             });
 
-            handleNavigateUser(response);
+            if (response.emailVerified) {
+                handleNavigateUser(response);
+            } else {
+                navigate('VerifyEmail');
+            }
         } catch (err) {
             showMessage({
                 message: err.message,
                 type: 'danger',
             });
         }
-    }, [email, password, handleNavigateUser]);
+    }, [email, password, handleNavigateUser, navigate]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value),
