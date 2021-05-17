@@ -1,5 +1,7 @@
 {
-    "AppName": "Expiry Checker",
+    "AppName": "Expiry Checker for Business",
+
+    "App_Loading_Text": "Loading...",
 
     "UserInfo_Role_Manager": "Manager",
     "UserInfo_Role_Supervisor": "Supervisor",
@@ -237,6 +239,10 @@
     "View_Category_Edit_ButtonSave": "Save",
     "View_Category_Edit_SuccessText": "Success",
     "View_Category_Edit_ErrorEmtpyName": "Type the category name",
+    "View_Category_Edit_DeleteModal_Title": "Are you sure?",
+    "View_Category_Edit_DeleteModal_Message": "Continuing you will delete the category. All products referenced to the category won't show the category anymore.",
+    "View_Category_Edit_DeleteModal_Confirm": "I'm sure",
+    "View_Category_Edit_DeleteModal_Cancel": "Keep category",
 
     "View_Export_PageTitle": "Export",
     "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",

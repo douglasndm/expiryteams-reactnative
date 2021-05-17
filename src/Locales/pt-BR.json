@@ -1,5 +1,7 @@
 {
-    "AppName": "Controle de Validade",
+    "AppName": "Controle de Validade para Empresas",
+
+    "App_Loading_Text": "Carregando...",
 
     "UserInfo_Role_Manager": "Gerente",
     "UserInfo_Role_Supervisor": "Supervisor",
@@ -240,6 +242,10 @@
     "View_Category_Edit_ButtonSave": "Salvar",
     "View_Category_Edit_SuccessText": "Atualizado",
     "View_Category_Edit_ErrorEmtpyName": "Digite o nome da categoria",
+    "View_Category_Edit_DeleteModal_Title": "Você tem certeza?",
+    "View_Category_Edit_DeleteModal_Message": "Continuando você irá apagar a categoria. Todos os produtos referenciados a categoria modificar de exibir a categoria.",
+    "View_Category_Edit_DeleteModal_Confirm": "Tenho certeza",
+    "View_Category_Edit_DeleteModal_Cancel": "Manter categoria",
 
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",

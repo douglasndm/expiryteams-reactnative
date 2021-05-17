@@ -147,3 +147,30 @@ export async function updateCategory({
         return error;
     }
 }
+
+interface deleteCategoryProps {
+    category_id: string;
+}
+
+export async function deleteCategory({
+    category_id,
+}: deleteCategoryProps): Promise<void | IAPIError> {
+    const userSession = auth().currentUser;
+
+    const token = await userSession?.getIdTokenResult();
+
+    try {
+        await api.delete(`/categories/${category_id}`, {
+            headers: {
+                Authorization: `Bearer ${token?.token}`,
+            },
+        });
+    } catch (err) {
+        const error: IAPIError = {
+            status: err.response.status,
+            error: err.response.data.error,
+        };
+
+        return error;
+    }
+}
