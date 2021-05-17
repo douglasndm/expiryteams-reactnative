@@ -4,6 +4,7 @@ import FlashMessage, {
     showMessage,
     hideMessage,
 } from 'react-native-flash-message';
+import auth from '@react-native-firebase/auth';
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -17,6 +18,28 @@ const Test: React.FC = () => {
         imagePath: string;
         imageName: string;
     }
+
+    const handleLogin = useCallback(async () => {
+        auth()
+            .createUserWithEmailAndPassword(
+                'jane.doe@example.com',
+                'SuperSecretPassword!'
+            )
+            .then(() => {
+                console.log('User account created & signed in!');
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('That email address is already in use!');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    console.log('That email address is invalid!');
+                }
+
+                console.error(error);
+            });
+    }, []);
 
     useEffect(() => {
         messaging()
@@ -41,6 +64,8 @@ const Test: React.FC = () => {
                     <Button text="Show alert" onPress={handleShowAlert} />
 
                     <Button text="Hide alert" onPress={handleHideAlert} />
+
+                    <Button text="Try login" onPress={handleLogin} />
                 </Category>
             </ScrollView>
 

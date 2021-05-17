@@ -1,17 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export async function saveUserSession(
-    sessionResponse: ISessionResponse
+    sessionResponse: FirebaseAuthTypes.UserCredential
 ): Promise<void> {
     await AsyncStorage.setItem('userSession', JSON.stringify(sessionResponse));
 }
 
-export async function getUserSession(): Promise<ISessionResponse | null> {
+export async function getUserSession(): Promise<FirebaseAuthTypes.UserCredential | null> {
     const userSessionJson = await AsyncStorage.getItem('userSession');
 
     if (!userSessionJson) return null;
 
-    const userSession: ISessionResponse = JSON.parse(userSessionJson);
+    const userSession: FirebaseAuthTypes.UserCredential = JSON.parse(
+        userSessionJson
+    );
 
     return userSession;
 }

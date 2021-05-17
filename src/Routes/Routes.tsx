@@ -43,7 +43,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="AddLote" component={AddLote} />
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditLote" component={EditLote} />
-            <Stack.Screen name="Test" component={Test} />
             <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
@@ -56,6 +55,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Export" component={Export} />
 
             <Stack.Screen name="Logout" component={Logout} />
+
+            <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>
     );
 };

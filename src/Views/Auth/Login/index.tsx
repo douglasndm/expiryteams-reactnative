@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
-
-import api from '~/Services/API';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getUserSession, saveUserSession } from '~/Functions/Auth/Login';
+import { loginFirebase } from '~/Functions/Auth/Firebase';
 
 import Button from '~/Components/Button';
 
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('');
 
     const handleNavigateUser = useCallback(
-        (sesion: ISessionResponse) => {
+        (sesion: FirebaseAuthTypes.UserCredential) => {
             setUserPreferences({
                 ...userPreferences,
                 user: sesion.user,
@@ -56,13 +56,13 @@ const Login: React.FC = () => {
         }
 
         try {
-            const response = await api.post<ISessionResponse>('/sessions', {
+            const response = await loginFirebase({
                 email,
                 password,
             });
 
-            await saveUserSession(response.data);
-            handleNavigateUser(response.data);
+            await saveUserSession(response);
+            handleNavigateUser(response);
         } catch (err) {
             showMessage({
                 message: err.message,
