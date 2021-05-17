@@ -30,7 +30,7 @@ import {
 } from './styles';
 
 const Login: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset, navigate } = useNavigation();
 
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
@@ -91,6 +91,10 @@ const Login: React.FC = () => {
         []
     );
 
+    const handleNavigateToForgotPass = useCallback(() => {
+        navigate('ForgotPassword');
+    }, [navigate]);
+
     const navigateToTerms = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev/terms');
     }, []);
@@ -141,7 +145,9 @@ const Login: React.FC = () => {
                             />
                         </InputContainer>
 
-                        <ForgotPasswordText>
+                        <ForgotPasswordText
+                            onPress={handleNavigateToForgotPass}
+                        >
                             {translate('View_Login_Label_ForgotPassword')}
                         </ForgotPasswordText>
                     </LoginForm>
