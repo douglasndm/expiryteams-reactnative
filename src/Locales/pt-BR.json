@@ -176,6 +176,13 @@
     "View_Settings_Button_SignOut": "Sair",
 
     "View_TeamList_PageTitle": "Selecione um time",
+    "View_TeamList_Button_CreateTeam": "Criar um time",
+
+    "View_CreateTeam_PageTitle": "Novo time",
+    "View_CreateTeam_InputText_Name_Placeholder": "Nome do time",
+    "View_CreateTeam_InputText_Name_Erro_EmptyText": "Digite o nome do time",
+    "View_CreateTeam_Button_CreateTeam": "Criar time",
+    "View_CreateTeam_Message_SuccessCreated": "Time criado",
 
     "View_Settings_Appearance_Theme_System": "Baseado no sistema (padrão)",
     "View_Settings_Appearance_Theme_Light": "Claro",

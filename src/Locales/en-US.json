@@ -175,6 +175,13 @@
     "View_Settings_Button_SignOut": "Sign out",
 
     "View_TeamList_PageTitle": "Select a team",
+    "View_TeamList_Button_CreateTeam": "Create team",
+
+    "View_CreateTeam_PageTitle": "New team",
+    "View_CreateTeam_InputText_Name_Placeholder": "Team's name",
+    "View_CreateTeam_InputText_Name_Erro_EmptyText": "Enter the team name",
+    "View_CreateTeam_Button_CreateTeam": "Create team",
+    "View_CreateTeam_Message_SuccessCreated": "Team has been created",
 
     "View_Settings_Appearance_Theme_System": "System (Default)",
     "View_Settings_Appearance_Theme_Light": "Light",

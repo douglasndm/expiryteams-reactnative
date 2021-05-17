@@ -14,6 +14,7 @@ import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 
 import TeamList from '~/Views/Team/List';
+import CreateTeam from '~/Views/Team/Add';
 
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
@@ -54,6 +55,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
             <Stack.Screen name="TeamList" component={TeamList} />
+            <Stack.Screen name="CreateTeam" component={CreateTeam} />
 
             <Stack.Screen name="Export" component={Export} />
 

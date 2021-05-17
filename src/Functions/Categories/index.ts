@@ -85,12 +85,9 @@ export async function createCategory({
     name,
     team_id,
 }: createCategoryProps): Promise<ICategory | IAPIError> {
-    const userSession = await getUserSession();
-    const token = userSession?.token;
+    const userSession = auth().currentUser;
 
-    if (!token) {
-        throw new Error('Token is missing');
-    }
+    const token = await userSession?.getIdTokenResult();
 
     try {
         const response = await api.post<ICategory>(

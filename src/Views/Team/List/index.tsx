@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
+import auth from '@react-native-firebase/auth';
 
 import { translate } from '~/Locales';
 
@@ -9,6 +10,8 @@ import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import Button from '~/Components/Button';
 
 import {
     Container,
@@ -20,7 +23,7 @@ import {
 } from './styles';
 
 const List: React.FC = () => {
-    const { reset } = useNavigation();
+    const { navigate, reset } = useNavigation();
 
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
@@ -100,6 +103,10 @@ const List: React.FC = () => {
         [handleSetTeam]
     );
 
+    const handleNavigateCreateTeam = useCallback(() => {
+        navigate('CreateTeam');
+    }, [navigate]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -107,10 +114,18 @@ const List: React.FC = () => {
     return (
         <Container>
             <Title>{translate('View_TeamList_PageTitle')}</Title>
-            <ListCategories
-                data={teams}
-                keyExtractor={(item, index) => String(index)}
-                renderItem={renderCategory}
+
+            {teams.length > 0 && (
+                <ListCategories
+                    data={teams}
+                    keyExtractor={(item, index) => String(index)}
+                    renderItem={renderCategory}
+                />
+            )}
+
+            <Button
+                text={translate('View_TeamList_Button_CreateTeam')}
+                onPress={handleNavigateCreateTeam}
             />
         </Container>
     );
