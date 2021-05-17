@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Linking, Text } from 'react-native';
+import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
@@ -23,6 +23,7 @@ import {
     LoginForm,
     InputContainer,
     InputText,
+    Text,
     ForgotPasswordText,
     CreateAccountText,
     AboutContainer,
@@ -38,6 +39,8 @@ const Login: React.FC = () => {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
+    const [isLoging, setIsLoging] = useState<boolean>(false);
 
     const handleNavigateUser = useCallback(
         (session: FirebaseAuthTypes.User) => {
@@ -77,6 +80,7 @@ const Login: React.FC = () => {
         }
 
         try {
+            setIsLoging(true);
             const response = await loginFirebase({
                 email,
                 password,
@@ -92,6 +96,8 @@ const Login: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsLoging(false);
         }
     }, [email, password, handleNavigateUser, navigate]);
 
@@ -173,6 +179,7 @@ const Login: React.FC = () => {
                     <Button
                         text={translate('View_Login_Button_SignIn')}
                         onPress={handleLogin}
+                        isLoading={isLoging}
                     />
                 </FormContainer>
             </Content>

@@ -67,10 +67,15 @@ export const InputText = styled.TextInput.attrs(props => ({
     color: ${props => props.theme.colors.text};
 `;
 
+export const Text = styled.Text`
+    color: ${props => props.theme.colors.text};
+`;
+
 export const ForgotPasswordText = styled.Text`
     font-family: 'Open Sans';
     font-size: 13px;
     margin-left: 10px;
+    color: ${props => props.theme.colors.subText};
 `;
 
 export const CreateAccountText = styled.Text`
