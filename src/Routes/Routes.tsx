@@ -25,6 +25,8 @@ import Export from '~/Views/Export';
 import Login from '~/Views/Auth/Login';
 import Logout from '~/Views/Auth/Logout';
 import ForgotPassword from '~/Views/Auth/ForgotPassword';
+import CreateAccount from '~/Views/Auth/CreateAccount';
+import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
 import Test from '~/Views/Test';
 
@@ -57,6 +59,8 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="Logout" component={Logout} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="CreateAccount" component={CreateAccount} />
+            <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>

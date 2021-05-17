@@ -57,9 +57,14 @@ const Login: React.FC = () => {
         const session = auth().currentUser;
 
         if (session) {
-            handleNavigateUser(session);
+            if (session.emailVerified) {
+                handleNavigateUser(session);
+            }
+            reset({
+                routes: [{ name: 'VerifyEmail' }],
+            });
         }
-    }, [handleNavigateUser]);
+    }, [handleNavigateUser, reset]);
 
     const handleLogin = useCallback(async () => {
         if (email.trim() === '' || password.trim() === '') {
@@ -97,6 +102,10 @@ const Login: React.FC = () => {
 
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
+    }, [navigate]);
+
+    const handleNavigateToCreateAcc = useCallback(() => {
+        navigate('CreateAccount');
     }, [navigate]);
 
     const navigateToTerms = useCallback(async () => {
@@ -164,7 +173,7 @@ const Login: React.FC = () => {
             </Content>
 
             <AboutContainer>
-                <CreateAccountText>
+                <CreateAccountText onPress={handleNavigateToCreateAcc}>
                     {translate('View_Login_Label_CreateAccount')}
                 </CreateAccountText>
 
