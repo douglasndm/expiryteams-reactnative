@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -9,7 +10,6 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
-import Notification from '~/Components/Notification';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -30,7 +30,6 @@ const Home: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
-    const [error, setError] = useState<string>();
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
@@ -46,7 +45,10 @@ const Home: React.FC = () => {
             });
 
             if ('error' in productsResponse) {
-                setError(productsResponse.error);
+                showMessage({
+                    message: productsResponse.error,
+                    type: 'danger',
+                });
 
                 if (productsResponse.status === 401) {
                     await logoutFirebase();
@@ -64,11 +66,14 @@ const Home: React.FC = () => {
 
             setProducts(productsResponse);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
-    }, [reset]);
+    }, [reset, userPreferences.selectedTeam.team.id]);
 
     useEffect(() => {
         getProduts();
@@ -116,10 +121,6 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
-
     return isLoading ? (
         <Loading />
     ) : (
@@ -149,14 +150,6 @@ const Home: React.FC = () => {
                     )}
 
                     <ListProducts products={productsSearch} isHome />
-
-                    {!!error && (
-                        <Notification
-                            NotificationMessage={error}
-                            NotificationType="error"
-                            onPress={handleDimissNotification}
-                        />
-                    )}
                 </Container>
             )}
         </>

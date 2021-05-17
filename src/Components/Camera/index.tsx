@@ -2,12 +2,12 @@ import React, { useState, useCallback, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { unlink } from 'react-native-fs';
 import { RNCamera } from 'react-native-camera';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '../../Locales';
 
 import BackButton from '../BackButton';
 import Button from '../Button';
-import Notification from '../Notification';
 
 import {
     Container,
@@ -35,7 +35,6 @@ const Camera: React.FC<CameraProps> = ({
     const { goBack } = useNavigation();
 
     const cameraRef = useRef(null);
-    const [error, setError] = useState('');
 
     const [image, setImage] = useState<string | null>(null);
     const [photoTaked, setPhotoTalked] = useState<boolean>(false);
@@ -56,7 +55,10 @@ const Camera: React.FC<CameraProps> = ({
                 setPhotoTalked(true);
             }
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsTakingPhoto(false);
         }
@@ -75,7 +77,10 @@ const Camera: React.FC<CameraProps> = ({
                 await cameraRef.current.resumePreview();
             }
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [image]);
 
@@ -127,14 +132,6 @@ const Camera: React.FC<CameraProps> = ({
                     </>
                 )}
             </ButtonsContainer>
-
-            {!!error && (
-                <Notification
-                    NotificationType="error"
-                    NotificationMessage={error}
-                    onPress={() => setError('')}
-                />
-            )}
         </Container>
     );
 };

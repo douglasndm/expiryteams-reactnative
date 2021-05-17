@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -10,7 +11,6 @@ import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
-import Notification from '~/Components/Notification';
 
 import {
     InputSearch,
@@ -33,7 +33,6 @@ const AllProducts: React.FC = () => {
     const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
         false
     );
-    const [error, setError] = useState<string>('');
 
     const loadData = useCallback(async () => {
         try {
@@ -43,13 +42,19 @@ const AllProducts: React.FC = () => {
             });
 
             if ('error' in allProducts) {
-                console.log(allProducts.error);
+                showMessage({
+                    message: allProducts.error,
+                    type: 'danger',
+                });
                 return;
             }
 
             setProducts(allProducts);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -99,10 +104,6 @@ const AllProducts: React.FC = () => {
         [handleSearchChange]
     );
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
-
     return isLoading ? (
         <Loading />
     ) : (
@@ -137,14 +138,6 @@ const AllProducts: React.FC = () => {
                         )}
 
                         <ListProducts products={productsSearch} />
-
-                        {!!error && (
-                            <Notification
-                                NotificationMessage={error}
-                                NotificationType="error"
-                                onPress={handleDimissNotification}
-                            />
-                        )}
                     </Container>
                 </>
             )}

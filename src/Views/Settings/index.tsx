@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
-import NotificationError from '~/Components/Notification';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -29,8 +29,6 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
-    const [error, setError] = useState<string>('');
-
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
 
     const { userPreferences, setUserPreferences } = useContext(
@@ -76,10 +74,6 @@ const Settings: React.FC = () => {
         setSettingDaysToBeNext,
         userPreferences.howManyDaysToBeNextToExpire,
     ]);
-
-    const onDimissError = useCallback(() => {
-        setError('');
-    }, []);
 
     return (
         <>
@@ -128,13 +122,6 @@ const Settings: React.FC = () => {
                     </SettingsContent>
                 </ScrollView>
             </Container>
-            {!!error && (
-                <NotificationError
-                    NotificationType="error"
-                    NotificationMessage={error}
-                    onPress={onDimissError}
-                />
-            )}
         </>
     );
 };

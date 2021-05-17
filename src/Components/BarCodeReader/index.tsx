@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { request, check, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '../../Locales';
 
 import GenericButton from '../Button';
-import Notification from '../Notification';
 
 import {
     Container,
@@ -25,8 +25,6 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
     const [cameraAllowed, setCameraAllowed] = useState<boolean>(false);
     const [isCameraBlocked, setIsCameraBlocked] = useState<boolean>(false);
 
-    const [error, setError] = useState<string>('');
-
     const checkIfCameraIsAllow = useCallback(async () => {
         let permissionResult;
 
@@ -38,7 +36,10 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
 
         switch (permissionResult) {
             case RESULTS.UNAVAILABLE:
-                setError('Camera is not available on this device');
+                showMessage({
+                    message: 'Camera is not available on this device',
+                    type: 'danger',
+                });
                 setCameraAllowed(false);
                 break;
             case RESULTS.DENIED:
@@ -113,14 +114,6 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
                 text={translate('BarCodeReader_CloseButton')}
                 onPress={onClose}
             />
-
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={() => setError('')}
-                />
-            )}
         </Container>
     );
 };

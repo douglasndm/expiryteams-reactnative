@@ -58,7 +58,10 @@ const UserInfo: React.FC = () => {
                     )}
 
                     <TextContainer>
-                        <UserName>{`${user.name} ${user.lastName}`}</UserName>
+                        {!!user.name && (
+                            <UserName>{`${user.name} ${user.lastName}`}</UserName>
+                        )}
+
                         <UserEmail>{user?.email}</UserEmail>
 
                         <UserLabel>{userRole}</UserLabel>

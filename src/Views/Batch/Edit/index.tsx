@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -13,7 +14,6 @@ import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
-import Notification from '~/Components/Notification';
 
 import {
     Container,
@@ -51,7 +51,6 @@ const EditBatch: React.FC = () => {
     const routeParams = route.params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [locale] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -94,7 +93,10 @@ const EditBatch: React.FC = () => {
             const response = await getBatch({ batch_id: batchId });
 
             if ('error' in response) {
-                console.log(response.error);
+                showMessage({
+                    message: response.error,
+                    type: 'danger',
+                });
                 return;
             }
 
@@ -103,7 +105,10 @@ const EditBatch: React.FC = () => {
             setStatus(response.batch.status);
             if (response.batch.amount) setAmount(response.batch.amount);
         } catch (err) {
-            console.log(err);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -128,7 +133,10 @@ const EditBatch: React.FC = () => {
             });
 
             if ('error' in response) {
-                setError(response.error);
+                showMessage({
+                    message: response.error,
+                    type: 'danger',
+                });
                 return;
             }
 
@@ -143,7 +151,10 @@ const EditBatch: React.FC = () => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [amount, batch, batchId, expDate, price, productId, reset, status]);
 
@@ -163,9 +174,12 @@ const EditBatch: React.FC = () => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
-    }, [batchId, reset]);
+    }, [reset]);
 
     const handleBatchChange = useCallback(value => {
         setBatch(value);
@@ -177,10 +191,6 @@ const EditBatch: React.FC = () => {
         if (value === '' || regex.test(value)) {
             setAmount(value);
         }
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
     }, []);
 
     const handlePriceChange = useCallback((value: number) => {
@@ -339,14 +349,6 @@ const EditBatch: React.FC = () => {
                         />
                     </PageContent>
                 </ScrollView>
-
-                {!!error && (
-                    <Notification
-                        NotificationMessage={error}
-                        NotificationType="error"
-                        onPress={handleDimissNotification}
-                    />
-                )}
             </Container>
 
             <Dialog
