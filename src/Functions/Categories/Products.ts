@@ -1,6 +1,6 @@
-import api from '~/Services/API';
+import auth from '@react-native-firebase/auth';
 
-import { getUserSession } from '../Auth/Login';
+import api from '~/Services/API';
 
 interface getAllProductsFromCategoryProps {
     category_id: string;
@@ -16,19 +16,16 @@ export async function getAllProductsFromCategory({
 }: getAllProductsFromCategoryProps): Promise<
     getAllProductsFromCategoryResponse | IAPIError
 > {
-    const userSession = await getUserSession();
-    const token = userSession?.token;
+    const userSession = auth().currentUser;
 
-    if (!token) {
-        throw new Error('Token is missing');
-    }
+    const token = await userSession?.getIdTokenResult();
 
     try {
         const response = await api.get<getAllProductsFromCategoryResponse>(
             `/categories/${category_id}/products`,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );

@@ -8,7 +8,7 @@ import React, {
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 
 import { exists, unlink } from 'react-native-fs';
 
@@ -576,8 +576,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     />
                                 </PageContent>
                             </ScrollView>
-
-                            <FlashMessage duration={5000} position="top" />
                         </Container>
                     )}
                 </>

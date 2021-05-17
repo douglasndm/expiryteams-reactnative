@@ -20,7 +20,6 @@ import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 
 import { getProduct } from '~/Functions/Products/Product';
-import { clearUserSession } from '~/Functions/Auth/Login';
 
 import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
@@ -50,6 +49,7 @@ import {
 } from './styles';
 
 import BatchTable from './Components/BatchesTable';
+import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
 interface Request {
     route: {
@@ -95,7 +95,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                 });
 
                 if (response.status === 401) {
-                    await clearUserSession();
+                    await logoutFirebase();
 
                     reset({
                         routes: [

@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { translate } from '~/Locales';
 
 import { getAllProducts } from '~/Functions/Products/Products';
-import { clearUserSession } from '~/Functions/Auth/Login';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -21,6 +20,7 @@ import {
     InputTextIcon,
     InputTextIconContainer,
 } from './styles';
+import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
 const Home: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
@@ -49,7 +49,7 @@ const Home: React.FC = () => {
                 setError(productsResponse.error);
 
                 if (productsResponse.status === 401) {
-                    await clearUserSession();
+                    await logoutFirebase();
 
                     reset({
                         routes: [

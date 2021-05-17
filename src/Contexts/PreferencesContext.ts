@@ -10,10 +10,14 @@ const PreferencesContext = createContext({
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
         user: {
-            id: '',
-            name: '',
-            lastName: '',
+            displayName: '',
+
             email: '',
+            emailVerified: false,
+
+            photoURL: '',
+            providerId: '',
+            uid: '',
         },
         selectedTeam: {
             role: '',

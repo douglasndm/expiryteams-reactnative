@@ -1,6 +1,6 @@
-import api from '~/Services/API';
+import auth from '@react-native-firebase/auth';
 
-import { getUserSession } from '~/Functions/Auth/Login';
+import api from '~/Services/API';
 
 interface getProductProps {
     productId: string;
@@ -10,16 +10,13 @@ export async function getProduct({
     productId,
 }: getProductProps): Promise<IProduct | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const { currentUser } = auth();
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await currentUser?.getIdTokenResult();
 
         const response = await api.get<IProduct>(`/products/${productId}`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token?.token}`,
             },
         });
 
@@ -44,12 +41,9 @@ export async function createProduct({
     product,
 }: createProductProps): Promise<IProduct | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const { currentUser } = auth();
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await currentUser?.getIdTokenResult();
 
         const categories = product.categories.map(c => c.id);
 
@@ -63,7 +57,7 @@ export async function createProduct({
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );
@@ -87,12 +81,9 @@ export async function updateProduct({
     product,
 }: updateProductProps): Promise<IProduct | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const { currentUser } = auth();
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await currentUser?.getIdTokenResult();
 
         const categories = product.categories.map(c => c.id);
 
@@ -105,7 +96,7 @@ export async function updateProduct({
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );

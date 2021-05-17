@@ -1,19 +1,16 @@
-import api from '~/Services/API';
+import auth from '@react-native-firebase/auth';
 
-import { getUserSession } from '~/Functions/Auth/Login';
+import api from '~/Services/API';
 
 export async function getUserTeams(): Promise<Array<IUserRoles> | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const { currentUser } = auth();
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await currentUser?.getIdTokenResult();
 
-        const response = await api.get(`/users/${userSession?.user.id}`, {
+        const response = await api.get(`/users/${currentUser?.uid}`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token?.token}`,
             },
         });
 
@@ -27,12 +24,13 @@ export async function getUserTeams(): Promise<Array<IUserRoles> | IAPIError> {
 
         return userRoles;
     } catch (err) {
+        // console.log(err.response.data);
         if (err.message === 'Network Error') {
             throw new Error(err);
         }
         const error: IAPIError = {
             status: err.response.status,
-            error: err.response.data.error,
+            error: err.response.data,
         };
 
         return error;

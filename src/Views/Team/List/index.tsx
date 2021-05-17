@@ -4,9 +4,9 @@ import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
+import { logoutFirebase } from '~/Functions/Auth/Firebase';
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
-import { clearUserSession } from '~/Functions/Auth/Login';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -33,8 +33,8 @@ const List: React.FC = () => {
             const response = await getUserTeams();
 
             if ('error' in response) {
-                if (response.status === 401) {
-                    await clearUserSession();
+                if (response.status === 401 || response.status === 403) {
+                    await logoutFirebase();
                     reset({
                         routes: [{ name: 'Login' }],
                     });
@@ -50,7 +50,7 @@ const List: React.FC = () => {
             });
 
             if (String(err.message).includes('Network Error')) {
-                await clearUserSession();
+                await logoutFirebase();
                 reset({
                     routes: [{ name: 'Login' }],
                 });

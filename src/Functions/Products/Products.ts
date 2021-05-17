@@ -1,6 +1,6 @@
-import API from '~/Services/API';
+import auth from '@react-native-firebase/auth';
 
-import { getUserSession } from '~/Functions/Auth/Login';
+import API from '~/Services/API';
 
 interface getAllProductsProps {
     team_id: string;
@@ -10,18 +10,15 @@ export async function getAllProducts({
     team_id,
 }: getAllProductsProps): Promise<Array<IProduct> | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const userSession = auth().currentUser;
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await userSession?.getIdTokenResult();
 
         const response = await API.get<IAllTeamProducts>(
             `/team/${team_id}/products`,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );

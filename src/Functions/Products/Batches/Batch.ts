@@ -1,6 +1,6 @@
-import api from '~/Services/API';
+import auth from '@react-native-firebase/auth';
 
-import { getUserSession } from '~/Functions/Auth/Login';
+import api from '~/Services/API';
 
 interface getBatchProps {
     batch_id: string;
@@ -13,16 +13,13 @@ export async function getBatch({
     batch_id,
 }: getBatchProps): Promise<getBatchResponse | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const userSession = auth().currentUser;
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await userSession?.getIdTokenResult();
 
         const response = await api.get(`/batches/${batch_id}`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token?.token}`,
             },
         });
 
@@ -51,12 +48,9 @@ export async function createBatch({
     batch,
 }: createBatchProps): Promise<IBatch | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const userSession = auth().currentUser;
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await userSession?.getIdTokenResult();
 
         const response = await api.post<IBatch>(
             `/batches`,
@@ -69,7 +63,7 @@ export async function createBatch({
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );
@@ -93,12 +87,9 @@ export async function updateBatch({
     batch,
 }: updatebatchProps): Promise<IBatch | IAPIError> {
     try {
-        const userSession = await getUserSession();
-        const token = userSession?.token;
+        const userSession = auth().currentUser;
 
-        if (!token) {
-            throw new Error('Token is missing');
-        }
+        const token = await userSession?.getIdTokenResult();
 
         const response = await api.put<IBatch>(
             `/batches/${batch.id}`,
@@ -111,7 +102,7 @@ export async function updateBatch({
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );

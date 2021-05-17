@@ -1,3 +1,4 @@
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { DefaultTheme } from 'styled-components';
 
 interface IUserPreferences {
@@ -5,6 +6,6 @@ interface IUserPreferences {
     appTheme: DefaultTheme;
     enableNotifications: boolean;
     notificationCadency: NotificationCadency;
-    user: IUser;
+    user: FirebaseAuthTypes.User | null;
     selectedTeam: IUserRoles;
 }

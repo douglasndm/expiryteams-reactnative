@@ -8,10 +8,10 @@ interface loginFirebaseProps {
 export async function loginFirebase({
     email,
     password,
-}: loginFirebaseProps): Promise<FirebaseAuthTypes.UserCredential> {
+}: loginFirebaseProps): Promise<FirebaseAuthTypes.User> {
     const user = await auth().signInWithEmailAndPassword(email, password);
 
-    return user;
+    return user.user;
 }
 
 export async function logoutFirebase(): Promise<void> {

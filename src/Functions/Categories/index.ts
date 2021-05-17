@@ -1,6 +1,7 @@
+import auth from '@react-native-firebase/auth';
+
 import api from '../../Services/API';
 
-import { getUserSession } from '../Auth/Login';
 import { getSelectedTeam } from '../Team/SelectedTeam';
 
 interface getCategoryProps {
@@ -10,12 +11,9 @@ interface getCategoryProps {
 export async function getCategory({
     category_id,
 }: getCategoryProps): Promise<ICategory | IAPIError> {
-    const userSession = await getUserSession();
-    const token = userSession?.token;
+    const userSession = auth().currentUser;
 
-    if (!token) {
-        throw new Error('Token is missing');
-    }
+    const token = await userSession?.getIdTokenResult();
 
     const selectedTeam = await getSelectedTeam();
 
@@ -24,7 +22,7 @@ export async function getCategory({
             `/categories/team/${selectedTeam.team.id}`,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );
@@ -53,19 +51,16 @@ interface getAllCategoriesProps {
 export async function getAllCategoriesFromTeam({
     team_id,
 }: getAllCategoriesProps): Promise<Array<ICategory> | IAPIError> {
-    const userSession = await getUserSession();
-    const token = userSession?.token;
+    const userSession = auth().currentUser;
 
-    if (!token) {
-        throw new Error('Token is missing');
-    }
+    const token = await userSession?.getIdTokenResult();
 
     try {
         const response = await api.get<Array<ICategory>>(
             `/categories/team/${team_id}`,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );
@@ -106,7 +101,7 @@ export async function createCategory({
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );
@@ -128,12 +123,9 @@ interface updateCategoryProps {
 export async function updateCategory({
     category,
 }: updateCategoryProps): Promise<ICategory | IAPIError> {
-    const userSession = await getUserSession();
-    const token = userSession?.token;
+    const userSession = auth().currentUser;
 
-    if (!token) {
-        throw new Error('Token is missing');
-    }
+    const token = await userSession?.getIdTokenResult();
 
     try {
         const response = await api.put<ICategory>(
@@ -143,7 +135,7 @@ export async function updateCategory({
             },
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token?.token}`,
                 },
             }
         );

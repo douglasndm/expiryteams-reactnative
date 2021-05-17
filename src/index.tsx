@@ -11,7 +11,7 @@ import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import messaging from '@react-native-firebase/messaging';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import './Locales';
 
@@ -101,9 +101,24 @@ const App: React.FC = () => {
         loadInitialData();
     }, [loadInitialData]);
 
-    const onAuthStateChanged = useCallback(user => {
-        console.log(user);
-    }, []);
+    const onAuthStateChanged = useCallback(
+        async (user: FirebaseAuthTypes.User | null) => {
+            const userPreferences = await getAllUserPreferences();
+
+            if (user) {
+                setPreferences({
+                    ...userPreferences,
+                    user,
+                });
+            } else {
+                setPreferences({
+                    ...userPreferences,
+                    user: null,
+                });
+            }
+        },
+        []
+    );
 
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);

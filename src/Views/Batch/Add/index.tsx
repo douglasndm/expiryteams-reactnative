@@ -11,7 +11,6 @@ import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
 import Notification from '~/Components/Notification';
 
-import { clearUserSession } from '~/Functions/Auth/Login';
 import { getProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
 
@@ -30,6 +29,7 @@ import {
     CustomDatePicker,
 } from '~/Views/Product/Add/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
+import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
 interface Props {
     route: {
@@ -88,7 +88,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 setNotification(response.error);
 
                 if (response.status === 401) {
-                    await clearUserSession();
+                    await logoutFirebase();
 
                     reset({
                         routes: [
@@ -122,7 +122,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
         if ('error' in prod) {
             if (prod.status === 401) {
-                await clearUserSession();
+                await logoutFirebase();
 
                 reset({
                     routes: [
