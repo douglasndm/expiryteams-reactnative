@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Linking, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
+
+import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -11,10 +14,19 @@ import Button from '~/Components/Button';
 
 import {
     Container,
+    Content,
+    LogoContainer,
+    Logo,
+    LogoTitle,
+    FormContainer,
     FormTitle,
     LoginForm,
     InputContainer,
     InputText,
+    ForgotPasswordText,
+    CreateAccountText,
+    AboutContainer,
+    Link,
 } from './styles';
 
 const Login: React.FC = () => {
@@ -79,35 +91,83 @@ const Login: React.FC = () => {
         []
     );
 
+    const navigateToTerms = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/terms');
+    }, []);
+
+    const navigateToPrivacy = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev/privacy');
+    }, []);
+
     useEffect(() => {
         checkUserAlreadySigned();
     }, [checkUserAlreadySigned]);
 
     return (
         <Container>
-            <FormTitle>Entrar na sua conta</FormTitle>
-            <LoginForm>
-                <InputContainer>
-                    <InputText
-                        placeholder="E-mail"
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        value={email}
-                        onChangeText={handleEmailChange}
-                    />
-                </InputContainer>
+            <Content>
+                <LogoContainer>
+                    <Logo />
+                    <LogoTitle>
+                        {translate('View_Login_Business_Title').toUpperCase()}
+                    </LogoTitle>
+                </LogoContainer>
 
-                <InputContainer>
-                    <InputText
-                        placeholder="Senha"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={handleEmailPassword}
-                    />
-                </InputContainer>
-            </LoginForm>
+                <FormContainer>
+                    <FormTitle>
+                        {translate('View_Login_FormLogin_Title')}
+                    </FormTitle>
+                    <LoginForm>
+                        <InputContainer>
+                            <InputText
+                                placeholder={translate(
+                                    'View_Login_InputText_Email_Placeholder'
+                                )}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                value={email}
+                                onChangeText={handleEmailChange}
+                            />
+                        </InputContainer>
 
-            <Button text="Entrar" onPress={handleLogin} />
+                        <InputContainer>
+                            <InputText
+                                placeholder={translate(
+                                    'View_Login_InputText_Password_Placeholder'
+                                )}
+                                secureTextEntry
+                                value={password}
+                                onChangeText={handleEmailPassword}
+                            />
+                        </InputContainer>
+
+                        <ForgotPasswordText>
+                            {translate('View_Login_Label_ForgotPassword')}
+                        </ForgotPasswordText>
+                    </LoginForm>
+
+                    <Button
+                        text={translate('View_Login_Button_SignIn')}
+                        onPress={handleLogin}
+                    />
+                </FormContainer>
+            </Content>
+
+            <AboutContainer>
+                <Text>
+                    {translate('BeforeTermsAndPrivacy')}
+                    <Link onPress={navigateToTerms}>{translate('Terms')}</Link>
+                    {translate('BetweenTermsAndPrivacy')}
+                    <Link onPress={navigateToPrivacy}>
+                        {translate('PrivacyPolicy')}
+                    </Link>
+                    .
+                </Text>
+
+                <CreateAccountText>
+                    {translate('View_Login_Label_CreateAccount')}
+                </CreateAccountText>
+            </AboutContainer>
         </Container>
     );
 };

@@ -55,6 +55,14 @@
 
     "StoreGroupComponent_Button_ShowAllProductFromStore": "Show all products from store",
 
+    "View_Login_Business_Title": "Business",
+    "View_Login_FormLogin_Title": "Sign in on your account",
+    "View_Login_InputText_Email_Placeholder": "Email",
+    "View_Login_InputText_Password_Placeholder": "Password",
+    "View_Login_Button_SignIn": "Sign in",
+    "View_Login_Label_ForgotPassword": "Forgot your password?",
+    "View_Login_Label_CreateAccount": "Are you new here? Create an account.",
+
     "View_About_PageTitle": "About",
     "View_About_AppVersion": "",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",

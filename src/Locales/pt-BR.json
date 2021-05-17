@@ -55,6 +55,15 @@
 
     "StoreGroupComponent_Button_ShowAllProductFromStore": "Mostrar todos os produtos da loja",
 
+    "View_Login_Business_Title": "Empresas",
+    "View_Login_FormLogin_Title": "Entre na sua conta",
+    "View_Login_InputText_Email_Placeholder": "E-mail",
+    "View_Login_InputText_Password_Placeholder": "Senha",
+    "View_Login_Button_SignIn": "Entrar",
+    "View_Login_Label_ForgotPassword": "Esqueceu sua senha?",
+    "View_Login_Label_CreateAccount": "Novo aqui? Crie sua conta.",
+
+
     "View_About_PageTitle": "Sobre",
     "View_About_AppVersion": "",
     "View_About_UID": "UID:",
