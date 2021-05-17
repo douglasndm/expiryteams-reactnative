@@ -59,6 +59,7 @@ const Login: React.FC = () => {
         if (session) {
             if (session.emailVerified) {
                 handleNavigateUser(session);
+                return;
             }
             reset({
                 routes: [{ name: 'VerifyEmail' }],

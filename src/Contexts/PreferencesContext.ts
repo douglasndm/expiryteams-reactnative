@@ -9,6 +9,7 @@ const PreferencesContext = createContext({
         appTheme: Themes.Light,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
+        enableDrawerMenu: false,
         user: {
             displayName: '',
 
@@ -31,6 +32,7 @@ const PreferencesContext = createContext({
         howManyDaysToBeNextToExpire,
         appTheme,
         enableNotifications,
+        enableDrawerMenu,
         notificationCadency,
         user,
         selectedTeam,

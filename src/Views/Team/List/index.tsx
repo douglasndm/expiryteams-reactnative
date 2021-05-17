@@ -69,6 +69,7 @@ const List: React.FC = () => {
             await setSelectedTeam(selectedTeam);
             setUserPreferences({
                 ...userPreferences,
+                enableDrawerMenu: true,
                 selectedTeam,
             });
 

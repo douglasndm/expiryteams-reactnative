@@ -29,6 +29,7 @@ import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
+import { IUserPreferences } from './@types/userPreference';
 
 async function requestUserPermission() {
     const authorizationStatus = await messaging().requestPermission({
@@ -48,10 +49,11 @@ const App: React.FC = () => {
 
     const [previousRoute, setPreviousRoute] = useState('Home');
 
-    const [preferences, setPreferences] = useState({
+    const [preferences, setPreferences] = useState<IUserPreferences>({
         howManyDaysToBeNextToExpire: 30,
         appTheme: Themes.Light,
         enableNotifications: true,
+        enableDrawerMenu: false,
         notificationCadency: NotificationCadency.Day,
         user: {
             id: '',
@@ -108,11 +110,13 @@ const App: React.FC = () => {
             if (user) {
                 setPreferences({
                     ...userPreferences,
+                    enableDrawerMenu: true,
                     user,
                 });
             } else {
                 setPreferences({
                     ...userPreferences,
+                    enableDrawerMenu: true,
                     user: null,
                 });
             }
