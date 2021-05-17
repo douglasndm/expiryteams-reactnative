@@ -6,7 +6,6 @@ import React, {
     useMemo,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
 import { getLocales } from 'react-native-localize';
 import { format, parseISO } from 'date-fns';
@@ -36,6 +35,7 @@ import {
     ProductInformationContent,
     ProductName,
     ProductCode,
+    ProductInfo,
     ProductImageContainer,
     ProductImage,
     ActionsButtonContainer,
@@ -110,7 +110,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
             setProduct(response);
         } catch (err) {
-            crashlytics().recordError(err);
             showMessage({
                 message: err.message,
                 type: 'danger',
@@ -211,6 +210,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             : {product.code}
                                         </ProductCode>
                                     )}
+                                    <ProductInfo>
+                                        {product.categories.length > 0 &&
+                                            `${translate(
+                                                'View_ProductDetails_Categories'
+                                            )}: ${product.categories[0].name}`}
+                                    </ProductInfo>
 
                                     <ActionsButtonContainer>
                                         <ActionButton

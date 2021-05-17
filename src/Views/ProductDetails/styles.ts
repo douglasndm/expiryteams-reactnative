@@ -54,14 +54,18 @@ export const ProductInformationContent = styled.View`
 export const ProductName = styled.Text`
     font-size: 20px;
     margin-left: 15px;
-
     color: ${({ theme }) => theme.colors.text};
 `;
 
 export const ProductCode = styled.Text`
     font-size: 14px;
     margin: 5px 15px;
+    color: ${({ theme }) => theme.colors.text};
+`;
 
+export const ProductInfo = styled.Text`
+    font-size: 14px;
+    margin: 5px 15px;
     color: ${({ theme }) => theme.colors.text};
 `;
 
