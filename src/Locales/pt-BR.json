@@ -59,6 +59,7 @@
     "View_Login_FormLogin_Title": "Entre na sua conta",
     "View_Login_InputText_Email_Placeholder": "E-mail",
     "View_Login_InputText_Password_Placeholder": "Senha",
+    "View_Login_InputText_EmptyText": "Digite seu e-mail e senha",
     "View_Login_Button_SignIn": "Entrar",
     "View_Login_Label_ForgotPassword": "Esqueceu sua senha?",
     "View_Login_Label_CreateAccount": "Novo aqui? Crie sua conta.",

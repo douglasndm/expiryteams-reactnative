@@ -63,6 +63,10 @@ const Login: React.FC = () => {
 
     const handleLogin = useCallback(async () => {
         if (email.trim() === '' || password.trim() === '') {
+            showMessage({
+                message: translate('View_Login_InputText_EmptyText'),
+                type: 'warning',
+            });
             return;
         }
 
@@ -160,6 +164,10 @@ const Login: React.FC = () => {
             </Content>
 
             <AboutContainer>
+                <CreateAccountText>
+                    {translate('View_Login_Label_CreateAccount')}
+                </CreateAccountText>
+
                 <Text>
                     {translate('BeforeTermsAndPrivacy')}
                     <Link onPress={navigateToTerms}>{translate('Terms')}</Link>
@@ -169,10 +177,6 @@ const Login: React.FC = () => {
                     </Link>
                     .
                 </Text>
-
-                <CreateAccountText>
-                    {translate('View_Login_Label_CreateAccount')}
-                </CreateAccountText>
             </AboutContainer>
         </Container>
     );

@@ -74,7 +74,7 @@ export const ForgotPasswordText = styled.Text`
 `;
 
 export const CreateAccountText = styled.Text`
-    margin-top: 10px;
+    margin-bottom: 15px;
     color: ${props => props.theme.colors.textAccent};
     font-family: 'Open Sans';
     font-weight: bold;
