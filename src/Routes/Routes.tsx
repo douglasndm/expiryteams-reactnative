@@ -29,6 +29,9 @@ import ForgotPassword from '~/Views/Auth/ForgotPassword';
 import CreateAccount from '~/Views/Auth/CreateAccount';
 import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
+// Team managerment
+import ListUsers from '~/Views/Team/Manager/ListUsers';
+
 import Test from '~/Views/Test';
 
 const Stack = createStackNavigator();
@@ -63,6 +66,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="CreateAccount" component={CreateAccount} />
             <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
+
+            <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>

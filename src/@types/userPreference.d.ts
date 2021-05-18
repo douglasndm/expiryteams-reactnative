@@ -8,5 +8,5 @@ interface IUserPreferences {
     enableDrawerMenu: boolean;
     notificationCadency: NotificationCadency;
     user: FirebaseAuthTypes.User | null;
-    selectedTeam: IUserRoles;
+    selectedTeam: IUserRoles | null;
 }

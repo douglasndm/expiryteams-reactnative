@@ -66,7 +66,6 @@
     "View_Login_Label_ForgotPassword": "Esqueceu sua senha?",
     "View_Login_Label_CreateAccount": "Novo aqui? Crie sua conta.",
     "View_Login_Error_WrongEmailOrPassword": "E-mail ou senha inválido.",
-    "View_Login_Error_NetworkError": "A conexão com a rede parece não está funcionando no momento.",
 
     "View_ConfirmEmail_WaitingTitle": "Aguardando confirmação do e-mail",
     "View_ConfirmEmail_WaitingDescription": "Clique no link enviado para seu e-mail para confirmar o seu endereço de e-mail. Caso não consiga achar o e-mail verifique na pasta spam ou lixo eletrônico",
@@ -231,6 +230,11 @@
 
     "View_PhotoView_PageTitle": "Visualizar foto",
     "View_PhotoView_Button_Back": "Voltar",
+
+    "View_UsersInTeam_PageTitle": "Usuários",
+    "View_UsersInTeam_Input_AddNewUser_Placeholder": "Novo usuário",
+    "View_UsersInTeam_List_Title": "Todos os usuários do time",
+    "View_UsersInTeam_Error_OnLoadOfUsers": "Erro no carregamento dos usuários",
 
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",

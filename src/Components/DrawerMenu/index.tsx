@@ -43,6 +43,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('Export');
     }, [navigation]);
 
+    const handleNavigateToPeopleInTeam = useCallback(() => {
+        navigation.navigate('ListUsersFromTeam');
+    }, [navigation]);
+
     const handleLogout = useCallback(async () => {
         navigation.navigate('Logout');
     }, [navigation]);
@@ -93,6 +97,15 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 <MenuItemText>
                                     {translate('Menu_Button_GoToCategories')}
                                 </MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
+
+                        <MenuItemContainer
+                            onPress={handleNavigateToPeopleInTeam}
+                        >
+                            <MenuContent>
+                                <Icons name="people-outline" />
+                                <MenuItemText>Pessoas do time</MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
 

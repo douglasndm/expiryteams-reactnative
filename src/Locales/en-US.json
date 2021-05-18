@@ -253,11 +253,12 @@
     "View_Export_SortByExpireDate": "Expiry date",
     "View_Export_Button_ExportExcel": "Export to Excel",
 
-
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
 
-    "Function_StoreGroup_NoStore": "No store",
+    "View_UsersInTeam_PageTitle": "Users",
+    "View_UsersInTeam_Input_AddNewUser_Placeholder": "Add new user",
+    "View_UsersInTeam_List_Title": "All users from team",
 
     "Function_Export_FileName": "expirationcheck_backup",
     "Function_Import_Error_InvalidExtesion": "Invalid extension",
