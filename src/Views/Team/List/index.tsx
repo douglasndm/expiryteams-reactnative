@@ -52,12 +52,12 @@ const List: React.FC = () => {
                 type: 'danger',
             });
 
-            if (String(err.message).includes('Network Error')) {
-                await logoutFirebase();
-                reset({
-                    routes: [{ name: 'Login' }],
-                });
-            }
+            // if (String(err.message).includes('Network Error')) {
+            //     await logoutFirebase();
+            //     reset({
+            //         routes: [{ name: 'Login' }],
+            //     });
+            // }
         }
     }, [reset]);
 

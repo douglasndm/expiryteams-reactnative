@@ -96,15 +96,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
-                        <MenuItemContainer onPress={navigateToTeamList}>
-                            <MenuContent>
-                                <Icons name="list-outline" />
-                                <MenuItemText>
-                                    {translate('Menu_Button_GoToTeamSelect')}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
-
                         <MenuItemContainer onPress={navigateToExport}>
                             <MenuContent>
                                 <Icons name="download-outline" />
@@ -118,6 +109,24 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             </DrawerContentScrollView>
 
             <DrawerSection>
+                <MenuItemContainer onPress={navigateToTeamList}>
+                    <MenuContent>
+                        <Icons name="list-outline" />
+                        <MenuItemText>
+                            {translate('Menu_Button_GoToTeamSelect')}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
+
+                <MenuItemContainer onPress={handleLogout}>
+                    <MenuContent>
+                        <Icons name="log-out-outline" />
+                        <MenuItemText>
+                            {translate('Menu_Button_Logout')}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
+
                 <MenuItemContainer
                     onPress={() => navigation.navigate('Settings')}
                 >
@@ -134,15 +143,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <Icons name="globe-outline" />
                         <MenuItemText>
                             {translate('Menu_Button_KnowOthersApps')}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
-
-                <MenuItemContainer onPress={handleLogout}>
-                    <MenuContent>
-                        <Icons name="log-out-outline" />
-                        <MenuItemText>
-                            {translate('Menu_Button_Logout')}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
