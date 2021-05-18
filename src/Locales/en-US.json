@@ -65,6 +65,8 @@
     "View_Login_Button_SignIn": "Sign in",
     "View_Login_Label_ForgotPassword": "Forgot your password?",
     "View_Login_Label_CreateAccount": "Are you new here? Create an account.",
+    "View_Login_Error_WrongEmailOrPassword": "Email or password is not valid",
+    "View_Login_Error_NetworkError": "Internet connection is not working right now.",
 
     "View_ConfirmEmail_WaitingTitle": "Waiting e-mail confirmation",
     "View_ConfirmEmail_WaitingDescription": "Click on link we sent to your e-mail to confirm your account. If you can't find it, check your spam folder.",

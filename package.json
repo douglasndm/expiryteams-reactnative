@@ -65,7 +65,8 @@
     "react-native-zip-archive": "^6.0.2",
     "react-number-format": "^4.4.1",
     "styled-components": "^5.2.0",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.16.9",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

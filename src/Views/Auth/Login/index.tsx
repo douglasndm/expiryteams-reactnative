@@ -3,6 +3,7 @@ import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
+import * as Yup from 'yup';
 
 import { translate } from '~/Locales';
 
@@ -71,7 +72,12 @@ const Login: React.FC = () => {
     }, [handleNavigateUser, reset]);
 
     const handleLogin = useCallback(async () => {
-        if (email.trim() === '' || password.trim() === '') {
+        const schema = Yup.object().shape({
+            email: Yup.string().required().email(),
+            password: Yup.string().required(),
+        });
+
+        if (!(await schema.isValid({ email, password }))) {
             showMessage({
                 message: translate('View_Login_InputText_EmptyText'),
                 type: 'warning',
@@ -92,6 +98,23 @@ const Login: React.FC = () => {
                 navigate('VerifyEmail');
             }
         } catch (err) {
+            if (
+                err.code === 'auth/wrong-password' ||
+                err.code === 'auth/user-not-found'
+            ) {
+                showMessage({
+                    message: translate('View_Login_Error_WrongEmailOrPassword'),
+                    type: 'danger',
+                });
+                return;
+            }
+            if (err.code === 'auth/network-request-failed') {
+                showMessage({
+                    message: translate('View_Login_Error_NetworkError'),
+                    type: 'danger',
+                });
+                return;
+            }
             showMessage({
                 message: err.message,
                 type: 'danger',

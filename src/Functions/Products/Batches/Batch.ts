@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import { addHours, addMinutes, addSeconds, parse } from 'date-fns';
 
 import api from '~/Services/API';
 
@@ -52,12 +53,19 @@ export async function createBatch({
 
         const token = await userSession?.getIdTokenResult();
 
+        const date = addHours(
+            addMinutes(addSeconds(new Date(batch.exp_date), 0), 0),
+            0
+        );
+
+        console.log(date);
+
         const response = await api.post<IBatch>(
             `/batches`,
             {
                 product_id: productId,
                 name: batch.name,
-                exp_date: batch.exp_date,
+                exp_date: date,
                 amount: batch.amount,
                 price: batch.price,
             },

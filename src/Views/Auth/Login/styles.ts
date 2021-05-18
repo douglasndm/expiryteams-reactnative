@@ -69,6 +69,7 @@ export const InputText = styled.TextInput.attrs(props => ({
 
 export const Text = styled.Text`
     color: ${props => props.theme.colors.text};
+    text-align: center;
 `;
 
 export const ForgotPasswordText = styled.Text`
