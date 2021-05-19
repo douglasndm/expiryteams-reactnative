@@ -11,4 +11,5 @@ interface IUserInTeam {
     name: string;
     email: string;
     role: string;
+    status: 'Completed' | 'Pending';
 }

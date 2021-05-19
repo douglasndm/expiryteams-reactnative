@@ -72,3 +72,41 @@ export async function getAllUsersFromTeam({
         return error;
     }
 }
+
+interface putUserInTeamProps {
+    user_email: string;
+    team_id: string;
+}
+
+export async function putUserInTeam({
+    user_email,
+    team_id,
+}: putUserInTeamProps): Promise<string | IAPIError> {
+    try {
+        const { currentUser } = auth();
+
+        const token = await currentUser?.getIdTokenResult();
+
+        const response = await api.get<Array<IUserInTeam>>(
+            `/team/${team_id}/users`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token?.token}`,
+                },
+            }
+        );
+
+        return response.data;
+    } catch (err) {
+        // console.log(err.response.data);
+        if (err.message === 'Network Error') {
+            throw new Error(err);
+        }
+        const error: IAPIError = {
+            status: err.response.status,
+            error: err.response.data,
+        };
+
+        return error;
+    }
+}

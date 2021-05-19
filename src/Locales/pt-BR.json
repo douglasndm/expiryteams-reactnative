@@ -234,7 +234,7 @@
     "View_UsersInTeam_PageTitle": "Usuários",
     "View_UsersInTeam_Input_AddNewUser_Placeholder": "Novo usuário",
     "View_UsersInTeam_List_Title": "Todos os usuários do time",
-    "View_UsersInTeam_Error_OnLoadOfUsers": "Erro no carregamento dos usuários",
+    "View_UsersInTeam_List_PendingStatus": "Pendente",
 
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",

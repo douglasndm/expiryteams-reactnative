@@ -1,13 +1,18 @@
 import styled, { css } from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
+import { darken } from 'polished';
 
 export const Container = styled.View`
     flex: 1;
     background-color: ${props => props.theme.colors.background};
 `;
 
-export const TeamItemContainer = styled(RectButton)`
+interface TeamItemContainerProps {
+    isPending?: boolean;
+}
+
+export const TeamItemContainer = styled(RectButton)<TeamItemContainerProps>`
     background-color: ${props => props.theme.colors.inputBackground};
     padding: 20px;
     margin-bottom: 10px;
@@ -15,6 +20,15 @@ export const TeamItemContainer = styled(RectButton)`
 
     flex-direction: row;
     justify-content: space-between;
+
+    ${props =>
+        props.isPending &&
+        css`
+            background-color: ${darken(
+                0.12,
+                props.theme.colors.inputBackground
+            )};
+        `}
 `;
 
 export const TeamItemTitle = styled.Text`

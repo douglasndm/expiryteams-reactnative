@@ -1,14 +1,21 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {
+    useState,
+    useCallback,
+    useEffect,
+    useContext,
+    useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
-import { getAllUsersFromTeam } from '~/Functions/Team/Users';
+import { getAllUsersFromTeam, putUserInTeam } from '~/Functions/Team/Users';
 
 import PreferenceContext from '~/Contexts/PreferencesContext';
 
 import Header from '~/Components/Header';
+import Loading from '~/Components/Loading';
 
 import {
     Container,
@@ -32,7 +39,9 @@ const ListUsers: React.FC = () => {
 
     const { userPreferences } = useContext(PreferenceContext);
 
-    const [newuserName, setNewUserName] = useState<string | undefined>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const [newUserEmail, setNewUserEmail] = useState<string | undefined>();
     const [isAdding, setIsAdding] = useState<boolean>(false);
     const [inputHasError, setInputHasError] = useState<boolean>(false);
     const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
@@ -41,6 +50,7 @@ const ListUsers: React.FC = () => {
 
     const loadData = useCallback(async () => {
         try {
+            setIsLoading(true);
             const response = await getAllUsersFromTeam({
                 team_id: userPreferences.selectedTeam.team.id,
             });
@@ -59,6 +69,8 @@ const ListUsers: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsLoading(false);
         }
     }, [userPreferences.selectedTeam.team.id]);
 
@@ -69,35 +81,38 @@ const ListUsers: React.FC = () => {
     const handleOnTextChange = useCallback(value => {
         setInputHasError(false);
         setInputErrorMessage('');
-        setNewUserName(value);
+        setNewUserEmail(value);
     }, []);
 
-    const handleSaveCategory = useCallback(async () => {
+    const handleAddUser = useCallback(async () => {
         try {
-            // if (!newuserName) {
-            //     setInputHasError(true);
-            //     setInputErrorMessage(
-            //         translate('View_Category_List_InputAdd_Error_EmptyText')
-            //     );
-            //     return;
-            // }
-            // setIsAdding(true);
-            // const newCategory = await createCategory({
-            //     name: newCategoryName,
-            //     team_id: userPreferences.selectedTeam.team.id,
-            // });
-            // if ('error' in newCategory) {
-            //     setInputErrorMessage(newCategory.error);
-            //     return;
-            // }
-            // setCategories([...categories, newCategory]);
-            // setNewCategoryName('');
+            if (!newUserEmail) {
+                setInputHasError(true);
+                setInputErrorMessage(
+                    translate('View_Category_List_InputAdd_Error_EmptyText')
+                );
+                return;
+            }
+            setIsAdding(true);
+            const userInTeam = await putUserInTeam({
+                user_email: newUserEmail,
+                team_id: userPreferences.selectedTeam.team.id,
+            });
+            if ('error' in userInTeam) {
+                showMessage({
+                    message: userInTeam.error,
+                    type: 'danger',
+                });
+                return;
+            }
+            setUsers([...users, userInTeam]);
+            setNewUserEmail('');
         } catch (err) {
             setInputErrorMessage(err.message);
         } finally {
             setIsAdding(false);
         }
-    }, [newuserName, users, userPreferences.selectedTeam.team.id]);
+    }, [newUserEmail, users, userPreferences.selectedTeam.team.id]);
 
     const handleNavigateToUser = useCallback((id: string) => {}, []);
 
@@ -107,12 +122,20 @@ const ListUsers: React.FC = () => {
 
     const renderCategory = useCallback(
         ({ item }: renderProps) => {
+            const isPending =
+                !!item.status && item.status.toLowerCase() === 'pending';
+
             return (
                 <TeamItemContainer
                     onPress={() => handleNavigateToUser(item.id)}
+                    isPending={isPending}
                 >
                     <TeamItemTitle>{item.name}</TeamItemTitle>
-                    <TeamItemRole>{item.role.toUpperCase()}</TeamItemRole>
+                    <TeamItemRole>
+                        {isPending
+                            ? translate('View_UsersInTeam_List_PendingStatus')
+                            : item.role.toUpperCase()}
+                    </TeamItemRole>
                 </TeamItemContainer>
             );
         },
@@ -120,48 +143,58 @@ const ListUsers: React.FC = () => {
     );
 
     return (
-        <Container>
-            <Header title={translate('View_UsersInTeam_PageTitle')} />
+        <>
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <Container>
+                    <Header title={translate('View_UsersInTeam_PageTitle')} />
 
-            {userPreferences.selectedTeam.role.toLowerCase() === 'manager' && (
-                <AddCategoryContent>
-                    <InputContainer>
-                        <InputTextContainer hasError={inputHasError}>
-                            <InputText
-                                value={newuserName}
-                                onChangeText={handleOnTextChange}
-                                placeholder={translate(
-                                    'View_UsersInTeam_Input_AddNewUser_Placeholder'
-                                )}
-                            />
-                        </InputTextContainer>
+                    {userPreferences.selectedTeam.role.toLowerCase() ===
+                        'manager' && (
+                        <AddCategoryContent>
+                            <InputContainer>
+                                <InputTextContainer hasError={inputHasError}>
+                                    <InputText
+                                        value={newUserEmail}
+                                        onChangeText={handleOnTextChange}
+                                        keyboardType="email-address"
+                                        placeholder={translate(
+                                            'View_UsersInTeam_Input_AddNewUser_Placeholder'
+                                        )}
+                                    />
+                                </InputTextContainer>
 
-                        <AddCategoryButtonContainer
-                            onPress={handleSaveCategory}
-                            enabled={!isAdding}
-                        >
-                            {isAdding ? (
-                                <LoadingIcon />
-                            ) : (
-                                <Icons name="add-circle-outline" />
+                                <AddCategoryButtonContainer
+                                    onPress={handleAddUser}
+                                    enabled={!isAdding}
+                                >
+                                    {isAdding ? (
+                                        <LoadingIcon />
+                                    ) : (
+                                        <Icons name="add-circle-outline" />
+                                    )}
+                                </AddCategoryButtonContainer>
+                            </InputContainer>
+
+                            {!!inputErrorMessage && (
+                                <InputTextTip>{inputErrorMessage}</InputTextTip>
                             )}
-                        </AddCategoryButtonContainer>
-                    </InputContainer>
-
-                    {!!inputErrorMessage && (
-                        <InputTextTip>{inputErrorMessage}</InputTextTip>
+                        </AddCategoryContent>
                     )}
-                </AddCategoryContent>
+
+                    <ListTitle>
+                        {translate('View_UsersInTeam_List_Title')}
+                    </ListTitle>
+
+                    <ListCategories
+                        data={users}
+                        keyExtractor={item => item.id}
+                        renderItem={renderCategory}
+                    />
+                </Container>
             )}
-
-            <ListTitle>{translate('View_UsersInTeam_List_Title')}</ListTitle>
-
-            <ListCategories
-                data={users}
-                keyExtractor={item => item.id}
-                renderItem={renderCategory}
-            />
-        </Container>
+        </>
     );
 };
 
