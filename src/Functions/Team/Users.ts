@@ -78,17 +78,28 @@ interface putUserInTeamProps {
     team_id: string;
 }
 
+interface putUserInTeamResponse {
+    id: string;
+    user: IUser;
+    role: string;
+    code: string;
+    status: string;
+}
+
 export async function putUserInTeam({
     user_email,
     team_id,
-}: putUserInTeamProps): Promise<string | IAPIError> {
+}: putUserInTeamProps): Promise<putUserInTeamResponse | IAPIError> {
     try {
         const { currentUser } = auth();
 
         const token = await currentUser?.getIdTokenResult();
 
-        const response = await api.get<Array<IUserInTeam>>(
-            `/team/${team_id}/users`,
+        const response = await api.post<putUserInTeamResponse>(
+            `/team/${team_id}/manager/user`,
+            {
+                email: user_email,
+            },
             {
                 headers: {
                     Authorization: `Bearer ${token?.token}`,
@@ -98,7 +109,6 @@ export async function putUserInTeam({
 
         return response.data;
     } catch (err) {
-        // console.log(err.response.data);
         if (err.message === 'Network Error') {
             throw new Error(err);
         }

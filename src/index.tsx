@@ -147,7 +147,7 @@ const App: React.FC = () => {
 
                             <AskReview />
                         </NavigationContainer>
-                        <FlashMessage duration={5000} />
+                        <FlashMessage duration={10000} />
                     </Portal>
                 </PaperProvider>
             </ThemeProvider>

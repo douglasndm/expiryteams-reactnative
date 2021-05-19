@@ -89,30 +89,55 @@ const ListUsers: React.FC = () => {
             if (!newUserEmail) {
                 setInputHasError(true);
                 setInputErrorMessage(
-                    translate('View_Category_List_InputAdd_Error_EmptyText')
+                    translate(
+                        'View_UsersInTeam_List_InputEmail_Error_EmptyText'
+                    )
                 );
                 return;
             }
             setIsAdding(true);
+
             const userInTeam = await putUserInTeam({
                 user_email: newUserEmail,
                 team_id: userPreferences.selectedTeam.team.id,
             });
+
             if ('error' in userInTeam) {
                 showMessage({
-                    message: userInTeam.error,
+                    message: userInTeam.error.error,
                     type: 'danger',
                 });
                 return;
             }
-            setUsers([...users, userInTeam]);
+
+            const newUser: IUserInTeam = {
+                id: userInTeam.user.firebaseUid,
+                name: userInTeam.user.name,
+                lastName: userInTeam.user.lastName,
+                email: userInTeam.user.email,
+                role: userInTeam.role,
+                code: userInTeam.code,
+                status: 'Pending',
+            };
+
+            setUsers([...users, newUser]);
             setNewUserEmail('');
+
+            showMessage({
+                message: `Usuário convidado!`,
+                description: `Informe o código ${newUser.code} para o usuário entrar no time`,
+                type: 'info',
+            });
+            navigate('UserDetails', { user: JSON.stringify(newUser) });
         } catch (err) {
-            setInputErrorMessage(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsAdding(false);
         }
-    }, [newUserEmail, users, userPreferences.selectedTeam.team.id]);
+    }, [newUserEmail, users, userPreferences.selectedTeam.team.id, navigate]);
 
     const handleNavigateToUser = useCallback(
         (user: IUserInTeam) => {
