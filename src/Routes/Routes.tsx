@@ -31,6 +31,7 @@ import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
 // Team managerment
 import ListUsers from '~/Views/Team/Manager/ListUsers';
+import UserDetails from '~/Views/Team/Manager/UserDetails';
 
 import Test from '~/Views/Test';
 
@@ -68,6 +69,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
             <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
+            <Stack.Screen name="UserDetails" component={UserDetails} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>

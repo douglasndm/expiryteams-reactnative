@@ -9,7 +9,9 @@ interface IUser {
 interface IUserInTeam {
     id: string;
     name: string;
+    lastName: string;
     email: string;
     role: string;
+    code: string;
     status: 'Completed' | 'Pending';
 }

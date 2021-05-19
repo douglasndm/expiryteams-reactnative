@@ -236,6 +236,10 @@
     "View_UsersInTeam_List_Title": "Todos os usuários do time",
     "View_UsersInTeam_List_PendingStatus": "Pendente",
 
+    "View_UserDetails_PageTitle": "Detalhes do usuário",
+    "View_UserDetails_Code_Title": "Código para entrar no time",
+    "View_UserDetails_InTransferArea": "Código copiado",
+
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
     "View_Category_List_InputAdd_Error_EmptyText": "Digite o nome da categoria",

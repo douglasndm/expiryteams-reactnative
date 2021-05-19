@@ -114,7 +114,12 @@ const ListUsers: React.FC = () => {
         }
     }, [newUserEmail, users, userPreferences.selectedTeam.team.id]);
 
-    const handleNavigateToUser = useCallback((id: string) => {}, []);
+    const handleNavigateToUser = useCallback(
+        (user: IUserInTeam) => {
+            navigate('UserDetails', { user: JSON.stringify(user) });
+        },
+        [navigate]
+    );
 
     interface renderProps {
         item: IUserInTeam;
@@ -127,7 +132,7 @@ const ListUsers: React.FC = () => {
 
             return (
                 <TeamItemContainer
-                    onPress={() => handleNavigateToUser(item.id)}
+                    onPress={() => handleNavigateToUser(item)}
                     isPending={isPending}
                 >
                     <TeamItemTitle>{item.name}</TeamItemTitle>

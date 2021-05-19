@@ -261,6 +261,10 @@
     "View_UsersInTeam_List_Title": "All users from team",
     "View_UsersInTeam_List_PendingStatus": "Pending",
 
+    "View_UserDetails_PageTitle": "User details",
+    "View_UserDetails_Code_Title": "Code to enter the team",
+    "View_UserDetails_InTransferArea": "Code copied",
+
     "Function_Export_FileName": "expirationcheck_backup",
     "Function_Import_Error_InvalidExtesion": "Invalid extension",
 
