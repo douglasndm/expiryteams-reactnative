@@ -71,6 +71,7 @@
     "View_ConfirmEmail_WaitingDescription": "Clique no link enviado para seu e-mail para confirmar o seu endereço de e-mail. Caso não consiga achar o e-mail verifique na pasta spam ou lixo eletrônico",
     "View_ConfirmEmail_Button_Confirmed": "Acabei de confirmar",
     "View_ConfirmEmail_Button_Logout": "Sair",
+    "View_ConfirmEmail_ResendEmail": "Não recebeu o e-mail? clique aqui para reenviar",
     "View_ConfirmEmail_Error_EmailNotConfirmed": "O E-mail não foi confirmado ainda.",
 
     "View_About_PageTitle": "Sobre",

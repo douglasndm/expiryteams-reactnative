@@ -72,6 +72,7 @@
     "View_ConfirmEmail_WaitingDescription": "Click on link we sent to your e-mail to confirm your account. If you can't find it, check your spam folder.",
     "View_ConfirmEmail_Button_Confirmed": "I've confirmed",
     "View_ConfirmEmail_Button_Logout": "Logout",
+    "View_ConfirmEmail_ResendEmail": "Resend e-mail",
     "View_ConfirmEmail_Error_EmailNotConfirmed": "E-mail wasn't confirmed yet.",
 
     "View_About_PageTitle": "About",

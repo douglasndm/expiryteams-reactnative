@@ -39,3 +39,13 @@ export async function isEmailConfirmed(): Promise<boolean> {
 
     return confirmed || false;
 }
+
+export async function resendConfirmationEmail(): Promise<void> {
+    try {
+        const user = auth().currentUser;
+
+        await user?.sendEmailVerification();
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}

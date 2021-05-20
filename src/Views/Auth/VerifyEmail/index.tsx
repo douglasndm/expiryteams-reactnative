@@ -5,7 +5,10 @@ import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
-import { isEmailConfirmed } from '~/Functions/Auth/Account';
+import {
+    isEmailConfirmed,
+    resendConfirmationEmail,
+} from '~/Functions/Auth/Account';
 
 import Button from '~/Components/Button';
 
@@ -14,6 +17,7 @@ import {
     Content,
     WaitingConfirmationEmail,
     EmailConfirmationExplain,
+    ResendEmailText,
 } from './styles';
 
 const VerifyEmail: React.FC = () => {
@@ -54,6 +58,10 @@ const VerifyEmail: React.FC = () => {
         navigate('Logout');
     }, [navigate]);
 
+    const handleResendConfirmEmail = useCallback(async () => {
+        await resendConfirmationEmail();
+    }, []);
+
     return (
         <Container>
             <Content>
@@ -84,6 +92,10 @@ const VerifyEmail: React.FC = () => {
                     onPress={handleLogout}
                     contentStyle={{ width: 150, marginTop: 0 }}
                 />
+
+                <ResendEmailText onPress={handleResendConfirmEmail}>
+                    {translate('View_ConfirmEmail_ResendEmail')}
+                </ResendEmailText>
             </Content>
         </Container>
     );
