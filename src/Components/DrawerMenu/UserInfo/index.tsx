@@ -15,12 +15,12 @@ import {
     TextContainer,
     UserName,
     UserEmail,
-    UserLabel,
+    UserInfo,
     UserPhoto,
     DefaultUserPhoto,
 } from './styles';
 
-const UserInfo: React.FC = () => {
+const Info: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [user, setUser] = useState<IUser | null>(null);
@@ -64,7 +64,11 @@ const UserInfo: React.FC = () => {
 
                         <UserEmail>{user?.email}</UserEmail>
 
-                        <UserLabel>{userRole}</UserLabel>
+                        <UserInfo>
+                            {`${
+                                userPreferences.selectedTeam.team.name
+                            } (${userRole.toUpperCase()})`}
+                        </UserInfo>
                     </TextContainer>
                 </>
             )}
@@ -72,4 +76,4 @@ const UserInfo: React.FC = () => {
     );
 };
 
-export default UserInfo;
+export default Info;

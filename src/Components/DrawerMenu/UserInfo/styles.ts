@@ -8,7 +8,9 @@ export const Container = styled(RectButton)`
     padding: 10px;
 `;
 
-export const TextContainer = styled.View``;
+export const TextContainer = styled.View`
+    justify-content: center;
+`;
 
 export const UserName = styled.Text`
     margin-left: 10px;
@@ -22,7 +24,7 @@ export const UserEmail = styled.Text`
     color: ${props => props.theme.colors.text};
 `;
 
-export const UserLabel = styled.Text`
+export const UserInfo = styled.Text`
     margin-left: 10px;
     font-size: 12px;
     color: ${props => props.theme.colors.text};

@@ -57,7 +57,7 @@ export const CodeContainer = styled.View`
 `;
 
 export const Code = styled.Text`
-    color: ${({ theme }) => theme.colors.text};
+    color: #fff;
     font-size: 16px;
     font-weight: bold;
 `;
