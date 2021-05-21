@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export async function getSelectedTeam(): Promise<IUserRoles> {
+export async function getSelectedTeam(): Promise<IUserRoles | null> {
     const selectedTeamAsString = await AsyncStorage.getItem('selectedTeam');
 
     if (!selectedTeamAsString) {
-        throw new Error('Selected team was not found');
+        return null;
     }
     const selectedTeam: IUserRoles = JSON.parse(selectedTeamAsString);
 

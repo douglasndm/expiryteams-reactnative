@@ -26,7 +26,11 @@ const Info: React.FC = () => {
     const [user, setUser] = useState<IUser | null>(null);
 
     const loadData = useCallback(async () => {
-        setUser(userPreferences.user);
+        if (userPreferences.user !== null) {
+            setUser(userPreferences.user);
+            return;
+        }
+        setUser(null);
     }, [userPreferences.user]);
 
     const userRole = useMemo(() => {
@@ -64,11 +68,13 @@ const Info: React.FC = () => {
 
                         <UserEmail>{user?.email}</UserEmail>
 
-                        <UserInfo>
-                            {`${
-                                userPreferences.selectedTeam.team.name
-                            } (${userRole.toUpperCase()})`}
-                        </UserInfo>
+                        {!!userPreferences.selectedTeam && (
+                            <UserInfo>
+                                {`${
+                                    userPreferences.selectedTeam.team.name
+                                } (${userRole.toUpperCase()})`}
+                            </UserInfo>
+                        )}
                     </TextContainer>
                 </>
             )}
