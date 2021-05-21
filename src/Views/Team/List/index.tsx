@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
-import auth from '@react-native-firebase/auth';
 
 import { translate } from '~/Locales';
 
@@ -33,33 +32,28 @@ const List: React.FC = () => {
 
     const loadData = useCallback(async () => {
         try {
-            const response = await getUserTeams();
+            if (userPreferences.selectedTeam) {
+                const response = await getUserTeams();
 
-            if ('error' in response) {
-                if (response.status === 401 || response.status === 403) {
-                    await logoutFirebase();
-                    reset({
-                        routes: [{ name: 'Login' }],
-                    });
+                if ('error' in response) {
+                    if (response.status === 401 || response.status === 403) {
+                        await logoutFirebase();
+                        reset({
+                            routes: [{ name: 'Login' }],
+                        });
+                    }
+                    return;
                 }
-                return;
-            }
 
-            setTeams(response);
+                setTeams(response);
+            }
         } catch (err) {
             showMessage({
                 message: err.message,
                 type: 'danger',
             });
-
-            // if (String(err.message).includes('Network Error')) {
-            //     await logoutFirebase();
-            //     reset({
-            //         routes: [{ name: 'Login' }],
-            //     });
-            // }
         }
-    }, [reset]);
+    }, [reset, userPreferences.selectedTeam]);
 
     const handleSetTeam = useCallback(
         async (teamId: string) => {
@@ -83,6 +77,13 @@ const List: React.FC = () => {
         [teams, setUserPreferences, reset, userPreferences]
     );
 
+    const handleNavigateToEnterCode = useCallback(
+        (userRole: IUserRoles) => {
+            navigate('EnterTeam', { userRole });
+        },
+        [navigate]
+    );
+
     interface renderProps {
         item: IUserRoles;
     }
@@ -92,15 +93,26 @@ const List: React.FC = () => {
             const teamToNavigate = item.team.id;
 
             return (
-                <TeamItemContainer
-                    onPress={() => handleSetTeam(teamToNavigate)}
-                >
-                    <TeamItemTitle>{item.team.name}</TeamItemTitle>
-                    <TeamItemRole>{item.role}</TeamItemRole>
-                </TeamItemContainer>
+                <>
+                    <TeamItemContainer
+                        isPending={item.status.trim() === 'Pending'}
+                        onPress={() =>
+                            item.status.trim() !== 'Pending'
+                                ? handleSetTeam(teamToNavigate)
+                                : handleNavigateToEnterCode(item)
+                        }
+                    >
+                        <TeamItemTitle>{item.team.name}</TeamItemTitle>
+                        <TeamItemRole>
+                            {item.status === 'Pending'
+                                ? item.status.toUpperCase()
+                                : item.role.toUpperCase()}
+                        </TeamItemRole>
+                    </TeamItemContainer>
+                </>
             );
         },
-        [handleSetTeam]
+        [handleNavigateToEnterCode, handleSetTeam]
     );
 
     const handleNavigateCreateTeam = useCallback(() => {

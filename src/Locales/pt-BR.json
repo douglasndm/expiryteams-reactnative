@@ -180,6 +180,9 @@
     "View_Settings_Button_SignOut": "Sair",
 
     "View_TeamList_PageTitle": "Selecione um time",
+    "View_TeamList_InputText_EnterCode_Placeholder": "Código para entrar no time",
+    "View_TeamList_InvalidTeamCode": "Código inválido",
+    "View_TeamList_SuccessCode": "Bem vindo ao time",
     "View_TeamList_Button_CreateTeam": "Criar um time",
 
     "View_CreateTeam_PageTitle": "Novo time",
@@ -291,6 +294,8 @@
     "Function_Excel_ColumnName_BatchExpDate": "Vencimento em",
     "Function_Excel_Workbook_Name": "Controle de validade",
     "Function_Excel_filename": "controledevalidade",
+
+    "Function_Team_JoinTeam_InvalidCode": "Código inválido.",
 
     "AskUserReview_Title": "Você está gostando do aplicativo?",
     "AskUserReview_Description": "Estou me esforçando para criar o melhor aplicativo da categoria, você poderia tirar alguns segundos para dizer como está o meu trabalho?",

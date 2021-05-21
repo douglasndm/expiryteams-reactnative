@@ -180,6 +180,9 @@
     "View_Settings_Button_SignOut": "Sign out",
 
     "View_TeamList_PageTitle": "Select a team",
+    "View_TeamList_InputText_EnterCode_Placeholder": "Code to enter the team",
+    "View_TeamList_InvalidTeamCode": "Invalid code",
+    "View_TeamList_SuccessCode": "Welcome to the team",
     "View_TeamList_Button_CreateTeam": "Create team",
 
     "View_CreateTeam_PageTitle": "New team",
@@ -288,6 +291,8 @@
     "Function_Excel_ColumnName_BatchExpDate": "Expire in",
     "Function_Excel_Workbook_Name": "Expiration checker",
     "Function_Excel_filename": "expirationcheck",
+
+    "Function_Team_JoinTeam_InvalidCode": "Invalid code.",
 
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",

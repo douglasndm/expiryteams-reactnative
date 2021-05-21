@@ -1,4 +1,7 @@
 import auth from '@react-native-firebase/auth';
+import * as Yup from 'yup';
+
+import { translate } from '~/Locales';
 
 import api from '~/Services/API';
 
@@ -16,6 +19,7 @@ export async function getUserTeams(): Promise<Array<IUserRoles> | IAPIError> {
 
         const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
             role: role.role,
+            status: role.status,
             team: {
                 id: role.team.id,
                 name: role.team.name,
@@ -118,5 +122,50 @@ export async function putUserInTeam({
         };
 
         return error;
+    }
+}
+
+interface enterTeamCode {
+    code: string;
+    team_id: string;
+}
+
+export async function enterTeamCode({
+    code,
+    team_id,
+}: enterTeamCode): Promise<void> {
+    const schema = Yup.object().shape({
+        code: Yup.string().required().min(5),
+        team_id: Yup.string().required().uuid(),
+    });
+
+    if (!(await schema.isValid({ code, team_id }))) {
+        throw new Error('Informations are not valid');
+    }
+
+    try {
+        const { currentUser } = auth();
+
+        const token = await currentUser?.getIdTokenResult();
+
+        await api.post<putUserInTeamResponse>(
+            `/team/${team_id}/join`,
+            {
+                code,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token?.token}`,
+                },
+            }
+        );
+    } catch (err) {
+        if (err.message === 'Network Error') {
+            throw new Error(err);
+        } else if (err.response.data.error === 'Code is not valid') {
+            throw new Error(translate('Function_Team_JoinTeam_InvalidCode'));
+        } else {
+            throw new Error(err);
+        }
     }
 }
