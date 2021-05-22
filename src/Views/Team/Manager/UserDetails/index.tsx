@@ -64,16 +64,18 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 <UserInfo>{user.email}</UserInfo>
                 <UserInfo>{userRole}</UserInfo>
 
-                {!!user.status && user.status.toLowerCase() === 'pending' && (
-                    <CodeDetails>
-                        <CodeTitle>
-                            {translate('View_UserDetails_Code_Title')}
-                        </CodeTitle>
-                        <CodeContainer>
-                            <Code>{user.code}</Code>
-                        </CodeContainer>
-                    </CodeDetails>
-                )}
+                {!!user.status &&
+                    user.status.toLowerCase() === 'pending' &&
+                    user.role.toLowerCase() === 'manager' && (
+                        <CodeDetails>
+                            <CodeTitle>
+                                {translate('View_UserDetails_Code_Title')}
+                            </CodeTitle>
+                            <CodeContainer>
+                                <Code>{user.code}</Code>
+                            </CodeContainer>
+                        </CodeDetails>
+                    )}
             </PageContent>
         </Container>
     );
