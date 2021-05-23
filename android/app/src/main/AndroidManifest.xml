@@ -19,9 +19,8 @@
       android:icon="@drawable/icon"
       android:roundIcon="@mipmap/icon_circle"
       android:theme="@style/AppTheme"
-      android:requestLegacyExternalStorage="true"
       android:allowBackup="false"
-      android:fullBackupContent="@xml/vungle_backup_rule" tools:replace="android:fullBackupContent">
+    >
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
