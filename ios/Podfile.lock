@@ -520,7 +520,7 @@ PODS:
     - React-Core
   - RNPermissions (3.0.1):
     - React-Core
-  - RNPurchases (4.1.1):
+  - RNPurchases (4.1.2):
     - PurchasesHybridCommon (= 1.6.2)
     - React-Core
   - RNReanimated (2.1.0):
@@ -904,7 +904,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNLocalize: 99e59cad311ca1b6872b1764514009416ccba03d
   RNPermissions: 4c8a37b4dde50f1f152bf8cd08c4a43d2355829e
-  RNPurchases: ffe3b7fd393642f35695907947f2cdb84b282ebb
+  RNPurchases: 42da7176d5091f95d380968e56c1e33a2040c525
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
   RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
   RNShare: 755de6bac084428f8fd8fb54c376f126f40e560c

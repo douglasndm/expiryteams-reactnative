@@ -23,6 +23,7 @@
 		4F781710264E0A61007165DA /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F781708264E0A61007165DA /* OpenSans-Bold.ttf */; };
 		4F781711264E0A61007165DA /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F781709264E0A61007165DA /* Roboto-Medium.ttf */; };
 		4F781712264E0A61007165DA /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F78170A264E0A61007165DA /* Roboto-Bold.ttf */; };
+		4F9CEDAE265AAFD3006A5B9D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F9CEDAD265AAFD3006A5B9D /* StoreKit.framework */; };
 		4FEB01AA264F505A007B215D /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FEB01A9264F505A007B215D /* Logo.png */; };
 		6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -62,6 +63,8 @@
 		4F781708264E0A61007165DA /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		4F781709264E0A61007165DA /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		4F78170A264E0A61007165DA /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		4F9CEDAD265AAFD3006A5B9D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		4F9CEDAF265AAFF8006A5B9D /* expirybusiness.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = expirybusiness.entitlements; path = expirybusiness/expirybusiness.entitlements; sourceTree = "<group>"; };
 		4FEB01A9264F505A007B215D /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		5343F86896497306DC9BBA4C /* Pods-expirybusiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = expirybusiness/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DF275BDF7F0D8D44CF737CB /* libPods-expirybusiness.a in Frameworks */,
+				4F9CEDAE265AAFD3006A5B9D /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,6 +115,7 @@
 		13B07FAE1A68108700A75B9A /* expirybusiness */ = {
 			isa = PBXGroup;
 			children = (
+				4F9CEDAF265AAFF8006A5B9D /* expirybusiness.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -126,6 +131,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F9CEDAD265AAFD3006A5B9D /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				07B6BEE9FC5758D24F57FE65 /* libPods-expirybusiness.a */,
 				E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */,
@@ -580,6 +586,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
@@ -609,6 +616,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Info.plist;

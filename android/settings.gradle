@@ -1,4 +1,4 @@
-rootProject.name = 'controledevalidade'
+rootProject.name = 'expirybusiness'
 
 include ':app', ':react-native-code-push', ':react-native-purchases'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)

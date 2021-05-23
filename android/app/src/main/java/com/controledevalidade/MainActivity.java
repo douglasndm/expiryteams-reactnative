@@ -1,4 +1,4 @@
-package com.controledevalidade;
+package dev.douglasndm.expirychecker.business;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
