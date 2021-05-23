@@ -15,6 +15,7 @@ import Button from '~/Components/Button';
 import {
     Container,
     Title,
+    ListTeamsTitle,
     ListCategories,
     TeamItemContainer,
     TeamItemTitle,
@@ -29,6 +30,7 @@ const List: React.FC = () => {
     );
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
+    const [inactiveTeams, setInactiveTeams] = useState<Array<IUserRoles>>([]);
 
     const loadData = useCallback(async () => {
         try {
@@ -45,7 +47,15 @@ const List: React.FC = () => {
                     return;
                 }
 
-                setTeams(response);
+                const active = response.filter(
+                    item => item.team.active === true
+                );
+                const inactive = response.filter(
+                    item => item.team.active !== true
+                );
+
+                setTeams(active);
+                setInactiveTeams(inactive);
             }
         } catch (err) {
             showMessage({
@@ -92,17 +102,35 @@ const List: React.FC = () => {
         ({ item }: renderProps) => {
             const teamToNavigate = item.team.id;
 
+            let isPending = true;
+
+            if (item.status) {
+                if (item.status.trim().toLowerCase() === 'completed') {
+                    isPending = false;
+                }
+            }
+
+            function handleNavigate() {
+                if (item.team.active !== true) {
+                    if (item.role.toLowerCase() !== 'manager') {
+                        showMessage({
+                            message: 'O gerente precisa ativar o time.',
+                            type: 'danger',
+                        });
+                    }
+                    // time não ativo
+                } else if (isPending) {
+                    handleNavigateToEnterCode(item);
+                } else {
+                    handleSetTeam(teamToNavigate);
+                }
+            }
+
             return (
                 <>
                     <TeamItemContainer
-                        isPending={
-                            !!item.status && item.status.trim() === 'Pending'
-                        }
-                        onPress={() =>
-                            !!item.status && item.status.trim() !== 'Pending'
-                                ? handleSetTeam(teamToNavigate)
-                                : handleNavigateToEnterCode(item)
-                        }
+                        isPending={isPending}
+                        onPress={handleNavigate}
                     >
                         <TeamItemTitle>{item.team.name}</TeamItemTitle>
                         <TeamItemRole>
@@ -130,11 +158,25 @@ const List: React.FC = () => {
             <Title>{translate('View_TeamList_PageTitle')}</Title>
 
             {teams.length > 0 && (
-                <ListCategories
-                    data={teams}
-                    keyExtractor={(item, index) => String(index)}
-                    renderItem={renderCategory}
-                />
+                <>
+                    <ListTeamsTitle>Times</ListTeamsTitle>
+                    <ListCategories
+                        data={teams}
+                        keyExtractor={(item, index) => String(index)}
+                        renderItem={renderCategory}
+                    />
+                </>
+            )}
+
+            {inactiveTeams.length > 0 && (
+                <>
+                    <ListTeamsTitle>Times inativos</ListTeamsTitle>
+                    <ListCategories
+                        data={inactiveTeams}
+                        keyExtractor={(item, index) => String(index)}
+                        renderItem={renderCategory}
+                    />
+                </>
             )}
 
             <Button

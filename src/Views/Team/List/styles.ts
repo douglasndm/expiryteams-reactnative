@@ -15,9 +15,16 @@ export const Title = styled.Text`
     font-size: 26px;
 `;
 
+export const ListTeamsTitle = styled.Text`
+    margin: 15px 15px 0;
+
+    font-size: 18px;
+    font-family: 'Open Sans';
+`;
+
 export const ListCategories = styled.FlatList`
     margin: 0 10px;
-    margin-top: 15px;
+    margin-top: 10px;
 `;
 
 interface TeamItemContainerProps {

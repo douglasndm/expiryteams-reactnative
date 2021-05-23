@@ -23,6 +23,7 @@ export async function getUserTeams(): Promise<Array<IUserRoles> | IAPIError> {
             team: {
                 id: role.team.id,
                 name: role.team.name,
+                active: role.team.isActive === true,
             },
         }));
 
