@@ -1,4 +1,5 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
+import { Platform } from 'react-native';
 
 import LogoImg from '~/Assets/Logo.png';
 
@@ -18,6 +19,11 @@ export const LogoContainer = styled.View`
     align-items: center;
     justify-content: center;
     background-color: ${props => props.theme.colors.accent};
+
+    ${Platform.OS === 'android' &&
+    css`
+        height: 220px;
+    `};
 `;
 
 export const Logo = styled.Image.attrs(() => ({
@@ -26,6 +32,11 @@ export const Logo = styled.Image.attrs(() => ({
     margin-top: 25px;
     width: 150px;
     height: 150px;
+
+    ${Platform.OS === 'android' &&
+    css`
+        margin-top: 0;
+    `};
 `;
 
 export const LogoTitle = styled.Text`
@@ -54,7 +65,7 @@ export const LoginForm = styled.View`
 
 export const InputContainer = styled.View`
     background-color: ${props => props.theme.colors.inputBackground};
-    padding: 10px 15px;
+    padding: 0 15px;
     width: 350px;
     margin-bottom: 10px;
     border-radius: 12px;
@@ -65,6 +76,11 @@ export const InputText = styled.TextInput.attrs(props => ({
 }))`
     margin: 5px 0;
     color: ${props => props.theme.colors.text};
+
+    ${Platform.OS === 'ios' &&
+    css`
+        padding: 15px 0;
+    `}
 `;
 
 export const Text = styled.Text`

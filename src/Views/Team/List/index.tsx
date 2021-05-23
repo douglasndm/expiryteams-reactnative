@@ -95,9 +95,11 @@ const List: React.FC = () => {
             return (
                 <>
                     <TeamItemContainer
-                        isPending={item.status.trim() === 'Pending'}
+                        isPending={
+                            !!item.status && item.status.trim() === 'Pending'
+                        }
                         onPress={() =>
-                            item.status.trim() !== 'Pending'
+                            !!item.status && item.status.trim() !== 'Pending'
                                 ? handleSetTeam(teamToNavigate)
                                 : handleNavigateToEnterCode(item)
                         }
