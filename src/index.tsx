@@ -10,7 +10,6 @@ import {
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
-import messaging from '@react-native-firebase/messaging';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import './Locales';
@@ -31,22 +30,7 @@ import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
 import { IUserPreferences } from './@types/userPreference';
 
-async function requestUserPermission() {
-    const authorizationStatus = await messaging().requestPermission({
-        alert: true,
-        badge: true,
-        announcement: true,
-        sound: true,
-    });
-
-    if (authorizationStatus) {
-        console.log('Permission status:', authorizationStatus);
-    }
-}
-
 const App: React.FC = () => {
-    requestUserPermission();
-
     const [previousRoute, setPreviousRoute] = useState('Home');
 
     const [preferences, setPreferences] = useState<IUserPreferences>({
@@ -110,13 +94,11 @@ const App: React.FC = () => {
             if (user) {
                 setPreferences({
                     ...userPreferences,
-                    enableDrawerMenu: true,
                     user,
                 });
             } else {
                 setPreferences({
                     ...userPreferences,
-                    enableDrawerMenu: true,
                     user: null,
                 });
             }
@@ -147,7 +129,7 @@ const App: React.FC = () => {
 
                             <AskReview />
                         </NavigationContainer>
-                        <FlashMessage duration={10000} />
+                        <FlashMessage duration={7000} />
                     </Portal>
                 </PaperProvider>
             </ThemeProvider>
