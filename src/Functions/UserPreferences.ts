@@ -23,7 +23,6 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
             howManyDaysToBeNextToExpire: settingDay,
             appTheme: getThemeByName(settingTheme),
             enableNotifications: settingNotification,
-            enableDrawerMenu: false,
             notificationCadency: settingNotificationCadency,
             user: userSession,
             selectedTeam,

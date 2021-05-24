@@ -13,26 +13,17 @@ import About from '~/Views/About';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 
-import TeamList from '~/Views/Team/List';
-import CreateTeam from '~/Views/Team/Add';
-
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
 
 import Export from '~/Views/Export';
 
-// Auth routes
-import Login from '~/Views/Auth/Login';
-import Logout from '~/Views/Auth/Logout';
-import ForgotPassword from '~/Views/Auth/ForgotPassword';
-import CreateAccount from '~/Views/Auth/CreateAccount';
-import VerifyEmail from '~/Views/Auth/VerifyEmail';
-
 // Team managerment
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
-import EnterTeam from '~/Views/Team/EnterTeam';
+
+import Logout from '~/Views/Auth/Logout';
 
 import Test from '~/Views/Test';
 
@@ -41,7 +32,6 @@ const Stack = createStackNavigator();
 const Routes: React.FC = () => {
     return (
         <Stack.Navigator headerMode="none">
-            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
@@ -59,19 +49,12 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CategoryView" component={CategoryView} />
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
-            <Stack.Screen name="TeamList" component={TeamList} />
-            <Stack.Screen name="CreateTeam" component={CreateTeam} />
-
             <Stack.Screen name="Export" component={Export} />
-
-            <Stack.Screen name="Logout" component={Logout} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-            <Stack.Screen name="CreateAccount" component={CreateAccount} />
-            <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
             <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
             <Stack.Screen name="UserDetails" component={UserDetails} />
-            <Stack.Screen name="EnterTeam" component={EnterTeam} />
+
+            <Stack.Screen name="Logout" component={Logout} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>

@@ -6,25 +6,25 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import DrawerMenu from '../Components/DrawerMenu';
 
 import Routes from './Routes';
+import RoutesAuth from './Routes.auth';
 
 const Drawer = createDrawerNavigator();
 
 const DrawerContainer: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    return (
+    return !!userPreferences.user && !!userPreferences.selectedTeam ? (
         <Drawer.Navigator
             drawerType="slide"
             openByDefault={false}
             keyboardDismissMode="on-drag"
             initialRouteName="Home"
-            gestureHandlerProps={{
-                enabled: userPreferences.enableDrawerMenu,
-            }}
             drawerContent={props => <DrawerMenu {...props} />}
         >
             <Drawer.Screen name="HomePage" component={Routes} />
         </Drawer.Navigator>
+    ) : (
+        <RoutesAuth />
     );
 };
 

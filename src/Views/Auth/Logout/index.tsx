@@ -1,23 +1,28 @@
-import React, { useCallback, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useContext, useEffect } from 'react';
 
-import { Container } from './styles';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
+import { Container } from './styles';
+
 const Logout: React.FC = () => {
-    const { reset } = useNavigation();
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
 
     const handleLogout = useCallback(async () => {
         await clearSelectedteam();
 
         await logoutFirebase();
 
-        reset({
-            routes: [{ name: 'Login' }],
+        setUserPreferences({
+            ...userPreferences,
+            user: null,
+            selectedTeam: null,
         });
-    }, [reset]);
+    }, [setUserPreferences, userPreferences]);
 
     useEffect(() => {
         handleLogout();

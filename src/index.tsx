@@ -37,7 +37,6 @@ const App: React.FC = () => {
         howManyDaysToBeNextToExpire: 30,
         appTheme: Themes.Light,
         enableNotifications: true,
-        enableDrawerMenu: false,
         notificationCadency: NotificationCadency.Day,
         user: {
             id: '',

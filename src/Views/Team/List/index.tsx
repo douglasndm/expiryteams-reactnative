@@ -4,7 +4,6 @@ import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
-import { logoutFirebase } from '~/Functions/Auth/Firebase';
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
@@ -34,36 +33,29 @@ const List: React.FC = () => {
 
     const loadData = useCallback(async () => {
         try {
-            if (userPreferences.selectedTeam) {
-                const response = await getUserTeams();
+            const response = await getUserTeams();
 
-                if ('error' in response) {
-                    if (response.status === 401 || response.status === 403) {
-                        await logoutFirebase();
-                        reset({
-                            routes: [{ name: 'Login' }],
-                        });
-                    }
-                    return;
+            if ('error' in response) {
+                if (response.status === 401 || response.status === 403) {
+                    reset({
+                        routes: [{ name: 'Logout' }],
+                    });
                 }
-
-                const active = response.filter(
-                    item => item.team.active === true
-                );
-                const inactive = response.filter(
-                    item => item.team.active !== true
-                );
-
-                setTeams(active);
-                setInactiveTeams(inactive);
+                return;
             }
+
+            const active = response.filter(item => item.team.active === true);
+            const inactive = response.filter(item => item.team.active !== true);
+
+            setTeams(active);
+            setInactiveTeams(inactive);
         } catch (err) {
             showMessage({
                 message: err.message,
                 type: 'danger',
             });
         }
-    }, [reset, userPreferences.selectedTeam]);
+    }, [reset]);
 
     const handleSetTeam = useCallback(
         async (teamId: string) => {
@@ -76,15 +68,10 @@ const List: React.FC = () => {
             await setSelectedTeam(selectedTeam);
             setUserPreferences({
                 ...userPreferences,
-                enableDrawerMenu: true,
                 selectedTeam,
             });
-
-            reset({
-                routes: [{ name: 'Home' }],
-            });
         },
-        [teams, setUserPreferences, reset, userPreferences]
+        [teams, setUserPreferences, userPreferences]
     );
 
     const handleNavigateToEnterCode = useCallback(
