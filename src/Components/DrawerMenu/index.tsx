@@ -47,10 +47,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('ListUsersFromTeam');
     }, [navigation]);
 
-    const handleLogout = useCallback(async () => {
-        navigation.navigate('Logout');
-    }, [navigation]);
-
     const handleNavigateToSite = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev');
     }, []);
@@ -100,14 +96,14 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
-                        <MenuItemContainer
+                        {/* <MenuItemContainer
                             onPress={handleNavigateToPeopleInTeam}
                         >
                             <MenuContent>
                                 <Icons name="people-outline" />
                                 <MenuItemText>Pessoas do time</MenuItemText>
                             </MenuContent>
-                        </MenuItemContainer>
+                        </MenuItemContainer> */}
 
                         <MenuItemContainer onPress={navigateToExport}>
                             <MenuContent>
@@ -127,15 +123,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <Icons name="list-outline" />
                         <MenuItemText>
                             {translate('Menu_Button_GoToTeamSelect')}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
-
-                <MenuItemContainer onPress={handleLogout}>
-                    <MenuContent>
-                        <Icons name="log-out-outline" />
-                        <MenuItemText>
-                            {translate('Menu_Button_Logout')}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>

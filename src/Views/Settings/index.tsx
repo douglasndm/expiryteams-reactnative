@@ -10,6 +10,7 @@ import BackButton from '~/Components/BackButton';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
+import Account from './Components/Account';
 
 import { setHowManyDaysToBeNextExp } from '~/Functions/Settings';
 
@@ -119,6 +120,8 @@ const Settings: React.FC = () => {
                         </Category>
 
                         <Appearance />
+
+                        <Account />
                     </SettingsContent>
                 </ScrollView>
             </Container>
