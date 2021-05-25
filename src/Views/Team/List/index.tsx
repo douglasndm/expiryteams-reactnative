@@ -97,6 +97,14 @@ const List: React.FC = () => {
                 }
             }
 
+            let role = '';
+
+            if (item.role.toLowerCase() === 'manager')
+                role = translate('UserInfo_Role_Manager');
+            if (item.role.toLowerCase() === 'supervisor') {
+                role = translate('UserInfo_Role_Supervisor');
+            }
+
             function handleNavigate() {
                 if (item.team.active !== true) {
                     if (item.role.toLowerCase() !== 'manager') {
@@ -123,7 +131,7 @@ const List: React.FC = () => {
                         <TeamItemRole>
                             {item.status === 'Pending'
                                 ? item.status.toUpperCase()
-                                : item.role.toUpperCase()}
+                                : role.toUpperCase()}
                         </TeamItemRole>
                     </TeamItemContainer>
                 </>

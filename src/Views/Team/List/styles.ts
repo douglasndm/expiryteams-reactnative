@@ -17,7 +17,7 @@ export const Title = styled.Text`
 
 export const ListTeamsTitle = styled.Text`
     margin: 15px 15px 0;
-
+    color: ${props => props.theme.colors.text};
     font-size: 18px;
     font-family: 'Open Sans';
 `;
