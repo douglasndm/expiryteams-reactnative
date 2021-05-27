@@ -27,6 +27,8 @@ import ViewTeam from '~/Views/Team/View';
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
 
+import Subscription from '~/Views/Subscription';
+
 import Logout from '~/Views/Auth/Logout';
 
 import Test from '~/Views/Test';
@@ -61,6 +63,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="ViewTeam" component={ViewTeam} />
             <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
             <Stack.Screen name="UserDetails" component={UserDetails} />
+
+            <Stack.Screen name="Subscription" component={Subscription} />
 
             <Stack.Screen name="Logout" component={Logout} />
 

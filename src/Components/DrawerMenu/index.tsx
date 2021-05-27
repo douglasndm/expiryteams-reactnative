@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, Linking } from 'react-native';
 import {
     DrawerContentOptions,
@@ -6,6 +6,8 @@ import {
 } from '@react-navigation/drawer';
 
 import { translate } from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import UserInfo from './UserInfo';
 
@@ -22,6 +24,8 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
 ) => {
     const { navigation } = props;
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const navigateToAddProduct = useCallback(() => {
         navigation.navigate('AddProduct');
@@ -45,6 +49,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
     const handleNavigateToPeopleInTeam = useCallback(() => {
         navigation.navigate('ListUsersFromTeam');
+    }, [navigation]);
+
+    const handleNavigateToTeam = useCallback(() => {
+        navigation.navigate('ViewTeam');
     }, [navigation]);
 
     const handleNavigateToSite = useCallback(async () => {
@@ -110,6 +118,15 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 <Icons name="download-outline" />
                                 <MenuItemText>
                                     {translate('Menu_Button_GoToExport')}
+                                </MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
+
+                        <MenuItemContainer onPress={handleNavigateToTeam}>
+                            <MenuContent>
+                                <Icons name="briefcase-outline" />
+                                <MenuItemText>
+                                    {userPreferences.selectedTeam.team.name}
                                 </MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
