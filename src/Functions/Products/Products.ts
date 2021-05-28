@@ -8,11 +8,15 @@ interface getAllProductsProps {
 
 export async function getAllProducts({
     team_id,
-}: getAllProductsProps): Promise<Array<IProduct> | IAPIError> {
+}: getAllProductsProps): Promise<Array<IProduct>> {
     try {
         const userSession = auth().currentUser;
 
         const token = await userSession?.getIdTokenResult();
+
+        if (!team_id) {
+            throw new Error('Provider team id');
+        }
 
         const response = await API.get<IAllTeamProducts>(
             `/team/${team_id}/products`,
@@ -25,11 +29,10 @@ export async function getAllProducts({
 
         return response.data.products;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        } else {
+            throw new Error(err.message);
+        }
     }
 }

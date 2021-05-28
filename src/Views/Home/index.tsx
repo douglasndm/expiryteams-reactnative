@@ -40,29 +40,20 @@ const Home: React.FC = () => {
     const getProduts = useCallback(async () => {
         try {
             setIsLoading(true);
+
+            if (!userPreferences.selectedTeam.team.id) {
+                reset({
+                    routes: [
+                        {
+                            name: 'TeamList',
+                        },
+                    ],
+                });
+            }
+
             const productsResponse = await getAllProducts({
                 team_id: userPreferences.selectedTeam.team.id,
             });
-
-            if ('error' in productsResponse) {
-                showMessage({
-                    message: productsResponse.error,
-                    type: 'danger',
-                });
-
-                if (productsResponse.status === 401) {
-                    await logoutFirebase();
-
-                    reset({
-                        routes: [
-                            {
-                                name: 'Login',
-                            },
-                        ],
-                    });
-                }
-                return;
-            }
 
             setProducts(productsResponse);
         } catch (err) {

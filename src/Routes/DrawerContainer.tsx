@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -13,7 +13,24 @@ const Drawer = createDrawerNavigator();
 const DrawerContainer: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    return !!userPreferences.user && !!userPreferences.selectedTeam ? (
+    const renderAuthRoutes = useMemo(() => {
+        if (!userPreferences.user) {
+            return true;
+        }
+
+        if (!userPreferences.selectedTeam) {
+            return true;
+        }
+
+        if (!userPreferences.selectedTeam.team.id) {
+            return true;
+        }
+        return false;
+    }, [userPreferences.selectedTeam, userPreferences.user]);
+
+    return renderAuthRoutes ? (
+        <RoutesAuth />
+    ) : (
         <Drawer.Navigator
             drawerType="slide"
             openByDefault={false}
@@ -23,8 +40,6 @@ const DrawerContainer: React.FC = () => {
         >
             <Drawer.Screen name="HomePage" component={Routes} />
         </Drawer.Navigator>
-    ) : (
-        <RoutesAuth />
     );
 };
 

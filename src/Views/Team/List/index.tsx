@@ -139,19 +139,17 @@ const List: React.FC = () => {
             }
 
             return (
-                <>
-                    <TeamItemContainer
-                        isPending={isPending}
-                        onPress={handleNavigate}
-                    >
-                        <TeamItemTitle>{item.team.name}</TeamItemTitle>
-                        <TeamItemRole>
-                            {item.status === 'Pending'
-                                ? item.status.toUpperCase()
-                                : role.toUpperCase()}
-                        </TeamItemRole>
-                    </TeamItemContainer>
-                </>
+                <TeamItemContainer
+                    isPending={isPending}
+                    onPress={handleNavigate}
+                >
+                    <TeamItemTitle>{item.team.name}</TeamItemTitle>
+                    <TeamItemRole>
+                        {item.status === 'Pending'
+                            ? item.status.toUpperCase()
+                            : role.toUpperCase()}
+                    </TeamItemRole>
+                </TeamItemContainer>
             );
         },
         [handleNavigateToEnterCode, handleSetTeam]
