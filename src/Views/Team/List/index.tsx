@@ -29,7 +29,7 @@ const List: React.FC = () => {
         PreferencesContext
     );
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
     const [inactiveTeams, setInactiveTeams] = useState<Array<IUserRoles>>([]);
@@ -120,6 +120,9 @@ const List: React.FC = () => {
                 role = translate('UserInfo_Role_Manager');
             if (item.role.toLowerCase() === 'supervisor') {
                 role = translate('UserInfo_Role_Supervisor');
+            }
+            if (item.role.toLowerCase() === 'repositor') {
+                role = translate('UserInfo_Role_Repositor');
             }
 
             function handleNavigate() {
