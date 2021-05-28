@@ -10,6 +10,7 @@ import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Button from '~/Components/Button';
+import Loading from '~/Components/Loading';
 
 import {
     Container,
@@ -28,11 +29,19 @@ const List: React.FC = () => {
         PreferencesContext
     );
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
     const [inactiveTeams, setInactiveTeams] = useState<Array<IUserRoles>>([]);
 
+    // This is for check if user is already manager on any team
+    // If so, disable creating of new team
+    // This is due limition of identify user and teams on revenuecat
+    const [isManager, setIsManager] = useState<boolean>(false);
+
     const loadData = useCallback(async () => {
         try {
+            setIsLoading(true);
             const response = await getUserTeams();
 
             if ('error' in response) {
@@ -44,6 +53,12 @@ const List: React.FC = () => {
                 return;
             }
 
+            response.forEach(item => {
+                if (item.role.toLowerCase() === 'Manager'.toLowerCase()) {
+                    setIsManager(true);
+                }
+            });
+
             const active = response.filter(item => item.team.active === true);
             const inactive = response.filter(item => item.team.active !== true);
 
@@ -54,6 +69,8 @@ const List: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsLoading(false);
         }
     }, [reset]);
 
@@ -148,7 +165,9 @@ const List: React.FC = () => {
         loadData();
     }, [loadData]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Title>{translate('View_TeamList_PageTitle')}</Title>
 
@@ -174,10 +193,12 @@ const List: React.FC = () => {
                 </>
             )}
 
-            <Button
-                text={translate('View_TeamList_Button_CreateTeam')}
-                onPress={handleNavigateCreateTeam}
-            />
+            {!isManager && (
+                <Button
+                    text={translate('View_TeamList_Button_CreateTeam')}
+                    onPress={handleNavigateCreateTeam}
+                />
+            )}
         </Container>
     );
 };
