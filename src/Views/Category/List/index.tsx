@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -11,6 +12,7 @@ import {
 import PreferenceContext from '~/Contexts/PreferencesContext';
 
 import Header from '~/Components/Header';
+import Loading from '~/Components/Loading';
 
 import {
     Container,
@@ -33,6 +35,8 @@ const List: React.FC = () => {
 
     const { userPreferences } = useContext(PreferenceContext);
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const [newCategoryName, setNewCategoryName] = useState<
         string | undefined
     >();
@@ -43,15 +47,22 @@ const List: React.FC = () => {
     const [categories, setCategories] = useState<Array<ICategory>>([]);
 
     const loadData = useCallback(async () => {
-        const response = await getAllCategoriesFromTeam({
-            team_id: userPreferences.selectedTeam.team.id,
-        });
+        try {
+            setIsLoading(true);
 
-        if ('error' in response) {
-            throw new Error('Error while loading categories');
+            const response = await getAllCategoriesFromTeam({
+                team_id: userPreferences.selectedTeam.team.id,
+            });
+
+            setCategories(response);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
         }
-
-        setCategories(response);
     }, [userPreferences.selectedTeam.team.id]);
 
     useEffect(() => {
@@ -116,7 +127,9 @@ const List: React.FC = () => {
         },
         [handleNavigateToCategory]
     );
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Header title={translate('View_Category_List_PageTitle')} />
 
@@ -157,7 +170,7 @@ const List: React.FC = () => {
 
             <ListCategories
                 data={categories}
-                keyExtractor={item => item.id}
+                keyExtractor={(item, index) => String(index)}
                 renderItem={renderCategory}
             />
         </Container>

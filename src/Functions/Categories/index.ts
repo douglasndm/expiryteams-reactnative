@@ -50,7 +50,7 @@ interface getAllCategoriesProps {
 
 export async function getAllCategoriesFromTeam({
     team_id,
-}: getAllCategoriesProps): Promise<Array<ICategory> | IAPIError> {
+}: getAllCategoriesProps): Promise<Array<ICategory>> {
     const userSession = auth().currentUser;
 
     const token = await userSession?.getIdTokenResult();
@@ -67,12 +67,10 @@ export async function getAllCategoriesFromTeam({
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
