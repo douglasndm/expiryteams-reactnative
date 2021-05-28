@@ -20,6 +20,7 @@ export const SubscriptionContainer = styled(RectButton)<Offer>`
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 12px;
     max-width: 150px;
+    margin: 0 5px;
 
     ${props =>
         props.isSelected &&

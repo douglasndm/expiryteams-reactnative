@@ -1,8 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { PurchasesPackage } from 'react-native-purchases';
+
 import { showMessage } from 'react-native-flash-message';
 
-import { getOfferings, makePurchase } from '~/Functions/Team/Subscriptions';
+import { FlatList } from 'react-native';
+import {
+    getOfferings,
+    makePurchase,
+    CatPackage,
+} from '~/Functions/Team/Subscriptions';
 
 import Loading from '~/Components/Loading';
 
@@ -20,7 +25,7 @@ import {
 const SubscriptionsList: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [offers, setOffers] = useState<Array<PurchasesPackage>>([]);
+    const [offers, setOffers] = useState<Array<CatPackage>>([]);
     const [selected, setSelected] = useState('');
 
     const loadData = useCallback(async () => {
@@ -30,7 +35,9 @@ const SubscriptionsList: React.FC = () => {
             const response = await getOfferings();
 
             setOffers(response);
-            setSelected(response[0].identifier);
+            if (response.length > 0) {
+                setSelected(response[0].package.offeringIdentifier);
+            }
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -49,7 +56,9 @@ const SubscriptionsList: React.FC = () => {
         try {
             setIsLoading(true);
 
-            const selectedOffer = offers.find(id => id.identifier === selected);
+            const selectedOffer = offers.find(
+                id => id.package.offeringIdentifier === selected
+            );
 
             if (!selectedOffer) {
                 showMessage({
@@ -59,7 +68,7 @@ const SubscriptionsList: React.FC = () => {
                 return;
             }
 
-            await makePurchase(selectedOffer);
+            await makePurchase(selectedOffer.package);
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -74,6 +83,42 @@ const SubscriptionsList: React.FC = () => {
         loadData();
     }, [loadData]);
 
+    const renderItem = useCallback(
+        ({ item }) => {
+            const { package: pack, type } = item;
+
+            const { introPrice } = pack.product;
+            const price = pack.product.price_string;
+
+            return (
+                <SubscriptionContainer
+                    onPress={() =>
+                        handleSelectedChange(pack.offeringIdentifier)
+                    }
+                    isSelected={selected === pack.offeringIdentifier}
+                    key={pack.offeringIdentifier}
+                >
+                    <SubscriptionPeriodContainer>
+                        <TextSubscription>{type}</TextSubscription>
+                    </SubscriptionPeriodContainer>
+
+                    <DetailsContainer>
+                        <SubscriptionDescription
+                            isSelected={selected === pack.offeringIdentifier}
+                        >
+                            <TextSubscription>
+                                {introPrice &&
+                                    `${introPrice.priceString} no primeiro mês, depois `}
+                                {`${price} mensais`}
+                            </TextSubscription>
+                        </SubscriptionDescription>
+                    </DetailsContainer>
+                </SubscriptionContainer>
+            );
+        },
+        [handleSelectedChange, selected]
+    );
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -81,38 +126,13 @@ const SubscriptionsList: React.FC = () => {
             {offers.length > 0 && (
                 <>
                     <SubscriptionsGroup>
-                        {offers.map(offer => {
-                            const { introPrice } = offer.product;
-                            const price = offer.product.price_string;
-
-                            return (
-                                <SubscriptionContainer
-                                    onPress={() =>
-                                        handleSelectedChange(offer.identifier)
-                                    }
-                                    isSelected={selected === offer.identifier}
-                                    key={offer.identifier}
-                                >
-                                    <SubscriptionPeriodContainer>
-                                        <TextSubscription>
-                                            5 usuários
-                                        </TextSubscription>
-                                    </SubscriptionPeriodContainer>
-
-                                    <DetailsContainer>
-                                        <SubscriptionDescription isSelected>
-                                            <TextSubscription>
-                                                {introPrice &&
-                                                    `${introPrice.priceString} no primeiro mês, depois `}
-                                                {`${price} mensais`}
-                                            </TextSubscription>
-                                        </SubscriptionDescription>
-                                    </DetailsContainer>
-                                </SubscriptionContainer>
-                            );
-                        })}
+                        <FlatList
+                            data={offers}
+                            keyExtractor={(item, index) => String(index)}
+                            horizontal
+                            renderItem={renderItem}
+                        />
                     </SubscriptionsGroup>
-
                     <ButtonSubscription
                         onPress={handlePurchase}
                         disabled={isLoading}

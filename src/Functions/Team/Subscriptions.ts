@@ -7,7 +7,14 @@ import api from '~/Services/API';
 Purchases.setDebugLogsEnabled(true);
 Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
-export async function getOfferings(): Promise<PurchasesPackage[]> {
+export interface CatPackage {
+    type: '5 people' | '10 people' | '15 people';
+    package: PurchasesPackage;
+}
+
+export async function getOfferings(): Promise<Array<CatPackage>> {
+    const packages: Array<CatPackage> = [];
+
     try {
         const offerings = await Purchases.getOfferings();
 
@@ -15,9 +22,32 @@ export async function getOfferings(): Promise<PurchasesPackage[]> {
             offerings.current !== null &&
             offerings.current.availablePackages.length !== 0
         ) {
-            return offerings.current.availablePackages;
+            if (!!offerings.all.TeamWith5 && offerings.all.TeamWith5.monthly) {
+                packages.push({
+                    type: '5 people',
+                    package: offerings.all.TeamWith5.monthly,
+                });
+            }
+            if (
+                !!offerings.all.TeamWith10 &&
+                offerings.all.TeamWith10.monthly
+            ) {
+                packages.push({
+                    type: '10 people',
+                    package: offerings.all.TeamWith10.monthly,
+                });
+            }
+            if (
+                !!offerings.all.TeamWith15 &&
+                offerings.all.TeamWith15.monthly
+            ) {
+                packages.push({
+                    type: '15 people',
+                    package: offerings.all.TeamWith15.monthly,
+                });
+            }
         }
-        return [];
+        return packages;
     } catch (err) {
         throw new Error(err.message);
     }
