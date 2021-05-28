@@ -11,6 +11,7 @@ import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
 import CreateTeam from '~/Views/Team/Add';
 import EnterTeam from '~/Views/Team/EnterTeam';
+import Logout from '~/Views/Auth/Logout';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="EnterTeam" component={EnterTeam} />
 
             <Stack.Screen name="TeamList" component={TeamList} />
+
+            <Stack.Screen name="Logout" component={Logout} />
         </Stack.Navigator>
     );
 };

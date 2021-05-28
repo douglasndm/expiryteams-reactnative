@@ -76,7 +76,11 @@ const List: React.FC = () => {
 
     const handleSetTeam = useCallback(
         async (teamId: string) => {
-            const selectedTeam = teams.find(t => t.team.id === teamId);
+            let selectedTeam = teams.find(t => t.team.id === teamId);
+
+            if (!selectedTeam) {
+                selectedTeam = inactiveTeams.find(t => t.team.id === teamId);
+            }
 
             if (!selectedTeam) {
                 throw new Error('Team not found');
@@ -87,8 +91,14 @@ const List: React.FC = () => {
                 ...userPreferences,
                 selectedTeam,
             });
+
+            if (!!userPreferences.user && userPreferences.selectedTeam) {
+                reset({
+                    routes: [{ name: 'Home' }],
+                });
+            }
         },
-        [teams, setUserPreferences, userPreferences]
+        [teams, setUserPreferences, userPreferences, inactiveTeams, reset]
     );
 
     const handleNavigateToEnterCode = useCallback(
@@ -132,13 +142,13 @@ const List: React.FC = () => {
                             message: 'O gerente precisa ativar o time.',
                             type: 'danger',
                         });
+                        return;
                     }
-                    // time não ativo
                 } else if (isPending) {
                     handleNavigateToEnterCode(item);
-                } else {
-                    handleSetTeam(teamToNavigate);
+                    return;
                 }
+                handleSetTeam(teamToNavigate);
             }
 
             return (

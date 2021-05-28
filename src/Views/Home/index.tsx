@@ -20,7 +20,6 @@ import {
     InputTextIcon,
     InputTextIconContainer,
 } from './styles';
-import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
 const Home: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
@@ -61,6 +60,16 @@ const Home: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
+
+            if (err.message === "Team doesn't have an active subscription") {
+                reset({
+                    routes: [
+                        {
+                            name: 'Subscription',
+                        },
+                    ],
+                });
+            }
         } finally {
             setIsLoading(false);
         }
