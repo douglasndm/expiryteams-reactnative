@@ -4,8 +4,16 @@ import EnvConfig from 'react-native-config';
 
 import api from '~/Services/API';
 
-Purchases.setDebugLogsEnabled(true);
-Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
+function setup() {
+    Purchases.setDebugLogsEnabled(true);
+    Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
+
+    const user = auth().currentUser;
+
+    if (user) {
+        Purchases.identify(user.uid);
+    }
+}
 
 export interface CatPackage {
     type: '5 people' | '10 people' | '15 people';
@@ -97,3 +105,5 @@ export async function getTeamSubscriptions({
         throw new Error(err.message);
     }
 }
+
+setup();

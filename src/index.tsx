@@ -16,6 +16,7 @@ import './Locales';
 
 import './Services/Analytics';
 
+import './Functions/Team/Subscriptions';
 import './Functions/PushNotifications';
 import { getAllUserPreferences } from './Functions/UserPreferences';
 import { NotificationCadency } from './Functions/Settings';
