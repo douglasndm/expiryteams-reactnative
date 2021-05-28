@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-
+import React, { useCallback, useEffect, useState, useContext } from 'react';
+import { FlatList } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
-import { FlatList } from 'react-native';
+import Preferences from '~/Contexts/PreferencesContext';
+
 import {
     getOfferings,
     makePurchase,
@@ -23,6 +24,8 @@ import {
 } from './styles';
 
 const SubscriptionsList: React.FC = () => {
+    const { userPreferences } = useContext(Preferences);
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [offers, setOffers] = useState<Array<CatPackage>>([]);
@@ -68,7 +71,10 @@ const SubscriptionsList: React.FC = () => {
                 return;
             }
 
-            await makePurchase(selectedOffer.package);
+            await makePurchase({
+                pack: selectedOffer.package,
+                team_id: userPreferences.selectedTeam.team.id,
+            });
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -77,7 +83,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [offers, selected]);
+    }, [offers, selected, userPreferences.selectedTeam.team.id]);
 
     useEffect(() => {
         loadData();

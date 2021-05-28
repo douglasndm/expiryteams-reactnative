@@ -4,14 +4,14 @@ import EnvConfig from 'react-native-config';
 
 import api from '~/Services/API';
 
-function setup() {
+async function setup() {
     Purchases.setDebugLogsEnabled(true);
     Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
     const user = auth().currentUser;
 
     if (user) {
-        Purchases.identify(user.uid);
+        await Purchases.identify(user.uid);
     }
 }
 
@@ -61,14 +61,27 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
     }
 }
 
-export async function makePurchase(
-    purchasePackage: PurchasesPackage
-): Promise<void> {
+interface makePurchaseProps {
+    pack: PurchasesPackage;
+    team_id: string;
+}
+
+export async function makePurchase({
+    pack,
+    team_id,
+}: makePurchaseProps): Promise<void> {
     try {
+        if (!team_id) {
+            throw new Error('Provider team id');
+        }
+
+        await Purchases.identify(team_id);
         const {
             purchaserInfo,
             // productIdentifier,
-        } = await Purchases.purchasePackage(purchasePackage);
+        } = await Purchases.purchasePackage(pack);
+
+        console.log(purchaserInfo);
 
         // Verificar com o servidor se a compra foi concluida
         // Liberar funções no app

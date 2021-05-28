@@ -124,26 +124,29 @@ const View: React.FC = () => {
 
             <PageContent>
                 <TeamName>{userPreferences.selectedTeam.team.name}</TeamName>
-                <Section>
-                    <SectionTitle>Assinaturas</SectionTitle>
+                {userPreferences.selectedTeam.role === 'manager' && (
+                    <Section>
+                        <SectionTitle>Assinaturas</SectionTitle>
 
-                    <SubscriptionDescription>
-                        Com uma assinatura você tem a possibilidade de criar um
-                        time com até 5 pessoas e todas as modificações feitas
-                        por elas são sincronizadas entre todos os dispositivos.
-                    </SubscriptionDescription>
+                        <SubscriptionDescription>
+                            Com uma assinatura você tem a possibilidade de criar
+                            um time com até 5 pessoas e todas as modificações
+                            feitas por elas são sincronizadas entre todos os
+                            dispositivos.
+                        </SubscriptionDescription>
 
-                    <Button
-                        text="Ver planos"
-                        isLoading={isPurchaseLoading}
-                        onPress={handlePurchase}
-                    />
+                        <Button
+                            text="Ver planos"
+                            isLoading={isPurchaseLoading}
+                            onPress={handlePurchase}
+                        />
 
-                    <SubscriptionTableTitle>
-                        Suas assinaturas
-                    </SubscriptionTableTitle>
-                    <FlatList data={subs} renderItem={renderItem} />
-                </Section>
+                        <SubscriptionTableTitle>
+                            Suas assinaturas
+                        </SubscriptionTableTitle>
+                        <FlatList data={subs} renderItem={renderItem} />
+                    </Section>
+                )}
             </PageContent>
         </Container>
     );
