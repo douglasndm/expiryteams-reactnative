@@ -13,11 +13,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
-import {
-    deleteProduct,
-    getProduct,
-    updateProduct,
-} from '~/Functions/Products/Product';
+import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 
 import StatusBar from '~/Components/StatusBar';
@@ -63,7 +59,7 @@ import {
 interface RequestParams {
     route: {
         params: {
-            productId: string;
+            product: string;
         };
     };
 }
@@ -81,10 +77,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         return userPreferences.selectedTeam.role.toLowerCase();
     }, [userPreferences.selectedTeam.role]);
 
-    const { productId } = route.params;
-
     const { reset, goBack } = useNavigation();
     const theme = useTheme();
+
+    const product = useMemo<IProduct>(() => {
+        return JSON.parse(route.params.product);
+    }, [route.params.product]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
@@ -107,24 +105,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         try {
             setIsLoading(true);
 
-            const response = await getProduct({ productId });
-
-            if ('error' in response) {
-                showMessage({
-                    message: response.error,
-                    type: 'danger',
-                });
-                return;
-            }
-
-            setName(response.name);
-            setCode(response.code);
+            setName(product.name);
+            setCode(product.code);
 
             const categoriesResponse = await getAllCategoriesFromTeam({
                 team_id: userPreferences.selectedTeam.team.id,
             });
 
             const categoriesArray: Array<ICategoryItem> = [];
+
             categoriesResponse.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
@@ -133,6 +122,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 })
             );
             setCategories(categoriesArray);
+
+            if (product.categories.length > 0) {
+                setSelectedCategory(product.categories[0].id);
+            }
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -141,7 +134,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setIsLoading(false);
         }
-    }, [productId, userPreferences.selectedTeam.team.id]);
+    }, [product.categories, product.code, product.name]);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -152,7 +145,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         try {
             const updatedProduct = await updateProduct({
                 product: {
-                    id: productId,
+                    id: product.id,
                     name,
                     code,
                     categories: [{ id: selectedCategory || '', name: '' }],
@@ -172,7 +165,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     { name: 'Home' },
                     {
                         name: 'Success',
-                        params: { productId, type: 'edit_product' },
+                        params: { productId: product.id, type: 'edit_product' },
                     },
                 ],
             });
@@ -182,11 +175,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 type: 'danger',
             });
         }
-    }, [code, name, productId, reset, selectedCategory]);
+    }, [code, name, product.id, reset, selectedCategory]);
 
     const handleDeleteProduct = useCallback(async () => {
         try {
-            await deleteProduct({ product_id: productId });
+            await deleteProduct({ product_id: product.id });
 
             reset({
                 index: 1,
@@ -203,7 +196,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setDeleteComponentVisible(false);
         }
-    }, [productId, reset]);
+    }, [product, reset]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);

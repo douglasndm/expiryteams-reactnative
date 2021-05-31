@@ -124,8 +124,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [navigate, productId]);
 
     const handleEdit = useCallback(() => {
-        navigate('EditProduct', { productId });
-    }, [navigate, productId]);
+        navigate('EditProduct', { product: JSON.stringify(product) });
+    }, [navigate, product]);
 
     useEffect(() => {
         loadData();
