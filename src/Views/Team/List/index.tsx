@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {
+    useState,
+    useCallback,
+    useEffect,
+    useContext,
+    useRef,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -29,6 +35,8 @@ const List: React.FC = () => {
         PreferencesContext
     );
 
+    const mounted = useRef(false);
+
     const [isLoading, setIsLoading] = useState(true);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
@@ -38,6 +46,14 @@ const List: React.FC = () => {
     // If so, disable creating of new team
     // This is due limition of identify user and teams on revenuecat
     const [isManager, setIsManager] = useState<boolean>(false);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        };
+    });
 
     const loadData = useCallback(async () => {
         try {
@@ -53,17 +69,23 @@ const List: React.FC = () => {
                 return;
             }
 
-            response.forEach(item => {
-                if (item.role.toLowerCase() === 'Manager'.toLowerCase()) {
-                    setIsManager(true);
-                }
-            });
+            if (mounted) {
+                response.forEach(item => {
+                    if (item.role.toLowerCase() === 'Manager'.toLowerCase()) {
+                        setIsManager(true);
+                    }
+                });
 
-            const active = response.filter(item => item.team.active === true);
-            const inactive = response.filter(item => item.team.active !== true);
+                const active = response.filter(
+                    item => item.team.active === true
+                );
+                const inactive = response.filter(
+                    item => item.team.active !== true
+                );
 
-            setTeams(active);
-            setInactiveTeams(inactive);
+                setTeams(active);
+                setInactiveTeams(inactive);
+            }
         } catch (err) {
             showMessage({
                 message: err.message,
