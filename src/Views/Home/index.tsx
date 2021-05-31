@@ -5,6 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 import { translate } from '~/Locales';
 
 import { getAllProducts } from '~/Functions/Products/Products';
+import { searchProducts } from '~/Functions/Products/Search';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -88,12 +89,9 @@ const Home: React.FC = () => {
             setSearchString(search);
 
             if (search && search !== '') {
-                const allProducts = await getAllProducts({});
-
-                const findProducts = searchForAProductInAList({
-                    products: allProducts,
-                    searchFor: search,
-                    sortByExpDate: true,
+                const findProducts = await searchProducts({
+                    products,
+                    query: search,
                 });
 
                 setProductsSearch(findProducts);
