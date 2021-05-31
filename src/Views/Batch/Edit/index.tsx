@@ -8,7 +8,11 @@ import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
-import { getBatch, updateBatch } from '~/Functions/Products/Batches/Batch';
+import {
+    deleteBatch,
+    getBatch,
+    updateBatch,
+} from '~/Functions/Products/Batches/Batch';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -164,7 +168,7 @@ const EditBatch: React.FC = () => {
 
     const handleDelete = useCallback(async () => {
         try {
-            await deleteLote(loteId);
+            await deleteBatch({ batch_id: batchId });
 
             reset({
                 index: 1,
@@ -179,7 +183,7 @@ const EditBatch: React.FC = () => {
                 type: 'danger',
             });
         }
-    }, [reset]);
+    }, [batchId, reset]);
 
     const handleBatchChange = useCallback(value => {
         setBatch(value);

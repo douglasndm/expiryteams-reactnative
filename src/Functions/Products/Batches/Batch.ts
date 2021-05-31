@@ -125,3 +125,13 @@ export async function updateBatch({
         return error;
     }
 }
+
+interface deleteBatchProps {
+    batch_id: string;
+}
+
+export async function deleteBatch({
+    batch_id,
+}: deleteBatchProps): Promise<void> {
+    throw new Error('Server does not implement this function yet');
+}
