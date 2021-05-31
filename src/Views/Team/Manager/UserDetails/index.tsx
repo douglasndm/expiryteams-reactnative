@@ -1,7 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -31,6 +33,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     route,
 }: UserDetailsProps) => {
     const { goBack } = useNavigation();
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const user: IUserInTeam = useMemo(() => {
         return JSON.parse(route.params.user);
@@ -66,7 +70,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
                 {!!user.status &&
                     user.status.toLowerCase() === 'pending' &&
-                    user.role.toLowerCase() === 'manager' && (
+                    userPreferences.selectedTeam.role.toLowerCase() ===
+                        'manager' && (
                         <CodeDetails>
                             <CodeTitle>
                                 {translate('View_UserDetails_Code_Title')}
