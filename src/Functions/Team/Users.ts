@@ -94,7 +94,7 @@ interface putUserInTeamResponse {
 export async function putUserInTeam({
     user_email,
     team_id,
-}: putUserInTeamProps): Promise<putUserInTeamResponse | IAPIError> {
+}: putUserInTeamProps): Promise<putUserInTeamResponse> {
     try {
         const { currentUser } = auth();
 
@@ -114,15 +114,10 @@ export async function putUserInTeam({
 
         return response.data;
     } catch (err) {
-        if (err.message === 'Network Error') {
-            throw new Error(err);
+        if (err.response.data) {
+            throw new Error(err.response.data);
         }
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data,
-        };
-
-        return error;
+        throw new Error(err.message);
     }
 }
 

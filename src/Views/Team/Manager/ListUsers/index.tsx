@@ -1,10 +1,4 @@
-import React, {
-    useState,
-    useCallback,
-    useEffect,
-    useContext,
-    useMemo,
-} from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -101,14 +95,6 @@ const ListUsers: React.FC = () => {
                 user_email: newUserEmail,
                 team_id: userPreferences.selectedTeam.team.id,
             });
-
-            if ('error' in userInTeam) {
-                showMessage({
-                    message: userInTeam.error.error,
-                    type: 'danger',
-                });
-                return;
-            }
 
             const newUser: IUserInTeam = {
                 id: userInTeam.user.firebaseUid,
@@ -219,7 +205,7 @@ const ListUsers: React.FC = () => {
 
                     <ListCategories
                         data={users}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item, index) => String(index)}
                         renderItem={renderCategory}
                     />
                 </Container>
