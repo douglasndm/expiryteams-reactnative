@@ -9,7 +9,6 @@
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
-    "Menu_Button_GoToAllProducts": "Todos os produtos",
     "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToTeamSelect": "Times",
     "Menu_Button_GoToExport": "Exportar",
@@ -34,7 +33,6 @@
 
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
-    "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
     "ListProductsComponent_Button_AddNewProduct": "Adicionar novo produto",
 
     "LoadingComponent_Text": "Carregando...",
@@ -109,10 +107,6 @@
     "View_AddProduct_Button_Save": "Salvar",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Botão para salvar o novo produto",
     "View_AddProduct_Tip_DuplicateProduct": "Já existe um produto cadastrado com o mesmo código. Clique aqui para adicionar um lote ao produto existente",
-
-
-    "View_AllProducts_PageTitle": "Todos os produtos",
-    "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",

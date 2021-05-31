@@ -391,7 +391,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                     setCode(value);
                                                     setCodeFieldError(false);
                                                 }}
-                                                onBlur={handleCheckProductCode}
                                             />
                                             <InputTextIconContainer
                                                 onPress={

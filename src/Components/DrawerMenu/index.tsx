@@ -31,10 +31,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('AddProduct');
     }, [navigation]);
 
-    const navigateToAllProducts = useCallback(() => {
-        navigation.navigate('AllProducts');
-    }, [navigation]);
-
     const navigateToCategories = useCallback(() => {
         navigation.navigate('ListCategory');
     }, [navigation]);
@@ -45,10 +41,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
     const navigateToExport = useCallback(() => {
         navigation.navigate('Export');
-    }, [navigation]);
-
-    const handleNavigateToPeopleInTeam = useCallback(() => {
-        navigation.navigate('ListUsersFromTeam');
     }, [navigation]);
 
     const handleNavigateToTeam = useCallback(() => {
@@ -86,15 +78,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
-                        <MenuItemContainer onPress={navigateToAllProducts}>
-                            <MenuContent>
-                                <Icons name="apps-outline" />
-                                <MenuItemText>
-                                    {translate('Menu_Button_GoToAllProducts')}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
-
                         <MenuItemContainer onPress={navigateToCategories}>
                             <MenuContent>
                                 <Icons name="file-tray-full-outline" />
@@ -103,15 +86,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 </MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
-
-                        {/* <MenuItemContainer
-                            onPress={handleNavigateToPeopleInTeam}
-                        >
-                            <MenuContent>
-                                <Icons name="people-outline" />
-                                <MenuItemText>Pessoas do time</MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer> */}
 
                         <MenuItemContainer onPress={navigateToExport}>
                             <MenuContent>

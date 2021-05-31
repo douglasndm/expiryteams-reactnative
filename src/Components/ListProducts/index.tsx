@@ -5,34 +5,26 @@ import { useNavigation } from '@react-navigation/native';
 import { translate } from '../../Locales';
 
 import ProductItem from './ProductContainer';
-import GenericButton from '../Button';
 
 import {
     Container,
     CategoryDetails,
     CategoryDetailsText,
     EmptyListText,
-    InvisibleComponent,
     FloatButton,
     Icons,
 } from './styles';
 
 interface RequestProps {
     products: Array<IProduct>;
-    isHome?: boolean;
     deactiveFloatButton?: boolean;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
     products,
-    isHome,
     deactiveFloatButton,
 }: RequestProps) => {
     const { navigate } = useNavigation();
-
-    const handleNavigateToAllProducts = useCallback(() => {
-        navigate('AllProducts');
-    }, [navigate]);
 
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
@@ -63,22 +55,6 @@ const ListProducts: React.FC<RequestProps> = ({
         );
     }, []);
 
-    const FooterButton = useCallback(() => {
-        if (products.length > 5 && isHome) {
-            return (
-                <GenericButton
-                    text={translate(
-                        'ListProductsComponent_Button_ShowAllProducts'
-                    )}
-                    onPress={handleNavigateToAllProducts}
-                    contentStyle={{ marginBottom: 100 }}
-                />
-            );
-        }
-
-        return <InvisibleComponent />;
-    }, [products.length, isHome, handleNavigateToAllProducts]);
-
     const renderComponent = useCallback(({ item, index }) => {
         return <ProductItem product={item} index={index} />;
     }, []);
@@ -91,7 +67,6 @@ const ListProducts: React.FC<RequestProps> = ({
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
-                ListFooterComponent={FooterButton}
                 initialNumToRender={10}
             />
 

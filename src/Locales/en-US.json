@@ -9,7 +9,6 @@
 
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
-    "Menu_Button_GoToAllProducts": "All products",
     "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToTeamSelect": "Teams",
     "Menu_Button_GoToExport": "Export",
@@ -34,7 +33,6 @@
 
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
-    "ListProductsComponent_Button_ShowAllProducts": "Show all products",
     "ListProductsComponent_Button_AddNewProduct": "Add new product",
 
     "LoadingComponent_Text": "Loading...",
@@ -109,9 +107,6 @@
     "View_AddProduct_Button_Save": "Save",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Button to save the new product",
     "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
-
-    "View_AllProducts_PageTitle": "All products",
-    "View_AllProducts_SearchPlaceholder": "Search for a product",
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
     "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
