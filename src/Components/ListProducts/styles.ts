@@ -27,6 +27,10 @@ export const EmptyListText = styled.Text`
     color: ${({ theme }) => theme.colors.text};
 `;
 
+export const InvisibleComponent = styled.View`
+    margin-bottom: 75px;
+`;
+
 export const FloatButton = styled(FAB).attrs(() => ({
     color: 'white',
 }))`

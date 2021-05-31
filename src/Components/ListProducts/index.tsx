@@ -13,6 +13,7 @@ import {
     EmptyListText,
     FloatButton,
     Icons,
+    InvisibleComponent,
 } from './styles';
 
 interface RequestProps {
@@ -55,8 +56,12 @@ const ListProducts: React.FC<RequestProps> = ({
         );
     }, []);
 
-    const renderComponent = useCallback(({ item, index }) => {
-        return <ProductItem product={item} index={index} />;
+    const FooterButton = useCallback(() => {
+        return <InvisibleComponent />;
+    }, []);
+
+    const renderComponent = useCallback(({ item }) => {
+        return <ProductItem product={item} />;
     }, []);
 
     return (
@@ -68,6 +73,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
                 initialNumToRender={10}
+                ListFooterComponent={FooterButton}
             />
 
             {!deactiveFloatButton && (
