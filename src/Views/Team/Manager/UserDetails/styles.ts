@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -46,7 +47,7 @@ export const CodeTitle = styled.Text`
     font-size: 16px;
 `;
 
-export const CodeContainer = styled.View`
+export const CodeContainer = styled(RectButton)`
     margin-top: 10px;
     background-color: ${props => props.theme.colors.accent};
     padding: 18px 25px;
