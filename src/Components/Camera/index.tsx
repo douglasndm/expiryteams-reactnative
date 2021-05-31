@@ -17,7 +17,6 @@ import {
     CameraComponent,
     ButtonsContainer,
 } from './styles';
-import { copyImageFromTempDirToDefinitiveDir } from '~/Functions/Products/Image';
 
 export interface onPhotoTakedProps {
     fileName: string;
@@ -86,9 +85,8 @@ const Camera: React.FC<CameraProps> = ({
 
     const handleSavePhoto = useCallback(async () => {
         if (image) {
-            const path = await copyImageFromTempDirToDefinitiveDir(image);
-
-            onPhotoTaked(path);
+            // const path = await copyImageFromTempDirToDefinitiveDir(image);
+            // onPhotoTaked(path);
         }
     }, [image, onPhotoTaked]);
 

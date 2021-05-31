@@ -4,8 +4,6 @@ import { exists } from 'react-native-fs';
 
 import { translate } from '../../Locales';
 
-import { getProductImagePath } from '~/Functions/Products/Image';
-
 import Loading from '~/Components/Loading';
 import BackButton from '../../Components/BackButton';
 import Button from '../../Components/Button';
@@ -27,16 +25,8 @@ const PhotoView: React.FC<Props> = () => {
 
     const loadData = useCallback(async () => {
         setIsLoading(true);
-        const imagePath = await getProductImagePath(routeParams.productId);
-
-        if (imagePath) {
-            const fileExists = await exists(imagePath);
-            if (fileExists) {
-                setPhotoPath(`file://${imagePath}`);
-            }
-        }
         setIsLoading(false);
-    }, [routeParams.productId]);
+    }, []);
 
     useEffect(() => {
         loadData();

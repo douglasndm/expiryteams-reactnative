@@ -26,12 +26,6 @@ import BackButton from '~/Components/BackButton';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
 
-import {
-    saveProductImage,
-    getProductImagePath,
-    getImageFileNameFromPath,
-} from '~/Functions/Products/Image';
-
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
@@ -130,14 +124,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 team_id: userPreferences.selectedTeam.team.id,
             });
 
-            if ('error' in categoriesResponse) {
-                showMessage({
-                    message: categoriesResponse.error,
-                    type: 'danger',
-                });
-                return;
-            }
-
             const categoriesArray: Array<ICategoryItem> = [];
             categoriesResponse.forEach(cat =>
                 categoriesArray.push({
@@ -150,6 +136,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } catch (err) {
             showMessage({
                 message: err.message,
+                type: 'danger',
             });
         } finally {
             setIsLoading(false);
@@ -249,15 +236,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         async ({ fileName, filePath }: onPhotoTakedProps) => {
             if (await exists(filePath)) {
                 setPhotoPath(filePath);
-
-                await saveProductImage({
-                    fileName,
-                    productId,
-                });
             }
             handleDisableCamera();
         },
-        [handleDisableCamera, productId]
+        [handleDisableCamera]
     );
 
     useEffect(() => {
@@ -294,18 +276,17 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 </PageHeader>
 
                                 <PageContent>
-                                    {userPreferences.isUserPremium &&
-                                        !!photoPath && (
-                                            <ProductImageContainer
-                                                onPress={handleEnableCamera}
-                                            >
-                                                <ProductImage
-                                                    source={{
-                                                        uri: `file://${photoPath}`,
-                                                    }}
-                                                />
-                                            </ProductImageContainer>
-                                        )}
+                                    {/* {!!photoPath && (
+                                        <ProductImageContainer
+                                            onPress={handleEnableCamera}
+                                        >
+                                            <ProductImage
+                                                source={{
+                                                    uri: `file://${photoPath}`,
+                                                }}
+                                            />
+                                        </ProductImageContainer>
+                                    )} */}
 
                                     <InputContainer>
                                         <InputGroup>
@@ -327,13 +308,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 />
                                             </InputTextContainer>
 
-                                            {userPreferences.isUserPremium && (
-                                                <CameraButtonContainer
-                                                    onPress={handleEnableCamera}
-                                                >
-                                                    <CameraButtonIcon />
-                                                </CameraButtonContainer>
-                                            )}
+                                            {/* <CameraButtonContainer
+                                                onPress={handleEnableCamera}
+                                            >
+                                                <CameraButtonIcon />
+                                            </CameraButtonContainer> */}
                                         </InputGroup>
                                         {nameFieldError && (
                                             <InputTextTip>

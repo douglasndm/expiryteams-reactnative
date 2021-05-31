@@ -17,7 +17,6 @@ import { translate } from '~/Locales';
 import { createProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
-import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -122,27 +121,26 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
-        const response = await getAllCategoriesFromTeam({
-            team_id: userPreferences.selectedTeam.team.id,
-        });
-
-        if ('error' in response) {
-            showMessage({
-                message: response.error,
-                type: 'default',
+        try {
+            const response = await getAllCategoriesFromTeam({
+                team_id: userPreferences.selectedTeam.team.id,
             });
-            return;
-        }
 
-        const categoriesArray: Array<ICategoryItem> = [];
-        response.forEach(cat =>
-            categoriesArray.push({
-                key: cat.id,
-                label: cat.name,
-                value: cat.id,
-            })
-        );
-        setCategories(categoriesArray);
+            const categoriesArray: Array<ICategoryItem> = [];
+            response.forEach(cat =>
+                categoriesArray.push({
+                    key: cat.id,
+                    label: cat.name,
+                    value: cat.id,
+                })
+            );
+            setCategories(categoriesArray);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        }
     }, [userPreferences.selectedTeam.team.id]);
 
     const handleSave = useCallback(async () => {
@@ -155,8 +153,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             return;
         }
         try {
-            const picFileName = getImageFileNameFromPath(photoPath);
-
             const prodCategories: Array<string> = [];
 
             if (selectedCategory && selectedCategory !== 'null') {
@@ -229,7 +225,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         batch,
         name,
         nameFieldError,
-        photoPath,
         price,
         reset,
         selectedCategory,
@@ -286,50 +281,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         [handleDisableCamera]
     );
 
-    const handleCheckProductCode = useCallback(
-        async (anotherCode?: string) => {
-            let theCode;
-
-            if (code) {
-                theCode = code;
-            } else if (anotherCode) {
-                theCode = anotherCode;
-            }
-
-            if (theCode) {
-                const prodExist = await checkIfProductAlreadyExistsByCode({
-                    productCode: theCode,
-                    productStore: undefined,
-                });
-
-                if (prodExist) {
-                    setCodeFieldError(true);
-
-                    const existProd = await getProductByCode(
-                        theCode,
-                        undefined
-                    );
-                    setExistentProduct(existProd.id);
-                }
-            }
-        },
-        [code]
-    );
-
     const handleNavigateToExistProduct = useCallback(async () => {
         if (existentProduct) {
             navigate('AddLote', { productId: existentProduct });
         }
     }, [existentProduct, navigate]);
 
-    const handleOnCodeRead = useCallback(
-        async (codeRead: string) => {
-            setCode(codeRead);
-            setIsBarCodeEnabled(false);
-            await handleCheckProductCode(codeRead);
-        },
-        [handleCheckProductCode]
-    );
+    const handleOnCodeRead = useCallback(async (codeRead: string) => {
+        setCode(codeRead);
+        setIsBarCodeEnabled(false);
+    }, []);
 
     const handlePriceChange = useCallback((value: number) => {
         if (value <= 0) {
@@ -362,18 +323,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                 </PageHeader>
 
                                 <PageContent>
-                                    {userPreferences.isUserPremium &&
-                                        !!photoPath && (
-                                            <ProductImageContainer
-                                                onPress={handleEnableCamera}
-                                            >
-                                                <ProductImage
-                                                    source={{
-                                                        uri: `file://${photoPath}`,
-                                                    }}
-                                                />
-                                            </ProductImageContainer>
-                                        )}
+                                    {/* {!!photoPath && (
+                                        <ProductImageContainer
+                                            onPress={handleEnableCamera}
+                                        >
+                                            <ProductImage
+                                                source={{
+                                                    uri: `file://${photoPath}`,
+                                                }}
+                                            />
+                                        </ProductImageContainer>
+                                    )} */}
 
                                     <InputContainer>
                                         <InputGroup>
