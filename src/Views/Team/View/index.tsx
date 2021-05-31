@@ -74,6 +74,10 @@ const View: React.FC = () => {
         }
     }, [navigate]);
 
+    const handleNavigateToMembers = useCallback(() => {
+        navigate('ListUsersFromTeam');
+    }, [navigate]);
+
     interface renderProps {
         item: ITeamSubscription;
         index: number;
@@ -147,6 +151,19 @@ const View: React.FC = () => {
                         <FlatList data={subs} renderItem={renderItem} />
                     </Section>
                 )}
+
+                <Section>
+                    <SectionTitle>Membros</SectionTitle>
+
+                    <SubscriptionDescription>
+                        Membros atuais do time
+                    </SubscriptionDescription>
+
+                    <Button
+                        text="Ver membros"
+                        onPress={handleNavigateToMembers}
+                    />
+                </Section>
             </PageContent>
         </Container>
     );

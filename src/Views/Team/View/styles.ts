@@ -34,6 +34,7 @@ export const Section = styled.View`
     background-color: ${props => props.theme.colors.inputBackground};
     padding: 20px 15px;
     border-radius: 12px;
+    margin-bottom: 15px;
 `;
 
 export const SectionTitle = styled.Text`
