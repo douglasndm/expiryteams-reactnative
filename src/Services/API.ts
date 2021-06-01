@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
+import EnvConfig from 'react-native-config';
 
 const api = axios.create({
-    baseURL: 'http://192.168.1.3:3213',
+    baseURL: __DEV__ ? 'http://192.168.1.3:3213' : EnvConfig.API_URL,
 });
 
 export function hasResponseError(
