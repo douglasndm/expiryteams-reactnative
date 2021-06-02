@@ -194,6 +194,10 @@ const List: React.FC = () => {
         navigate('CreateTeam');
     }, [navigate]);
 
+    const handleLogout = useCallback(() => {
+        navigate('Logout');
+    }, [navigate]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -232,6 +236,8 @@ const List: React.FC = () => {
                     onPress={handleNavigateCreateTeam}
                 />
             )}
+
+            {/* <Button text="Sair" onPress={handleLogout} /> */}
         </Container>
     );
 };

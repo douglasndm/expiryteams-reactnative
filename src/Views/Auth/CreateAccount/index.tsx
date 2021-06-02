@@ -137,6 +137,7 @@ const CreateAccount: React.FC = () => {
                             placeholder="Senha"
                             autoCorrect={false}
                             autoCapitalize="none"
+                            secureTextEntry
                             value={password}
                             onChangeText={handlePasswordChange}
                         />
@@ -146,6 +147,7 @@ const CreateAccount: React.FC = () => {
                             placeholder="Confirmação da senha"
                             autoCorrect={false}
                             autoCapitalize="none"
+                            secureTextEntry
                             value={passwordConfirm}
                             onChangeText={handlePasswordConfirmChange}
                         />
