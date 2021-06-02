@@ -140,22 +140,30 @@ const List: React.FC = () => {
         ({ item }: renderProps) => {
             const teamToNavigate = item.team.id;
 
+            let role = item.role.toLowerCase();
+
             let isPending = true;
 
             if (item.status) {
                 if (item.status.trim().toLowerCase() === 'completed') {
                     isPending = false;
+                } else if (
+                    item.status.trim().toLowerCase() !== 'completed' &&
+                    role === 'manager'
+                ) {
+                    isPending = false;
                 }
+            } else if (role === 'manager') {
+                isPending = false;
             }
 
-            let role = '';
-
-            if (item.role.toLowerCase() === 'manager')
+            if (role === 'manager') {
                 role = translate('UserInfo_Role_Manager');
-            if (item.role.toLowerCase() === 'supervisor') {
+            }
+            if (role === 'supervisor') {
                 role = translate('UserInfo_Role_Supervisor');
             }
-            if (item.role.toLowerCase() === 'repositor') {
+            if (role === 'repositor') {
                 role = translate('UserInfo_Role_Repositor');
             }
 
