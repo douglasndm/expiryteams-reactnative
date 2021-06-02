@@ -1,8 +1,9 @@
 interface IUser {
-    id: string;
+    id?: string;
     name: string;
     lastName: string;
     email: string;
+    password?: string;
     firebaseUid: string;
 }
 
