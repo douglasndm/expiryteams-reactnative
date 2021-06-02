@@ -3,9 +3,8 @@ import { Platform } from 'react-native';
 
 import LogoImg from '~/Assets/Logo.png';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
     flex: 1;
-    justify-content: space-between;
     background-color: ${props => props.theme.colors.background};
 `;
 

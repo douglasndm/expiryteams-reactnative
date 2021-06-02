@@ -21,11 +21,13 @@ import Loading from '~/Components/Loading';
 import {
     Container,
     Title,
+    Content,
     ListTeamsTitle,
     ListCategories,
     TeamItemContainer,
     TeamItemTitle,
     TeamItemRole,
+    Footer,
 } from './styles';
 
 const List: React.FC = () => {
@@ -208,36 +210,45 @@ const List: React.FC = () => {
         <Container>
             <Title>{translate('View_TeamList_PageTitle')}</Title>
 
-            {teams.length > 0 && (
-                <>
-                    <ListTeamsTitle>Times</ListTeamsTitle>
-                    <ListCategories
-                        data={teams}
-                        keyExtractor={(item, index) => String(index)}
-                        renderItem={renderCategory}
-                    />
-                </>
-            )}
+            <Content>
+                {teams.length > 0 && (
+                    <>
+                        <ListTeamsTitle>Times</ListTeamsTitle>
+                        <ListCategories
+                            data={teams}
+                            keyExtractor={(item, index) => String(index)}
+                            renderItem={renderCategory}
+                        />
+                    </>
+                )}
 
-            {inactiveTeams.length > 0 && (
-                <>
-                    <ListTeamsTitle>Times inativos</ListTeamsTitle>
-                    <ListCategories
-                        data={inactiveTeams}
-                        keyExtractor={(item, index) => String(index)}
-                        renderItem={renderCategory}
-                    />
-                </>
-            )}
+                {inactiveTeams.length > 0 && (
+                    <>
+                        <ListTeamsTitle>Times inativos</ListTeamsTitle>
+                        <ListCategories
+                            data={inactiveTeams}
+                            keyExtractor={(item, index) => String(index)}
+                            renderItem={renderCategory}
+                        />
+                    </>
+                )}
+            </Content>
 
-            {!isManager && (
+            <Footer>
+                {!isManager && (
+                    <Button
+                        text={translate('View_TeamList_Button_CreateTeam')}
+                        onPress={handleNavigateCreateTeam}
+                        contentStyle={{ width: 150, marginBottom: 0 }}
+                    />
+                )}
+
                 <Button
-                    text={translate('View_TeamList_Button_CreateTeam')}
-                    onPress={handleNavigateCreateTeam}
+                    text="Sair da conta"
+                    onPress={handleLogout}
+                    contentStyle={{ width: 150 }}
                 />
-            )}
-
-            {/* <Button text="Sair" onPress={handleLogout} /> */}
+            </Footer>
         </Container>
     );
 };
