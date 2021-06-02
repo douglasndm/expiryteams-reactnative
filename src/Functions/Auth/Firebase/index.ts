@@ -15,5 +15,7 @@ export async function loginFirebase({
 }
 
 export async function logoutFirebase(): Promise<void> {
-    await auth().signOut();
+    if (auth().currentUser) {
+        await auth().signOut();
+    }
 }
