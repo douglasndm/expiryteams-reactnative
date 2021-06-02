@@ -66,7 +66,7 @@
     "View_Login_Error_WrongEmailOrPassword": "E-mail ou senha inválido.",
 
     "View_ConfirmEmail_WaitingTitle": "Aguardando confirmação do e-mail",
-    "View_ConfirmEmail_WaitingDescription": "Clique no link enviado para seu e-mail para confirmar o seu endereço de e-mail. Caso não consiga achar o e-mail verifique na pasta spam ou lixo eletrônico",
+    "View_ConfirmEmail_WaitingDescription": "Clique no link enviado para seu e-mail #{EMAIL} para confirmar o seu endereço de e-mail. Caso não consiga achar o e-mail verifique na pasta spam ou lixo eletrônico",
     "View_ConfirmEmail_Button_Confirmed": "Acabei de confirmar",
     "View_ConfirmEmail_Button_Logout": "Sair",
     "View_ConfirmEmail_ResendEmail": "Não recebeu o e-mail? clique aqui para reenviar",

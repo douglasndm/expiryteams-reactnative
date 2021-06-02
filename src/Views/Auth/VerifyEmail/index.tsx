@@ -1,9 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     isEmailConfirmed,
@@ -24,6 +26,9 @@ const VerifyEmail: React.FC = () => {
     const { navigate, reset } = useNavigation();
 
     const [isCheckLoading, setIsCheckLoading] = useState<boolean>(false);
+    const [resendedEmail, setResendedEmail] = useState<boolean>(false);
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const animation = useMemo(() => {
         return require('~/Assets/Animations/email-animation.json');
@@ -60,6 +65,11 @@ const VerifyEmail: React.FC = () => {
 
     const handleResendConfirmEmail = useCallback(async () => {
         await resendConfirmationEmail();
+        setResendedEmail(true);
+        showMessage({
+            message: 'O e-mail de confirmação foi reenviado.',
+            type: 'info',
+        });
     }, []);
 
     return (
@@ -77,7 +87,10 @@ const VerifyEmail: React.FC = () => {
                 </WaitingConfirmationEmail>
 
                 <EmailConfirmationExplain>
-                    {translate('View_ConfirmEmail_WaitingDescription')}
+                    {translate('View_ConfirmEmail_WaitingDescription').replace(
+                        '#{EMAIL}',
+                        userPreferences.user.email
+                    )}
                 </EmailConfirmationExplain>
 
                 <Button
@@ -93,9 +106,11 @@ const VerifyEmail: React.FC = () => {
                     contentStyle={{ width: 150, marginTop: 0 }}
                 />
 
-                <ResendEmailText onPress={handleResendConfirmEmail}>
-                    {translate('View_ConfirmEmail_ResendEmail')}
-                </ResendEmailText>
+                {!resendedEmail && (
+                    <ResendEmailText onPress={handleResendConfirmEmail}>
+                        {translate('View_ConfirmEmail_ResendEmail')}
+                    </ResendEmailText>
+                )}
             </Content>
         </Container>
     );
