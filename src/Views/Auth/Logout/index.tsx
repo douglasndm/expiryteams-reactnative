@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -8,8 +9,6 @@ import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
 import Loading from '~/Components/Loading';
 
-import { Container } from './styles';
-
 const Logout: React.FC = () => {
     const { goBack, reset } = useNavigation();
 
@@ -17,21 +16,29 @@ const Logout: React.FC = () => {
         PreferencesContext
     );
 
-    useEffect(() => {
-        logoutFirebase().then(() => {
-            clearSelectedteam().then(() => {
-                setUserPreferences({
-                    ...userPreferences,
-                    user: null,
-                    selectedTeam: null,
-                });
+    const handleLogout = useCallback(async () => {
+        try {
+            await logoutFirebase();
+            await clearSelectedteam();
 
-                try {
-                    reset({ routes: [{ name: 'Login' }] });
-                } catch (err) {}
+            setUserPreferences({
+                ...userPreferences,
+                user: null,
+                selectedTeam: null,
             });
-        });
-    }, [reset]);
+            try {
+                reset({ routes: [{ name: 'Login' }] });
+            } catch (err) {}
+        } catch (err) {
+            showMessage({
+                message: err.message,
+            });
+        }
+    }, [reset, setUserPreferences, userPreferences]);
+
+    useEffect(() => {
+        handleLogout();
+    }, []);
     return <Loading />;
 };
 
