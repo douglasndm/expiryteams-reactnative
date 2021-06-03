@@ -10,7 +10,7 @@ import { translate } from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { loginFirebase } from '~/Functions/Auth/Firebase';
-import { createUser, getUser, getUserLocally } from '~/Functions/User';
+import { createUser, getUser } from '~/Functions/User';
 
 import Button from '~/Components/Button';
 
@@ -94,14 +94,11 @@ const Login: React.FC = () => {
             });
 
             try {
-                const userExists = await getUser();
+                await getUser();
             } catch (err) {
                 if (String(err.message).includes('User was not found')) {
-                    const localUser = await getUserLocally();
                     await createUser({
-                        ...localUser,
-                        password: localUser.password || '',
-                        passwordConfirm: localUser.password || '',
+                        email,
                     });
                 }
             }

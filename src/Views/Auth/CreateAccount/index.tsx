@@ -5,7 +5,6 @@ import { showMessage } from 'react-native-flash-message';
 import { translate } from '~/Locales';
 
 import { createAccount } from '~/Functions/Auth/Account';
-import { saveUserLocally } from '~/Functions/User';
 
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
@@ -71,20 +70,12 @@ const CreateAccount: React.FC = () => {
         }
 
         try {
-            const response = await createAccount({
+            await createAccount({
                 name,
                 lastName,
                 email,
                 password,
                 passwordConfirm,
-            });
-
-            await saveUserLocally({
-                firebaseUid: response.firebaseUid,
-                name,
-                lastName,
-                email,
-                password,
             });
 
             showMessage({
