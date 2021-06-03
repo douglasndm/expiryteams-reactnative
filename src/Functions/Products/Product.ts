@@ -33,19 +33,19 @@ export async function getProduct({
 
 interface createProductProps {
     team_id: string;
-    product: Omit<IProduct, 'id'>;
+    product: Omit<IProduct, 'id' | 'categories'>;
+    categories: Array<string>;
 }
 
 export async function createProduct({
     team_id,
     product,
-}: createProductProps): Promise<IProduct | IAPIError> {
+    categories,
+}: createProductProps): Promise<IProduct> {
     try {
         const { currentUser } = auth();
 
         const token = await currentUser?.getIdTokenResult();
-
-        const categories = product.categories.map(c => c.id);
 
         const response = await api.post<IProduct>(
             `/products`,
@@ -64,28 +64,26 @@ export async function createProduct({
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
 interface updateProductProps {
-    product: Omit<IProduct, 'batches'>;
+    product: Omit<IProduct, 'batches' | 'categories'>;
+    categories: Array<string>;
 }
 
 export async function updateProduct({
     product,
-}: updateProductProps): Promise<IProduct | IAPIError> {
+    categories,
+}: updateProductProps): Promise<IProduct> {
     try {
         const { currentUser } = auth();
 
         const token = await currentUser?.getIdTokenResult();
-
-        const categories = product.categories.map(c => c.id);
 
         const response = await api.put<IProduct>(
             `/products/${product.id}`,
@@ -103,12 +101,10 @@ export async function updateProduct({
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 

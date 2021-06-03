@@ -164,18 +164,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 product: {
                     name,
                     code,
-                    categories: [{ id: selectedCategory || '', name: '' }],
                     batches: [],
                 },
+                categories: prodCategories,
             });
-
-            if ('error' in createdProduct) {
-                showMessage({
-                    message: createdProduct.error,
-                    type: 'danger',
-                });
-                return;
-            }
 
             const createdBatch = await createBatch({
                 productId: createdProduct.id,
