@@ -47,7 +47,7 @@ interface createBatchProps {
 export async function createBatch({
     productId,
     batch,
-}: createBatchProps): Promise<IBatch | IAPIError> {
+}: createBatchProps): Promise<IBatch> {
     try {
         const userSession = auth().currentUser;
 
@@ -55,30 +55,33 @@ export async function createBatch({
 
         const date = startOfDay(new Date(batch.exp_date));
 
-        const response = await api.post<IBatch>(
-            `/batches`,
-            {
-                product_id: productId,
-                name: batch.name,
-                exp_date: date,
-                amount: batch.amount,
+        let body: any = {
+            product_id: productId,
+            name: batch.name,
+            exp_date: date,
+            amount: batch.amount,
+            status: batch.status,
+        };
+
+        if (batch.price) {
+            body = {
+                ...body,
                 price: batch.price,
+            };
+        }
+
+        const response = await api.post<IBatch>(`/batches`, body, {
+            headers: {
+                Authorization: `Bearer ${token?.token}`,
             },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        });
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
