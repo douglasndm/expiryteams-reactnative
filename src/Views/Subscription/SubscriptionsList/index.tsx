@@ -27,7 +27,7 @@ import {
 const SubscriptionsList: React.FC = () => {
     const { reset } = useNavigation();
 
-    const { userPreferences } = useContext(Preferences);
+    const { preferences } = useContext(Preferences);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -76,7 +76,7 @@ const SubscriptionsList: React.FC = () => {
 
             await makePurchase({
                 pack: selectedOffer.package,
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             showMessage({
@@ -95,7 +95,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [offers, reset, selected, userPreferences.selectedTeam.team.id]);
+    }, [offers, reset, selected, preferences.selectedTeam.team.id]);
 
     useEffect(() => {
         loadData();

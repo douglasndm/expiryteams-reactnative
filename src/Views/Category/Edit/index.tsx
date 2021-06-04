@@ -51,11 +51,11 @@ const Edit: React.FC = () => {
     const { reset, goBack } = useNavigation();
     const theme = useTheme();
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const userRole = useMemo(() => {
-        return userPreferences.selectedTeam.role.toLowerCase();
-    }, [userPreferences.selectedTeam.role]);
+        return preferences.selectedTeam.role.toLowerCase();
+    }, [preferences.selectedTeam.role]);
 
     const [name, setName] = useState<string | undefined>(undefined);
     const [errorName, setErrorName] = useState<string>('');

@@ -36,9 +36,7 @@ import {
 const Login: React.FC = () => {
     const { reset, navigate } = useNavigation();
 
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
+    const { preferences, setPreferences } = useContext(PreferencesContext);
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -48,8 +46,8 @@ const Login: React.FC = () => {
 
     const handleNavigateUser = useCallback(
         (session: FirebaseAuthTypes.User) => {
-            setUserPreferences({
-                ...userPreferences,
+            setPreferences({
+                ...preferences,
                 user: session,
             });
 
@@ -57,7 +55,7 @@ const Login: React.FC = () => {
                 routes: [{ name: 'TeamList' }],
             });
         },
-        [reset, userPreferences, setUserPreferences]
+        [reset, preferences, setPreferences]
     );
 
     const checkUserAlreadySigned = useCallback(async () => {

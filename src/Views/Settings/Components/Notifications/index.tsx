@@ -23,14 +23,14 @@ interface INotificationCadencyItem {
 }
 
 const Notifications: React.FC = () => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
     const [selectedItem, setSelectedItem] = useState<string>(
-        () => userPreferences.notificationCadency
+        () => preferences.notificationCadency
     );
 
     const data = useMemo(() => {
         const availableCadency: Array<INotificationCadencyItem> = [];
-        // if (userPreferences.isUserPremium) {
+        // if (preferences.isUserPremium) {
         //     availableCadency.push({
         //         label: translate('View_Settings_Notifications_Cadency_Hour'),
         //         value: NotificationCadency.Hour,
@@ -48,7 +48,7 @@ const Notifications: React.FC = () => {
             key: NotificationCadency.Never,
         });
 
-        // if (userPreferences.isUserPremium) {
+        // if (preferences.isUserPremium) {
         //     availableCadency.push({
         //         label: translate('View_Settings_Notifications_Cadency_Week'),
         //         value: NotificationCadency.Week,
@@ -63,7 +63,7 @@ const Notifications: React.FC = () => {
     }, []);
 
     const onValueChange = useCallback(
-        async (value) => {
+        async value => {
             if (value !== selectedItem && value !== 'null') {
                 await setNotificationCadency(value);
 

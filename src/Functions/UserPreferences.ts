@@ -1,5 +1,4 @@
 import auth from '@react-native-firebase/auth';
-import { IUserPreferences } from '../@types/userPreference';
 import { getThemeByName } from '../Themes';
 
 import {
@@ -10,7 +9,7 @@ import {
 import { getAppTheme } from './Themes';
 import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
-export async function getAllUserPreferences(): Promise<IUserPreferences> {
+export async function getAllUserPreferences(): Promise<IPreferences> {
     try {
         const settingDay = await getHowManyDaysToBeNextExp();
         const settingTheme = await getAppTheme();
@@ -19,7 +18,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
         const userSession = auth().currentUser;
         const selectedTeam = await getSelectedTeam();
 
-        const settings: IUserPreferences = {
+        const settings: IPreferences = {
             howManyDaysToBeNextToExpire: settingDay,
             appTheme: getThemeByName(settingTheme),
             enableNotifications: settingNotification,

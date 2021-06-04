@@ -12,17 +12,15 @@ import Loading from '~/Components/Loading';
 const Logout: React.FC = () => {
     const { goBack, reset } = useNavigation();
 
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
+    const { preferences, setPreferences } = useContext(PreferencesContext);
 
     const handleLogout = useCallback(async () => {
         try {
             await logoutFirebase();
             await clearSelectedteam();
 
-            setUserPreferences({
-                ...userPreferences,
+            setPreferences({
+                ...preferences,
                 user: null,
                 selectedTeam: null,
             });
@@ -34,7 +32,7 @@ const Logout: React.FC = () => {
                 message: err.message,
             });
         }
-    }, [reset, setUserPreferences, userPreferences]);
+    }, [reset, setPreferences, preferences]);
 
     useEffect(() => {
         handleLogout();

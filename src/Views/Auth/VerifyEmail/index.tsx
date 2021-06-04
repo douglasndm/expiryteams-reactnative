@@ -28,7 +28,7 @@ const VerifyEmail: React.FC = () => {
     const [isCheckLoading, setIsCheckLoading] = useState<boolean>(false);
     const [resendedEmail, setResendedEmail] = useState<boolean>(false);
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const animation = useMemo(() => {
         return require('~/Assets/Animations/email-animation.json');
@@ -89,7 +89,7 @@ const VerifyEmail: React.FC = () => {
                 <EmailConfirmationExplain>
                     {translate('View_ConfirmEmail_WaitingDescription').replace(
                         '#{EMAIL}',
-                        userPreferences.user.email
+                        preferences.user.email
                     )}
                 </EmailConfirmationExplain>
 

@@ -37,7 +37,7 @@ interface Request {
 const Product = ({ product, expired, nextToExp }: Request) => {
     const { navigate } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const [imagePath, setImagePath] = useState<string>('');
     const [storeName, setStoreName] = useState<string | null>();
@@ -86,7 +86,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
             onPress={handleNavigateToProduct}
         >
             <Content>
-                {userPreferences.isUserPremium && !!imagePath && (
+                {preferences.isUserPremium && !!imagePath && (
                     <ProductImage source={{ uri: imagePath }} />
                 )}
 
@@ -121,7 +121,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductInfoItem>
                         )}
 
-                        {userPreferences.multiplesStores && !!storeName && (
+                        {preferences.multiplesStores && !!storeName && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {translate('ProductCardComponent_ProductStore')}
                                 : {storeName}

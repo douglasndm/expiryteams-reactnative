@@ -32,9 +32,7 @@ import {
 const Settings: React.FC = () => {
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
 
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
+    const { preferences, setPreferences } = useContext(PreferencesContext);
 
     const { goBack } = useNavigation();
 
@@ -42,22 +40,22 @@ const Settings: React.FC = () => {
         async (days: number) => {
             await setHowManyDaysToBeNextExp(days);
 
-            setUserPreferences({
-                ...userPreferences,
+            setPreferences({
+                ...preferences,
                 howManyDaysToBeNextToExpire: days,
             });
         },
-        [setUserPreferences, userPreferences]
+        [setPreferences, preferences]
     );
 
     useEffect(() => {
-        setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
-    }, [userPreferences]);
+        setDaysToBeNext(String(preferences.howManyDaysToBeNextToExpire));
+    }, [preferences]);
 
     useEffect(() => {
         async function SetNewDays() {
             const previousDaysToBeNext = String(
-                userPreferences.howManyDaysToBeNextToExpire
+                preferences.howManyDaysToBeNextToExpire
             );
 
             if (!daysToBeNext || daysToBeNext === '') {
@@ -73,7 +71,7 @@ const Settings: React.FC = () => {
     }, [
         daysToBeNext,
         setSettingDaysToBeNext,
-        userPreferences.howManyDaysToBeNextToExpire,
+        preferences.howManyDaysToBeNextToExpire,
     ]);
 
     return (

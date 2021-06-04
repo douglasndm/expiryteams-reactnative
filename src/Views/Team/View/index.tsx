@@ -36,13 +36,13 @@ const View: React.FC = () => {
     const [subs, setSubs] = useState<Array<ITeamSubscription>>([]);
     const [isPurchaseLoading, setIsPurchaseLoading] = useState<boolean>(false);
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
             const response = await getTeamSubscriptions({
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             setSubs(response);
@@ -54,7 +54,7 @@ const View: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [userPreferences.selectedTeam.team.id]);
+    }, [preferences.selectedTeam.team.id]);
 
     useEffect(() => {
         loadData();
@@ -127,8 +127,8 @@ const View: React.FC = () => {
             </PageHeader>
 
             <PageContent>
-                <TeamName>{userPreferences.selectedTeam.team.name}</TeamName>
-                {userPreferences.selectedTeam.role === 'manager' && (
+                <TeamName>{preferences.selectedTeam.team.name}</TeamName>
+                {preferences.selectedTeam.role === 'manager' && (
                     <Section>
                         <SectionTitle>Assinaturas</SectionTitle>
 

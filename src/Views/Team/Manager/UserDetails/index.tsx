@@ -36,7 +36,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 }: UserDetailsProps) => {
     const { goBack } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const user: IUserInTeam = useMemo(() => {
         return JSON.parse(route.params.user);
@@ -84,7 +84,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
                 {!!user.status &&
                     user.status.toLowerCase() === 'pending' &&
-                    userPreferences.selectedTeam.role.toLowerCase() ===
+                    preferences.selectedTeam.role.toLowerCase() ===
                         'manager' && (
                         <CodeDetails>
                             <CodeTitle>

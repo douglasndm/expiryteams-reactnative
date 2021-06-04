@@ -23,7 +23,7 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const { reset } = useNavigation();
 
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
         try {
             setIsLoading(true);
 
-            if (!userPreferences.selectedTeam.team.id) {
+            if (!preferences.selectedTeam.team.id) {
                 reset({
                     routes: [
                         {
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
             }
 
             const productsResponse = await getAllProducts({
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             setProducts(productsResponse);
@@ -74,7 +74,7 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [reset, userPreferences.selectedTeam.team.id]);
+    }, [reset, preferences.selectedTeam.team.id]);
 
     useEffect(() => {
         getProduts();
@@ -130,7 +130,7 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <Container>
-                    {/* <Header title={userPreferences.selectedTeam.team.name} /> */}
+                    {/* <Header title={preferences.selectedTeam.team.name} /> */}
                     <Header title="Internal build" />
 
                     {products.length > 0 && (

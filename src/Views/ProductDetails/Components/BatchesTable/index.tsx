@@ -27,7 +27,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
     productId,
     batches,
 }: BatchesTableProps) => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const { navigate } = useNavigation();
 
@@ -84,7 +84,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                 const nextToExp =
                     addDays(
                         new Date(),
-                        userPreferences.howManyDaysToBeNextToExpire
+                        preferences.howManyDaysToBeNextToExpire
                     ) > exp_date;
 
                 const treated = batch.status === 'checked';

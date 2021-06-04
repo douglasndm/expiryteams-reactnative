@@ -91,7 +91,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         return 'BRL';
     }, []);
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -123,7 +123,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const loadData = useCallback(async () => {
         try {
             const response = await getAllCategoriesFromTeam({
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             const categoriesArray: Array<ICategoryItem> = [];
@@ -141,7 +141,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 type: 'danger',
             });
         }
-    }, [userPreferences.selectedTeam.team.id]);
+    }, [preferences.selectedTeam.team.id]);
 
     const handleSave = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -160,7 +160,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             }
 
             const createdProduct = await createProduct({
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
                 product: {
                     name,
                     code,
@@ -220,7 +220,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         price,
         reset,
         selectedCategory,
-        userPreferences.selectedTeam.team.id,
+        preferences.selectedTeam.team.id,
     ]);
 
     useEffect(() => {

@@ -60,7 +60,7 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const { navigate, reset, goBack } = useNavigation();
 
@@ -187,7 +187,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                         {!!product && (
                             <ProductContainer>
-                                {userPreferences.isUserPremium && !!photo && (
+                                {preferences.isUserPremium && !!photo && (
                                     <ProductImageContainer
                                         onPress={handleOnPhotoPress}
                                     >

@@ -25,7 +25,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 ) => {
     const { navigation } = props;
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const navigateToAddProduct = useCallback(() => {
         navigation.navigate('AddProduct');
@@ -96,14 +96,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
-                        <MenuItemContainer onPress={handleNavigateToTeam}>
-                            <MenuContent>
-                                <Icons name="briefcase-outline" />
-                                <MenuItemText>
-                                    {userPreferences.selectedTeam.team.name}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
+                        {!!preferences.selectedTeam && (
+                            <MenuItemContainer onPress={handleNavigateToTeam}>
+                                <MenuContent>
+                                    <Icons name="briefcase-outline" />
+                                    <MenuItemText>
+                                        {preferences.selectedTeam.team.name}
+                                    </MenuItemText>
+                                </MenuContent>
+                            </MenuItemContainer>
+                        )}
                     </DrawerSection>
                 </View>
             </DrawerContentScrollView>

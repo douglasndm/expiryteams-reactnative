@@ -14,7 +14,7 @@ interface RequestProps {
 const ProductContainer: React.FC<RequestProps> = ({
     product,
 }: RequestProps) => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const exp_date = useMemo(() => {
         if (product.batches[0]) {
@@ -34,13 +34,13 @@ const ProductContainer: React.FC<RequestProps> = ({
     const nextToExp = useMemo(() => {
         if (
             exp_date &&
-            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
+            addDays(new Date(), preferences.howManyDaysToBeNextToExpire) >=
                 exp_date
         )
             return true;
 
         return false;
-    }, [userPreferences.howManyDaysToBeNextToExpire, exp_date]);
+    }, [preferences.howManyDaysToBeNextToExpire, exp_date]);
 
     return (
         <Container>

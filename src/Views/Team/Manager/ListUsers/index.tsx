@@ -33,7 +33,7 @@ import {
 const ListUsers: React.FC = () => {
     const { navigate } = useNavigation();
 
-    const { userPreferences } = useContext(PreferenceContext);
+    const { preferences } = useContext(PreferenceContext);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -48,7 +48,7 @@ const ListUsers: React.FC = () => {
         try {
             setIsLoading(true);
             const response = await getAllUsersFromTeam({
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             if ('error' in response) {
@@ -68,7 +68,7 @@ const ListUsers: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [userPreferences.selectedTeam.team.id]);
+    }, [preferences.selectedTeam.team.id]);
 
     useEffect(() => {
         loadData();
@@ -95,7 +95,7 @@ const ListUsers: React.FC = () => {
 
             const userInTeam = await putUserInTeam({
                 user_email: newUserEmail,
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             const newUser: IUserInTeam = {
@@ -125,7 +125,7 @@ const ListUsers: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [newUserEmail, users, userPreferences.selectedTeam.team.id, navigate]);
+    }, [newUserEmail, users, preferences.selectedTeam.team.id, navigate]);
 
     const handleNavigateToUser = useCallback(
         (user: IUserInTeam) => {
@@ -174,7 +174,7 @@ const ListUsers: React.FC = () => {
                 <Container>
                     <Header title={translate('View_UsersInTeam_PageTitle')} />
 
-                    {userPreferences.selectedTeam.role.toLowerCase() ===
+                    {preferences.selectedTeam.role.toLowerCase() ===
                         'manager' && (
                         <AddCategoryContent>
                             <InputContainer>

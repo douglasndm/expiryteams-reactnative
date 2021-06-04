@@ -21,21 +21,21 @@ import {
 } from './styles';
 
 const Info: React.FC = () => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const [user, setUser] = useState<IUser | null>(null);
 
     const loadData = useCallback(async () => {
-        if (userPreferences.user !== null) {
-            setUser(userPreferences.user);
+        if (preferences.user !== null) {
+            setUser(preferences.user);
             return;
         }
         setUser(null);
-    }, [userPreferences.user]);
+    }, [preferences.user]);
 
     const userRole = useMemo(() => {
-        if (userPreferences.selectedTeam) {
-            const { role } = userPreferences.selectedTeam;
+        if (preferences.selectedTeam) {
+            const { role } = preferences.selectedTeam;
 
             if (role?.toLowerCase() === 'manager')
                 return translate('UserInfo_Role_Manager');
@@ -45,7 +45,7 @@ const Info: React.FC = () => {
         }
 
         return translate('UserInfo_Role_Repositor');
-    }, [userPreferences.selectedTeam]);
+    }, [preferences.selectedTeam]);
 
     useEffect(() => {
         loadData();
@@ -68,10 +68,10 @@ const Info: React.FC = () => {
 
                         <UserEmail>{user?.email}</UserEmail>
 
-                        {!!userPreferences.selectedTeam && (
+                        {!!preferences.selectedTeam && (
                             <UserInfo>
                                 {`${
-                                    userPreferences.selectedTeam.team.name
+                                    preferences.selectedTeam.team.name
                                 } (${userRole.toUpperCase()})`}
                             </UserInfo>
                         )}

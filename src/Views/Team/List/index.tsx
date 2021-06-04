@@ -33,9 +33,7 @@ import {
 const List: React.FC = () => {
     const { navigate, reset } = useNavigation();
 
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
+    const { preferences, setPreferences } = useContext(PreferencesContext);
 
     const mounted = useRef(false);
 
@@ -111,18 +109,18 @@ const List: React.FC = () => {
             }
 
             await setSelectedTeam(selectedTeam);
-            setUserPreferences({
-                ...userPreferences,
+            setPreferences({
+                ...preferences,
                 selectedTeam,
             });
 
-            if (!!userPreferences.user && userPreferences.selectedTeam) {
+            if (!!preferences.user && preferences.selectedTeam) {
                 reset({
                     routes: [{ name: 'Home' }],
                 });
             }
         },
-        [teams, setUserPreferences, userPreferences, inactiveTeams, reset]
+        [teams, setPreferences, preferences, inactiveTeams, reset]
     );
 
     const handleNavigateToEnterCode = useCallback(

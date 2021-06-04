@@ -33,7 +33,7 @@ import {
 const List: React.FC = () => {
     const { navigate } = useNavigation();
 
-    const { userPreferences } = useContext(PreferenceContext);
+    const { preferences } = useContext(PreferenceContext);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -51,7 +51,7 @@ const List: React.FC = () => {
             setIsLoading(true);
 
             const response = await getAllCategoriesFromTeam({
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             setCategories(response);
@@ -63,7 +63,7 @@ const List: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [userPreferences.selectedTeam.team.id]);
+    }, [preferences.selectedTeam.team.id]);
 
     useEffect(() => {
         loadData();
@@ -89,7 +89,7 @@ const List: React.FC = () => {
 
             const newCategory = await createCategory({
                 name: newCategoryName,
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             if ('error' in newCategory) {
@@ -104,7 +104,7 @@ const List: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [newCategoryName, categories, userPreferences.selectedTeam.team.id]);
+    }, [newCategoryName, categories, preferences.selectedTeam.team.id]);
 
     const handleNavigateToCategory = useCallback(
         (categoryId: string) => {
@@ -133,7 +133,7 @@ const List: React.FC = () => {
         <Container>
             <Header title={translate('View_Category_List_PageTitle')} />
 
-            {userPreferences.selectedTeam.role.toLowerCase() === 'manager' && (
+            {preferences.selectedTeam.role.toLowerCase() === 'manager' && (
                 <AddCategoryContent>
                     <InputContainer>
                         <InputTextContainer hasError={inputHasError}>

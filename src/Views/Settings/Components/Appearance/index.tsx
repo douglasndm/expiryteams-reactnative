@@ -23,9 +23,7 @@ interface IThemeItem {
 }
 
 const Appearance: React.FC = () => {
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
+    const { preferences, setPreferences } = useContext(PreferencesContext);
 
     const [selectedTheme, setSelectedTheme] = useState<string>('system');
 
@@ -91,12 +89,12 @@ const Appearance: React.FC = () => {
 
             const changeToTheme = await getActualAppTheme();
 
-            setUserPreferences({
-                ...userPreferences,
+            setPreferences({
+                ...preferences,
                 appTheme: changeToTheme,
             });
         },
-        [setUserPreferences, userPreferences]
+        [setPreferences, preferences]
     );
 
     return (

@@ -5,5 +5,5 @@ interface IUserRoles {
         active: boolean;
     };
     status: 'Pending' | 'Completed';
-    role: 'Manager' | 'Supervisor' | 'Repositor';
+    role: 'manager' | 'supervisor' | 'repositor';
 }

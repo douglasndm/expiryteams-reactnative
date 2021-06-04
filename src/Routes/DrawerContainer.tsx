@@ -11,22 +11,22 @@ import RoutesAuth from './Routes.auth';
 const Drawer = createDrawerNavigator();
 
 const DrawerContainer: React.FC = () => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const renderAuthRoutes = useMemo(() => {
-        if (!userPreferences.user) {
+        if (!preferences.user) {
             return true;
         }
 
-        if (!userPreferences.selectedTeam) {
+        if (!preferences.selectedTeam) {
             return true;
         }
 
-        if (!userPreferences.selectedTeam.team.id) {
+        if (!preferences.selectedTeam.team.id) {
             return true;
         }
         return false;
-    }, [userPreferences.selectedTeam, userPreferences.user]);
+    }, [preferences.selectedTeam, preferences.user]);
 
     return renderAuthRoutes ? (
         <RoutesAuth />

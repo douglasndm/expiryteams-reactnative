@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import {
@@ -19,9 +20,6 @@ import './Services/Analytics';
 import './Functions/Team/Subscriptions';
 import './Functions/PushNotifications';
 import { getAllUserPreferences } from './Functions/UserPreferences';
-import { NotificationCadency } from './Functions/Settings';
-
-import Themes from './Themes';
 
 import Routes from './Routes/DrawerContainer';
 
@@ -29,37 +27,24 @@ import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
-import { IUserPreferences } from './@types/userPreference';
+
+import DefaultPrefs from '~/Contexts/DefaultPreferences';
 
 const App: React.FC = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [previousRoute, setPreviousRoute] = useState('Home');
 
-    const [preferences, setPreferences] = useState<IUserPreferences>({
-        howManyDaysToBeNextToExpire: 30,
-        appTheme: Themes.Light,
-        enableNotifications: true,
-        notificationCadency: NotificationCadency.Day,
-        user: {
-            id: '',
-            name: '',
-            lastName: '',
-            email: '',
-        },
-        selectedTeam: {
-            role: '',
-            team: {
-                id: '',
-                name: '',
-            },
-        },
-    });
+    const [preferences, setPreferences] = useState<IPreferences>(DefaultPrefs);
 
     const loadInitialData = useCallback(async () => {
-        const userPreferences = await getAllUserPreferences();
+        const prefs = await getAllUserPreferences();
 
-        setPreferences(userPreferences);
+        setPreferences(prefs);
 
         SplashScreen.hide();
+
+        setIsLoading(false);
     }, []);
 
     const handleOnScreenChange = useCallback(
@@ -85,20 +70,20 @@ const App: React.FC = () => {
 
     useEffect(() => {
         loadInitialData();
-    }, [loadInitialData]);
+    }, []);
 
     const onAuthStateChanged = useCallback(
         async (user: FirebaseAuthTypes.User | null) => {
-            const userPreferences = await getAllUserPreferences();
+            const prefs = await getAllUserPreferences();
 
             if (user) {
                 setPreferences({
-                    ...userPreferences,
+                    ...prefs,
                     user,
                 });
             } else {
                 setPreferences({
-                    ...userPreferences,
+                    ...prefs,
                     user: null,
                 });
             }
@@ -111,11 +96,13 @@ const App: React.FC = () => {
         return subscriber;
     }, [onAuthStateChanged]);
 
-    return (
+    return isLoading ? (
+        <ActivityIndicator size="large" />
+    ) : (
         <PreferencesContext.Provider
             value={{
-                userPreferences: preferences,
-                setUserPreferences: setPreferences,
+                preferences,
+                setPreferences,
             }}
         >
             <ThemeProvider theme={preferences.appTheme}>

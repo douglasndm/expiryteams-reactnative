@@ -71,11 +71,11 @@ interface ICategoryItem {
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const userRole = useMemo(() => {
-        return userPreferences.selectedTeam.role.toLowerCase();
-    }, [userPreferences.selectedTeam.role]);
+        return preferences.selectedTeam.role.toLowerCase();
+    }, [preferences.selectedTeam.role]);
 
     const { reset, goBack } = useNavigation();
     const theme = useTheme();
@@ -109,7 +109,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setCode(product.code);
 
             const categoriesResponse = await getAllCategoriesFromTeam({
-                team_id: userPreferences.selectedTeam.team.id,
+                team_id: preferences.selectedTeam.team.id,
             });
 
             const categoriesArray: Array<ICategoryItem> = [];

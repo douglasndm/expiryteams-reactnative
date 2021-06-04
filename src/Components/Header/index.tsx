@@ -17,7 +17,7 @@ interface RequestProps {
 const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
     const navigation = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
 
@@ -40,7 +40,7 @@ const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
                     </TextLogo>
                 ) : (
                     <TextLogo style={{ fontSize: titleFontSize }}>
-                        {userPreferences.isUserPremium
+                        {preferences.isUserPremium
                             ? translate('AppName_ProVersion')
                             : translate('AppName')}
                     </TextLogo>

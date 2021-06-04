@@ -33,7 +33,7 @@ const CategoryView: React.FC = () => {
     const { params } = useRoute();
     const { navigate } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
     const routeParams = params as Props;
 
@@ -95,7 +95,7 @@ const CategoryView: React.FC = () => {
                 {categoryName}
             </CategoryTitle>
 
-            {userPreferences.selectedTeam.role.toLowerCase() === 'manager' && (
+            {preferences.selectedTeam.role.toLowerCase() === 'manager' && (
                 <ActionsButtonContainer>
                     <ActionButton
                         icon={() => <Icons name="create-outline" size={22} />}
