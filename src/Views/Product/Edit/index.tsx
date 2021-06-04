@@ -74,8 +74,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { preferences } = useContext(PreferencesContext);
 
     const userRole = useMemo(() => {
-        return preferences.selectedTeam.role.toLowerCase();
-    }, [preferences.selectedTeam.role]);
+        if (preferences.selectedTeam) {
+            return preferences.selectedTeam.role.toLowerCase();
+        }
+
+        return 'repositor';
+    }, [preferences.selectedTeam]);
 
     const { reset, goBack } = useNavigation();
     const theme = useTheme();
@@ -102,6 +106,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            return;
+        }
         try {
             setIsLoading(true);
 
@@ -134,7 +141,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setIsLoading(false);
         }
-    }, [product.categories, product.code, product.name]);
+    }, [
+        preferences.selectedTeam,
+        product.categories,
+        product.code,
+        product.name,
+    ]);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -143,21 +155,20 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
 
         try {
-            const updatedProduct = await updateProduct({
+            const prodCategories: Array<string> = [];
+
+            if (selectedCategory && selectedCategory !== 'null') {
+                prodCategories.push(selectedCategory);
+            }
+
+            await updateProduct({
                 product: {
                     id: product.id,
                     name,
                     code,
-                    categories: [{ id: selectedCategory || '', name: '' }],
                 },
+                categories: prodCategories,
             });
-
-            if ('error' in updatedProduct) {
-                showMessage({
-                    message: updatedProduct.error,
-                });
-                return;
-            }
 
             reset({
                 index: 1,
