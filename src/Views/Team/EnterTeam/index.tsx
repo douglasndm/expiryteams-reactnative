@@ -100,7 +100,6 @@ const EnterTeam: React.FC<Props> = () => {
                             placeholder={translate(
                                 'View_TeamList_InputText_EnterCode_Placeholder'
                             )}
-                            keyboardType="decimal-pad"
                             autoCapitalize="none"
                             autoCorrect={false}
                         />
