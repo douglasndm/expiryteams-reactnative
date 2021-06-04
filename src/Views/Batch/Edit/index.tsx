@@ -113,18 +113,18 @@ const EditBatch: React.FC = () => {
 
             const response = await getBatch({ batch_id: batchId });
 
-            if ('error' in response) {
-                showMessage({
-                    message: response.error,
-                    type: 'danger',
-                });
-                return;
-            }
-
             setProduct(response.product);
             setBatch(response.batch.name);
             setStatus(response.batch.status);
             if (response.batch.amount) setAmount(String(response.batch.amount));
+
+            if (response.batch.price) {
+                const p = parseFloat(
+                    String(response.batch.price).replace(/\$/g, '')
+                );
+
+                setPrice(p);
+            }
         } catch (err) {
             showMessage({
                 message: err.message,

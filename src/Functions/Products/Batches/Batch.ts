@@ -12,7 +12,7 @@ interface getBatchResponse {
 }
 export async function getBatch({
     batch_id,
-}: getBatchProps): Promise<getBatchResponse | IAPIError> {
+}: getBatchProps): Promise<getBatchResponse> {
     try {
         const userSession = auth().currentUser;
 
@@ -30,12 +30,10 @@ export async function getBatch({
         };
         return responseData;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
