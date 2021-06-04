@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState, useContext } from 'react';
 import { FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import Preferences from '~/Contexts/PreferencesContext';
@@ -24,6 +25,8 @@ import {
 } from './styles';
 
 const SubscriptionsList: React.FC = () => {
+    const { reset } = useNavigation();
+
     const { userPreferences } = useContext(Preferences);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,6 +78,15 @@ const SubscriptionsList: React.FC = () => {
                 pack: selectedOffer.package,
                 team_id: userPreferences.selectedTeam.team.id,
             });
+
+            showMessage({
+                message: 'Assinatura realizada com sucesso!',
+                type: 'info',
+            });
+
+            reset({
+                routes: [{ name: 'Home' }],
+            });
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -83,7 +95,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [offers, selected, userPreferences.selectedTeam.team.id]);
+    }, [offers, reset, selected, userPreferences.selectedTeam.team.id]);
 
     useEffect(() => {
         loadData();
