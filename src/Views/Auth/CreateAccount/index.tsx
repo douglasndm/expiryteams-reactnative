@@ -30,6 +30,8 @@ const CreateAccount: React.FC = () => {
     const [hidePass, setHidePass] = useState<boolean>(true);
     const [hidePassConf, setHidePassConf] = useState<boolean>(true);
 
+    const [isCreating, setIsCreating] = useState<boolean>(false);
+
     const handleNameChange = useCallback((value: string) => setName(value), []);
     const handleLastNameChange = useCallback(
         (value: string) => setLastName(value),
@@ -82,6 +84,7 @@ const CreateAccount: React.FC = () => {
         }
 
         try {
+            setIsCreating(true);
             await createAccount({
                 name,
                 lastName,
@@ -103,6 +106,8 @@ const CreateAccount: React.FC = () => {
                 message: err.message,
                 type: 'warning',
             });
+        } finally {
+            setIsCreating(false);
         }
     }, [email, lastName, name, password, passwordConfirm, reset]);
 
@@ -176,7 +181,11 @@ const CreateAccount: React.FC = () => {
                     </InputContainer>
                 </LoginForm>
 
-                <Button text="Cria conta" onPress={handleCreateAccount} />
+                <Button
+                    text="Cria conta"
+                    onPress={handleCreateAccount}
+                    isLoading={isCreating}
+                />
             </FormContainer>
         </Container>
     );
