@@ -101,7 +101,7 @@ const EditBatch: React.FC = () => {
 
     const [product, setProduct] = useState<IProduct | null>(null);
     const [batch, setBatch] = useState('');
-    const [amount, setAmount] = useState<number | null>(null);
+    const [amount, setAmount] = useState('');
     const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
@@ -124,7 +124,7 @@ const EditBatch: React.FC = () => {
             setProduct(response.product);
             setBatch(response.batch.name);
             setStatus(response.batch.status);
-            if (response.batch.amount) setAmount(response.batch.amount);
+            if (response.batch.amount) setAmount(String(response.batch.amount));
         } catch (err) {
             showMessage({
                 message: err.message,
