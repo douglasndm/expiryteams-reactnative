@@ -112,7 +112,11 @@ const SubscriptionsList: React.FC = () => {
                         <SubscriptionDescription
                             isSelected={selected === pack.offeringIdentifier}
                         >
-                            <TextSubscription>
+                            <TextSubscription
+                                isSelected={
+                                    selected === pack.offeringIdentifier
+                                }
+                            >
                                 {introPrice &&
                                     `${introPrice.priceString} no primeiro mês, depois `}
                                 {`${price} mensais`}

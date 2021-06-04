@@ -16,7 +16,7 @@ async function setup() {
 }
 
 export interface CatPackage {
-    type: '5 people' | '10 people' | '15 people';
+    type: '1 person' | '3 people' | '5 people' | '10 people' | '15 people';
     package: PurchasesPackage;
 }
 
@@ -30,6 +30,18 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
             offerings.current !== null &&
             offerings.current.availablePackages.length !== 0
         ) {
+            if (!!offerings.all.TeamWith1 && offerings.all.TeamWith1.monthly) {
+                packages.push({
+                    type: '1 person',
+                    package: offerings.all.TeamWith1.monthly,
+                });
+            }
+            if (!!offerings.all.TeamWith3 && offerings.all.TeamWith3.monthly) {
+                packages.push({
+                    type: '3 people',
+                    package: offerings.all.TeamWith3.monthly,
+                });
+            }
             if (!!offerings.all.TeamWith5 && offerings.all.TeamWith5.monthly) {
                 packages.push({
                     type: '5 people',

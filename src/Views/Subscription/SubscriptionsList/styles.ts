@@ -64,8 +64,14 @@ export const ButtonSubscription = styled.TouchableOpacity`
     border-radius: 12px;
 `;
 
-export const TextSubscription = styled.Text`
+export const TextSubscription = styled.Text<Offer>`
     text-align: center;
     color: white;
     font-size: 17px;
+
+    ${props =>
+        props.isSelected &&
+        css`
+            color: #000;
+        `}
 `;
