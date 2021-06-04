@@ -30,6 +30,7 @@ import {
     CreateAccountText,
     AboutContainer,
     Link,
+    Icon,
 } from './styles';
 
 const Login: React.FC = () => {
@@ -42,6 +43,7 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const [hidePass, setHidePass] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
     const handleNavigateUser = useCallback(
@@ -145,6 +147,10 @@ const Login: React.FC = () => {
         []
     );
 
+    const handleShowPass = useCallback(() => {
+        setHidePass(!hidePass);
+    }, [hidePass]);
+
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
     }, [navigate]);
@@ -197,9 +203,15 @@ const Login: React.FC = () => {
                                 placeholder={translate(
                                     'View_Login_InputText_Password_Placeholder'
                                 )}
-                                secureTextEntry
+                                secureTextEntry={hidePass}
                                 value={password}
                                 onChangeText={handleEmailPassword}
+                            />
+                            <Icon
+                                name={
+                                    hidePass ? 'eye-outline' : 'eye-off-outline'
+                                }
+                                onPress={handleShowPass}
                             />
                         </InputContainer>
 

@@ -14,6 +14,7 @@ import {
     LoginForm,
     InputContainer,
     InputText,
+    Icon,
 } from '../Login/styles';
 import { Container, Content, PageTitle } from './styles';
 
@@ -25,6 +26,9 @@ const CreateAccount: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+
+    const [hidePass, setHidePass] = useState<boolean>(true);
+    const [hidePassConf, setHidePassConf] = useState<boolean>(true);
 
     const handleNameChange = useCallback((value: string) => setName(value), []);
     const handleLastNameChange = useCallback(
@@ -45,6 +49,14 @@ const CreateAccount: React.FC = () => {
         (value: string) => setPasswordConfirm(value),
         []
     );
+
+    const handleShowPass = useCallback(() => {
+        setHidePass(!hidePass);
+    }, [hidePass]);
+
+    const handleShowPassConf = useCallback(() => {
+        setHidePassConf(!hidePassConf);
+    }, [hidePassConf]);
 
     const handleCreateAccount = useCallback(async () => {
         if (
@@ -137,9 +149,13 @@ const CreateAccount: React.FC = () => {
                             placeholder="Senha"
                             autoCorrect={false}
                             autoCapitalize="none"
-                            secureTextEntry
+                            secureTextEntry={hidePass}
                             value={password}
                             onChangeText={handlePasswordChange}
+                        />
+                        <Icon
+                            name={hidePass ? 'eye-outline' : 'eye-off-outline'}
+                            onPress={handleShowPass}
                         />
                     </InputContainer>
                     <InputContainer>
@@ -147,9 +163,15 @@ const CreateAccount: React.FC = () => {
                             placeholder="Confirmação da senha"
                             autoCorrect={false}
                             autoCapitalize="none"
-                            secureTextEntry
+                            secureTextEntry={hidePassConf}
                             value={passwordConfirm}
                             onChangeText={handlePasswordConfirmChange}
+                        />
+                        <Icon
+                            name={
+                                hidePassConf ? 'eye-outline' : 'eye-off-outline'
+                            }
+                            onPress={handleShowPassConf}
                         />
                     </InputContainer>
                 </LoginForm>
