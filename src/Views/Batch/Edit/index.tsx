@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    useContext,
+} from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
@@ -7,6 +13,8 @@ import { useTheme } from 'styled-components';
 import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     deleteBatch,
@@ -17,7 +25,6 @@ import {
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
-import GenericButton from '~/Components/Button';
 
 import {
     Container,
@@ -32,6 +39,10 @@ import {
     ExpDateLabel,
     CustomDatePicker,
 } from '~/Views/Product/Add/styles';
+import {
+    ActionsButtonContainer,
+    ButtonPaper,
+} from '~/Views/Product/Edit/styles';
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
@@ -52,6 +63,8 @@ const EditBatch: React.FC = () => {
     const route = useRoute();
     const { reset, goBack } = useNavigation();
 
+    const { userPreferences } = useContext(PreferencesContext);
+
     const routeParams = route.params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -69,6 +82,10 @@ const EditBatch: React.FC = () => {
 
         return 'BRL';
     });
+
+    const userRole = useMemo(() => {
+        return userPreferences.selectedTeam.role.toLowerCase();
+    }, [userPreferences.selectedTeam.role]);
 
     const productId = useMemo(() => {
         return routeParams.productId;
@@ -219,17 +236,6 @@ const EditBatch: React.FC = () => {
                                 {translate('View_EditBatch_PageTitle')}
                             </PageTitle>
                         </PageTitleContainer>
-
-                        <Button
-                            icon={() => (
-                                <Icons name="trash-outline" size={22} />
-                            )}
-                            onPress={() => {
-                                setDeleteComponentVisible(true);
-                            }}
-                        >
-                            {translate('View_EditBatch_Button_DeleteBatch')}
-                        </Button>
                     </PageHeader>
 
                     <PageContent>
@@ -347,10 +353,41 @@ const EditBatch: React.FC = () => {
                             </ExpDateGroup>
                         </InputContainer>
 
-                        <GenericButton
-                            text={translate('View_EditBatch_Button_Save')}
-                            onPress={handleUpdate}
-                        />
+                        <ActionsButtonContainer>
+                            <ButtonPaper
+                                icon={() => (
+                                    <Icons name="save-outline" size={22} />
+                                )}
+                                onPress={handleUpdate}
+                            >
+                                {translate('View_EditBatch_Button_Save')}
+                            </ButtonPaper>
+
+                            {(userRole === 'manager' ||
+                                userRole === 'supervisor') && (
+                                <ButtonPaper
+                                    icon={() => (
+                                        <Icons name="trash-outline" size={22} />
+                                    )}
+                                    onPress={() => {
+                                        setDeleteComponentVisible(true);
+                                    }}
+                                >
+                                    {translate(
+                                        'View_EditBatch_Button_DeleteBatch'
+                                    )}
+                                </ButtonPaper>
+                            )}
+
+                            <ButtonPaper
+                                icon={() => (
+                                    <Icons name="exit-outline" size={22} />
+                                )}
+                                onPress={goBack}
+                            >
+                                {translate('View_EditProduct_Button_Cancel')}
+                            </ButtonPaper>
+                        </ActionsButtonContainer>
                     </PageContent>
                 </ScrollView>
             </Container>

@@ -1,5 +1,5 @@
 import auth from '@react-native-firebase/auth';
-import { addHours, addMinutes, addSeconds, parse } from 'date-fns';
+import { startOfDay } from 'date-fns';
 
 import api from '~/Services/API';
 
@@ -53,12 +53,7 @@ export async function createBatch({
 
         const token = await userSession?.getIdTokenResult();
 
-        const date = addHours(
-            addMinutes(addSeconds(new Date(batch.exp_date), 0), 0),
-            0
-        );
-
-        console.log(date);
+        const date = startOfDay(new Date(batch.exp_date));
 
         const response = await api.post<IBatch>(
             `/batches`,
@@ -133,5 +128,19 @@ interface deleteBatchProps {
 export async function deleteBatch({
     batch_id,
 }: deleteBatchProps): Promise<void> {
-    throw new Error('Server does not implement this function yet');
+    try {
+        const userSession = auth().currentUser;
+        const token = await userSession?.getIdTokenResult();
+
+        await api.delete<IBatch>(`/batches/${batch_id}`, {
+            headers: {
+                Authorization: `Bearer ${token?.token}`,
+            },
+        });
+    } catch (err) {
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
+    }
 }
