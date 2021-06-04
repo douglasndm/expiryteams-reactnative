@@ -65,12 +65,12 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         'View_ProductDetails_TableComponent_BatchExpInColumnTitle'
                     )}
                 </TableTitle>
-                <TableTitle>
+                <TableTitle numeric>
                     {translate(
                         'View_ProductDetails_TableComponent_BatchAmountColumnTitle'
                     )}
                 </TableTitle>
-                <TableTitle>
+                <TableTitle numeric>
                     {translate(
                         'View_ProductDetails_TableComponent_BatchPriceColumnTitle'
                     )}
@@ -88,6 +88,14 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                     ) > exp_date;
 
                 const treated = batch.status === 'checked';
+
+                let price = 0;
+
+                if (batch.amount && batch.price) {
+                    price =
+                        batch.amount *
+                        parseFloat(String(batch.price).replace(/\$/g, ''));
+                }
 
                 return (
                     <TableRow
@@ -122,7 +130,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                                 })}
                             </Text>
                         </TableCell>
-                        <TableCell>
+                        <TableCell numeric>
                             <Text
                                 expired={expired}
                                 nextToExp={nextToExp}
@@ -131,24 +139,22 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                                 {batch.amount}
                             </Text>
                         </TableCell>
-                        {!!batch.amount && !!batch.price && batch.price > 0 && (
-                            <TableCell>
-                                <Text
-                                    expired={expired}
-                                    nextToExp={nextToExp}
-                                    treated={treated}
-                                >
-                                    <NumberFormat
-                                        value={batch.amount * batch.price}
-                                        displayType="text"
-                                        thousandSeparator
-                                        prefix={currencyPrefix}
-                                        renderText={value => value}
-                                        decimalScale={2}
-                                    />
-                                </Text>
-                            </TableCell>
-                        )}
+                        <TableCell numeric>
+                            <Text
+                                expired={expired}
+                                nextToExp={nextToExp}
+                                treated={treated}
+                            >
+                                <NumberFormat
+                                    value={price}
+                                    displayType="text"
+                                    thousandSeparator
+                                    prefix={currencyPrefix}
+                                    renderText={value => value}
+                                    decimalScale={2}
+                                />
+                            </Text>
+                        </TableCell>
                     </TableRow>
                 );
             })}
