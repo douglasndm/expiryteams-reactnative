@@ -40,6 +40,7 @@ interface Props {
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
+
     const { reset, goBack } = useNavigation();
 
     const locale = useMemo(() => {
@@ -55,6 +56,8 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
         return 'BRL';
     }, []);
+
+    const [isAdding, setIsAdding] = useState<boolean>(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -73,7 +76,8 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
             return;
         }
         try {
-            const response = await createBatch({
+            setIsAdding(true);
+            await createBatch({
                 productId,
                 batch: {
                     name: lote,
@@ -83,26 +87,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     status: 'unchecked',
                 },
             });
-
-            if ('error' in response) {
-                showMessage({
-                    message: response.error,
-                    type: 'danger',
-                });
-
-                if (response.status === 401) {
-                    await logoutFirebase();
-
-                    reset({
-                        routes: [
-                            {
-                                name: 'Login',
-                            },
-                        ],
-                    });
-                }
-                return;
-            }
 
             reset({
                 routes: [
@@ -119,6 +103,8 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsAdding(false);
         }
     }, [amount, productId, expDate, lote, reset, price]);
 
@@ -238,6 +224,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     <GenericButton
                         text={translate('View_AddBatch_Button_Save')}
                         onPress={handleSave}
+                        isLoading={isAdding}
                     />
                 </PageContent>
             </ScrollView>
