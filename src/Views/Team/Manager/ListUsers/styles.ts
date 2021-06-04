@@ -14,12 +14,13 @@ interface TeamItemContainerProps {
 
 export const TeamItemContainer = styled(RectButton)<TeamItemContainerProps>`
     background-color: ${props => props.theme.colors.inputBackground};
-    padding: 20px;
+    padding: 20px 14px;
     margin-bottom: 10px;
     border-radius: 12px;
 
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 
     ${props =>
         props.isPending &&
@@ -31,9 +32,20 @@ export const TeamItemContainer = styled(RectButton)<TeamItemContainerProps>`
         `}
 `;
 
+export const UserInfoContainer = styled.View`
+    flex: 1;
+    justify-content: center;
+`;
+
 export const TeamItemTitle = styled.Text`
     color: ${props => props.theme.colors.text};
     font-size: 18px;
+`;
+
+export const UserEmail = styled.Text`
+    color: ${props => props.theme.colors.text};
+    font-size: 12px;
+    flex: 1;
 `;
 
 export const TeamItemRole = styled.Text`

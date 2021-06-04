@@ -19,7 +19,9 @@ import {
     ListCategories,
     ListTitle,
     TeamItemContainer,
+    UserInfoContainer,
     TeamItemTitle,
+    UserEmail,
     TeamItemRole,
     AddCategoryContent,
     AddCategoryButtonContainer,
@@ -146,7 +148,13 @@ const ListUsers: React.FC = () => {
                     onPress={() => handleNavigateToUser(item)}
                     isPending={isPending}
                 >
-                    <TeamItemTitle>{item.name}</TeamItemTitle>
+                    <UserInfoContainer>
+                        {!!item.name && (
+                            <TeamItemTitle>{item.name}</TeamItemTitle>
+                        )}
+
+                        <UserEmail>{item.email}</UserEmail>
+                    </UserInfoContainer>
                     <TeamItemRole>
                         {isPending
                             ? translate('View_UsersInTeam_List_PendingStatus')

@@ -75,7 +75,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             </PageHeader>
 
             <PageContent>
-                <UserName>{`${user.name} ${user.lastName}`}</UserName>
+                {!!user.name && !!user.lastName && (
+                    <UserName>{`${user.name} ${user.lastName}`}</UserName>
+                )}
+
                 <UserInfo>{user.email}</UserInfo>
                 <UserInfo>{userRole}</UserInfo>
 
