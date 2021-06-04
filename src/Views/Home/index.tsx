@@ -148,7 +148,10 @@ const Home: React.FC = () => {
                         </InputTextContainer>
                     )}
 
-                    <ListProducts products={productsSearch} />
+                    <ListProducts
+                        products={productsSearch}
+                        onRefresh={getProduts}
+                    />
                 </Container>
             )}
         </>

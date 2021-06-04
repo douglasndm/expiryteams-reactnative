@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../Locales';
@@ -18,14 +18,18 @@ import {
 
 interface RequestProps {
     products: Array<IProduct>;
+    onRefresh?: () => void;
     deactiveFloatButton?: boolean;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
     products,
+    onRefresh,
     deactiveFloatButton,
 }: RequestProps) => {
     const { navigate } = useNavigation();
+
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
@@ -64,6 +68,14 @@ const ListProducts: React.FC<RequestProps> = ({
         return <ProductItem product={item} />;
     }, []);
 
+    const handleRefresh = useCallback(() => {
+        setRefreshing(true);
+        if (onRefresh) {
+            onRefresh();
+        }
+        setRefreshing(false);
+    }, [onRefresh]);
+
     return (
         <Container>
             <FlatList
@@ -74,6 +86,12 @@ const ListProducts: React.FC<RequestProps> = ({
                 ListEmptyComponent={EmptyList}
                 initialNumToRender={10}
                 ListFooterComponent={FooterButton}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                    />
+                }
             />
 
             {!deactiveFloatButton && (
