@@ -165,3 +165,33 @@ export async function enterTeamCode({
         }
     }
 }
+
+interface removeUserFromTeamProps {
+    team_id: string;
+    user_id: string;
+}
+
+export async function removeUserFromTeam({
+    team_id,
+    user_id,
+}: removeUserFromTeamProps): Promise<void> {
+    try {
+        const { currentUser } = auth();
+        const token = await currentUser?.getIdTokenResult();
+
+        await api.delete(
+            `/team/${team_id}/manager/user/${user_id}`,
+
+            {
+                headers: {
+                    Authorization: `Bearer ${token?.token}`,
+                },
+            }
+        );
+    } catch (err) {
+        if (err.response.data) {
+            throw new Error(err.response.data);
+        }
+        throw new Error(err.message);
+    }
+}

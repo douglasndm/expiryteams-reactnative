@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -7,8 +7,11 @@ import { translate } from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
+import { removeUserFromTeam } from '~/Functions/Team/Users';
+
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
+import Loading from '~/Components/Loading';
 
 import {
     Container,
@@ -21,6 +24,10 @@ import {
     CodeTitle,
     CodeContainer,
     Code,
+    ActionButtonsContainer,
+    Button,
+    ButtonText,
+    Icon,
 } from './styles';
 
 interface UserDetailsProps {
@@ -34,9 +41,11 @@ interface UserDetailsProps {
 const UserDetails: React.FC<UserDetailsProps> = ({
     route,
 }: UserDetailsProps) => {
-    const { goBack } = useNavigation();
+    const { goBack, reset } = useNavigation();
 
     const { preferences } = useContext(PreferencesContext);
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const user: IUserInTeam = useMemo(() => {
         return JSON.parse(route.params.user);
@@ -65,7 +74,43 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         });
     }, [user.code]);
 
-    return (
+    const handleRemoveUser = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            await removeUserFromTeam({
+                team_id: preferences.selectedTeam.team.id,
+                user_id: user.id,
+            });
+
+            showMessage({
+                message: 'Usuário removido do time',
+                type: 'info',
+            });
+
+            reset({
+                routes: [
+                    { name: 'Home' },
+                    { name: 'ViewTeam' },
+                    { name: 'ListUsersFromTeam' },
+                ],
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [preferences.selectedTeam, reset, user.id]);
+
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <StatusBar />
 
@@ -96,6 +141,15 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                         </CodeDetails>
                     )}
             </PageContent>
+
+            <ActionButtonsContainer>
+                {user.id !== preferences.user.uid && (
+                    <Button onPress={handleRemoveUser}>
+                        <Icon name="person-remove-outline" />
+                        <ButtonText>Remover usuário</ButtonText>
+                    </Button>
+                )}
+            </ActionButtonsContainer>
         </Container>
     );
 };
