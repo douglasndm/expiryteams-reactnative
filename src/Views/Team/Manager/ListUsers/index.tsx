@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {
+    useState,
+    useCallback,
+    useEffect,
+    useContext,
+    useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -35,7 +41,14 @@ const ListUsers: React.FC = () => {
 
     const { preferences } = useContext(PreferenceContext);
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const role = useMemo(() => {
+        if (preferences.selectedTeam) {
+            return preferences.selectedTeam.role.toLowerCase();
+        }
+        return 'repositor';
+    }, [preferences.selectedTeam]);
 
     const [newUserEmail, setNewUserEmail] = useState<string | undefined>();
     const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -45,6 +58,14 @@ const ListUsers: React.FC = () => {
     const [users, setUsers] = useState<Array<IUserInTeam>>([]);
 
     const loadData = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            showMessage({
+                message: 'Team is not selected',
+                type: 'danger',
+            });
+            return;
+        }
+
         try {
             setIsLoading(true);
             const response = await getAllUsersFromTeam({
@@ -68,7 +89,7 @@ const ListUsers: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam.team.id]);
+    }, [preferences.selectedTeam]);
 
     useEffect(() => {
         loadData();
@@ -81,6 +102,14 @@ const ListUsers: React.FC = () => {
     }, []);
 
     const handleAddUser = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            showMessage({
+                message: 'Team is not selected',
+                type: 'danger',
+            });
+            return;
+        }
+
         try {
             if (!newUserEmail) {
                 setInputHasError(true);
@@ -125,7 +154,7 @@ const ListUsers: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [newUserEmail, users, preferences.selectedTeam.team.id, navigate]);
+    }, [newUserEmail, users, preferences.selectedTeam, navigate]);
 
     const handleNavigateToUser = useCallback(
         (user: IUserInTeam) => {
@@ -174,8 +203,7 @@ const ListUsers: React.FC = () => {
                 <Container>
                     <Header title={translate('View_UsersInTeam_PageTitle')} />
 
-                    {preferences.selectedTeam.role.toLowerCase() ===
-                        'manager' && (
+                    {role === 'manager' && (
                         <AddCategoryContent>
                             <InputContainer>
                                 <InputTextContainer hasError={inputHasError}>

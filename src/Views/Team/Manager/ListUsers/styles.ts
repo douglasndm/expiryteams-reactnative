@@ -44,7 +44,7 @@ export const TeamItemTitle = styled.Text`
 
 export const UserEmail = styled.Text`
     color: ${props => props.theme.colors.text};
-    font-size: 12px;
+    font-size: 16px;
     flex: 1;
 `;
 
