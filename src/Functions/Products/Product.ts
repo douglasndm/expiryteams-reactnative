@@ -115,5 +115,20 @@ interface deleteProductProps {
 export async function deleteProduct({
     product_id,
 }: deleteProductProps): Promise<void> {
-    throw new Error('Server does not implement this function yet');
+    try {
+        const { currentUser } = auth();
+
+        const token = await currentUser?.getIdTokenResult();
+
+        await api.delete<IProduct>(`/products/${product_id}`, {
+            headers: {
+                Authorization: `Bearer ${token?.token}`,
+            },
+        });
+    } catch (err) {
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
+    }
 }
