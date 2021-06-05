@@ -30,16 +30,30 @@ export const SubscriptionContainer = styled(RectButton)<Offer>`
 `;
 
 export const SubscriptionPeriodContainer = styled.View<Offer>`
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(200, 200, 200, 0.5);
     padding: 15px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+
+    ${props =>
+        props.isSelected &&
+        css`
+            background-color: ${({ theme }) => theme.colors.accent};
+        `}
+`;
+
+export const TeamMembersLimit = styled.Text`
+    text-align: center;
+    color: white;
+    font-size: 17px;
 `;
 
 export const DetailsContainer = styled.View`
     flex: 1;
     justify-content: center;
     padding: 12px;
+
+    background-color: ${({ theme }) => theme.colors.productBackground};
 `;
 
 export const SubscriptionDescription = styled.Text.attrs(() => ({
@@ -66,12 +80,12 @@ export const ButtonSubscription = styled.TouchableOpacity`
 
 export const TextSubscription = styled.Text<Offer>`
     text-align: center;
+    font-size: 17px;
+    color: ${props => props.theme.colors.text};
+`;
+
+export const ButtonText = styled.Text`
+    text-align: center;
     color: white;
     font-size: 17px;
-
-    ${props =>
-        props.isSelected &&
-        css`
-            color: #000;
-        `}
 `;

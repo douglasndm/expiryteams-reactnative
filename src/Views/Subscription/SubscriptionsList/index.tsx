@@ -18,10 +18,12 @@ import {
     SubscriptionsGroup,
     SubscriptionContainer,
     SubscriptionPeriodContainer,
+    TeamMembersLimit,
     DetailsContainer,
     SubscriptionDescription,
     ButtonSubscription,
     TextSubscription,
+    ButtonText,
 } from './styles';
 
 const SubscriptionsList: React.FC = () => {
@@ -59,6 +61,10 @@ const SubscriptionsList: React.FC = () => {
     }, []);
 
     const handlePurchase = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            return;
+        }
+
         try {
             setIsLoading(true);
 
@@ -95,7 +101,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [offers, reset, selected, preferences.selectedTeam.team.id]);
+    }, [offers, reset, selected, preferences.selectedTeam]);
 
     useEffect(() => {
         loadData();
@@ -116,8 +122,10 @@ const SubscriptionsList: React.FC = () => {
                     isSelected={selected === pack.offeringIdentifier}
                     key={pack.offeringIdentifier}
                 >
-                    <SubscriptionPeriodContainer>
-                        <TextSubscription>{type}</TextSubscription>
+                    <SubscriptionPeriodContainer
+                        isSelected={selected === pack.offeringIdentifier}
+                    >
+                        <TeamMembersLimit>{type}</TeamMembersLimit>
                     </SubscriptionPeriodContainer>
 
                     <DetailsContainer>
@@ -159,7 +167,7 @@ const SubscriptionsList: React.FC = () => {
                         onPress={handlePurchase}
                         disabled={isLoading}
                     >
-                        <TextSubscription>Assinar</TextSubscription>
+                        <ButtonText>Assinar</ButtonText>
                     </ButtonSubscription>
                 </>
             )}
