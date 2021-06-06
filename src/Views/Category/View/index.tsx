@@ -25,7 +25,6 @@ import {
 
 import {
     Container,
-    CategoryTitle,
     ActionsButtonContainer,
     ActionButton,
     Icons,
@@ -91,9 +90,7 @@ const CategoryView: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header title="Produtos na categoria" />
-
-            <CategoryTitle>{categoryName}</CategoryTitle>
+            <Header title={categoryName} />
 
             {!!preferences.selectedTeam &&
                 preferences.selectedTeam.role.toLowerCase() === 'manager' && (
