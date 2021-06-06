@@ -34,6 +34,11 @@ const Export: React.FC = () => {
             } else {
                 await exportToExcel({ sortBy: 'expire_date' });
             }
+
+            showMessage({
+                message: 'Arquivo excel gerado com sucesso',
+                type: 'info',
+            });
         } catch (err) {
             showMessage({
                 message: err.message,
