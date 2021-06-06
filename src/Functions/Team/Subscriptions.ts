@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import EnvConfig from 'react-native-config';
+import { compareAsc, parseISO } from 'date-fns';
 
 import api from '~/Services/API';
 
@@ -81,7 +82,7 @@ interface makePurchaseProps {
 export async function makePurchase({
     pack,
     team_id,
-}: makePurchaseProps): Promise<void> {
+}: makePurchaseProps): Promise<ITeamSubscription | null> {
     try {
         if (!team_id) {
             throw new Error('Provider team id');
@@ -93,14 +94,39 @@ export async function makePurchase({
             // productIdentifier,
         } = await Purchases.purchasePackage(pack);
 
-        console.log(purchaserInfo);
+        const { currentUser } = auth();
+        const token = await currentUser?.getIdTokenResult();
 
         // Verificar com o servidor se a compra foi concluida
         // Liberar funções no app
-    } catch (err) {
-        if (!err.userCancelled) {
-            throw new Error(err);
+        const apiCheck = await api.get<Array<ITeamSubscription>>(
+            `/team/${team_id}/subscriptions/check`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token?.token}`,
+                },
+            }
+        );
+
+        if (apiCheck.data.length <= 0) {
+            return null;
         }
+
+        const sub = apiCheck.data[0];
+
+        // Verifica se a primeira assinatura retornada da API já venceu
+        // O esperado é que a primeira assinatura retornada
+        // seja a mais recente, no caso a que acabou de realizar
+        if (compareAsc(new Date(), parseISO(String(sub.expireIn))) === 1) {
+            return null;
+        }
+
+        return sub;
+    } catch (err) {
+        if (err.userCancelled) {
+            return null;
+        }
+        throw new Error(err.message);
     }
 }
 

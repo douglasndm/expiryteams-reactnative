@@ -29,7 +29,7 @@ import {
 const SubscriptionsList: React.FC = () => {
     const { reset } = useNavigation();
 
-    const { preferences } = useContext(Preferences);
+    const { preferences, setPreferences } = useContext(Preferences);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -80,10 +80,26 @@ const SubscriptionsList: React.FC = () => {
                 return;
             }
 
-            await makePurchase({
+            const purchase = await makePurchase({
                 pack: selectedOffer.package,
                 team_id: preferences.selectedTeam.team.id,
             });
+
+            if (purchase) {
+                setPreferences({
+                    ...preferences,
+                    selectedTeam: {
+                        ...preferences.selectedTeam,
+                        team: {
+                            ...preferences.selectedTeam.team,
+                            subscription: {
+                                expireIn: purchase.expireIn,
+                                membersLimit: purchase.membersLimit,
+                            },
+                        },
+                    },
+                });
+            }
 
             showMessage({
                 message: 'Assinatura realizada com sucesso!',
