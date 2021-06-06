@@ -22,6 +22,10 @@ import {
 const About: React.FC = () => {
     const { goBack } = useNavigation();
 
+    const navigateToTelegram = useCallback(async () => {
+        await Linking.openURL('https://t.me/douglasdev');
+    }, []);
+
     const navigateToTerms = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev/terms');
     }, []);
@@ -69,6 +73,13 @@ const About: React.FC = () => {
             <AboutSection>
                 <Text>{translate('View_About_DevelopedBy')}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
+            </AboutSection>
+
+            <AboutSection>
+                <Text>Precisa de suporte?</Text>
+                <Link onPress={navigateToTelegram}>
+                    Entre em contato no Telegram
+                </Link>
             </AboutSection>
 
             <AboutSection>
