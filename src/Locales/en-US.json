@@ -231,8 +231,6 @@
     "View_Category_List_InputAdd_Error_EmptyText": "Enter the category's name",
     "View_Category_List_AllCategories_Label": "All categories",
 
-    "View_Category_List_View_BeforeCategoryName": "Category ",
-
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
 
     "View_Category_Edit_PageTitle": "Edit category",

@@ -244,8 +244,6 @@
     "View_Category_List_InputAdd_Error_EmptyText": "Digite o nome da categoria",
     "View_Category_List_AllCategories_Label": "Todas as categorias",
 
-    "View_Category_List_View_BeforeCategoryName": "Categoria ",
-
     "View_Category_Edit_PageTitle": "Editar categoria",
     "View_Category_Edit_InputNamePlaceholder": "Digite o nome da categoria",
     "View_Category_Edit_ButtonSave": "Salvar",

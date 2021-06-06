@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState, useContext } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+    useContext,
+    useMemo,
+} from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
@@ -26,7 +32,8 @@ import {
 } from './styles';
 
 interface Props {
-    id: string;
+    category_id: string;
+    category_name?: string;
 }
 
 const CategoryView: React.FC = () => {
@@ -39,7 +46,12 @@ const CategoryView: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [categoryName, setCategoryName] = useState<string>('');
+    const categoryName = useMemo(() => {
+        if (routeParams.category_name) {
+            return routeParams.category_name;
+        }
+        return '';
+    }, [routeParams.category_name]);
 
     const [products, setProducts] = useState<IProduct[]>([]);
 
@@ -48,10 +60,9 @@ const CategoryView: React.FC = () => {
             setIsLoading(true);
 
             const prods = await getAllProductsFromCategory({
-                category_id: routeParams.id,
+                category_id: routeParams.category_id,
             });
 
-            setCategoryName(prods.category_name);
             setProducts(prods.products);
         } catch (err) {
             showMessage({
@@ -62,15 +73,15 @@ const CategoryView: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [routeParams.id]);
+    }, [routeParams.category_id]);
 
     const handleEdit = useCallback(() => {
-        navigate('CategoryEdit', { id: routeParams.id });
-    }, [navigate, routeParams.id]);
+        navigate('CategoryEdit', { id: routeParams.category_id });
+    }, [navigate, routeParams.category_id]);
 
     const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct', { category: routeParams.id });
-    }, [navigate, routeParams.id]);
+        navigate('AddProduct', { category: routeParams.category_id });
+    }, [navigate, routeParams.category_id]);
 
     useEffect(() => {
         loadData();
@@ -80,12 +91,9 @@ const CategoryView: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header />
+            <Header title="Produtos na categoria" />
 
-            <CategoryTitle>
-                {translate('View_Category_List_View_BeforeCategoryName')}
-                {categoryName}
-            </CategoryTitle>
+            <CategoryTitle>{categoryName}</CategoryTitle>
 
             {!!preferences.selectedTeam &&
                 preferences.selectedTeam.role.toLowerCase() === 'manager' && (
