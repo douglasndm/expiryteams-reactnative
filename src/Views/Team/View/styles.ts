@@ -2,14 +2,14 @@ import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import { DataTable } from 'react-native-paper';
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.ScrollView`
     flex: 1;
+    padding: ${Platform.OS === 'ios' ? 50 : 16}px 0 5px;
     background-color: ${props => props.theme.colors.background};
 `;
 
 export const PageHeader = styled.View`
     flex-direction: row;
-    margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
 `;
 
 export const PageTitle = styled.Text`
@@ -50,14 +50,6 @@ export const SubscriptionDescription = styled.Text`
     font-family: 'Open Sans';
 `;
 
-export const SubscriptionPrice = styled.Text`
-    margin-top: 10px;
-    color: ${props => props.theme.colors.text};
-    font-family: 'Open Sans';
-    text-align: center;
-    font-weight: bold;
-`;
-
 export const SubscriptionContainer = styled.View`
     margin: 10px 0 0 0;
 `;
@@ -71,12 +63,12 @@ export const SubscriptionTableTitle = styled.Text`
 
 export const SubscriptionsTable = styled(DataTable)``;
 
-export const SubscriptionExpDate = styled.Text`
-    color: ${props => props.theme.colors.text};
-    font-family: 'Open Sans';
-`;
+export const SubscriptionHeader = styled(DataTable.Title).attrs(
+    ({ theme }) => ({
+        theme,
+    })
+)``;
 
-export const SubscriptionLimit = styled.Text`
+export const SubscriptionText = styled.Text`
     color: ${props => props.theme.colors.text};
-    font-family: 'Open Sans';
 `;

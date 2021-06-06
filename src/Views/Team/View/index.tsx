@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO } from 'date-fns';
 
@@ -20,25 +20,33 @@ import {
     Section,
     SectionTitle,
     SubscriptionDescription,
-    SubscriptionPrice,
     SubscriptionContainer,
     SubscriptionTableTitle,
     SubscriptionsTable,
-    SubscriptionExpDate,
-    SubscriptionLimit,
+    SubscriptionHeader,
+    SubscriptionText,
     TeamName,
 } from './styles';
 
-const View: React.FC = () => {
+const ViewTeam: React.FC = () => {
     const { goBack, navigate } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [subs, setSubs] = useState<Array<ITeamSubscription>>([]);
     const [isPurchaseLoading, setIsPurchaseLoading] = useState<boolean>(false);
+
+    const [subs, setSubs] = useState<Array<ITeamSubscription>>([]);
 
     const { preferences } = useContext(PreferencesContext);
 
     const loadData = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            showMessage({
+                message: 'Nenhum time selecionado',
+                type: 'danger',
+            });
+            return;
+        }
+
         try {
             setIsLoading(true);
             const response = await getTeamSubscriptions({
@@ -54,7 +62,7 @@ const View: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam.team.id]);
+    }, [preferences.selectedTeam]);
 
     useEffect(() => {
         loadData();
@@ -83,40 +91,6 @@ const View: React.FC = () => {
         index: number;
     }
 
-    const renderItem = useCallback((props: renderProps) => {
-        const { index, item } = props;
-
-        const date = format(parseISO(item.expireIn), 'dd/MM/yyyy');
-
-        return (
-            <SubscriptionContainer>
-                <SubscriptionsTable>
-                    <SubscriptionsTable.Header>
-                        <SubscriptionsTable.Title>#</SubscriptionsTable.Title>
-                        <SubscriptionsTable.Title>
-                            Membros
-                        </SubscriptionsTable.Title>
-                        <SubscriptionsTable.Title>
-                            Expira em
-                        </SubscriptionsTable.Title>
-                    </SubscriptionsTable.Header>
-
-                    <SubscriptionsTable.Row>
-                        <SubscriptionsTable.Cell>
-                            {index + 1}
-                        </SubscriptionsTable.Cell>
-                        <SubscriptionsTable.Cell>
-                            {item.membersLimit}
-                        </SubscriptionsTable.Cell>
-                        <SubscriptionsTable.Cell>
-                            {date}
-                        </SubscriptionsTable.Cell>
-                    </SubscriptionsTable.Row>
-                </SubscriptionsTable>
-            </SubscriptionContainer>
-        );
-    }, []);
-
     return isLoading ? (
         <Loading />
     ) : (
@@ -127,29 +101,79 @@ const View: React.FC = () => {
             </PageHeader>
 
             <PageContent>
-                <TeamName>{preferences.selectedTeam.team.name}</TeamName>
-                {preferences.selectedTeam.role === 'manager' && (
-                    <Section>
-                        <SectionTitle>Assinaturas</SectionTitle>
+                {preferences.selectedTeam && (
+                    <View>
+                        <TeamName>
+                            {preferences.selectedTeam.team.name}
+                        </TeamName>
+                        {preferences.selectedTeam.role === 'manager' && (
+                            <Section>
+                                <SectionTitle>Assinaturas</SectionTitle>
 
-                        <SubscriptionDescription>
-                            Com uma assinatura você tem a possibilidade de criar
-                            um time com até 5 pessoas e todas as modificações
-                            feitas por elas são sincronizadas entre todos os
-                            dispositivos.
-                        </SubscriptionDescription>
+                                <SubscriptionDescription>
+                                    Com uma assinatura você tem a possibilidade
+                                    de criar um time com até 5 pessoas e todas
+                                    as modificações feitas por elas são
+                                    sincronizadas entre todos os dispositivos.
+                                </SubscriptionDescription>
 
-                        <Button
-                            text="Ver planos"
-                            isLoading={isPurchaseLoading}
-                            onPress={handlePurchase}
-                        />
+                                <Button
+                                    text="Ver planos"
+                                    isLoading={isPurchaseLoading}
+                                    onPress={handlePurchase}
+                                />
 
-                        <SubscriptionTableTitle>
-                            Suas assinaturas
-                        </SubscriptionTableTitle>
-                        <FlatList data={subs} renderItem={renderItem} />
-                    </Section>
+                                <SubscriptionTableTitle>
+                                    Suas assinaturas
+                                </SubscriptionTableTitle>
+
+                                <SubscriptionContainer>
+                                    <SubscriptionsTable>
+                                        <SubscriptionsTable.Header>
+                                            <SubscriptionHeader>
+                                                #
+                                            </SubscriptionHeader>
+                                            <SubscriptionHeader>
+                                                Membros
+                                            </SubscriptionHeader>
+                                            <SubscriptionHeader>
+                                                Expira em
+                                            </SubscriptionHeader>
+                                        </SubscriptionsTable.Header>
+
+                                        {subs.map(sub => {
+                                            const date = format(
+                                                parseISO(String(sub.expireIn)),
+                                                'dd/MM/yyyy'
+                                            );
+
+                                            return (
+                                                <SubscriptionsTable.Row
+                                                    key={sub.id}
+                                                >
+                                                    <SubscriptionsTable.Cell>
+                                                        <SubscriptionText>
+                                                            {1}
+                                                        </SubscriptionText>
+                                                    </SubscriptionsTable.Cell>
+                                                    <SubscriptionsTable.Cell>
+                                                        <SubscriptionText>
+                                                            {sub.membersLimit}
+                                                        </SubscriptionText>
+                                                    </SubscriptionsTable.Cell>
+                                                    <SubscriptionsTable.Cell>
+                                                        <SubscriptionText>
+                                                            {date}
+                                                        </SubscriptionText>
+                                                    </SubscriptionsTable.Cell>
+                                                </SubscriptionsTable.Row>
+                                            );
+                                        })}
+                                    </SubscriptionsTable>
+                                </SubscriptionContainer>
+                            </Section>
+                        )}
+                    </View>
                 )}
 
                 <Section>
@@ -169,4 +193,4 @@ const View: React.FC = () => {
     );
 };
 
-export default View;
+export default ViewTeam;
