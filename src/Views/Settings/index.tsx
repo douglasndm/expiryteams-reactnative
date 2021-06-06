@@ -1,7 +1,12 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { ScrollView } from 'react-native';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useContext,
+    useMemo,
+} from 'react';
+import { ScrollView, Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -24,9 +29,10 @@ import {
     Category,
     CategoryTitle,
     CategoryOptions,
-    SettingContainer,
     SettingDescription,
     InputSetting,
+    ButtonCancel,
+    ButtonCancelText,
 } from './styles';
 
 const Settings: React.FC = () => {
@@ -34,7 +40,7 @@ const Settings: React.FC = () => {
 
     const { preferences, setPreferences } = useContext(PreferencesContext);
 
-    const { goBack } = useNavigation();
+    const { goBack, reset } = useNavigation();
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
@@ -73,6 +79,20 @@ const Settings: React.FC = () => {
         setSettingDaysToBeNext,
         preferences.howManyDaysToBeNextToExpire,
     ]);
+
+    const cancelSubscriptionLink = useMemo(() => {
+        return Platform.OS === 'ios'
+            ? 'https://apps.apple.com/account/subscriptions'
+            : 'https://play.google.com/store/account/subscriptions?sku=expirybusiness_monthly_default_1person&package=dev.douglasndm.expirychecker.business';
+    }, []);
+
+    const handleNavigateCancel = useCallback(async () => {
+        await Linking.openURL(cancelSubscriptionLink);
+
+        reset({
+            routes: [{ name: 'Home' }],
+        });
+    }, [cancelSubscriptionLink, reset]);
 
     return (
         <>
@@ -120,6 +140,12 @@ const Settings: React.FC = () => {
                         <Appearance />
 
                         <Account />
+
+                        <ButtonCancel onPress={handleNavigateCancel}>
+                            <ButtonCancelText>
+                                Cancelar assinatura
+                            </ButtonCancelText>
+                        </ButtonCancel>
                     </SettingsContent>
                 </ScrollView>
             </Container>
