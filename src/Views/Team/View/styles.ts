@@ -59,6 +59,8 @@ export const SubscriptionTableTitle = styled.Text`
     font-family: 'Open Sans';
     font-weight: bold;
     font-size: 21px;
+
+    margin-top: 20px;
 `;
 
 export const SubscriptionsTable = styled(DataTable)``;

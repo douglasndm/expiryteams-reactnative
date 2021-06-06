@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, startOfDay, compareAsc } from 'date-fns';
 
 import { showMessage } from 'react-native-flash-message';
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -53,7 +53,15 @@ const ViewTeam: React.FC = () => {
                 team_id: preferences.selectedTeam.team.id,
             });
 
-            setSubs(response);
+            const activeSubs = response.filter(
+                sub =>
+                    compareAsc(
+                        startOfDay(new Date()),
+                        startOfDay(parseISO(String(sub.expireIn)))
+                    ) <= 0
+            );
+
+            setSubs(activeSubs);
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -117,11 +125,13 @@ const ViewTeam: React.FC = () => {
                                     sincronizadas entre todos os dispositivos.
                                 </SubscriptionDescription>
 
-                                <Button
-                                    text="Ver planos"
-                                    isLoading={isPurchaseLoading}
-                                    onPress={handlePurchase}
-                                />
+                                {subs.length <= 0 && (
+                                    <Button
+                                        text="Ver planos"
+                                        isLoading={isPurchaseLoading}
+                                        onPress={handlePurchase}
+                                    />
+                                )}
 
                                 <SubscriptionTableTitle>
                                     Suas assinaturas
