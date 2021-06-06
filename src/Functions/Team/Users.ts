@@ -114,8 +114,8 @@ export async function putUserInTeam({
 
         return response.data;
     } catch (err) {
-        if (err.response.data) {
-            throw new Error(err.response.data);
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
         }
         throw new Error(err.message);
     }
