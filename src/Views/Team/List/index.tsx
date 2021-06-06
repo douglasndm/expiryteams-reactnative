@@ -5,6 +5,7 @@ import React, {
     useContext,
     useRef,
 } from 'react';
+import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -38,6 +39,7 @@ const List: React.FC = () => {
     const mounted = useRef(false);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
     const [inactiveTeams, setInactiveTeams] = useState<Array<IUserRoles>>([]);
@@ -210,6 +212,15 @@ const List: React.FC = () => {
         loadData();
     }, [loadData]);
 
+    const handleRefresh = useCallback(async () => {
+        try {
+            setRefreshing(true);
+            await loadData();
+        } finally {
+            setRefreshing(false);
+        }
+    }, [loadData]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -235,6 +246,12 @@ const List: React.FC = () => {
                             data={inactiveTeams}
                             keyExtractor={(item, index) => String(index)}
                             renderItem={renderCategory}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={handleRefresh}
+                                />
+                            }
                         />
                     </>
                 )}

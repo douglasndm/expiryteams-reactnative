@@ -211,6 +211,7 @@ const ListUsers: React.FC = () => {
                                         value={newUserEmail}
                                         onChangeText={handleOnTextChange}
                                         keyboardType="email-address"
+                                        autoCapitalize="none"
                                         placeholder={translate(
                                             'View_UsersInTeam_Input_AddNewUser_Placeholder'
                                         )}
