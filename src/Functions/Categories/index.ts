@@ -10,12 +10,16 @@ interface getCategoryProps {
 
 export async function getCategory({
     category_id,
-}: getCategoryProps): Promise<ICategory | IAPIError> {
+}: getCategoryProps): Promise<ICategory> {
     const userSession = auth().currentUser;
 
     const token = await userSession?.getIdTokenResult();
 
     const selectedTeam = await getSelectedTeam();
+
+    if (!selectedTeam) {
+        throw new Error('Team is not selected');
+    }
 
     try {
         const response = await api.get<Array<ICategory>>(
@@ -35,12 +39,10 @@ export async function getCategory({
 
         return cat;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
@@ -82,7 +84,7 @@ interface createCategoryProps {
 export async function createCategory({
     name,
     team_id,
-}: createCategoryProps): Promise<ICategory | IAPIError> {
+}: createCategoryProps): Promise<ICategory> {
     const userSession = auth().currentUser;
 
     const token = await userSession?.getIdTokenResult();
@@ -103,12 +105,10 @@ export async function createCategory({
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
@@ -117,7 +117,7 @@ interface updateCategoryProps {
 }
 export async function updateCategory({
     category,
-}: updateCategoryProps): Promise<ICategory | IAPIError> {
+}: updateCategoryProps): Promise<ICategory> {
     const userSession = auth().currentUser;
 
     const token = await userSession?.getIdTokenResult();
@@ -137,12 +137,10 @@ export async function updateCategory({
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
@@ -152,7 +150,7 @@ interface deleteCategoryProps {
 
 export async function deleteCategory({
     category_id,
-}: deleteCategoryProps): Promise<void | IAPIError> {
+}: deleteCategoryProps): Promise<void> {
     const userSession = auth().currentUser;
 
     const token = await userSession?.getIdTokenResult();
@@ -164,11 +162,9 @@ export async function deleteCategory({
             },
         });
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }

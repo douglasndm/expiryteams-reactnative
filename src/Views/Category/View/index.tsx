@@ -51,15 +51,7 @@ const CategoryView: React.FC = () => {
                 category_id: routeParams.id,
             });
 
-            if ('error' in prods) {
-                showMessage({
-                    message: prods.error,
-                    type: 'danger',
-                });
-                return;
-            }
-
-            setCategoryName(prods.category);
+            setCategoryName(prods.category_name);
             setProducts(prods.products);
         } catch (err) {
             showMessage({
@@ -95,16 +87,21 @@ const CategoryView: React.FC = () => {
                 {categoryName}
             </CategoryTitle>
 
-            {preferences.selectedTeam.role.toLowerCase() === 'manager' && (
-                <ActionsButtonContainer>
-                    <ActionButton
-                        icon={() => <Icons name="create-outline" size={22} />}
-                        onPress={handleEdit}
-                    >
-                        {translate('View_ProductDetails_Button_UpdateProduct')}
-                    </ActionButton>
-                </ActionsButtonContainer>
-            )}
+            {!!preferences.selectedTeam &&
+                preferences.selectedTeam.role.toLowerCase() === 'manager' && (
+                    <ActionsButtonContainer>
+                        <ActionButton
+                            icon={() => (
+                                <Icons name="create-outline" size={22} />
+                            )}
+                            onPress={handleEdit}
+                        >
+                            {translate(
+                                'View_ProductDetails_Button_UpdateProduct'
+                            )}
+                        </ActionButton>
+                    </ActionsButtonContainer>
+                )}
 
             <ListProducts products={products} deactiveFloatButton />
 

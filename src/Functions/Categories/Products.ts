@@ -7,14 +7,14 @@ interface getAllProductsFromCategoryProps {
 }
 
 interface getAllProductsFromCategoryResponse {
-    category: string;
+    category_name: string;
     products: Array<IProduct>;
 }
 
 export async function getAllProductsFromCategory({
     category_id,
 }: getAllProductsFromCategoryProps): Promise<
-    getAllProductsFromCategoryResponse | IAPIError
+    getAllProductsFromCategoryResponse
 > {
     const userSession = auth().currentUser;
 
@@ -32,11 +32,9 @@ export async function getAllProductsFromCategory({
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
