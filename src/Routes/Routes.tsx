@@ -9,7 +9,8 @@ import EditLote from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/ProductDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
-import Success from '~/Views/Success';
+import Success from '~/Views/Informations/Success';
+import Error from '~/Views/Informations/Error';
 import PhotoView from '~/Views/PhotoView';
 
 import ListCategory from '~/Views/Category/List';
@@ -47,6 +48,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditLote" component={EditLote} />
             <Stack.Screen name="Success" component={Success} />
+            <Stack.Screen name="Error" component={Error} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
             <Stack.Screen name="ListCategory" component={ListCategory} />

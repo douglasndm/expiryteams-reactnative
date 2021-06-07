@@ -115,7 +115,8 @@ const ViewTeam: React.FC = () => {
                         <TeamName>
                             {preferences.selectedTeam.team.name}
                         </TeamName>
-                        {preferences.selectedTeam.role === 'manager' && (
+                        {preferences.selectedTeam.role.toLowerCase() ===
+                            'manager' && (
                             <Section>
                                 <SectionTitle>Assinaturas</SectionTitle>
 

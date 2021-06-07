@@ -2,9 +2,9 @@ import React, { useCallback, useMemo } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 
-import { translate } from '../../Locales';
+import { translate } from '~/Locales';
 
-import StatusBar from '../../Components/StatusBar';
+import StatusBar from '~/Components/StatusBar';
 import FloatButton from '~/Components/FloatButton';
 
 import {
@@ -74,11 +74,11 @@ const Success: React.FC = () => {
     const animation = useMemo(() => {
         switch (type) {
             case 'delete_batch':
-                return require('../../Assets/Animations/delete-animation.json');
+                return require('~/Assets/Animations/delete-animation.json');
             case 'delete_product':
-                return require('../../Assets/Animations/delete-animation.json');
+                return require('~/Assets/Animations/delete-animation.json');
             default:
-                return require('../../Assets/Animations/success.json');
+                return require('~/Assets/Animations/success.json');
         }
     }, [type]);
 
