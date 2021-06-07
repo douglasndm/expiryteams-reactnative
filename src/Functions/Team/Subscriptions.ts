@@ -1,5 +1,8 @@
 import auth from '@react-native-firebase/auth';
-import Purchases, { PurchasesPackage } from 'react-native-purchases';
+import Purchases, {
+    PurchasesPackage,
+    UpgradeInfo,
+} from 'react-native-purchases';
 import EnvConfig from 'react-native-config';
 import { compareAsc, parseISO } from 'date-fns';
 
@@ -27,10 +30,11 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
     try {
         const offerings = await Purchases.getOfferings();
 
-        if (
-            offerings.current !== null &&
-            offerings.current.availablePackages.length !== 0
-        ) {
+        if (!offerings.current) {
+            return [];
+        }
+
+        if (offerings.current.availablePackages.length !== 0) {
             if (!!offerings.all.TeamWith1 && offerings.all.TeamWith1.monthly) {
                 packages.push({
                     type: '1 person',
@@ -77,22 +81,30 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
 interface makePurchaseProps {
     pack: PurchasesPackage;
     team_id: string;
+    old_sku?: string;
 }
 
 export async function makePurchase({
     pack,
     team_id,
+    old_sku,
 }: makePurchaseProps): Promise<ITeamSubscription | null> {
     try {
         if (!team_id) {
             throw new Error('Provider team id');
         }
 
+        const upgrade: UpgradeInfo | null = old_sku
+            ? {
+                  oldSKU: old_sku,
+              }
+            : null;
+
         await Purchases.identify(team_id);
         const {
             purchaserInfo,
             // productIdentifier,
-        } = await Purchases.purchasePackage(pack);
+        } = await Purchases.purchasePackage(pack, upgrade);
 
         const { currentUser } = auth();
         const token = await currentUser?.getIdTokenResult();

@@ -126,13 +126,11 @@ const ViewTeam: React.FC = () => {
                                     sincronizadas entre todos os dispositivos.
                                 </SubscriptionDescription>
 
-                                {!subs && (
-                                    <Button
-                                        text="Ver planos"
-                                        isLoading={isPurchaseLoading}
-                                        onPress={handlePurchase}
-                                    />
-                                )}
+                                <Button
+                                    text={!subs ? 'Ver planos' : 'Mudar plano'}
+                                    isLoading={isPurchaseLoading}
+                                    onPress={handlePurchase}
+                                />
 
                                 <SubscriptionTableTitle>
                                     Sua assinatura

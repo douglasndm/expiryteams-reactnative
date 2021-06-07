@@ -9,6 +9,7 @@ import {
     getOfferings,
     makePurchase,
     CatPackage,
+    getTeamSubscriptions,
 } from '~/Functions/Team/Subscriptions';
 
 import Loading from '~/Components/Loading';
@@ -36,7 +37,16 @@ const SubscriptionsList: React.FC = () => {
     const [offers, setOffers] = useState<Array<CatPackage>>([]);
     const [selected, setSelected] = useState('');
 
+    const [currentSub, setCurrentSub] = useState<ITeamSubscription | null>();
+
     const loadData = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            showMessage({
+                message: 'Team is not selected',
+                type: 'danger',
+            });
+            return;
+        }
         try {
             setIsLoading(true);
 
@@ -46,6 +56,12 @@ const SubscriptionsList: React.FC = () => {
             if (response.length > 0) {
                 setSelected(response[0].package.offeringIdentifier);
             }
+
+            const current = await getTeamSubscriptions({
+                team_id: preferences.selectedTeam.team.id,
+            });
+
+            setCurrentSub(current);
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -54,7 +70,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [preferences.selectedTeam]);
 
     const handleSelectedChange = useCallback((identifier: string) => {
         setSelected(identifier);
@@ -83,6 +99,7 @@ const SubscriptionsList: React.FC = () => {
             const purchase = await makePurchase({
                 pack: selectedOffer.package,
                 team_id: preferences.selectedTeam.team.id,
+                old_sku: currentSub?.SKU_bought,
             });
 
             if (purchase) {
@@ -117,7 +134,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [offers, reset, selected, preferences.selectedTeam]);
+    }, [preferences, offers, reset, selected, setPreferences]);
 
     useEffect(() => {
         loadData();
@@ -153,7 +170,7 @@ const SubscriptionsList: React.FC = () => {
                                     selected === pack.offeringIdentifier
                                 }
                             >
-                                {introPrice &&
+                                {!!introPrice &&
                                     `${introPrice.priceString} no primeiro mês, depois `}
                                 {`${price} mensais`}
                             </TextSubscription>
