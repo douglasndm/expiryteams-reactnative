@@ -136,13 +136,13 @@ interface getTeamSubscriptionsProps {
 
 export async function getTeamSubscriptions({
     team_id,
-}: getTeamSubscriptionsProps): Promise<Array<ITeamSubscription>> {
+}: getTeamSubscriptionsProps): Promise<ITeamSubscription> {
     try {
         const { currentUser } = auth();
 
         const token = await currentUser?.getIdTokenResult();
 
-        const response = await api.get<Array<ITeamSubscription>>(
+        const response = await api.get<ITeamSubscription>(
             `/team/${team_id}/subscriptions`,
             {
                 headers: {

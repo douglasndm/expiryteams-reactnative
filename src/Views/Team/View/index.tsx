@@ -34,7 +34,7 @@ const ViewTeam: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isPurchaseLoading, setIsPurchaseLoading] = useState<boolean>(false);
 
-    const [subs, setSubs] = useState<Array<ITeamSubscription>>([]);
+    const [subs, setSubs] = useState<ITeamSubscription | null>();
 
     const { preferences } = useContext(PreferencesContext);
 
@@ -53,15 +53,16 @@ const ViewTeam: React.FC = () => {
                 team_id: preferences.selectedTeam.team.id,
             });
 
-            const activeSubs = response.filter(
-                sub =>
-                    compareAsc(
-                        startOfDay(new Date()),
-                        startOfDay(parseISO(String(sub.expireIn)))
-                    ) <= 0
-            );
-
-            setSubs(activeSubs);
+            if (
+                compareAsc(
+                    startOfDay(new Date()),
+                    startOfDay(parseISO(String(response.expireIn)))
+                ) <= 0
+            ) {
+                setSubs(response);
+                return;
+            }
+            setSubs(null);
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -125,7 +126,7 @@ const ViewTeam: React.FC = () => {
                                     sincronizadas entre todos os dispositivos.
                                 </SubscriptionDescription>
 
-                                {subs.length <= 0 && (
+                                {!subs && (
                                     <Button
                                         text="Ver planos"
                                         isLoading={isPurchaseLoading}
@@ -134,7 +135,7 @@ const ViewTeam: React.FC = () => {
                                 )}
 
                                 <SubscriptionTableTitle>
-                                    Suas assinaturas
+                                    Sua assinatura
                                 </SubscriptionTableTitle>
 
                                 <SubscriptionContainer>
@@ -151,34 +152,32 @@ const ViewTeam: React.FC = () => {
                                             </SubscriptionHeader>
                                         </SubscriptionsTable.Header>
 
-                                        {subs.map(sub => {
-                                            const date = format(
-                                                parseISO(String(sub.expireIn)),
-                                                'dd/MM/yyyy'
-                                            );
-
-                                            return (
-                                                <SubscriptionsTable.Row
-                                                    key={sub.id}
-                                                >
-                                                    <SubscriptionsTable.Cell>
-                                                        <SubscriptionText>
-                                                            {1}
-                                                        </SubscriptionText>
-                                                    </SubscriptionsTable.Cell>
-                                                    <SubscriptionsTable.Cell>
-                                                        <SubscriptionText>
-                                                            {sub.membersLimit}
-                                                        </SubscriptionText>
-                                                    </SubscriptionsTable.Cell>
-                                                    <SubscriptionsTable.Cell>
-                                                        <SubscriptionText>
-                                                            {date}
-                                                        </SubscriptionText>
-                                                    </SubscriptionsTable.Cell>
-                                                </SubscriptionsTable.Row>
-                                            );
-                                        })}
+                                        {!!subs && (
+                                            <SubscriptionsTable.Row>
+                                                <SubscriptionsTable.Cell>
+                                                    <SubscriptionText>
+                                                        Plano
+                                                    </SubscriptionText>
+                                                </SubscriptionsTable.Cell>
+                                                <SubscriptionsTable.Cell>
+                                                    <SubscriptionText>
+                                                        {subs.membersLimit}
+                                                    </SubscriptionText>
+                                                </SubscriptionsTable.Cell>
+                                                <SubscriptionsTable.Cell>
+                                                    <SubscriptionText>
+                                                        {format(
+                                                            parseISO(
+                                                                String(
+                                                                    subs.expireIn
+                                                                )
+                                                            ),
+                                                            'dd/MM/yyyy'
+                                                        )}
+                                                    </SubscriptionText>
+                                                </SubscriptionsTable.Cell>
+                                            </SubscriptionsTable.Row>
+                                        )}
                                     </SubscriptionsTable>
                                 </SubscriptionContainer>
                             </Section>
