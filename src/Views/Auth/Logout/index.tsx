@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect } from 'react';
-
+import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -10,6 +10,8 @@ import { logoutFirebase } from '~/Functions/Auth/Firebase';
 import Loading from '~/Components/Loading';
 
 const Logout: React.FC = () => {
+    const { reset } = useNavigation();
+
     const { preferences, setPreferences } = useContext(PreferencesContext);
 
     const handleLogout = useCallback(async () => {
@@ -22,16 +24,20 @@ const Logout: React.FC = () => {
                 user: null,
                 selectedTeam: null,
             });
+
+            reset({
+                routes: [{ name: 'Login' }],
+            });
         } catch (err) {
             showMessage({
                 message: err.message,
             });
         }
-    }, [setPreferences, preferences]);
+    }, [setPreferences, preferences, reset]);
 
     useEffect(() => {
         handleLogout();
-    }, [handleLogout]);
+    }, []);
     return <Loading />;
 };
 

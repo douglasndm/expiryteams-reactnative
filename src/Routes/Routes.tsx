@@ -22,12 +22,9 @@ import Export from '~/Views/Export';
 import TeamList from '~/Views/Team/List';
 
 // Team managerment
-import CreateTeam from '~/Views/Team/Add';
 import ViewTeam from '~/Views/Team/View';
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
-
-import Logout from '~/Views/Auth/Logout';
 
 import Test from '~/Views/Test';
 
@@ -57,12 +54,9 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="TeamList" component={TeamList} />
 
-            <Stack.Screen name="CreateTeam" component={CreateTeam} />
             <Stack.Screen name="ViewTeam" component={ViewTeam} />
             <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
             <Stack.Screen name="UserDetails" component={UserDetails} />
-
-            <Stack.Screen name="Logout" component={Logout} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>

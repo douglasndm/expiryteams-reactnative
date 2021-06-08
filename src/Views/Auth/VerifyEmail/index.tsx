@@ -86,12 +86,13 @@ const VerifyEmail: React.FC = () => {
                     {translate('View_ConfirmEmail_WaitingTitle')}
                 </WaitingConfirmationEmail>
 
-                <EmailConfirmationExplain>
-                    {translate('View_ConfirmEmail_WaitingDescription').replace(
-                        '#{EMAIL}',
-                        preferences.user.email
-                    )}
-                </EmailConfirmationExplain>
+                {!!preferences.user && (
+                    <EmailConfirmationExplain>
+                        {translate(
+                            'View_ConfirmEmail_WaitingDescription'
+                        ).replace('#{EMAIL}', preferences.user.email)}
+                    </EmailConfirmationExplain>
+                )}
 
                 <Button
                     text={translate('View_ConfirmEmail_Button_Confirmed')}
