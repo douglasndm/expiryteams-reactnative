@@ -4,7 +4,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import LogoImg from '~/Assets/Logo.png';
 
-export const Container = styled.ScrollView`
+export const Container = styled.ScrollView.attrs(() => ({
+    contentContainerStyle: { flexGrow: 1 },
+}))`
     flex: 1;
     background-color: ${props => props.theme.colors.background};
 `;
