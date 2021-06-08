@@ -89,7 +89,7 @@ export const ButtonSubscription = styled.TouchableOpacity`
 export const TextSubscription = styled.Text<Offer>`
     text-align: center;
     font-size: 17px;
-    color: ${props => props.theme.colors.text};
+    color: #fff;
 `;
 
 export const ButtonText = styled.Text`

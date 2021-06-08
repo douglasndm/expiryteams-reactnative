@@ -8,6 +8,8 @@ import DrawerMenu from '../Components/DrawerMenu';
 import Routes from './Routes';
 import RoutesAuth from './Routes.auth';
 
+import Subscription from '~/Views/Subscription';
+
 const Drawer = createDrawerNavigator();
 
 const DrawerContainer: React.FC = () => {
@@ -36,9 +38,21 @@ const DrawerContainer: React.FC = () => {
             openByDefault={false}
             keyboardDismissMode="on-drag"
             initialRouteName="Home"
+            // screenOptions={{ gestureEnabled: }}
+
             drawerContent={props => <DrawerMenu {...props} />}
         >
             <Drawer.Screen name="HomePage" component={Routes} />
+
+            <Drawer.Screen
+                name="Subscription"
+                component={Subscription}
+                options={({ route }) => {
+                    return {
+                        swipeEnabled: route.name !== 'Subscription',
+                    };
+                }}
+            />
         </Drawer.Navigator>
     );
 };
