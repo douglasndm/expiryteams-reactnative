@@ -38,11 +38,9 @@ const DrawerContainer: React.FC = () => {
             openByDefault={false}
             keyboardDismissMode="on-drag"
             initialRouteName="Home"
-            // screenOptions={{ gestureEnabled: }}
-
             drawerContent={props => <DrawerMenu {...props} />}
         >
-            <Drawer.Screen name="HomePage" component={Routes} />
+            <Drawer.Screen name="Routes" component={Routes} />
 
             <Drawer.Screen
                 name="Subscription"

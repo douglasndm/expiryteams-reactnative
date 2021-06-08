@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 
-export const Container = styled.ScrollView`
-    flex: 1;
+export const Container = styled.ScrollView.attrs(() => ({
+    contentContainerStyle: { flexGrow: 1 },
+}))`
     background-color: ${props => props.theme.colors.background};
 `;
 
@@ -41,6 +42,10 @@ export const PremiumTitle = styled.Text`
     font-family: 'Open Sans';
 `;
 
+export const Content = styled.View`
+    flex-grow: 1;
+`;
+
 export const AdvantagesGroup = styled.View`
     margin-top: 35px;
     padding-left: 10px;
@@ -72,6 +77,10 @@ export const TextSubscription = styled.Text`
     text-align: center;
     color: white;
     font-size: 18px;
+`;
+
+export const TermsPrivacyContainer = styled.View`
+    padding-bottom: 25px;
 `;
 
 export const TermsPrivacyText = styled.Text`

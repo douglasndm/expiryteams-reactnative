@@ -13,11 +13,13 @@ import {
     IntroductionText,
     AppNameTitle,
     PremiumTitle,
+    Content,
     AdvantagesGroup,
     AdvantageContainer,
     AdvantageText,
     ButtonSubscription,
     TextSubscription,
+    TermsPrivacyContainer,
     TermsPrivacyText,
     TermsPrivacyLink,
 } from './styles';
@@ -26,7 +28,7 @@ const Subscription: React.FC = () => {
     const { navigate } = useNavigation();
 
     const handleNavigateHome = useCallback(() => {
-        navigate('Home');
+        navigate('Routes', { screen: 'Home' });
     }, [navigate]);
 
     const navigateToTerms = useCallback(async () => {
@@ -49,45 +51,51 @@ const Subscription: React.FC = () => {
                 </TitleContainer>
             </HeaderContainer>
 
-            <AdvantagesGroup>
-                <AdvantageContainer>
-                    <AdvantageText>
-                        Produtos sincronizados com todo seu time.
-                    </AdvantageText>
-                </AdvantageContainer>
+            <Content>
+                <AdvantagesGroup>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            Produtos sincronizados com todo seu time.
+                        </AdvantageText>
+                    </AdvantageContainer>
 
-                <AdvantageContainer>
-                    <AdvantageText>Melhor controle do estoque.</AdvantageText>
-                </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            Melhor controle do estoque.
+                        </AdvantageText>
+                    </AdvantageContainer>
 
-                <AdvantageContainer>
-                    <AdvantageText>Notificações diárias</AdvantageText>
-                </AdvantageContainer>
+                    <AdvantageContainer>
+                        <AdvantageText>Notificações diárias</AdvantageText>
+                    </AdvantageContainer>
 
-                <AdvantageContainer>
-                    <AdvantageText>
-                        Exporte seus produtos para Excel
-                    </AdvantageText>
-                </AdvantageContainer>
-            </AdvantagesGroup>
+                    <AdvantageContainer>
+                        <AdvantageText>
+                            Exporte seus produtos para Excel
+                        </AdvantageText>
+                    </AdvantageContainer>
+                </AdvantagesGroup>
 
-            <SubscriptionsList />
+                <SubscriptionsList />
 
-            <ButtonSubscription onPress={handleNavigateHome}>
-                <TextSubscription>Voltar</TextSubscription>
-            </ButtonSubscription>
-
-            <TermsPrivacyText>
-                Continuando com a assinatura você está concordando com nossos
-                <TermsPrivacyLink onPress={navigateToTerms}>
-                    {` ${translate('Terms')}`}
-                </TermsPrivacyLink>
-                {translate('BetweenTermsAndPrivacy')}
-                <TermsPrivacyLink onPress={navigateToPrivacy}>
-                    {translate('PrivacyPolicy')}
-                </TermsPrivacyLink>
-                .
-            </TermsPrivacyText>
+                <ButtonSubscription onPress={handleNavigateHome}>
+                    <TextSubscription>Voltar</TextSubscription>
+                </ButtonSubscription>
+            </Content>
+            <TermsPrivacyContainer>
+                <TermsPrivacyText>
+                    Continuando com a assinatura você está concordando com
+                    nossos
+                    <TermsPrivacyLink onPress={navigateToTerms}>
+                        {` ${translate('Terms')}`}
+                    </TermsPrivacyLink>
+                    {translate('BetweenTermsAndPrivacy')}
+                    <TermsPrivacyLink onPress={navigateToPrivacy}>
+                        {translate('PrivacyPolicy')}
+                    </TermsPrivacyLink>
+                    .
+                </TermsPrivacyText>
+            </TermsPrivacyContainer>
         </Container>
     );
 };
