@@ -41,7 +41,7 @@ const Home: React.FC = () => {
         try {
             setIsLoading(true);
 
-            if (!preferences.selectedTeam.team.id) {
+            if (!preferences.selectedTeam) {
                 reset({
                     routes: [
                         {
@@ -49,6 +49,7 @@ const Home: React.FC = () => {
                         },
                     ],
                 });
+                return;
             }
 
             const productsResponse = await getAllProducts({
@@ -74,7 +75,7 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [reset, preferences.selectedTeam.team.id]);
+    }, [reset, preferences.selectedTeam]);
 
     useEffect(() => {
         getProduts();

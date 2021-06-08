@@ -287,6 +287,12 @@
 
     "Function_Team_JoinTeam_InvalidCode": "Invalid code.",
 
+    "Subscription_TeamLimit_1person": "1 person",
+    "Subscription_TeamLimit_3people": "3 people",
+    "Subscription_TeamLimit_5people": "5 people",
+    "Subscription_TeamLimit_10people": "10 people",
+    "Subscription_TeamLimit_15people": "15 people",
+
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",
     "AskUserReview_Button_No": "Not now",

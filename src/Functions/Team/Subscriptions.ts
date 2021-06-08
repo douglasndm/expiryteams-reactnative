@@ -111,7 +111,7 @@ export async function makePurchase({
 
         // Verificar com o servidor se a compra foi concluida
         // Liberar funções no app
-        const apiCheck = await api.get<Array<ITeamSubscription>>(
+        const apiCheck = await api.get<ITeamSubscription>(
             `/team/${team_id}/subscriptions/check`,
             {
                 headers: {
@@ -120,11 +120,11 @@ export async function makePurchase({
             }
         );
 
-        if (apiCheck.data.length <= 0) {
+        if (!apiCheck.data) {
             return null;
         }
 
-        const sub = apiCheck.data[0];
+        const sub = apiCheck.data;
 
         // Verifica se a primeira assinatura retornada da API já venceu
         // O esperado é que a primeira assinatura retornada
@@ -165,6 +165,9 @@ export async function getTeamSubscriptions({
 
         return response.data;
     } catch (err) {
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
         throw new Error(err.message);
     }
 }

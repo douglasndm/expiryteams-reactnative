@@ -27,12 +27,17 @@ export async function getAllProducts({
             }
         );
 
+        if (!response.data) {
+            return [];
+        }
         return response.data.products;
     } catch (err) {
+        if (!err.response) {
+            throw new Error('Network error');
+        }
         if (err.response.data.error) {
             throw new Error(err.response.data.error);
-        } else {
-            throw new Error(err.message);
         }
+        throw new Error(err.message);
     }
 }

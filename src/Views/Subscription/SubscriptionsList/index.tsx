@@ -3,6 +3,8 @@ import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import { translate } from '~/Locales';
+
 import Preferences from '~/Contexts/PreferencesContext';
 
 import {
@@ -134,7 +136,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences, offers, reset, selected, setPreferences]);
+    }, [preferences, offers, currentSub, reset, selected, setPreferences]);
 
     useEffect(() => {
         loadData();
@@ -147,6 +149,25 @@ const SubscriptionsList: React.FC = () => {
             const { introPrice } = pack.product;
             const price = pack.product.price_string;
 
+            let limit = translate('Subscription_TeamLimit_1person');
+
+            switch (type) {
+                case '3 people':
+                    limit = translate('Subscription_TeamLimit_3people');
+                    break;
+                case '5 people':
+                    limit = translate('Subscription_TeamLimit_5people');
+                    break;
+                case '10 people':
+                    limit = translate('Subscription_TeamLimit_10people');
+                    break;
+                case '15 people':
+                    limit = translate('Subscription_TeamLimit_15people');
+                    break;
+                default:
+                    break;
+            }
+
             return (
                 <SubscriptionContainer
                     onPress={() =>
@@ -158,10 +179,12 @@ const SubscriptionsList: React.FC = () => {
                     <SubscriptionPeriodContainer
                         isSelected={selected === pack.offeringIdentifier}
                     >
-                        <TeamMembersLimit>{type}</TeamMembersLimit>
+                        <TeamMembersLimit>{limit}</TeamMembersLimit>
                     </SubscriptionPeriodContainer>
 
-                    <DetailsContainer>
+                    <DetailsContainer
+                        isSelected={selected === pack.offeringIdentifier}
+                    >
                         <SubscriptionDescription
                             isSelected={selected === pack.offeringIdentifier}
                         >

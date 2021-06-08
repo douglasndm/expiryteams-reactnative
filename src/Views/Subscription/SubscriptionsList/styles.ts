@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
+import { darken } from 'polished';
 
 export const Container = styled.View``;
 
@@ -48,12 +49,19 @@ export const TeamMembersLimit = styled.Text`
     font-size: 17px;
 `;
 
-export const DetailsContainer = styled.View`
+export const DetailsContainer = styled.View<Offer>`
     flex: 1;
     justify-content: center;
     padding: 12px;
 
     background-color: ${({ theme }) => theme.colors.productBackground};
+
+    ${props =>
+        props.isSelected &&
+        css`
+            background-color: ${({ theme }) =>
+                darken(0.13, theme.colors.productBackground)};
+        `}
 `;
 
 export const SubscriptionDescription = styled.Text.attrs(() => ({
