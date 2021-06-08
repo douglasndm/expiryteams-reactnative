@@ -11,6 +11,7 @@ import { getLocales } from 'react-native-localize';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 import { showMessage } from 'react-native-flash-message';
+import { parseISO } from 'date-fns';
 
 import { translate } from '~/Locales';
 
@@ -84,8 +85,11 @@ const EditBatch: React.FC = () => {
     });
 
     const userRole = useMemo(() => {
+        if (!preferences.selectedTeam) {
+            return null;
+        }
         return preferences.selectedTeam.role.toLowerCase();
-    }, [preferences.selectedTeam.role]);
+    }, [preferences.selectedTeam]);
 
     const productId = useMemo(() => {
         return routeParams.productId;
@@ -125,6 +129,7 @@ const EditBatch: React.FC = () => {
 
                 setPrice(p);
             }
+            setExpDate(parseISO(response.batch.exp_date));
         } catch (err) {
             showMessage({
                 message: err.message,
