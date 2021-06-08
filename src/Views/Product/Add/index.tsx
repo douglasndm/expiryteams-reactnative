@@ -23,6 +23,7 @@ import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
+import Loading from '~/Components/Loading';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -55,11 +56,6 @@ import {
 } from './styles';
 
 interface ICategoryItem {
-    label: string;
-    value: string;
-    key: string;
-}
-interface IStoreItem {
     label: string;
     value: string;
     key: string;
@@ -112,6 +108,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
 
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isAdding, setIsAdding] = useState<boolean>(false);
+
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
 
@@ -121,7 +120,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            showMessage({
+                message: 'Team is not selected',
+                type: 'danger',
+            });
+            return;
+        }
         try {
+            setIsLoading(true);
             const response = await getAllCategoriesFromTeam({
                 team_id: preferences.selectedTeam.team.id,
             });
@@ -140,10 +147,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsLoading(false);
         }
-    }, [preferences.selectedTeam.team.id]);
+    }, [preferences.selectedTeam]);
 
     const handleSave = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            return;
+        }
         if (!name || name.trim() === '') {
             setNameFieldError(true);
             return;
@@ -153,6 +165,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             return;
         }
         try {
+            setIsAdding(true);
             const prodCategories: Array<string> = [];
 
             if (selectedCategory && selectedCategory !== 'null') {
@@ -169,7 +182,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 categories: prodCategories,
             });
 
-            const createdBatch = await createBatch({
+            await createBatch({
                 productId: createdProduct.id,
                 batch: {
                     name: batch || '01',
@@ -180,14 +193,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 },
             });
 
-            if ('error' in createdBatch) {
-                showMessage({
-                    message: createdBatch.error,
-                    type: 'danger',
-                });
-                return;
-            }
-
             reset({
                 index: 1,
                 routes: [
@@ -197,7 +202,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         params: {
                             type: 'create_product',
                             productId: createdProduct.id,
-
                             category_id: selectedCategory,
                         },
                     },
@@ -208,6 +212,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 message: error.message,
                 type: 'danger',
             });
+        } finally {
+            setIsAdding(false);
         }
     }, [
         amount,
@@ -220,7 +226,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         price,
         reset,
         selectedCategory,
-        preferences.selectedTeam.team.id,
+        preferences.selectedTeam,
     ]);
 
     useEffect(() => {
@@ -292,7 +298,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         setPrice(value);
     }, []);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             {isCameraEnabled ? (
                 <Camera onPhotoTaked={onPhotoTaked} />
@@ -523,6 +531,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                         accessibilityLabel={translate(
                                             'View_AddProduct_Button_Save_AccessibilityDescription'
                                         )}
+                                        isLoading={isAdding}
                                         onPress={handleSave}
                                     />
                                 </PageContent>
