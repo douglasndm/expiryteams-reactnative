@@ -118,7 +118,7 @@
     "View_EditBatch_RadioButton_Treated": "Tratado",
     "View_EditBatch_RadioButton_NotTreated": "Não tratado",
     "View_EditBatch_CalendarTitle": "Data de vencimento",
-    "View_EditBatch_Button_Save": "Atualizar lote",
+    "View_EditBatch_Button_Save": "Atualizar",
     "View_EditBatch_WarningDelete_Title": "Você tem certeza?",
     "View_EditBatch_WarningDelete_Message": "Se você continuar você vai apagar este lote",
     "View_EditBatch_WarningDelete_Button_Confirm": "Tenho certeza",
@@ -134,7 +134,6 @@
     "View_EditProduct_InputAccessibility_Code": "Campo de texto para digitar o código do produto",
     "View_EditProduct_InputAccessibility_Store": "Campo de texto para digitar a loja do produto",
     "View_EditProduct_Button_Save": "Salvar",
-    "View_EditProduct_Button_Cancel": "Cancelar",
 
     "View_Home_SearchText": "Procurar por um produto",
     "View_FloatMenu_AddProduct": "Novo produto",

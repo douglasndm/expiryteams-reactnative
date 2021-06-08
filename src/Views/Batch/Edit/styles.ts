@@ -18,7 +18,11 @@ export const PageTitleContainer = styled.View`
     align-items: center;
 `;
 
-export const Button = styled(ButtonPaper).attrs((props) => ({
+export const ContentHeader = styled.View`
+    flex-direction: row;
+`;
+
+export const Button = styled(ButtonPaper).attrs(props => ({
     color: props.theme.colors.accent,
 }))``;
 
@@ -26,7 +30,7 @@ export const Icons = styled(Ionicons)`
     color: ${({ theme }) => theme.colors.text};
 `;
 
-export const RadioButton = styled(RadioPaper).attrs((props) => ({
+export const RadioButton = styled(RadioPaper).attrs(props => ({
     color: props.theme.colors.accent,
     uncheckedColor: props.theme.colors.subText,
 }))``;

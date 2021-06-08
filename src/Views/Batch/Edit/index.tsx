@@ -49,6 +49,7 @@ import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 import {
     PageHeader,
     PageTitleContainer,
+    ContentHeader,
     Button,
     Icons,
     RadioButton,
@@ -69,6 +70,7 @@ const EditBatch: React.FC = () => {
     const routeParams = route.params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
     const [locale] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -147,6 +149,7 @@ const EditBatch: React.FC = () => {
         }
 
         try {
+            setIsUpdating(true);
             const response = await updateBatch({
                 batch: {
                     id: batchId,
@@ -181,6 +184,8 @@ const EditBatch: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsUpdating(false);
         }
     }, [amount, batch, batchId, expDate, price, productId, reset, status]);
 
@@ -227,7 +232,7 @@ const EditBatch: React.FC = () => {
         setPrice(value);
     }, []);
 
-    return isLoading ? (
+    return isLoading || isUpdating ? (
         <Loading />
     ) : (
         <>
@@ -245,14 +250,55 @@ const EditBatch: React.FC = () => {
 
                     <PageContent>
                         <InputContainer>
-                            <ProductHeader>
-                                {!!product && (
-                                    <ProductName>{product.name}</ProductName>
-                                )}
-                                {!!product && !!product.code && (
-                                    <ProductCode>{product.code}</ProductCode>
-                                )}
-                            </ProductHeader>
+                            <ContentHeader>
+                                <ProductHeader>
+                                    {!!product && (
+                                        <ProductName>
+                                            {product.name}
+                                        </ProductName>
+                                    )}
+                                    {!!product && !!product.code && (
+                                        <ProductCode>
+                                            {product.code}
+                                        </ProductCode>
+                                    )}
+                                </ProductHeader>
+
+                                <ActionsButtonContainer>
+                                    <ButtonPaper
+                                        icon={() => (
+                                            <Icons
+                                                name="save-outline"
+                                                size={22}
+                                            />
+                                        )}
+                                        onPress={handleUpdate}
+                                    >
+                                        {translate(
+                                            'View_EditBatch_Button_Save'
+                                        )}
+                                    </ButtonPaper>
+
+                                    {(userRole === 'manager' ||
+                                        userRole === 'supervisor') && (
+                                        <ButtonPaper
+                                            icon={() => (
+                                                <Icons
+                                                    name="trash-outline"
+                                                    size={22}
+                                                />
+                                            )}
+                                            onPress={() => {
+                                                setDeleteComponentVisible(true);
+                                            }}
+                                        >
+                                            {translate(
+                                                'View_EditBatch_Button_DeleteBatch'
+                                            )}
+                                        </ButtonPaper>
+                                    )}
+                                </ActionsButtonContainer>
+                            </ContentHeader>
 
                             <InputGroup>
                                 <InputTextContainer
@@ -357,42 +403,6 @@ const EditBatch: React.FC = () => {
                                 />
                             </ExpDateGroup>
                         </InputContainer>
-
-                        <ActionsButtonContainer>
-                            <ButtonPaper
-                                icon={() => (
-                                    <Icons name="save-outline" size={22} />
-                                )}
-                                onPress={handleUpdate}
-                            >
-                                {translate('View_EditBatch_Button_Save')}
-                            </ButtonPaper>
-
-                            {(userRole === 'manager' ||
-                                userRole === 'supervisor') && (
-                                <ButtonPaper
-                                    icon={() => (
-                                        <Icons name="trash-outline" size={22} />
-                                    )}
-                                    onPress={() => {
-                                        setDeleteComponentVisible(true);
-                                    }}
-                                >
-                                    {translate(
-                                        'View_EditBatch_Button_DeleteBatch'
-                                    )}
-                                </ButtonPaper>
-                            )}
-
-                            <ButtonPaper
-                                icon={() => (
-                                    <Icons name="exit-outline" size={22} />
-                                )}
-                                onPress={goBack}
-                            >
-                                {translate('View_EditProduct_Button_Cancel')}
-                            </ButtonPaper>
-                        </ActionsButtonContainer>
                     </PageContent>
                 </ScrollView>
             </Container>

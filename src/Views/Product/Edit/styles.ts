@@ -17,9 +17,10 @@ export const Icons = styled(Ionicons)`
 `;
 
 export const ActionsButtonContainer = styled.View`
-    justify-content: center;
     flex-direction: column;
+    align-items: flex-start;
     margin-top: 5px;
+    flex: 1;
 `;
 
 export const Text = styled.Text<IProductStatus>`

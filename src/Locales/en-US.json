@@ -118,7 +118,7 @@
     "View_EditBatch_RadioButton_Treated": "Treated",
     "View_EditBatch_RadioButton_NotTreated": "Not Treaded",
     "View_EditBatch_CalendarTitle": "Expiration date",
-    "View_EditBatch_Button_Save": "Update batch",
+    "View_EditBatch_Button_Save": "Update",
     "View_EditBatch_WarningDelete_Title": "Are you sure?",
     "View_EditBatch_WarningDelete_Message": "If you continue you will delete this batch",
     "View_EditBatch_WarningDelete_Button_Confirm": "I'm sure",
@@ -134,7 +134,6 @@
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
     "View_EditProduct_Button_Save": "Save",
-    "View_EditProduct_Button_Cancel": "Cancel",
 
     "View_Home_SearchText": "Search for a product",
     "View_FloatMenu_AddProduct": "New product",
