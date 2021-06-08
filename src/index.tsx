@@ -12,6 +12,7 @@ import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import screens from 'react-native-screens';
 
 import './Locales';
 
@@ -29,6 +30,8 @@ import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
 
 import DefaultPrefs from '~/Contexts/DefaultPreferences';
+
+screens.enableScreens(false);
 
 const App: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
