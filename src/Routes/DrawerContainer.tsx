@@ -45,11 +45,9 @@ const DrawerContainer: React.FC = () => {
             <Drawer.Screen
                 name="Subscription"
                 component={Subscription}
-                options={({ route }) => {
-                    return {
-                        swipeEnabled: route.name !== 'Subscription',
-                    };
-                }}
+                options={({ route }) => ({
+                    swipeEnabled: route.name !== 'Subscription',
+                })}
             />
         </Drawer.Navigator>
     );
