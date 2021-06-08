@@ -64,7 +64,7 @@ const Success: React.FC = () => {
                 {
                     name: 'CategoryView',
                     params: {
-                        id: category_id,
+                        category_id,
                     },
                 },
             ],
