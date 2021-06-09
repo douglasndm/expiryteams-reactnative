@@ -246,6 +246,33 @@ const EditBatch: React.FC = () => {
                                 {translate('View_EditBatch_PageTitle')}
                             </PageTitle>
                         </PageTitleContainer>
+
+                        <ActionsButtonContainer>
+                            <ButtonPaper
+                                icon={() => (
+                                    <Icons name="save-outline" size={22} />
+                                )}
+                                onPress={handleUpdate}
+                            >
+                                {translate('View_EditBatch_Button_Save')}
+                            </ButtonPaper>
+
+                            {(userRole === 'manager' ||
+                                userRole === 'supervisor') && (
+                                <ButtonPaper
+                                    icon={() => (
+                                        <Icons name="trash-outline" size={22} />
+                                    )}
+                                    onPress={() => {
+                                        setDeleteComponentVisible(true);
+                                    }}
+                                >
+                                    {translate(
+                                        'View_EditBatch_Button_DeleteBatch'
+                                    )}
+                                </ButtonPaper>
+                            )}
+                        </ActionsButtonContainer>
                     </PageHeader>
 
                     <PageContent>
@@ -263,41 +290,6 @@ const EditBatch: React.FC = () => {
                                         </ProductCode>
                                     )}
                                 </ProductHeader>
-
-                                <ActionsButtonContainer>
-                                    <ButtonPaper
-                                        icon={() => (
-                                            <Icons
-                                                name="save-outline"
-                                                size={22}
-                                            />
-                                        )}
-                                        onPress={handleUpdate}
-                                    >
-                                        {translate(
-                                            'View_EditBatch_Button_Save'
-                                        )}
-                                    </ButtonPaper>
-
-                                    {(userRole === 'manager' ||
-                                        userRole === 'supervisor') && (
-                                        <ButtonPaper
-                                            icon={() => (
-                                                <Icons
-                                                    name="trash-outline"
-                                                    size={22}
-                                                />
-                                            )}
-                                            onPress={() => {
-                                                setDeleteComponentVisible(true);
-                                            }}
-                                        >
-                                            {translate(
-                                                'View_EditBatch_Button_DeleteBatch'
-                                            )}
-                                        </ButtonPaper>
-                                    )}
-                                </ActionsButtonContainer>
                             </ContentHeader>
 
                             <InputGroup>
