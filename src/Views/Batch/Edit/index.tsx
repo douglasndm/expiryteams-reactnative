@@ -41,13 +41,13 @@ import {
     CustomDatePicker,
 } from '~/Views/Product/Add/styles';
 import {
+    PageHeader,
     ActionsButtonContainer,
     ButtonPaper,
 } from '~/Views/Product/Edit/styles';
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
-    PageHeader,
     PageTitleContainer,
     ContentHeader,
     Button,

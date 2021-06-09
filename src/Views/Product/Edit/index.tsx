@@ -26,7 +26,6 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
-    PageHeader,
     PageTitle,
     PageContent,
     InputGroup,
@@ -49,11 +48,13 @@ import {
 } from '../Add/styles';
 
 import {
+    PageHeader,
     ButtonPaper,
     Icons,
     ActionsButtonContainer,
     DialogPaper,
     Text,
+    PageTitleContainer,
 } from './styles';
 
 interface RequestParams {
@@ -271,12 +272,51 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                             <Container>
                                 <StatusBar />
                                 <PageHeader>
-                                    <BackButton handleOnPress={goBack} />
-                                    <PageTitle>
-                                        {translate(
-                                            'View_EditProduct_PageTitle'
+                                    <PageTitleContainer>
+                                        <BackButton handleOnPress={goBack} />
+                                        <PageTitle>
+                                            {translate(
+                                                'View_EditProduct_PageTitle'
+                                            )}
+                                        </PageTitle>
+                                    </PageTitleContainer>
+
+                                    <ActionsButtonContainer>
+                                        <ButtonPaper
+                                            icon={() => (
+                                                <Icons
+                                                    name="save-outline"
+                                                    size={22}
+                                                />
+                                            )}
+                                            onPress={updateProd}
+                                        >
+                                            {translate(
+                                                'View_EditProduct_Button_Save'
+                                            )}
+                                        </ButtonPaper>
+
+                                        {(userRole === 'manager' ||
+                                            userRole === 'supervisor') && (
+                                            <ButtonPaper
+                                                icon={() => (
+                                                    <Icons
+                                                        name="trash-outline"
+                                                        size={22}
+                                                    />
+                                                )}
+                                                onPress={() => {
+                                                    setDeleteComponentVisible(
+                                                        true
+                                                    );
+                                                }}
+                                            >
+                                                {translate(
+                                                    'View_ProductDetails_Button_DeleteProduct'
+                                                )}
+                                            </ButtonPaper>
                                         )}
-                                    </PageTitle>
+                                    </ActionsButtonContainer>
                                 </PageHeader>
 
                                 <PageContent>
@@ -373,57 +413,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 />
                                             </PickerContainer>
                                         </MoreInformationsContainer>
-
-                                        <ActionsButtonContainer>
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="save-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={updateProd}
-                                            >
-                                                {translate(
-                                                    'View_EditProduct_Button_Save'
-                                                )}
-                                            </ButtonPaper>
-
-                                            {(userRole === 'manager' ||
-                                                userRole === 'supervisor') && (
-                                                <ButtonPaper
-                                                    icon={() => (
-                                                        <Icons
-                                                            name="trash-outline"
-                                                            size={22}
-                                                        />
-                                                    )}
-                                                    onPress={() => {
-                                                        setDeleteComponentVisible(
-                                                            true
-                                                        );
-                                                    }}
-                                                >
-                                                    {translate(
-                                                        'View_ProductDetails_Button_DeleteProduct'
-                                                    )}
-                                                </ButtonPaper>
-                                            )}
-
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="exit-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={goBack}
-                                            >
-                                                {translate(
-                                                    'View_EditProduct_Button_Cancel'
-                                                )}
-                                            </ButtonPaper>
-                                        </ActionsButtonContainer>
                                     </InputContainer>
                                 </PageContent>
                             </Container>
