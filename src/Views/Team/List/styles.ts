@@ -19,6 +19,13 @@ export const Content = styled.View`
     flex: 1;
 `;
 
+export const EmptyText = styled.Text`
+    font-family: 'Open Sans';
+    font-size: 14px;
+    margin: 10px 15px 0;
+    color: ${props => props.theme.colors.text};
+`;
+
 export const ListTeamsTitle = styled.Text`
     margin: 15px 15px 0;
     color: ${props => props.theme.colors.text};

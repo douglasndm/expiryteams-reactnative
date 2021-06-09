@@ -23,6 +23,7 @@ import {
     Container,
     Title,
     Content,
+    EmptyText,
     ListTeamsTitle,
     ListCategories,
     TeamItemContainer,
@@ -42,7 +43,6 @@ const List: React.FC = () => {
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
-    const [inactiveTeams, setInactiveTeams] = useState<Array<IUserRoles>>([]);
 
     // This is for check if user is already manager on any team
     // If so, disable creating of new team
@@ -78,15 +78,17 @@ const List: React.FC = () => {
                     }
                 });
 
-                const active = response.filter(
-                    item => item.team.active === true
-                );
-                const inactive = response.filter(
-                    item => item.team.active !== true
-                );
+                const sortedTeams = response.sort((team1, team2) => {
+                    if (team1.team.active && !team2.team.active) {
+                        return -1;
+                    }
+                    if (team1.team.active && team2.team.active) {
+                        return 0;
+                    }
+                    return 1;
+                });
 
-                setTeams(active);
-                setInactiveTeams(inactive);
+                setTeams(sortedTeams);
             }
         } catch (err) {
             showMessage({
@@ -122,7 +124,7 @@ const List: React.FC = () => {
                 });
             }
         },
-        [teams, setPreferences, preferences, inactiveTeams, reset]
+        [teams, setPreferences, preferences, reset]
     );
 
     const handleNavigateToEnterCode = useCallback(
@@ -228,33 +230,24 @@ const List: React.FC = () => {
             <Title>{translate('View_TeamList_PageTitle')}</Title>
 
             <Content>
-                {teams.length > 0 && (
-                    <>
-                        <ListTeamsTitle>Times</ListTeamsTitle>
-                        <ListCategories
-                            data={teams}
-                            keyExtractor={(item, index) => String(index)}
-                            renderItem={renderCategory}
-                        />
-                    </>
+                {teams.length <= 0 && (
+                    <EmptyText>
+                        Você não está em nenhum time no momento
+                    </EmptyText>
                 )}
+                {teams.length > 0 && <ListTeamsTitle>Times</ListTeamsTitle>}
 
-                {inactiveTeams.length > 0 && (
-                    <>
-                        <ListTeamsTitle>Times inativos</ListTeamsTitle>
-                        <ListCategories
-                            data={inactiveTeams}
-                            keyExtractor={(item, index) => String(index)}
-                            renderItem={renderCategory}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing}
-                                    onRefresh={handleRefresh}
-                                />
-                            }
+                <ListCategories
+                    data={teams}
+                    keyExtractor={(item, index) => String(index)}
+                    renderItem={renderCategory}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={handleRefresh}
                         />
-                    </>
-                )}
+                    }
+                />
             </Content>
 
             <Footer>
