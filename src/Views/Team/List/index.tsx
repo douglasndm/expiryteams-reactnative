@@ -102,11 +102,7 @@ const List: React.FC = () => {
 
     const handleSetTeam = useCallback(
         async (teamId: string) => {
-            let selectedTeam = teams.find(t => t.team.id === teamId);
-
-            if (!selectedTeam) {
-                selectedTeam = inactiveTeams.find(t => t.team.id === teamId);
-            }
+            const selectedTeam = teams.find(t => t.team.id === teamId);
 
             if (!selectedTeam) {
                 throw new Error('Team not found');
@@ -120,7 +116,18 @@ const List: React.FC = () => {
 
             if (!!preferences.user && preferences.selectedTeam) {
                 reset({
-                    routes: [{ name: 'Home' }],
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'Home',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
                 });
             }
         },
