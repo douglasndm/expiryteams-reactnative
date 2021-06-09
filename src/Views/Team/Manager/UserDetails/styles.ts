@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
+import { Button as ButtonPaper } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.SafeAreaView`
@@ -20,7 +21,7 @@ export const PageTitle = styled.Text`
 `;
 
 export const PageContent = styled.View`
-    padding: 15px 16px 0 16px;
+    padding: 15px 20px 0;
     flex: 1;
 `;
 
@@ -65,25 +66,16 @@ export const Code = styled.Text`
     font-weight: bold;
 `;
 
-export const ActionButtonsContainer = styled.View`
-    margin-bottom: 30px;
-`;
-
-export const Button = styled(RectButton)`
+export const ActionsButtonsContainer = styled.View`
+    margin-top: 10px;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
 `;
 
-export const ButtonText = styled.Text`
-    color: ${props => props.theme.colors.text};
-    font-family: 'Open Sans';
-    font-size: 16px;
-`;
+export const ActionButton = styled(ButtonPaper).attrs(props => ({
+    color: props.theme.colors.accent,
+}))``;
 
 export const Icon = styled(Ionicons).attrs(props => ({
-    size: 30,
+    size: 22,
     color: props.theme.colors.text,
-}))`
-    margin-right: 10px;
-`;
+}))``;

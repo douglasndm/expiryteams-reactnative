@@ -24,9 +24,8 @@ import {
     CodeTitle,
     CodeContainer,
     Code,
-    ActionButtonsContainer,
-    Button,
-    ButtonText,
+    ActionsButtonsContainer,
+    ActionButton,
     Icon,
 } from './styles';
 
@@ -127,6 +126,19 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 <UserInfo>{user.email}</UserInfo>
                 <UserInfo>{userRole}</UserInfo>
 
+                <ActionsButtonsContainer>
+                    {user.id !== preferences.user.uid && (
+                        <ActionButton
+                            icon={() => (
+                                <Icon name="person-remove-outline" size={22} />
+                            )}
+                            onPress={handleRemoveUser}
+                        >
+                            Remover usuário
+                        </ActionButton>
+                    )}
+                </ActionsButtonsContainer>
+
                 {!!user.status &&
                     user.status.toLowerCase() === 'pending' &&
                     preferences.selectedTeam.role.toLowerCase() ===
@@ -141,15 +153,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                         </CodeDetails>
                     )}
             </PageContent>
-
-            <ActionButtonsContainer>
-                {user.id !== preferences.user.uid && (
-                    <Button onPress={handleRemoveUser}>
-                        <Icon name="person-remove-outline" />
-                        <ButtonText>Remover usuário</ButtonText>
-                    </Button>
-                )}
-            </ActionButtonsContainer>
         </Container>
     );
 };
