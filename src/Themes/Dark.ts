@@ -5,12 +5,12 @@ const Dark: DefaultTheme = {
     name: 'Escuro',
 
     colors: {
-        primary: darken(0.1, '#14d48f'),
-        accent: darken(0.1, '#14d48f'),
+        primary: darken(0.1, '#5856d6'),
+        accent: darken(0.1, '#5856d6'),
         background: 'rgba(0, 0, 0, 0.85)',
         text: '#fff',
         subText: '#EAEAEA',
-        textAccent: '#14d48f',
+        textAccent: '#5856d6',
 
         inputText: '#ffffff',
         inputBackground: '#565657',

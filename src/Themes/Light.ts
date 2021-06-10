@@ -4,12 +4,12 @@ const Light: DefaultTheme = {
     name: 'Claro',
 
     colors: {
-        primary: '#14d48f',
-        accent: '#14d48f',
+        primary: '#5856d6',
+        accent: '#5856d6',
         background: '#f6f6f6',
         text: '#000',
         subText: '#999999',
-        textAccent: '#14d48f',
+        textAccent: '#5856d6',
 
         inputText: '#050505',
         inputBackground: '#FFF',
