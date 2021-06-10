@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { addDays, isPast, parseISO } from 'date-fns';
+import { addDays, isPast, parseISO, compareAsc, startOfDay } from 'date-fns';
 
 import ProductCard from '~/Components/ListProducts/ProductCard';
 
@@ -18,15 +18,17 @@ const ProductContainer: React.FC<RequestProps> = ({
 
     const exp_date = useMemo(() => {
         if (product.batches[0]) {
-            return parseISO(product.batches[0].exp_date);
+            return startOfDay(parseISO(product.batches[0].exp_date));
         }
 
         return null;
     }, [product.batches]);
 
     const expired = useMemo(() => {
-        if (exp_date && isPast(exp_date)) {
-            return true;
+        if (exp_date) {
+            if (compareAsc(startOfDay(new Date()), exp_date) > 0) {
+                return true;
+            }
         }
         return false;
     }, [exp_date]);

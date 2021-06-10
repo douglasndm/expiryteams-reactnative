@@ -4,6 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import { translate } from '../../Locales';
 
+import {
+    sortBatches,
+    removeCheckedBatches,
+} from '~/Functions/Products/Batches';
+
 import ProductItem from './ProductContainer';
 
 import {
@@ -65,7 +70,11 @@ const ListProducts: React.FC<RequestProps> = ({
     }, []);
 
     const renderComponent = useCallback(({ item }) => {
-        return <ProductItem product={item} />;
+        const product: IProduct = item as IProduct;
+        product.batches = sortBatches(product.batches);
+        product.batches = removeCheckedBatches(product.batches);
+
+        return <ProductItem product={product} />;
     }, []);
 
     const handleRefresh = useCallback(() => {
