@@ -80,12 +80,12 @@ const List: React.FC = () => {
 
                 const sortedTeams = response.sort((team1, team2) => {
                     if (team1.team.active && !team2.team.active) {
-                        return -1;
+                        return 1;
                     }
                     if (team1.team.active && team2.team.active) {
                         return 0;
                     }
-                    return 1;
+                    return -1;
                 });
 
                 setTeams(sortedTeams);
