@@ -407,8 +407,8 @@ PODS:
     - React-Core
   - react-native-date-picker (3.0.3):
     - React
-  - react-native-document-picker (3.5.4):
-    - React
+  - react-native-document-picker (5.1.0):
+    - React-Core
   - react-native-in-app-review (2.1.7):
     - React
   - react-native-safe-area-context (3.2.0):
@@ -489,7 +489,7 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.14.0):
+  - RNCPicker (1.16.1):
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
@@ -514,7 +514,7 @@ PODS:
     - Firebase/Messaging (= 8.0.0)
     - React-Core
     - RNFBApp
-  - RNFS (2.16.6):
+  - RNFS (2.18.0):
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
@@ -877,7 +877,7 @@ SPEC CHECKSUMS:
   react-native-camera: cf8a153d33138dcc457172fc3c33fdf4e5d288d2
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-date-picker: e3793bde600b937ea6bcf66266278a8a0b0cb4d5
-  react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
+  react-native-document-picker: f2f73db94328c84e22144e369fb4a3ede47bc1f5
   react-native-in-app-review: 2b0126af72d8c0056a8c6e8d653782817bf4d7ab
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -898,7 +898,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: f47a7e8f927f7c9da947491fc55752eb9ce17f2d
   RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
+  RNCPicker: 61c7a0645b9e4ac67960aa7f22a3effcecfdfb8d
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326
   RNFBAnalytics: 00bbed9c37ce2d2e132de9a17b5990800cc69c4a
@@ -906,7 +906,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 6853dd2d92ed8635831679b695a6690151ae6b77
   RNFBCrashlytics: e99a7bedc194c6ab325197f6d5b06e42ca583efc
   RNFBMessaging: ba11538f4d76a5ef89dc8c97dad04fbf2fa6ebef
-  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
+  RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNLocalize: 99e59cad311ca1b6872b1764514009416ccba03d
   RNPermissions: 4c8a37b4dde50f1f152bf8cd08c4a43d2355829e

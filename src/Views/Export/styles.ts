@@ -8,14 +8,14 @@ export const Container = styled.View`
 
 export const Content = styled.ScrollView``;
 
-export const ExportOptionContainer = styled.View`
+export const OptionContainer = styled.View`
     margin: 10px;
     padding: 20px;
     border-radius: 12px;
     background-color: ${props => props.theme.colors.productBackground};
 `;
 
-export const ExportExplain = styled.Text`
+export const ExplainText = styled.Text`
     font-size: 16px;
     color: ${props => props.theme.colors.text};
 `;
@@ -35,8 +35,9 @@ export const RadioButtonGroupContainer = styled.View`
 
 export const RadioButtonContainer = styled.View`
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    width: 200px;
 `;
 
 export const RadioButtonText = styled.Text`

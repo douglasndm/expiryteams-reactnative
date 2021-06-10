@@ -1,8 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
+import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import { importExportFileFromApp } from '~/Functions/ImportExport';
 import { exportToExcel } from '~/Functions/Excel';
 
 import Header from '~/Components/Header';
@@ -11,8 +15,8 @@ import Button from '~/Components/Button';
 import {
     Container,
     Content,
-    ExportOptionContainer,
-    ExportExplain,
+    OptionContainer,
+    ExplainText,
     RadioButtonGroupContainer,
     SortTitle,
     RadioButtonContainer,
@@ -21,9 +25,48 @@ import {
 } from './styles';
 
 const Export: React.FC = () => {
+    const { reset } = useNavigation();
+
+    const { preferences } = useContext(PreferencesContext);
+
     const [checked, setChecked] = React.useState('created_at');
 
+    const [isImporting, setIsImporting] = useState<boolean>(false);
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
+
+    const handleImport = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            return;
+        }
+
+        try {
+            setIsImporting(true);
+
+            await importExportFileFromApp({
+                team_id: preferences.selectedTeam.team.id,
+            });
+
+            showMessage({
+                message: 'Produtos importados',
+                type: 'info',
+            });
+
+            reset({
+                routes: [
+                    {
+                        name: 'Home',
+                    },
+                ],
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsImporting(false);
+        }
+    }, [preferences.selectedTeam, reset]);
 
     const handleExportToExcel = useCallback(async () => {
         try {
@@ -54,10 +97,26 @@ const Export: React.FC = () => {
             <Header title={translate('View_Export_PageTitle')} />
 
             <Content>
-                <ExportOptionContainer>
-                    <ExportExplain>
+                {preferences.selectedTeam?.role.toLowerCase() === 'manager' && (
+                    <OptionContainer>
+                        <ExplainText>
+                            Tem um arquivo de exportação gerado pelo Controle de
+                            Validade individual? É aqui que você vai adiciona-lo
+                            e copiar todos seus produtos para esta versão.
+                        </ExplainText>
+
+                        <Button
+                            text="Selecionar arquivo"
+                            onPress={handleImport}
+                            isLoading={isImporting}
+                        />
+                    </OptionContainer>
+                )}
+
+                <OptionContainer>
+                    <ExplainText>
                         {translate('View_Export_Explain_Excel')}
-                    </ExportExplain>
+                    </ExplainText>
                     <RadioButtonGroupContainer>
                         <SortTitle>
                             {translate('View_Export_SortTitle')}
@@ -98,7 +157,7 @@ const Export: React.FC = () => {
                         onPress={handleExportToExcel}
                         isLoading={isExcelLoading}
                     />
-                </ExportOptionContainer>
+                </OptionContainer>
             </Content>
 
             <FlashMessage duration={5000} position="top" />
