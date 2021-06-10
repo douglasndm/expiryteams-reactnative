@@ -2,8 +2,6 @@ import { darken } from 'polished';
 import { DefaultTheme } from 'styled-components';
 
 const DarkGreen: DefaultTheme = {
-    name: 'Dark Green',
-
     colors: {
         primary: darken(0.1, '#33e860'),
         accent: darken(0.1, '#33e860'),
@@ -21,6 +19,9 @@ const DarkGreen: DefaultTheme = {
         productNextToExpBackground: darken(0.1, '#eded1f'),
         productThreatedBackground: darken(0.1, '#b0b0b0'),
         productNextOrExpiredText: '#FFF',
+
+        subscriptionBackground: darken(0.2, '#fff'),
+        subscriptionText: '#000',
     },
 };
 

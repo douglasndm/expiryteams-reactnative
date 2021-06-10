@@ -1,8 +1,7 @@
 import { DefaultTheme } from 'styled-components';
+import { darken } from 'polished';
 
 const Florest: DefaultTheme = {
-    name: 'Floresta',
-
     colors: {
         primary: '#B2EDC5',
         accent: '#B2EDC5',
@@ -20,6 +19,9 @@ const Florest: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        subscriptionBackground: darken(0.2, '#fff'),
+        subscriptionText: '#000',
     },
 };
 

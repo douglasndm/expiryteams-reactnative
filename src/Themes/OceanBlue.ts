@@ -1,8 +1,7 @@
 import { DefaultTheme } from 'styled-components';
+import { darken } from 'polished';
 
 const OceanBlue: DefaultTheme = {
-    name: 'Ocean Blue',
-
     colors: {
         primary: '#69dafa',
         accent: '#69dafa',
@@ -20,6 +19,9 @@ const OceanBlue: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        subscriptionBackground: darken(0.2, '#fff'),
+        subscriptionText: '#000',
     },
 };
 

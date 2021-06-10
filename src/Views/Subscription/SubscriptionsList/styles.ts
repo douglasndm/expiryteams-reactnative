@@ -23,11 +23,7 @@ export const SubscriptionContainer = styled(RectButton)<Offer>`
     max-width: 150px;
     margin: 10px 5px;
 
-    ${props =>
-        props.isSelected &&
-        css`
-            background-color: ${({ theme }) => theme.colors.inputBackground};
-        `}
+    background-color: ${props => props.theme.colors.subscriptionBackground};
 `;
 
 export const SubscriptionPeriodContainer = styled.View<Offer>`
@@ -43,10 +39,16 @@ export const SubscriptionPeriodContainer = styled.View<Offer>`
         `}
 `;
 
-export const TeamMembersLimit = styled.Text`
+export const TeamMembersLimit = styled.Text<Offer>`
     text-align: center;
     color: white;
     font-size: 17px;
+
+    ${props =>
+        !props.isSelected &&
+        css`
+            color: ${({ theme }) => theme.colors.text};
+        `}
 `;
 
 export const DetailsContainer = styled.View<Offer>`
@@ -71,12 +73,11 @@ export const SubscriptionDescription = styled.Text.attrs(() => ({
     text-align: center;
     align-self: center;
     font-size: 16px;
-
     ${props =>
         props.isSelected &&
         css`
             color: ${({ theme }) => theme.colors.text};
-        `}
+        `};
 `;
 
 export const ButtonSubscription = styled.TouchableOpacity`
@@ -89,7 +90,8 @@ export const ButtonSubscription = styled.TouchableOpacity`
 export const TextSubscription = styled.Text<Offer>`
     text-align: center;
     font-size: 17px;
-    color: #fff;
+
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 export const ButtonText = styled.Text`

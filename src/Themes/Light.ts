@@ -1,8 +1,7 @@
 import { DefaultTheme } from 'styled-components';
+import { darken } from 'polished';
 
 const Light: DefaultTheme = {
-    name: 'Claro',
-
     colors: {
         primary: '#5856d6',
         accent: '#5856d6',
@@ -20,6 +19,9 @@ const Light: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        subscriptionBackground: darken(0.2, '#fff'),
+        subscriptionText: '#000',
     },
 };
 

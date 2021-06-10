@@ -1,8 +1,7 @@
 import { DefaultTheme } from 'styled-components';
+import { darken } from 'polished';
 
 const HappyPink: DefaultTheme = {
-    name: 'Happy Pink',
-
     colors: {
         primary: '#f772b7',
         accent: '#f772b7',
@@ -20,6 +19,9 @@ const HappyPink: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        subscriptionBackground: darken(0.2, '#fff'),
+        subscriptionText: '#000',
     },
 };
 

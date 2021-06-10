@@ -168,31 +168,25 @@ const SubscriptionsList: React.FC = () => {
                     break;
             }
 
+            const isSelected = selected === pack.offeringIdentifier;
+
             return (
                 <SubscriptionContainer
                     onPress={() =>
                         handleSelectedChange(pack.offeringIdentifier)
                     }
-                    isSelected={selected === pack.offeringIdentifier}
+                    isSelected={isSelected}
                     key={pack.offeringIdentifier}
                 >
-                    <SubscriptionPeriodContainer
-                        isSelected={selected === pack.offeringIdentifier}
-                    >
-                        <TeamMembersLimit>{limit}</TeamMembersLimit>
+                    <SubscriptionPeriodContainer isSelected={isSelected}>
+                        <TeamMembersLimit isSelected={isSelected}>
+                            {limit}
+                        </TeamMembersLimit>
                     </SubscriptionPeriodContainer>
 
-                    <DetailsContainer
-                        isSelected={selected === pack.offeringIdentifier}
-                    >
-                        <SubscriptionDescription
-                            isSelected={selected === pack.offeringIdentifier}
-                        >
-                            <TextSubscription
-                                isSelected={
-                                    selected === pack.offeringIdentifier
-                                }
-                            >
+                    <DetailsContainer isSelected={isSelected}>
+                        <SubscriptionDescription isSelected={isSelected}>
+                            <TextSubscription isSelected={isSelected}>
                                 {!!introPrice &&
                                     `${introPrice.priceString} no primeiro mês, depois `}
                                 {`${price} mensais`}
