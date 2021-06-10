@@ -6,9 +6,7 @@ interface createTeamProps {
     name: string;
 }
 
-export async function createTeam({
-    name,
-}: createTeamProps): Promise<ITeam | IAPIError> {
+export async function createTeam({ name }: createTeamProps): Promise<ITeam> {
     const userSession = auth().currentUser;
 
     const token = await userSession?.getIdTokenResult();
@@ -28,11 +26,9 @@ export async function createTeam({
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }

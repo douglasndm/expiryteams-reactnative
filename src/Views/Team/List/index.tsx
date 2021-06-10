@@ -114,22 +114,20 @@ const List: React.FC = () => {
                 selectedTeam,
             });
 
-            if (!!preferences.user && preferences.selectedTeam) {
-                reset({
-                    routes: [
-                        {
-                            name: 'Routes',
-                            state: {
-                                routes: [
-                                    {
-                                        name: 'Home',
-                                    },
-                                ],
-                            },
+            reset({
+                routes: [
+                    {
+                        name: 'Routes',
+                        state: {
+                            routes: [
+                                {
+                                    name: 'Home',
+                                },
+                            ],
                         },
-                    ],
-                });
-            }
+                    },
+                ],
+            });
         },
         [teams, setPreferences, preferences, reset]
     );
