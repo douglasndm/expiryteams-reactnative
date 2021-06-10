@@ -16,6 +16,7 @@ import Loading from '~/Components/Loading';
 import {
     Container,
     PageHeader,
+    PageTitleContainer,
     PageTitle,
     PageContent,
     UserName,
@@ -27,6 +28,10 @@ import {
     ActionsButtonsContainer,
     ActionButton,
     Icon,
+    RadioButtonContainer,
+    RadioButton,
+    RadioButtonText,
+    RadioButtonContent,
 } from './styles';
 
 interface UserDetailsProps {
@@ -44,7 +49,20 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
     const { preferences } = useContext(PreferencesContext);
 
+    const [selectedRole, setSelectedRole] = useState(
+        'repositor' || 'supervisor'
+    );
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const enableManagerTools = useMemo(() => {
+        if (preferences.selectedTeam) {
+            if (preferences.selectedTeam.role.toLowerCase() === 'manager') {
+                return true;
+            }
+        }
+        return false;
+    }, [preferences.selectedTeam]);
 
     const user: IUserInTeam = useMemo(() => {
         return JSON.parse(route.params.user);
@@ -114,8 +132,33 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             <StatusBar />
 
             <PageHeader>
-                <BackButton handleOnPress={goBack} />
-                <PageTitle>{translate('View_UserDetails_PageTitle')}</PageTitle>
+                <PageTitleContainer>
+                    <BackButton handleOnPress={goBack} />
+                    <PageTitle>
+                        {translate('View_UserDetails_PageTitle')}
+                    </PageTitle>
+                </PageTitleContainer>
+
+                <ActionsButtonsContainer>
+                    {enableManagerTools && (
+                        <ActionButton
+                            icon={() => <Icon name="save-outline" size={22} />}
+                            onPress={() => {}}
+                        >
+                            Atualizar
+                        </ActionButton>
+                    )}
+                    {user.id !== preferences.user.uid && enableManagerTools && (
+                        <ActionButton
+                            icon={() => (
+                                <Icon name="person-remove-outline" size={22} />
+                            )}
+                            onPress={handleRemoveUser}
+                        >
+                            Remover
+                        </ActionButton>
+                    )}
+                </ActionsButtonsContainer>
             </PageHeader>
 
             <PageContent>
@@ -126,23 +169,9 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 <UserInfo>{user.email}</UserInfo>
                 <UserInfo>{userRole}</UserInfo>
 
-                <ActionsButtonsContainer>
-                    {user.id !== preferences.user.uid && (
-                        <ActionButton
-                            icon={() => (
-                                <Icon name="person-remove-outline" size={22} />
-                            )}
-                            onPress={handleRemoveUser}
-                        >
-                            Remover usuário
-                        </ActionButton>
-                    )}
-                </ActionsButtonsContainer>
-
                 {!!user.status &&
                     user.status.toLowerCase() === 'pending' &&
-                    preferences.selectedTeam.role.toLowerCase() ===
-                        'manager' && (
+                    enableManagerTools && (
                         <CodeDetails>
                             <CodeTitle>
                                 {translate('View_UserDetails_Code_Title')}
@@ -152,6 +181,49 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                             </CodeContainer>
                         </CodeDetails>
                     )}
+
+                {enableManagerTools && (
+                    <RadioButtonContainer>
+                        <RadioButtonContent>
+                            <RadioButton
+                                value="checked"
+                                status={
+                                    selectedRole === 'repositor'
+                                        ? 'checked'
+                                        : 'unchecked'
+                                }
+                                onPress={() => setSelectedRole('repositor')}
+                            />
+                            <RadioButtonText>Repositor</RadioButtonText>
+                        </RadioButtonContent>
+
+                        <RadioButtonContent>
+                            <RadioButton
+                                value="unchecked"
+                                status={
+                                    selectedRole === 'supervisor'
+                                        ? 'checked'
+                                        : 'unchecked'
+                                }
+                                onPress={() => setSelectedRole('supervisor')}
+                            />
+                            <RadioButtonText>Supervisor</RadioButtonText>
+                        </RadioButtonContent>
+
+                        {/* <RadioButtonContent>
+                            <RadioButton
+                                value="unchecked"
+                                status={
+                                    selectedRole === 'manager'
+                                        ? 'checked'
+                                        : 'unchecked'
+                                }
+                                onPress={() => setSelectedRole('supervisor')}
+                            />
+                            <RadioButtonText>Gerente</RadioButtonText>
+                        </RadioButtonContent> */}
+                    </RadioButtonContainer>
+                )}
             </PageContent>
         </Container>
     );

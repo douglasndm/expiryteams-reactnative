@@ -1,7 +1,10 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
-import { Button as ButtonPaper } from 'react-native-paper';
+import {
+    Button as ButtonPaper,
+    RadioButton as RadioPaper,
+} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.SafeAreaView`
@@ -12,6 +15,13 @@ export const Container = styled.SafeAreaView`
 export const PageHeader = styled.View`
     flex-direction: row;
     margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const PageTitleContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
 `;
 
 export const PageTitle = styled.Text`
@@ -67,8 +77,9 @@ export const Code = styled.Text`
 `;
 
 export const ActionsButtonsContainer = styled.View`
-    margin-top: 10px;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 5px;
 `;
 
 export const ActionButton = styled(ButtonPaper).attrs(props => ({
@@ -79,3 +90,23 @@ export const Icon = styled(Ionicons).attrs(props => ({
     size: 22,
     color: props.theme.colors.text,
 }))``;
+
+export const RadioButtonContainer = styled.View`
+    flex-direction: row;
+    justify-content: center;
+`;
+
+export const RadioButtonContent = styled.View`
+    flex-direction: row;
+    align-items: center;
+    margin-right: 10px;
+`;
+
+export const RadioButton = styled(RadioPaper).attrs(props => ({
+    color: props.theme.colors.accent,
+    uncheckedColor: props.theme.colors.subText,
+}))``;
+
+export const RadioButtonText = styled.Text`
+    color: ${({ theme }) => theme.colors.text};
+`;
