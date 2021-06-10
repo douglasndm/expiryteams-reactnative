@@ -118,16 +118,23 @@ const SubscriptionsList: React.FC = () => {
                         },
                     },
                 });
+
+                showMessage({
+                    message: 'Assinatura realizada com sucesso!',
+                    type: 'info',
+                });
+
+                reset({
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [{ name: 'Home' }],
+                            },
+                        },
+                    ],
+                });
             }
-
-            showMessage({
-                message: 'Assinatura realizada com sucesso!',
-                type: 'info',
-            });
-
-            reset({
-                routes: [{ name: 'Home' }],
-            });
         } catch (err) {
             showMessage({
                 message: err.message,
