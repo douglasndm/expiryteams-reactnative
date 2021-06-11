@@ -81,26 +81,28 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
 interface makePurchaseProps {
     pack: PurchasesPackage;
     team_id: string;
-    old_sku?: string;
 }
 
 export async function makePurchase({
     pack,
     team_id,
-    old_sku,
 }: makePurchaseProps): Promise<ITeamSubscription | null> {
     try {
         if (!team_id) {
             throw new Error('Provider team id');
         }
 
-        const upgrade: UpgradeInfo | null = old_sku
-            ? {
-                  oldSKU: old_sku,
-              }
-            : null;
-
         await Purchases.identify(team_id);
+
+        const prevPurchases = await Purchases.getPurchaserInfo();
+
+        const upgrade: UpgradeInfo | null =
+            prevPurchases.activeSubscriptions.length > 0
+                ? {
+                      oldSKU: prevPurchases.activeSubscriptions[0],
+                  }
+                : null;
+
         const {
             purchaserInfo,
             // productIdentifier,

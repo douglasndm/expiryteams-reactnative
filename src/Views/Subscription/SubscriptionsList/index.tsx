@@ -101,7 +101,6 @@ const SubscriptionsList: React.FC = () => {
             const purchase = await makePurchase({
                 pack: selectedOffer.package,
                 team_id: preferences.selectedTeam.team.id,
-                old_sku: currentSub?.SKU_bought,
             });
 
             if (purchase) {
