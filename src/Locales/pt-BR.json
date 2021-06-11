@@ -77,6 +77,8 @@
     "View_About_AppVersion": "",
     "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Criado por Douglas Nunes de Mattos",
+    "View_About_NeedHelp": "Precisa de ajuda",
+    "View_About_HelpTelegram": "Entre em contato no Telegram",
     "View_About_LogoMadeBy": "Logo feito por",
 
     "View_AddBatch_AlertTypeBatchName": "Digite o nome do lote",

@@ -76,9 +76,9 @@ const About: React.FC = () => {
             </AboutSection>
 
             <AboutSection>
-                <Text>Precisa de suporte?</Text>
+                <Text>{translate('View_About_NeedHelp')}</Text>
                 <Link onPress={navigateToTelegram}>
-                    Entre em contato no Telegram
+                    {translate('View_About_HelpTelegram')}
                 </Link>
             </AboutSection>
 

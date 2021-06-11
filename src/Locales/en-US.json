@@ -76,6 +76,8 @@
     "View_About_PageTitle": "About",
     "View_About_AppVersion": "",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
+    "View_About_NeedHelp": "Need help?",
+    "View_About_HelpTelegram": "Contact on Telegram",
     "View_About_LogoMadeBy": "Logo made by",
 
     "View_AddBatch_AlertTypeBatchName": "Type the batch's name",
