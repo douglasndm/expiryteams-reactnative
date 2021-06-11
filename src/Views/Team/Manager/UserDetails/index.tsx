@@ -49,6 +49,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
     const { preferences } = useContext(PreferencesContext);
 
+    const user: IUserInTeam = useMemo(() => {
+        return JSON.parse(route.params.user);
+    }, [route.params.user]);
+
     const [selectedRole, setSelectedRole] = useState(
         'repositor' || 'supervisor'
     );
@@ -64,9 +68,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         return false;
     }, [preferences.selectedTeam]);
 
-    const user: IUserInTeam = useMemo(() => {
-        return JSON.parse(route.params.user);
-    }, [route.params.user]);
+    const userIsPending = useMemo(() => {
+        if (user.status) {
+            if (user.status.toLowerCase() === 'pending') {
+                return true;
+            }
+        }
+        return false;
+    }, [user.status]);
 
     const userRole = useMemo(() => {
         if (user.role) {
@@ -139,26 +148,33 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                     </PageTitle>
                 </PageTitleContainer>
 
-                <ActionsButtonsContainer>
-                    {enableManagerTools && (
-                        <ActionButton
-                            icon={() => <Icon name="save-outline" size={22} />}
-                            onPress={() => {}}
-                        >
-                            Atualizar
-                        </ActionButton>
-                    )}
-                    {user.id !== preferences.user.uid && enableManagerTools && (
-                        <ActionButton
-                            icon={() => (
-                                <Icon name="person-remove-outline" size={22} />
-                            )}
-                            onPress={handleRemoveUser}
-                        >
-                            Remover
-                        </ActionButton>
-                    )}
-                </ActionsButtonsContainer>
+                {enableManagerTools && (
+                    <ActionsButtonsContainer>
+                        {!userIsPending && (
+                            <ActionButton
+                                icon={() => (
+                                    <Icon name="save-outline" size={22} />
+                                )}
+                                onPress={() => {}}
+                            >
+                                Atualizar
+                            </ActionButton>
+                        )}
+                        {user.id !== preferences.user.uid && (
+                            <ActionButton
+                                icon={() => (
+                                    <Icon
+                                        name="person-remove-outline"
+                                        size={22}
+                                    />
+                                )}
+                                onPress={handleRemoveUser}
+                            >
+                                Remover
+                            </ActionButton>
+                        )}
+                    </ActionsButtonsContainer>
+                )}
             </PageHeader>
 
             <PageContent>
@@ -169,20 +185,18 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 <UserInfo>{user.email}</UserInfo>
                 <UserInfo>{userRole}</UserInfo>
 
-                {!!user.status &&
-                    user.status.toLowerCase() === 'pending' &&
-                    enableManagerTools && (
-                        <CodeDetails>
-                            <CodeTitle>
-                                {translate('View_UserDetails_Code_Title')}
-                            </CodeTitle>
-                            <CodeContainer onPress={handleCopyCode}>
-                                <Code>{user.code}</Code>
-                            </CodeContainer>
-                        </CodeDetails>
-                    )}
+                {userIsPending && enableManagerTools && (
+                    <CodeDetails>
+                        <CodeTitle>
+                            {translate('View_UserDetails_Code_Title')}
+                        </CodeTitle>
+                        <CodeContainer onPress={handleCopyCode}>
+                            <Code>{user.code}</Code>
+                        </CodeContainer>
+                    </CodeDetails>
+                )}
 
-                {enableManagerTools && (
+                {enableManagerTools && !userIsPending && (
                     <RadioButtonContainer>
                         <RadioButtonContent>
                             <RadioButton
