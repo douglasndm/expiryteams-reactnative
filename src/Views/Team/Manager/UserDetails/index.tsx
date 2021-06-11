@@ -8,6 +8,7 @@ import { translate } from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { removeUserFromTeam } from '~/Functions/Team/Users';
+import { updateUserRole } from '~/Functions/User/Roles';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -53,9 +54,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         return JSON.parse(route.params.user);
     }, [route.params.user]);
 
-    const [selectedRole, setSelectedRole] = useState(
-        'repositor' || 'supervisor'
-    );
+    const [selectedRole, setSelectedRole] = useState<
+        'repositor' | 'supervisor' | 'manager'
+    >(() => {
+        if (user.role) {
+            return user.role;
+        }
+        return 'repositor';
+    });
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -134,6 +140,34 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         }
     }, [preferences.selectedTeam, reset, user.id]);
 
+    const handleUpdateRole = useCallback(async () => {
+        if (!preferences.selectedTeam) {
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+
+            await updateUserRole({
+                user_id: user.id,
+                team_id: preferences.selectedTeam.team.id,
+                newRole: selectedRole,
+            });
+
+            showMessage({
+                message: 'Cargo do usuário atualizado',
+                type: 'info',
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [preferences.selectedTeam, selectedRole, user.id]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -155,7 +189,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                                 icon={() => (
                                     <Icon name="save-outline" size={22} />
                                 )}
-                                onPress={() => {}}
+                                onPress={handleUpdateRole}
                             >
                                 Atualizar
                             </ActionButton>
