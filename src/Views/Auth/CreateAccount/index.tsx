@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
+import * as Yup from 'yup';
 
 import { translate } from '~/Locales';
 
@@ -61,23 +62,30 @@ const CreateAccount: React.FC = () => {
     }, [hidePassConf]);
 
     const handleCreateAccount = useCallback(async () => {
-        if (
-            name.trim() === '' ||
-            lastName.trim() === '' ||
-            email.trim() === '' ||
-            password.trim() === '' ||
-            passwordConfirm.trim() === ''
-        ) {
-            showMessage({
-                message: 'Todos os campos são obrigatorios',
-                type: 'warning',
-            });
-            return;
-        }
+        const schema = Yup.object().shape({
+            name: Yup.string().required('Digite o seu nome'),
+            lastName: Yup.string().required('Digite seu sobrenome'),
+            email: Yup.string()
+                .required('E-mail é obrigátio')
+                .email('E-mail inválido'),
+            password: Yup.string().required('Digite a senha').min(6),
+            passwordConfirm: Yup.string().oneOf(
+                [Yup.ref('password'), null],
+                'Confirmação da senha não corresponde a senha'
+            ),
+        });
 
-        if (password !== passwordConfirm) {
+        try {
+            await schema.validate({
+                name,
+                lastName,
+                email,
+                password,
+                passwordConfirm,
+            });
+        } catch (err) {
             showMessage({
-                message: 'A confirmação da senha não é válida',
+                message: err.errors[0],
                 type: 'warning',
             });
             return;
@@ -124,7 +132,7 @@ const CreateAccount: React.FC = () => {
                         <InputText
                             placeholder="Nome"
                             autoCorrect={false}
-                            autoCapitalize="none"
+                            autoCapitalize="words"
                             value={name}
                             onChangeText={handleNameChange}
                         />
@@ -133,7 +141,7 @@ const CreateAccount: React.FC = () => {
                         <InputText
                             placeholder="Sobrenome"
                             autoCorrect={false}
-                            autoCapitalize="none"
+                            autoCapitalize="words"
                             value={lastName}
                             onChangeText={handleLastNameChange}
                         />
