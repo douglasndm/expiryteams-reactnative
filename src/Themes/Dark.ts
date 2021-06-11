@@ -20,7 +20,7 @@ const Dark: DefaultTheme = {
         productThreatedBackground: darken(0.1, '#b0b0b0'),
         productNextOrExpiredText: '#FFF',
 
-        subscriptionBackground: darken(0.2, '#fff'),
+        subscriptionBackground: darken(0.2, '#000'),
         subscriptionText: '#000',
     },
 };

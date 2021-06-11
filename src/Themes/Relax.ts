@@ -1,8 +1,7 @@
+import { darken } from 'polished';
 import { DefaultTheme } from 'styled-components';
 
 const Relax: DefaultTheme = {
-    name: 'Relax',
-
     colors: {
         primary: '#99e1d9',
         accent: '#99e1d9',
@@ -20,6 +19,9 @@ const Relax: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        subscriptionBackground: darken(0.2, '#fff'),
+        subscriptionText: '#000',
     },
 };
 
