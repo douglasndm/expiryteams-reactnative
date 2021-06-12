@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components/native';
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     background: ${props => props.theme.colors.background};
 `;
@@ -12,28 +11,6 @@ export const Content = styled.View`
 export const PageTitleContainer = styled.View`
     flex-direction: row;
     align-items: center;
-
-    ${isIphoneX() &&
-    css`
-        padding-top: ${getStatusBarHeight() + 20}px;
-    `}
-`;
-
-export const LoadingContainer = styled.View`
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-`;
-
-export const Loading = styled.ActivityIndicator.attrs(() => ({
-    size: 48,
-    color: '#fff',
-}))``;
-
-export const LoadingText = styled.Text`
-    color: ${props => props.theme.colors.text};
-    font-size: 30px;
-    font-family: 'Open Sans';
 `;
 
 interface InputTextContainerProps {

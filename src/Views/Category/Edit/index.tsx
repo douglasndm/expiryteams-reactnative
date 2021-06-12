@@ -21,6 +21,7 @@ import {
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import BackButton from '~/Components/BackButton';
+import Loading from '~/Components/Loading';
 
 import { PageHeader, PageTitle } from '~/Views/Product/Add/styles';
 import {
@@ -35,9 +36,6 @@ import {
     Container,
     Content,
     PageTitleContainer,
-    LoadingContainer,
-    Loading,
-    LoadingText,
     InputTextContainer,
     InputText,
     InputTextTip,
@@ -54,13 +52,16 @@ const Edit: React.FC = () => {
     const { preferences } = useContext(PreferencesContext);
 
     const userRole = useMemo(() => {
-        return preferences.selectedTeam.role.toLowerCase();
-    }, [preferences.selectedTeam.role]);
+        if (preferences.selectedTeam) {
+            return preferences.selectedTeam.role.toLowerCase();
+        }
+        return 'repositor';
+    }, [preferences.selectedTeam]);
 
     const [name, setName] = useState<string | undefined>(undefined);
     const [errorName, setErrorName] = useState<string>('');
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const routeParams = params as Props;
@@ -89,17 +90,19 @@ const Edit: React.FC = () => {
     }, [routeParams.id, reset]);
 
     const loadData = useCallback(async () => {
-        const category = await getCategory({ category_id: routeParams.id });
+        try {
+            setIsLoading(true);
+            const category = await getCategory({ category_id: routeParams.id });
 
-        if ('error' in category) {
+            setName(category.name);
+        } catch (err) {
             showMessage({
-                message: category.error,
+                message: err.message,
                 type: 'danger',
             });
-            return;
+        } finally {
+            setIsLoading(false);
         }
-
-        setName(category.name);
     }, [routeParams.id]);
 
     useEffect(() => {
@@ -117,114 +120,90 @@ const Edit: React.FC = () => {
             return;
         }
 
-        const updatedCategory = await updateCategory({
-            category: {
-                id: routeParams.id,
-                name,
-            },
-        });
+        try {
+            setIsLoading(true);
 
-        if ('error' in updatedCategory) {
+            await updateCategory({
+                category: {
+                    id: routeParams.id,
+                    name,
+                },
+            });
+
             showMessage({
-                message: updatedCategory.error,
+                message: translate('View_Category_Edit_SuccessText'),
+                type: 'info',
+            });
+
+            reset({
+                routes: [
+                    { name: 'Home' },
+                    {
+                        name: 'ListCategory',
+                    },
+                ],
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
                 type: 'danger',
             });
-            return;
+        } finally {
+            setIsLoading(false);
         }
-
-        showMessage({
-            message: translate('View_Category_Edit_SuccessText'),
-            type: 'info',
-        });
-
-        reset({
-            routes: [
-                { name: 'Home' },
-                {
-                    name: 'ListCategory',
-                },
-            ],
-        });
     }, [routeParams.id, name, reset]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             <Container>
-                {isLoading ? (
-                    <LoadingContainer>
-                        <Loading />
-                        <LoadingText>
-                            {translate('App_Loading_Text')}
-                        </LoadingText>
-                    </LoadingContainer>
-                ) : (
-                    <>
-                        <PageHeader>
-                            <PageTitleContainer>
-                                <BackButton handleOnPress={goBack} />
-                                <PageTitle>
-                                    {translate('View_Category_Edit_PageTitle')}
-                                </PageTitle>
-                            </PageTitleContainer>
-                        </PageHeader>
+                <PageHeader>
+                    <PageTitleContainer>
+                        <BackButton handleOnPress={goBack} />
+                        <PageTitle>
+                            {translate('View_Category_Edit_PageTitle')}
+                        </PageTitle>
+                    </PageTitleContainer>
 
-                        <Content>
-                            <InputTextContainer hasError={!!errorName}>
-                                <InputText
-                                    placeholder={translate(
-                                        'View_Category_Edit_InputNamePlaceholder'
-                                    )}
-                                    value={name}
-                                    onChangeText={onNameChange}
-                                />
-                            </InputTextContainer>
-                            {!!errorName && (
-                                <InputTextTip>{errorName}</InputTextTip>
-                            )}
+                    <ActionsButtonContainer>
+                        <ButtonPaper
+                            icon={() => <Icons name="save-outline" size={22} />}
+                            onPress={handleUpdate}
+                        >
+                            {translate('View_Category_Edit_ButtonSave')}
+                        </ButtonPaper>
 
-                            <ActionsButtonContainer>
-                                <ButtonPaper
-                                    icon={() => (
-                                        <Icons name="save-outline" size={22} />
-                                    )}
-                                    onPress={handleUpdate}
-                                >
-                                    {translate('View_Category_Edit_ButtonSave')}
-                                </ButtonPaper>
-
-                                {(userRole === 'manager' ||
-                                    userRole === 'supervisor') && (
-                                    <ButtonPaper
-                                        icon={() => (
-                                            <Icons
-                                                name="trash-outline"
-                                                size={22}
-                                            />
-                                        )}
-                                        onPress={() => {
-                                            setDeleteComponentVisible(true);
-                                        }}
-                                    >
-                                        {translate(
-                                            'View_ProductDetails_Button_DeleteProduct'
-                                        )}
-                                    </ButtonPaper>
+                        {(userRole === 'manager' ||
+                            userRole === 'supervisor') && (
+                            <ButtonPaper
+                                icon={() => (
+                                    <Icons name="trash-outline" size={22} />
                                 )}
+                                onPress={() => {
+                                    setDeleteComponentVisible(true);
+                                }}
+                            >
+                                {translate(
+                                    'View_ProductDetails_Button_DeleteProduct'
+                                )}
+                            </ButtonPaper>
+                        )}
+                    </ActionsButtonContainer>
+                </PageHeader>
 
-                                <ButtonPaper
-                                    icon={() => (
-                                        <Icons name="exit-outline" size={22} />
-                                    )}
-                                    onPress={goBack}
-                                >
-                                    {translate(
-                                        'View_EditProduct_Button_Cancel'
-                                    )}
-                                </ButtonPaper>
-                            </ActionsButtonContainer>
-                        </Content>
-                    </>
-                )}
+                <Content>
+                    <InputTextContainer hasError={!!errorName}>
+                        <InputText
+                            placeholder={translate(
+                                'View_Category_Edit_InputNamePlaceholder'
+                            )}
+                            value={name}
+                            onChangeText={onNameChange}
+                        />
+                    </InputTextContainer>
+                    {!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+                </Content>
             </Container>
             <DialogPaper
                 visible={deleteComponentVisible}
