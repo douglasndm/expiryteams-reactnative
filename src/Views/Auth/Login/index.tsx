@@ -63,6 +63,24 @@ const Login: React.FC = () => {
 
         if (session) {
             if (session.emailVerified) {
+                if (preferences.selectedTeam) {
+                    reset({
+                        routes: [
+                            {
+                                name: 'Routes',
+                                state: {
+                                    routes: [
+                                        {
+                                            name: 'Home',
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                    });
+                    return;
+                }
+
                 handleNavigateUser(session);
                 return;
             }
@@ -70,7 +88,7 @@ const Login: React.FC = () => {
                 routes: [{ name: 'VerifyEmail' }],
             });
         }
-    }, [handleNavigateUser, reset]);
+    }, [handleNavigateUser, preferences.selectedTeam, reset]);
 
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({

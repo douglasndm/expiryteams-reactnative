@@ -11,7 +11,6 @@ import './src/Functions/OpenAppTimes';
 
 // Register background handler
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-    handleSetNotification();
     console.log('Message handled in the background!', remoteMessage);
   });
 
