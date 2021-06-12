@@ -192,7 +192,7 @@ const List: React.FC = () => {
 
             return (
                 <TeamItemContainer
-                    isPending={isPending}
+                    isPending={isPending || !item.team.active}
                     onPress={handleNavigate}
                 >
                     <TeamItemTitle>{item.team.name}</TeamItemTitle>
