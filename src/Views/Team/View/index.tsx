@@ -57,7 +57,7 @@ const ViewTeam: React.FC = () => {
                 compareAsc(
                     startOfDay(new Date()),
                     startOfDay(parseISO(String(response.expireIn)))
-                ) <= 0
+                ) >= 0
             ) {
                 setSubs(response);
                 return;
