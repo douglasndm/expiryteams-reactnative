@@ -44,7 +44,6 @@
     "ProductCardComponent_ProductCode": "Code",
     "ProductCardComponent_ProductBatch": "Batch",
     "ProductCardComponent_OthersBatches": "other batches",
-    "ProductCardComponent_ProductStore": "Store",
     "ProductCardComponent_ProductAmount": "Amount",
     "ProductCardComponent_ProductPrice": "Total price",
     "ProductCardComponent_ProductExpireIn": "Expire",

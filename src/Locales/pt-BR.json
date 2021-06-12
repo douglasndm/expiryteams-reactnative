@@ -44,7 +44,6 @@
     "ProductCardComponent_ProductCode": "Código",
     "ProductCardComponent_ProductBatch": "Lote",
     "ProductCardComponent_OthersBatches": "outros lotes",
-    "ProductCardComponent_ProductStore": "Loja",
     "ProductCardComponent_ProductAmount": "Quantidade",
     "ProductCardComponent_ProductPrice": "Preço total",
     "ProductCardComponent_ProductExpireIn": "Vence",
@@ -156,7 +155,7 @@
     "View_ProductDetails_WarningDelete_Button_Cancel": "Manter produto",
     "View_ProductDetails_TableComponent_BatchNameColumnTitle": "Lote",
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Vence em",
-    "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
+    "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Qtd",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
 
     "View_ShareProduct_Title": "Favor checar o produto",

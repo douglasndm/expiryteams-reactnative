@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { addDays, isPast, parseISO, compareAsc, startOfDay } from 'date-fns';
+import { addDays, isPast, parseISO, startOfDay } from 'date-fns';
 
 import ProductCard from '~/Components/ListProducts/ProductCard';
 
@@ -16,30 +16,43 @@ const ProductContainer: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { preferences } = useContext(PreferencesContext);
 
-    const exp_date = useMemo(() => {
-        if (product.batches[0]) {
-            return startOfDay(parseISO(product.batches[0].exp_date));
+    const batch = useMemo(() => {
+        const sortedBatches = product.batches.sort((batch1, batch2) => {
+            if (batch1.exp_date > batch2.exp_date) return 1;
+            if (batch1.exp_date < batch2.exp_date) return -1;
+            return 0;
+        });
+
+        if (sortedBatches[0]) {
+            return sortedBatches[0];
         }
 
         return null;
     }, [product.batches]);
 
+    const exp_date = useMemo(() => {
+        if (batch) {
+            return startOfDay(parseISO(batch.exp_date));
+        }
+        return null;
+    }, [batch]);
+
     const expired = useMemo(() => {
         if (exp_date) {
-            if (compareAsc(startOfDay(new Date()), exp_date) > 0) {
-                return true;
-            }
+            return isPast(exp_date);
         }
         return false;
     }, [exp_date]);
 
     const nextToExp = useMemo(() => {
-        if (
-            exp_date &&
-            addDays(new Date(), preferences.howManyDaysToBeNextToExpire) >=
+        if (exp_date) {
+            if (
+                addDays(new Date(), preferences.howManyDaysToBeNextToExpire) >=
                 exp_date
-        )
-            return true;
+            ) {
+                return true;
+            }
+        }
 
         return false;
     }, [preferences.howManyDaysToBeNextToExpire, exp_date]);

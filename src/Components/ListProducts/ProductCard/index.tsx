@@ -1,10 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-    useContext,
-    useMemo,
-    useCallback,
-} from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { format, formatDistanceToNow, parseISO } from 'date-fns'; // eslint-disable-line
@@ -12,8 +6,6 @@ import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 
 
 import { translate } from '~/Locales';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getProductImagePath } from '~/Functions/Products/Image';
 
@@ -37,42 +29,45 @@ interface Request {
 const Product = ({ product, expired, nextToExp }: Request) => {
     const { navigate } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
-
     const [imagePath, setImagePath] = useState<string>('');
-    const [storeName, setStoreName] = useState<string | null>();
 
-    const [languageCode] = useState(() => {
+    const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
             return enUS;
         }
         return ptBR;
-    });
-    const [dateFormat] = useState(() => {
+    }, []);
+    const dateFormat = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
             return 'MM/dd/yyyy';
         }
         return 'dd/MM/yyyy';
-    });
-
-    const exp_date = useMemo(() => {
-        if (product.batches[0]) {
-            return parseISO(product.batches[0].exp_date);
-        }
-        return null;
-    }, [product.batches]);
+    }, []);
 
     const expiredOrNext = useMemo(() => {
         return !!(expired || nextToExp);
     }, [expired, nextToExp]);
 
     const batch = useMemo(() => {
-        if (product.batches[0]) {
-            return product.batches[0];
+        const sortedBatches = product.batches.sort((batch1, batch2) => {
+            if (batch1.exp_date > batch2.exp_date) return 1;
+            if (batch1.exp_date < batch2.exp_date) return -1;
+            return 0;
+        });
+
+        if (sortedBatches[0]) {
+            return sortedBatches[0];
         }
 
         return null;
     }, [product.batches]);
+
+    const exp_date = useMemo(() => {
+        if (batch) {
+            return parseISO(batch.exp_date);
+        }
+        return null;
+    }, [batch]);
 
     const handleNavigateToProduct = useCallback(() => {
         navigate('ProductDetails', { id: product.id });
@@ -86,9 +81,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
             onPress={handleNavigateToProduct}
         >
             <Content>
-                {preferences.isUserPremium && !!imagePath && (
-                    <ProductImage source={{ uri: imagePath }} />
-                )}
+                {!!imagePath && <ProductImage source={{ uri: imagePath }} />}
 
                 <TextContainer>
                     <ProductName expiredOrNext={expiredOrNext}>
@@ -103,28 +96,18 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductInfoItem>
                         )}
 
-                        {product.batches.length > 0 &&
-                            !!product.batches[0].name && (
-                                <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                    {translate(
-                                        'ProductCardComponent_ProductBatch'
-                                    )}
-                                    : {product.batches[0].name}
-                                </ProductInfoItem>
-                            )}
+                        {!!batch && !!batch.name && (
+                            <ProductInfoItem expiredOrNext={expiredOrNext}>
+                                {translate('ProductCardComponent_ProductBatch')}
+                                : {batch.name}
+                            </ProductInfoItem>
+                        )}
 
                         {product.batches.length > 1 && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {`${product.batches.length - 1} ${translate(
                                     'ProductCardComponent_OthersBatches'
                                 )}`}
-                            </ProductInfoItem>
-                        )}
-
-                        {preferences.multiplesStores && !!storeName && (
-                            <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {translate('ProductCardComponent_ProductStore')}
-                                : {storeName}
                             </ProductInfoItem>
                         )}
 
