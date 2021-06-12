@@ -178,17 +178,19 @@ const ListUsers: React.FC = () => {
                     isPending={isPending}
                 >
                     <UserInfoContainer>
+                        <TeamItemRole>
+                            {isPending
+                                ? translate(
+                                      'View_UsersInTeam_List_PendingStatus'
+                                  )
+                                : item.role.toUpperCase()}
+                        </TeamItemRole>
                         {!!item.name && (
                             <TeamItemTitle>{item.name}</TeamItemTitle>
                         )}
 
                         <UserEmail>{item.email}</UserEmail>
                     </UserInfoContainer>
-                    <TeamItemRole>
-                        {isPending
-                            ? translate('View_UsersInTeam_List_PendingStatus')
-                            : item.role.toUpperCase()}
-                    </TeamItemRole>
                 </TeamItemContainer>
             );
         },

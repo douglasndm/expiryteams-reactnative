@@ -51,6 +51,7 @@ export const UserEmail = styled.Text`
 export const TeamItemRole = styled.Text`
     color: ${props => props.theme.colors.text};
     font-size: 15px;
+    margin-bottom: 2px;
 `;
 
 export const AddCategoryContent = styled.View`

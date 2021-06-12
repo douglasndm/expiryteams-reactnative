@@ -182,7 +182,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                     </PageTitle>
                 </PageTitleContainer>
 
-                {enableManagerTools && (
+                {enableManagerTools && user.id !== preferences.user.uid && (
                     <ActionsButtonsContainer>
                         {!userIsPending && (
                             <ActionButton
@@ -194,19 +194,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                                 Atualizar
                             </ActionButton>
                         )}
-                        {user.id !== preferences.user.uid && (
-                            <ActionButton
-                                icon={() => (
-                                    <Icon
-                                        name="person-remove-outline"
-                                        size={22}
-                                    />
-                                )}
-                                onPress={handleRemoveUser}
-                            >
-                                Remover
-                            </ActionButton>
-                        )}
+                        <ActionButton
+                            icon={() => (
+                                <Icon name="person-remove-outline" size={22} />
+                            )}
+                            onPress={handleRemoveUser}
+                        >
+                            Remover
+                        </ActionButton>
                     </ActionsButtonsContainer>
                 )}
             </PageHeader>
@@ -230,35 +225,39 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                     </CodeDetails>
                 )}
 
-                {enableManagerTools && !userIsPending && (
-                    <RadioButtonContainer>
-                        <RadioButtonContent>
-                            <RadioButton
-                                value="checked"
-                                status={
-                                    selectedRole === 'repositor'
-                                        ? 'checked'
-                                        : 'unchecked'
-                                }
-                                onPress={() => setSelectedRole('repositor')}
-                            />
-                            <RadioButtonText>Repositor</RadioButtonText>
-                        </RadioButtonContent>
+                {enableManagerTools &&
+                    user.id !== preferences.user.uid &&
+                    !userIsPending && (
+                        <RadioButtonContainer>
+                            <RadioButtonContent>
+                                <RadioButton
+                                    value="checked"
+                                    status={
+                                        selectedRole === 'repositor'
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() => setSelectedRole('repositor')}
+                                />
+                                <RadioButtonText>Repositor</RadioButtonText>
+                            </RadioButtonContent>
 
-                        <RadioButtonContent>
-                            <RadioButton
-                                value="unchecked"
-                                status={
-                                    selectedRole === 'supervisor'
-                                        ? 'checked'
-                                        : 'unchecked'
-                                }
-                                onPress={() => setSelectedRole('supervisor')}
-                            />
-                            <RadioButtonText>Supervisor</RadioButtonText>
-                        </RadioButtonContent>
+                            <RadioButtonContent>
+                                <RadioButton
+                                    value="unchecked"
+                                    status={
+                                        selectedRole === 'supervisor'
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() =>
+                                        setSelectedRole('supervisor')
+                                    }
+                                />
+                                <RadioButtonText>Supervisor</RadioButtonText>
+                            </RadioButtonContent>
 
-                        {/* <RadioButtonContent>
+                            {/* <RadioButtonContent>
                             <RadioButton
                                 value="unchecked"
                                 status={
@@ -270,8 +269,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                             />
                             <RadioButtonText>Gerente</RadioButtonText>
                         </RadioButtonContent> */}
-                    </RadioButtonContainer>
-                )}
+                        </RadioButtonContainer>
+                    )}
             </PageContent>
         </Container>
     );
