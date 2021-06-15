@@ -51,7 +51,7 @@ export async function createUser({
     try {
         const { currentUser } = auth();
 
-        const response = await api.post<IUser>('/users', {
+        await api.post<IUser>('/users', {
             firebaseUid: currentUser?.uid,
             name,
             lastName,

@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 
 import api from '~/Services/API';
 
@@ -48,4 +49,23 @@ export async function resendConfirmationEmail(): Promise<void> {
     } catch (err) {
         throw new Error(err.message);
     }
+}
+
+export async function createSeassion(): Promise<void> {
+    const userSession = auth().currentUser;
+    const token = await userSession?.getIdTokenResult();
+
+    const deviceToken = await messaging().getToken();
+
+    await api.post(
+        `/sessions`,
+        {
+            device_id: deviceToken,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token?.token}`,
+            },
+        }
+    );
 }

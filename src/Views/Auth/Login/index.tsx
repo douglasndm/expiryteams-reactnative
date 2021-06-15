@@ -11,6 +11,7 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { loginFirebase } from '~/Functions/Auth/Firebase';
 import { createUser, getUser } from '~/Functions/User';
+import { createSeassion } from '~/Functions/Auth/Account';
 
 import Button from '~/Components/Button';
 
@@ -120,6 +121,9 @@ const Login: React.FC = () => {
                     });
                 }
             }
+
+            // Here we register the user device
+            await createSeassion();
 
             if (response.emailVerified) {
                 handleNavigateUser(response);

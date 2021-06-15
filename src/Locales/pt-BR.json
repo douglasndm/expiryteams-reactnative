@@ -251,7 +251,7 @@
     "View_Category_Edit_SuccessText": "Atualizado",
     "View_Category_Edit_ErrorEmtpyName": "Digite o nome da categoria",
     "View_Category_Edit_DeleteModal_Title": "Você tem certeza?",
-    "View_Category_Edit_DeleteModal_Message": "Continuando você irá apagar a categoria. Todos os produtos referenciados a categoria modificar de exibir a categoria.",
+    "View_Category_Edit_DeleteModal_Message": "Continuando você irá apagar a categoria. Todos os produtos referenciados a categoria deixará de exibir a categoria.",
     "View_Category_Edit_DeleteModal_Confirm": "Tenho certeza",
     "View_Category_Edit_DeleteModal_Cancel": "Manter categoria",
 
