@@ -286,7 +286,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         )}
                     </PageContent>
                 </ScrollView>
-                <FlashMessage duration={5000} position="top" />
             </Container>
 
             <FloatButton

@@ -16,10 +16,11 @@ export async function getAllProducts({
             `/team/${team_id}/products`
         );
 
-        if (!response.data) {
-            return [];
+        if (response) {
+            return response.data.products;
         }
-        return response.data.products;
+
+        return [];
     } catch (err) {
         if (!err.response) {
             throw new Error('Network error');

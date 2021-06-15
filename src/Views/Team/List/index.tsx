@@ -11,6 +11,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { isUserSigned } from '~/Functions/Auth/User';
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
@@ -60,16 +61,19 @@ const List: React.FC = () => {
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const response = await getUserTeams();
+            const userSigned = isUserSigned();
 
-            if ('error' in response) {
-                if (response.status === 401 || response.status === 403) {
-                    reset({
-                        routes: [{ name: 'Logout' }],
-                    });
-                }
+            if (!userSigned) {
+                showMessage({
+                    message: 'Você foi desconectado',
+                    description: 'Por favor faça login novamente',
+                    type: 'warning',
+                });
+                reset({ routes: [{ name: 'Login' }] });
                 return;
             }
+
+            const response = await getUserTeams();
 
             if (mounted) {
                 response.forEach(item => {
@@ -98,7 +102,7 @@ const List: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [reset]);
+    }, []);
 
     const handleSetTeam = useCallback(
         async (teamId: string) => {
