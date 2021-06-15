@@ -150,6 +150,7 @@
 
     "View_ShareProduct_Title": "Favor checar o produto",
     "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
+    "View_ShareProduct_MessageWithAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE}",
 
     "View_Settings_PageTitle": "Configurações",
     "View_Settings_CategoryName_General": "Geral",

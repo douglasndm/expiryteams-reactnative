@@ -150,6 +150,7 @@
 
     "View_ShareProduct_Title": "Check this product",
     "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
+    "View_ShareProduct_MessageWithAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}",
 
     "View_Settings_PageTitle": "Settings",
     "View_Settings_CategoryName_General": "General",
