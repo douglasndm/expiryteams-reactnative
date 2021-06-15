@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import SubscriptionsList from './SubscriptionsList';
 
@@ -87,11 +87,11 @@ const Subscription: React.FC = () => {
                     Continuando com a assinatura você está concordando com
                     nossos
                     <TermsPrivacyLink onPress={navigateToTerms}>
-                        {` ${translate('Terms')}`}
+                        {` ${strings.Terms}`}
                     </TermsPrivacyLink>
-                    {translate('BetweenTermsAndPrivacy')}
+                    {strings.BetweenTermsAndPrivacy}
                     <TermsPrivacyLink onPress={navigateToPrivacy}>
-                        {translate('PrivacyPolicy')}
+                        {strings.PrivacyPolicy}
                     </TermsPrivacyLink>
                     .
                 </TermsPrivacyText>

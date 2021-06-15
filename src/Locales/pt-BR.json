@@ -1,5 +1,6 @@
 {
-    "AppName": "Controle de Validade Empresas",
+    "AppName": "Controle de Validades Times",
+    "ShortAppName": "Validades Times",
 
     "App_Loading_Text": "Carregando...",
 
@@ -30,16 +31,11 @@
     "Component_Camera_Button_TakeAnotherPicture": "Tirar outra foto",
     "Component_Camera_Button_SavePicture": "Ficou boa",
 
-
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_AddNewProduct": "Adicionar novo produto",
 
     "LoadingComponent_Text": "Carregando...",
-
-    "NotificationComponent_NotificationTypeError": "Erro",
-    "NotificationComponent_NotificationTypeSimple": "Notificação",
-    "NotificationComponent_NotificationCloseText": "Pressione para fechar",
 
     "ProductCardComponent_ProductCode": "Código",
     "ProductCardComponent_ProductBatch": "Lote",
@@ -51,8 +47,6 @@
 
     "Component_FloatButton_AddProduct": "Novo produto",
     "Component_FloatButton_AddBatch": "Novo lote",
-
-    "StoreGroupComponent_Button_ShowAllProductFromStore": "Mostrar todos os produtos da loja",
 
     "View_Login_Business_Title": "Empresas",
     "View_Login_FormLogin_Title": "Entre na sua conta",
@@ -95,14 +89,12 @@
     "View_AddProduct_InputPlacehoder_Batch": "Lote",
     "View_AddProduct_InputPlacehoder_Amount": "Quantidade",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Preço unitário",
-    "View_AddProduct_InputPlacehoder_Store": "Selecione a loja",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Selecione a categoria",
     "View_AddProduct_InputAccessibility_Name": "Campo para digitar o nome do produto",
     "View_AddProduct_InputAccessibility_Code": "Campo para digitar o código do produto",
     "View_AddProduct_InputAccessibility_Batch": "Campo para digitar o lote do produto",
     "View_AddProduct_InputAccessibility_Amount": "Campo para digitar a quantidade do produto",
     "View_AddProduct_InputAccessibility_UnitPrice": "Campo para digitar o preço unitário do produto",
-    "View_AddProduct_InputAccessibility_Store": "Campo para digitar a loja do produto",
     "View_AddProduct_MoreInformation_Label": "Mais informações",
     "View_AddProduct_CalendarTitle": "Data de vencimento",
     "View_AddProduct_CalendarAccessibilityDescription": "Calendário para selecionar a data de vencimento do produto",
@@ -131,10 +123,8 @@
     "View_EditProduct_PageTitle": "Editar produto",
     "View_EditProduct_InputPlacehoder_Name": "Nome do produto",
     "View_EditProduct_InputPlacehoder_Code": "Código do produto",
-    "View_EditProduct_InputPlacehoder_Store": "Selecione a loja",
     "View_EditProduct_InputAccessibility_Name": "Campo de texto para digitar o nome do produto",
     "View_EditProduct_InputAccessibility_Code": "Campo de texto para digitar o código do produto",
-    "View_EditProduct_InputAccessibility_Store": "Campo de texto para digitar a loja do produto",
     "View_EditProduct_Button_Save": "Salvar",
 
     "View_Home_SearchText": "Procurar por um produto",
@@ -167,7 +157,6 @@
     "View_Settings_CategoryName_Account": "Conta",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "Quantos dias para produto está próximo ao vencimento?",
     "View_Settings_SettingName_EnableNotification": "Ativar notificações?",
-    "View_Settings_SettingName_EnableMultiplesStores": "Ativar modo de múltiplas lojas?",
     "View_Settings_SettingName_AppTheme": "Tema do aplicativo",
     "View_Settings_SettingName_ExportAndInmport": "Com esta função você pode salvar todos os seus produtos em um dispositivo externo ou serviço para mante-los seguros caso você precise restaurar este telefone ou troca-lo.",
     "View_Settings_Button_ImportFile": "Importar aquivo de backup",
@@ -203,11 +192,6 @@
     "View_Settings_Notifications_Cadency_Month": "Mensalmente",
     "View_Settings_Notifications_Cadency_Never": "Nunca",
 
-
-    "View_AllProductByStore_BeforeStoreName": "Todos os produtos por loja",
-    "View_AllProductByStore_StoreName": "Produtos da loja {STORE}",
-    "View_AllProductByStore_NoStore": "sem loja",
-
     "View_Success_BatchCreated": "Lote criado",
     "View_Success_ProductCreated": "Produto criado",
     "View_Success_BatchUpdated": "Lote atualizado",
@@ -223,7 +207,6 @@
     "View_Success_ProductDeletedDescription": "O produto foi deletado.",
 
     "View_Success_Button_GoToCategory": "Ir para categoria",
-    "View_Success_Button_GoToStore": "Ir para loja",
     "View_Success_Button_GoToHome": "Ir para o início",
     "View_Success_Button_NavigateToProduct": "Ir para o produto",
 
@@ -263,8 +246,6 @@
     "View_Export_Button_ExportExcel": "Exportar para Excel",
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Categoria já existe",
-
-    "Function_StoreGroup_NoStore": "Sem loja",
 
     "Function_Export_FileName": "controledevalidade_backup",
     "Function_Import_Error_InvalidExtesion": "Extensão do arquivo inválida",

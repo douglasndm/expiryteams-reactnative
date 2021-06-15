@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import * as Yup from 'yup';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import api from '~/Services/API';
 
@@ -159,7 +159,7 @@ export async function enterTeamCode({
         if (err.message === 'Network Error') {
             throw new Error(err);
         } else if (err.response.data.error === 'Code is not valid') {
-            throw new Error(translate('Function_Team_JoinTeam_InvalidCode'));
+            throw new Error(strings.Function_Team_JoinTeam_InvalidCode);
         } else {
             throw new Error(err);
         }

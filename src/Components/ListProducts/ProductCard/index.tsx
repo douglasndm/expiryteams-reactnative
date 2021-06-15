@@ -4,8 +4,7 @@ import { getLocales } from 'react-native-localize';
 import { format, formatDistanceToNow, parseISO } from 'date-fns'; // eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 
-
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getProductImagePath } from '~/Functions/Products/Image';
 
@@ -90,33 +89,29 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                     <ProductDetails>
                         {!!product.code && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {`${translate(
-                                    'ProductCardComponent_ProductCode'
-                                )}: ${product.code}`}
+                                {`${strings.ProductCardComponent_ProductCode}: ${product.code}`}
                             </ProductInfoItem>
                         )}
 
                         {!!batch && !!batch.name && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {translate('ProductCardComponent_ProductBatch')}
-                                : {batch.name}
+                                {strings.ProductCardComponent_ProductBatch}:{' '}
+                                {batch.name}
                             </ProductInfoItem>
                         )}
 
                         {product.batches.length > 1 && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {`${product.batches.length - 1} ${translate(
-                                    'ProductCardComponent_OthersBatches'
-                                )}`}
+                                {`${product.batches.length - 1} ${
+                                    strings.ProductCardComponent_OthersBatches
+                                }`}
                             </ProductInfoItem>
                         )}
 
                         {product.batches.length > 0 &&
                             !!product.batches[0].amount && (
                                 <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                    {`${translate(
-                                        'ProductCardComponent_ProductAmount'
-                                    )}: ${product.batches[0].amount}`}
+                                    {`${strings.ProductCardComponent_ProductAmount}: ${product.batches[0].amount}`}
                                 </ProductInfoItem>
                             )}
                     </ProductDetails>
@@ -126,8 +121,8 @@ const Product = ({ product, expired, nextToExp }: Request) => {
             {!!exp_date && (
                 <ProductExpDate expiredOrNext={expiredOrNext}>
                     {expired
-                        ? translate('ProductCardComponent_ProductExpiredIn')
-                        : translate('ProductCardComponent_ProductExpireIn')}
+                        ? strings.ProductCardComponent_ProductExpiredIn
+                        : strings.ProductCardComponent_ProductExpireIn}
                     {` ${formatDistanceToNow(exp_date, {
                         addSuffix: true,
                         locale: languageCode,

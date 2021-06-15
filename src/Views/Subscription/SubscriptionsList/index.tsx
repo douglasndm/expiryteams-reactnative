@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import Preferences from '~/Contexts/PreferencesContext';
 
@@ -155,20 +155,20 @@ const SubscriptionsList: React.FC = () => {
             const { introPrice } = pack.product;
             const price = pack.product.price_string;
 
-            let limit = translate('Subscription_TeamLimit_1person');
+            let limit = strings.Subscription_TeamLimit_1person;
 
             switch (type) {
                 case '3 people':
-                    limit = translate('Subscription_TeamLimit_3people');
+                    limit = strings.Subscription_TeamLimit_3people;
                     break;
                 case '5 people':
-                    limit = translate('Subscription_TeamLimit_5people');
+                    limit = strings.Subscription_TeamLimit_5people;
                     break;
                 case '10 people':
-                    limit = translate('Subscription_TeamLimit_10people');
+                    limit = strings.Subscription_TeamLimit_10people;
                     break;
                 case '15 people':
-                    limit = translate('Subscription_TeamLimit_15people');
+                    limit = strings.Subscription_TeamLimit_15people;
                     break;
                 default:
                     break;

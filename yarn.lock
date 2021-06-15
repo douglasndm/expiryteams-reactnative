@@ -4682,11 +4682,6 @@ human-signals@^1.1.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
-i18n-js@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.8.0.tgz#b8fd6b12e1d88cb71f9806c29bca7c31c012e504"
-  integrity sha512-hDsGgPuvw/2P+lXSbOafAwspK8Ste8YrwuuUg17W3wEcO1JkQxBlPgsN1t2+852nTnz4YSYTjZc/1nAA2PC/nw==
-
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -5800,6 +5795,11 @@ load-json-file@^2.0.0:
     pify "^2.0.0"
     strip-bom "^3.0.0"
 
+localized-strings@^0.2.0:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/localized-strings/-/localized-strings-0.2.4.tgz#9d61c06b60cc7b5edf7c46e6c7f2d1ecb84aeb2c"
+  integrity sha512-TKDhqFPkIIN/if2FSvVVZTaM/GP9TzfgdQ2uY65mr32xgFu5nqkKXprXbzy5rfx32DF5LDvS/y1UqYF/mAscYA==
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -5847,11 +5847,6 @@ lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
   integrity sha1-1SfftUVuynzJu5XV2ur4i6VKVFE=
-
-lodash.memoize@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
-  integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
 lodash.omit@^4.5.0:
   version "4.5.0"
@@ -7200,6 +7195,13 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
+react-localization@^1.0.17:
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/react-localization/-/react-localization-1.0.17.tgz#f12f78c8c5e16dea5015cd44b1871c2dee09e99d"
+  integrity sha512-UowuLAvnEPXJgzxjDX/9hKdKYvtUgC6hQ5PV0CnT5f/77tItIUru5tTwgrDY2UL5oUK3JRMgz42tqnAU2W5eoA==
+  dependencies:
+    localized-strings "^0.2.0"
+
 react-native-background-fetch@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.0.2.tgz#97842722b67c584fd860f30eb1fc70e481b207c0"
@@ -7319,10 +7321,17 @@ react-native-linear-gradient@^2.5.6:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
   integrity sha512-HDwEaXcQIuXXCV70O+bK1rizFong3wj+5Q/jSyifKFLg0VWF95xh8XQgfzXwtq0NggL9vNjPKXa016KuFu+VFg==
 
-react-native-localize@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.0.3.tgz#fa91ecb01fa5e4495ab952a673c1562ec456d216"
-  integrity sha512-6SILy2yX/U1rTjF56/BiywcFXeO9AY8LmPF2p3TgP3Y2uKejxAOOQ4nzr+bAP1h+X5TaBmwTPBGNMZ1TttEJvA==
+react-native-localization@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-localization/-/react-native-localization-2.1.7.tgz#7e0fc9a94570f5472751d5a147c882d2815b4e7e"
+  integrity sha512-F7oALsAyQuF4C/8kAJnA5eT0+F9ACnscKC1ahd+vjv8bs3UdhHo09u89JKfhdX4sZA2CWEi3E3mCKTqpqy3Otw==
+  dependencies:
+    react-localization "^1.0.17"
+
+react-native-localize@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.1.1.tgz#da8f8776991d2b748708c408db05152602cefb38"
+  integrity sha512-+uyz2/b0vyLq19fcb7r1qU1gqmzbp3aC6EMTvOVXwfBuiN+aJXR/fDdFOJJ8D7+bLccKeuS2zBDrazh+ZayX/g==
 
 react-native-paper@^4.8.1:
   version "4.8.1"

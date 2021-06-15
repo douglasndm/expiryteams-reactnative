@@ -8,7 +8,7 @@ import React, {
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getAllUsersFromTeam, putUserInTeam } from '~/Functions/Team/Users';
 
@@ -114,9 +114,7 @@ const ListUsers: React.FC = () => {
             if (!newUserEmail) {
                 setInputHasError(true);
                 setInputErrorMessage(
-                    translate(
-                        'View_UsersInTeam_List_InputEmail_Error_EmptyText'
-                    )
+                    strings.View_UsersInTeam_List_InputEmail_Error_EmptyText
                 );
                 return;
             }
@@ -180,9 +178,7 @@ const ListUsers: React.FC = () => {
                     <UserInfoContainer>
                         <TeamItemRole>
                             {isPending
-                                ? translate(
-                                      'View_UsersInTeam_List_PendingStatus'
-                                  )
+                                ? strings.View_UsersInTeam_List_PendingStatus
                                 : item.role.toUpperCase()}
                         </TeamItemRole>
                         {!!item.name && (
@@ -203,7 +199,7 @@ const ListUsers: React.FC = () => {
                 <Loading />
             ) : (
                 <Container>
-                    <Header title={translate('View_UsersInTeam_PageTitle')} />
+                    <Header title={strings.View_UsersInTeam_PageTitle} />
 
                     {role === 'manager' && (
                         <AddCategoryContent>
@@ -214,9 +210,9 @@ const ListUsers: React.FC = () => {
                                         onChangeText={handleOnTextChange}
                                         keyboardType="email-address"
                                         autoCapitalize="none"
-                                        placeholder={translate(
-                                            'View_UsersInTeam_Input_AddNewUser_Placeholder'
-                                        )}
+                                        placeholder={
+                                            strings.View_UsersInTeam_Input_AddNewUser_Placeholder
+                                        }
                                     />
                                 </InputTextContainer>
 
@@ -238,9 +234,7 @@ const ListUsers: React.FC = () => {
                         </AddCategoryContent>
                     )}
 
-                    <ListTitle>
-                        {translate('View_UsersInTeam_List_Title')}
-                    </ListTitle>
+                    <ListTitle>{strings.View_UsersInTeam_List_Title}</ListTitle>
 
                     <ListCategories
                         data={users}

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useMemo } from 'react';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -32,29 +32,29 @@ const Notifications: React.FC = () => {
         const availableCadency: Array<INotificationCadencyItem> = [];
         // if (preferences.isUserPremium) {
         //     availableCadency.push({
-        //         label: translate('View_Settings_Notifications_Cadency_Hour'),
+        //         label: strings.View_Settings_Notifications_Cadency_Hour,
         //         value: NotificationCadency.Hour,
         //     });
         // }
 
         availableCadency.push({
-            label: translate('View_Settings_Notifications_Cadency_Day'),
+            label: strings.View_Settings_Notifications_Cadency_Day,
             value: NotificationCadency.Day,
             key: NotificationCadency.Day,
         });
         availableCadency.push({
-            label: translate('View_Settings_Notifications_Cadency_Never'),
+            label: strings.View_Settings_Notifications_Cadency_Never,
             value: NotificationCadency.Never,
             key: NotificationCadency.Never,
         });
 
         // if (preferences.isUserPremium) {
         //     availableCadency.push({
-        //         label: translate('View_Settings_Notifications_Cadency_Week'),
+        //         label: strings.View_Settings_Notifications_Cadency_Week,
         //         value: NotificationCadency.Week,
         //     });
         //     availableCadency.push({
-        //         label: translate('View_Settings_Notifications_Cadency_Month'),
+        //         label: strings.View_Settings_Notifications_Cadency_Month,
         //         value: NotificationCadency.Month,
         //     });
         // }
@@ -76,7 +76,7 @@ const Notifications: React.FC = () => {
     return (
         <SettingNotificationContainer>
             <SettingNotificationDescription>
-                {translate('View_Settings_Notifications_Title')}
+                {strings.View_Settings_Notifications_Title}
             </SettingNotificationDescription>
 
             <Picker

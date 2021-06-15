@@ -9,7 +9,7 @@ import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
@@ -165,13 +165,13 @@ const List: React.FC = () => {
             }
 
             if (role === 'manager') {
-                role = translate('UserInfo_Role_Manager');
+                role = strings.UserInfo_Role_Manager;
             }
             if (role === 'supervisor') {
-                role = translate('UserInfo_Role_Supervisor');
+                role = strings.UserInfo_Role_Supervisor;
             }
             if (role === 'repositor') {
-                role = translate('UserInfo_Role_Repositor');
+                role = strings.UserInfo_Role_Repositor;
             }
 
             function handleNavigate() {
@@ -232,7 +232,7 @@ const List: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Title>{translate('View_TeamList_PageTitle')}</Title>
+            <Title>{strings.View_TeamList_PageTitle}</Title>
 
             <Content>
                 {teams.length <= 0 && (
@@ -258,7 +258,7 @@ const List: React.FC = () => {
             <Footer>
                 {!isManager && (
                     <Button
-                        text={translate('View_TeamList_Button_CreateTeam')}
+                        text={strings.View_TeamList_Button_CreateTeam}
                         onPress={handleNavigateCreateTeam}
                         contentStyle={{ width: 150, marginBottom: 0 }}
                     />

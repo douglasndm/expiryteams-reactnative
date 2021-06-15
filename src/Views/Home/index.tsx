@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getAllProducts } from '~/Functions/Products/Products';
 import { searchProducts } from '~/Functions/Products/Search';
@@ -137,7 +137,7 @@ const Home: React.FC = () => {
                     {products.length > 0 && (
                         <InputTextContainer>
                             <InputSearch
-                                placeholder={translate('View_Home_SearchText')}
+                                placeholder={strings.View_Home_SearchText}
                                 value={searchString}
                                 onChangeText={handleSearchChange}
                             />

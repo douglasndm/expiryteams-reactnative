@@ -4,7 +4,7 @@ import { unlink } from 'react-native-fs';
 import { RNCamera } from 'react-native-camera';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import BackButton from '../BackButton';
 import Button from '../Button';
@@ -96,8 +96,8 @@ const Camera: React.FC<CameraProps> = ({
                 <BackButton handleOnPress={onBackButtonPressed || goBack} />
                 <PageTitle>
                     {!image
-                        ? translate('Component_Camera_PageTitle')
-                        : translate('Component_Camera_PageTitle_OnPreview')}
+                        ? strings.Component_Camera_PageTitle
+                        : strings.Component_Camera_PageTitle_OnPreview}
                 </PageTitle>
             </PageHeader>
 
@@ -108,23 +108,21 @@ const Camera: React.FC<CameraProps> = ({
             <ButtonsContainer>
                 {!photoTaked ? (
                     <Button
-                        text={translate('Component_Camera_Button_TakePicture')}
+                        text={strings.Component_Camera_Button_TakePicture}
                         onPress={handleCapturePicture}
                         isLoading={takingPhoto}
                     />
                 ) : (
                     <>
                         <Button
-                            text={translate(
-                                'Component_Camera_Button_TakeAnotherPicture'
-                            )}
+                            text={
+                                strings.Component_Camera_Button_TakeAnotherPicture
+                            }
                             onPress={handleTakeAnotherPhoto}
                             contentStyle={{ marginRight: 10 }}
                         />
                         <Button
-                            text={translate(
-                                'Component_Camera_Button_SavePicture'
-                            )}
+                            text={strings.Component_Camera_Button_SavePicture}
                             onPress={handleSavePhoto}
                         />
                     </>

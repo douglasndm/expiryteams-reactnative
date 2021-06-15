@@ -3,7 +3,7 @@ import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -43,9 +43,7 @@ const VerifyEmail: React.FC = () => {
                 reset({ routes: [{ name: 'TeamList' }] });
             } else {
                 showMessage({
-                    message: translate(
-                        'View_ConfirmEmail_Error_EmailNotConfirmed'
-                    ),
+                    message: strings.View_ConfirmEmail_Error_EmailNotConfirmed,
                     type: 'danger',
                 });
             }
@@ -83,33 +81,34 @@ const VerifyEmail: React.FC = () => {
                 />
 
                 <WaitingConfirmationEmail>
-                    {translate('View_ConfirmEmail_WaitingTitle')}
+                    {strings.View_ConfirmEmail_WaitingTitle}
                 </WaitingConfirmationEmail>
 
                 {!!preferences.user && (
                     <EmailConfirmationExplain>
-                        {translate(
-                            'View_ConfirmEmail_WaitingDescription'
-                        ).replace('#{EMAIL}', preferences.user.email)}
+                        {strings.View_ConfirmEmail_WaitingDescription.replace(
+                            '#{EMAIL}',
+                            preferences.user.email
+                        )}
                     </EmailConfirmationExplain>
                 )}
 
                 <Button
-                    text={translate('View_ConfirmEmail_Button_Confirmed')}
+                    text={strings.View_ConfirmEmail_Button_Confirmed}
                     isLoading={isCheckLoading}
                     onPress={handleCheckEmail}
                     contentStyle={{ width: 150 }}
                 />
 
                 <Button
-                    text={translate('View_ConfirmEmail_Button_Logout')}
+                    text={strings.View_ConfirmEmail_Button_Logout}
                     onPress={handleLogout}
                     contentStyle={{ width: 150, marginTop: 0 }}
                 />
 
                 {!resendedEmail && (
                     <ResendEmailText onPress={handleResendConfirmEmail}>
-                        {translate('View_ConfirmEmail_ResendEmail')}
+                        {strings.View_ConfirmEmail_ResendEmail}
                     </ResendEmailText>
                 )}
             </Content>

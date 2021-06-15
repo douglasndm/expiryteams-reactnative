@@ -13,7 +13,7 @@ import { useTheme } from 'styled-components';
 import { showMessage } from 'react-native-flash-message';
 import { parseISO } from 'date-fns';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -144,7 +144,7 @@ const EditBatch: React.FC = () => {
 
     const handleUpdate = useCallback(async () => {
         if (!batch || batch.trim() === '') {
-            Alert.alert(translate('View_EditBatch_Error_BatchWithNoName'));
+            Alert.alert(strings.View_EditBatch_Error_BatchWithNoName);
             return;
         }
 
@@ -243,7 +243,7 @@ const EditBatch: React.FC = () => {
                         <PageTitleContainer>
                             <BackButton handleOnPress={goBack} />
                             <PageTitle>
-                                {translate('View_EditBatch_PageTitle')}
+                                {strings.View_EditBatch_PageTitle}
                             </PageTitle>
                         </PageTitleContainer>
 
@@ -254,7 +254,7 @@ const EditBatch: React.FC = () => {
                                 )}
                                 onPress={handleUpdate}
                             >
-                                {translate('View_EditBatch_Button_Save')}
+                                {strings.View_EditBatch_Button_Save}
                             </ButtonPaper>
 
                             {(userRole === 'manager' ||
@@ -267,9 +267,7 @@ const EditBatch: React.FC = () => {
                                         setDeleteComponentVisible(true);
                                     }}
                                 >
-                                    {translate(
-                                        'View_EditBatch_Button_DeleteBatch'
-                                    )}
+                                    {strings.View_EditBatch_Button_DeleteBatch}
                                 </ButtonPaper>
                             )}
                         </ActionsButtonContainer>
@@ -300,9 +298,9 @@ const EditBatch: React.FC = () => {
                                     }}
                                 >
                                     <InputText
-                                        placeholder={translate(
-                                            'View_EditBatch_InputPlacehoder_Batch'
-                                        )}
+                                        placeholder={
+                                            strings.View_EditBatch_InputPlacehoder_Batch
+                                        }
                                         value={batch}
                                         onChangeText={handleBatchChange}
                                     />
@@ -313,9 +311,9 @@ const EditBatch: React.FC = () => {
                                     }}
                                 >
                                     <InputText
-                                        placeholder={translate(
-                                            'View_EditBatch_InputPlacehoder_Amount'
-                                        )}
+                                        placeholder={
+                                            strings.View_EditBatch_InputPlacehoder_Amount
+                                        }
                                         keyboardType="numeric"
                                         value={String(amount)}
                                         onChangeText={handleAmountChange}
@@ -327,9 +325,9 @@ const EditBatch: React.FC = () => {
                                 value={price}
                                 onChangeValue={handlePriceChange}
                                 delimiter={currency === 'BRL' ? ',' : '.'}
-                                placeholder={translate(
-                                    'View_EditBatch_InputPlacehoder_UnitPrice'
-                                )}
+                                placeholder={
+                                    strings.View_EditBatch_InputPlacehoder_UnitPrice
+                                }
                             />
 
                             <View
@@ -354,9 +352,9 @@ const EditBatch: React.FC = () => {
                                         onPress={() => setStatus('checked')}
                                     />
                                     <RadioButtonText>
-                                        {translate(
-                                            'View_EditBatch_RadioButton_Treated'
-                                        )}
+                                        {
+                                            strings.View_EditBatch_RadioButton_Treated
+                                        }
                                     </RadioButtonText>
                                 </View>
                                 <View
@@ -375,16 +373,16 @@ const EditBatch: React.FC = () => {
                                         onPress={() => setStatus('unchecked')}
                                     />
                                     <RadioButtonText>
-                                        {translate(
-                                            'View_EditBatch_RadioButton_NotTreated'
-                                        )}
+                                        {
+                                            strings.View_EditBatch_RadioButton_NotTreated
+                                        }
                                     </RadioButtonText>
                                 </View>
                             </View>
 
                             <ExpDateGroup>
                                 <ExpDateLabel>
-                                    {translate('View_EditBatch_CalendarTitle')}
+                                    {strings.View_EditBatch_CalendarTitle}
                                 </ExpDateLabel>
                                 <CustomDatePicker
                                     date={expDate}
@@ -407,18 +405,16 @@ const EditBatch: React.FC = () => {
                 style={{ backgroundColor: theme.colors.productBackground }}
             >
                 <Dialog.Title>
-                    {translate('View_EditBatch_WarningDelete_Title')}
+                    {strings.View_EditBatch_WarningDelete_Title}
                 </Dialog.Title>
                 <Dialog.Content>
                     <Text style={{ color: theme.colors.text }}>
-                        {translate('View_EditBatch_WarningDelete_Message')}
+                        {strings.View_EditBatch_WarningDelete_Message}
                     </Text>
                 </Dialog.Content>
                 <Dialog.Actions>
                     <Button color="red" onPress={handleDelete}>
-                        {translate(
-                            'View_EditBatch_WarningDelete_Button_Confirm'
-                        )}
+                        {strings.View_EditBatch_WarningDelete_Button_Confirm}
                     </Button>
                     <Button
                         color={theme.colors.accent}
@@ -426,9 +422,7 @@ const EditBatch: React.FC = () => {
                             setDeleteComponentVisible(false);
                         }}
                     >
-                        {translate(
-                            'View_EditBatch_WarningDelete_Button_Cancel'
-                        )}
+                        {strings.View_EditBatch_WarningDelete_Button_Cancel}
                     </Button>
                 </Dialog.Actions>
             </Dialog>

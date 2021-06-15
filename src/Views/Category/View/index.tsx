@@ -8,7 +8,7 @@ import React, {
 import { useRoute, useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
 
@@ -101,9 +101,7 @@ const CategoryView: React.FC = () => {
                             )}
                             onPress={handleEdit}
                         >
-                            {translate(
-                                'View_ProductDetails_Button_UpdateProduct'
-                            )}
+                            {strings.View_ProductDetails_Button_UpdateProduct}
                         </ActionButton>
                     </ActionsButtonContainer>
                 )}
@@ -115,7 +113,7 @@ const CategoryView: React.FC = () => {
                     <FloatIcon name="add-outline" color="white" size={22} />
                 )}
                 small
-                label={translate('View_FloatMenu_AddProduct')}
+                label={strings.View_FloatMenu_AddProduct}
                 onPress={handleNavigateAddProduct}
             />
 

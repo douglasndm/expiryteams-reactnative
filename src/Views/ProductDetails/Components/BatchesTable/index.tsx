@@ -5,7 +5,7 @@ import { isPast, addDays, format, parseISO } from 'date-fns';//eslint-disable-li
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -56,24 +56,24 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
         <Table>
             <TableHeader>
                 <TableTitle>
-                    {translate(
-                        'View_ProductDetails_TableComponent_BatchNameColumnTitle'
-                    )}
+                    {
+                        strings.View_ProductDetails_TableComponent_BatchNameColumnTitle
+                    }
                 </TableTitle>
                 <TableTitle>
-                    {translate(
-                        'View_ProductDetails_TableComponent_BatchExpInColumnTitle'
-                    )}
+                    {
+                        strings.View_ProductDetails_TableComponent_BatchExpInColumnTitle
+                    }
                 </TableTitle>
                 <TableTitle numeric>
-                    {translate(
-                        'View_ProductDetails_TableComponent_BatchAmountColumnTitle'
-                    )}
+                    {
+                        strings.View_ProductDetails_TableComponent_BatchAmountColumnTitle
+                    }
                 </TableTitle>
                 <TableTitle numeric>
-                    {translate(
-                        'View_ProductDetails_TableComponent_BatchPriceColumnTitle'
-                    )}
+                    {
+                        strings.View_ProductDetails_TableComponent_BatchPriceColumnTitle
+                    }
                 </TableTitle>
             </TableHeader>
 

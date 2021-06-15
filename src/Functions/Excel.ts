@@ -2,7 +2,7 @@ import XLSX from 'xlsx';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 
-import { translate } from '../Locales';
+import strings from '../Locales';
 
 import { getAllProducts } from './Products/Products';
 import { getSelectedTeam } from './Team/SelectedTeam';
@@ -86,17 +86,16 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
         sortedProducts.forEach(item => {
             const row: any = {};
 
-            row[translate('Function_Excel_ColumnName_ProductName')] =
+            row[strings.Function_Excel_ColumnName_ProductName] =
                 item.product.name;
-            row[translate('Function_Excel_ColumnName_ProductCode')] =
+            row[strings.Function_Excel_ColumnName_ProductCode] =
                 item.product.code || '';
-            row[translate('Function_Excel_ColumnName_BatchName')] =
-                item.batch.name;
-            row[translate('Function_Excel_ColumnName_BatchPrice')] =
+            row[strings.Function_Excel_ColumnName_BatchName] = item.batch.name;
+            row[strings.Function_Excel_ColumnName_BatchPrice] =
                 item.batch.price || 0;
-            row[translate('Function_Excel_ColumnName_BatchAmount')] =
+            row[strings.Function_Excel_ColumnName_BatchAmount] =
                 item.batch.amount || 0;
-            row[translate('Function_Excel_ColumnName_BatchExpDate')] = format(
+            row[strings.Function_Excel_ColumnName_BatchExpDate] = format(
                 new Date(item.batch.exp_date),
                 dateFormat
             );
@@ -110,7 +109,7 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
         XLSX.utils.book_append_sheet(
             workbook,
             worksheet,
-            translate('Function_Excel_Workbook_Name')
+            strings.Function_Excel_Workbook_Name
         );
 
         const wbout = XLSX.write(workbook, {
@@ -120,7 +119,7 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
 
         await shareFile({
             fileAsString: wbout,
-            fileName: translate('Function_Excel_filename'),
+            fileName: strings.Function_Excel_filename,
             fileExtesion: 'xlsx',
             encoding: 'base64',
         });

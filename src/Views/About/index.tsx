@@ -3,7 +3,7 @@ import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -47,43 +47,43 @@ const About: React.FC = () => {
             <StatusBar />
             <Content>
                 <BackButton handleOnPress={goBack} />
-                <PageTitle>{translate('View_About_PageTitle')}</PageTitle>
+                <PageTitle>{strings.View_About_PageTitle}</PageTitle>
             </Content>
 
             <AboutSection>
-                <ApplicationName>{translate('AppName')}</ApplicationName>
+                <ApplicationName>{strings.AppName}</ApplicationName>
 
                 <ApplicationVersion>
-                    {translate('View_About_AppVersion') + getVersion()}
+                    {strings.View_About_AppVersion + getVersion()}
                 </ApplicationVersion>
             </AboutSection>
 
             <AboutSection>
                 <Text>
-                    {translate('BeforeTermsAndPrivacy')}
-                    <Link onPress={navigateToTerms}>{translate('Terms')}</Link>
-                    {translate('BetweenTermsAndPrivacy')}
+                    {strings.BeforeTermsAndPrivacy}
+                    <Link onPress={navigateToTerms}>{strings.Terms}</Link>
+                    {strings.BetweenTermsAndPrivacy}
                     <Link onPress={navigateToPrivacy}>
-                        {translate('PrivacyPolicy')}
+                        {strings.PrivacyPolicy}
                     </Link>
                     .
                 </Text>
             </AboutSection>
 
             <AboutSection>
-                <Text>{translate('View_About_DevelopedBy')}</Text>
+                <Text>{strings.View_About_DevelopedBy}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
             </AboutSection>
 
             <AboutSection>
-                <Text>{translate('View_About_NeedHelp')}</Text>
+                <Text>{strings.View_About_NeedHelp}</Text>
                 <Link onPress={navigateToTelegram}>
-                    {translate('View_About_HelpTelegram')}
+                    {strings.View_About_HelpTelegram}
                 </Link>
             </AboutSection>
 
             <AboutSection>
-                <Text>{translate('View_About_LogoMadeBy')}</Text>
+                <Text>{strings.View_About_LogoMadeBy}</Text>
 
                 <View>
                     <Link onPress={handleFlatIconPress}>

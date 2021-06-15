@@ -8,7 +8,7 @@ import React, {
 import { ScrollView, Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -102,24 +102,20 @@ const Settings: React.FC = () => {
                     <PageHeader>
                         <BackButton handleOnPress={goBack} />
 
-                        <PageTitle>
-                            {translate('View_Settings_PageTitle')}
-                        </PageTitle>
+                        <PageTitle>{strings.View_Settings_PageTitle}</PageTitle>
                     </PageHeader>
 
                     <SettingsContent>
                         <Category>
                             <CategoryTitle>
-                                {translate(
-                                    'View_Settings_CategoryName_General'
-                                )}
+                                {strings.View_Settings_CategoryName_General}
                             </CategoryTitle>
 
                             <CategoryOptions>
                                 <SettingDescription>
-                                    {translate(
-                                        'View_Settings_SettingName_HowManyDaysToBeNextToExp'
-                                    )}
+                                    {
+                                        strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
+                                    }
                                 </SettingDescription>
                                 <InputSetting
                                     keyboardType="numeric"

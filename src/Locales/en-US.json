@@ -1,5 +1,6 @@
 {
-    "AppName": "Expiry Checker Business",
+    "AppName": "Expiry Checker Teams",
+    "ShortAppName": "Expiry Teams",
 
     "App_Loading_Text": "Loading...",
 
@@ -37,10 +38,6 @@
 
     "LoadingComponent_Text": "Loading...",
 
-    "NotificationComponent_NotificationTypeError": "Error",
-    "NotificationComponent_NotificationTypeSimple": "Notification",
-    "NotificationComponent_NotificationCloseText": "Press to close",
-
     "ProductCardComponent_ProductCode": "Code",
     "ProductCardComponent_ProductBatch": "Batch",
     "ProductCardComponent_OthersBatches": "other batches",
@@ -51,8 +48,6 @@
 
     "Component_FloatButton_AddProduct": "New product",
     "Component_FloatButton_AddBatch": "New batch",
-
-    "StoreGroupComponent_Button_ShowAllProductFromStore": "Show all products from store",
 
     "View_Login_Business_Title": "Business",
     "View_Login_FormLogin_Title": "Sign in on your account",
@@ -94,14 +89,12 @@
     "View_AddProduct_InputPlacehoder_Batch": "Batch",
     "View_AddProduct_InputPlacehoder_Amount": "Amount",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Unit price",
-    "View_AddProduct_InputPlacehoder_Store": "Select the store",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Select the category",
     "View_AddProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_AddProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_AddProduct_InputAccessibility_Batch": "Field to type the Batch",
     "View_AddProduct_InputAccessibility_Amount": "Field to type the Amount",
     "View_AddProduct_InputAccessibility_UnitPrice": "Field to type the Unit price",
-    "View_AddProduct_InputAccessibility_Store": "Field to type the Store",
     "View_AddProduct_MoreInformation_Label": "More informations",
     "View_AddProduct_CalendarTitle": "Expiration date",
     "View_AddProduct_CalendarAccessibilityDescription": "Calendar to select the expiration date",
@@ -130,10 +123,8 @@
     "View_EditProduct_PageTitle": "Edit Product",
     "View_EditProduct_InputPlacehoder_Name": "Product's name",
     "View_EditProduct_InputPlacehoder_Code": "Product's code",
-    "View_EditProduct_InputPlacehoder_Store": "Select the store",
     "View_EditProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
-    "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
     "View_EditProduct_Button_Save": "Save",
 
     "View_Home_SearchText": "Search for a product",
@@ -167,7 +158,6 @@
     "View_Settings_CategoryName_Account": "Account",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "How many days to product be next to expire",
     "View_Settings_SettingName_EnableNotification": "Enable notifications?",
-    "View_Settings_SettingName_EnableMultiplesStores": "Enable multiples stores mode?",
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
@@ -203,10 +193,6 @@
     "View_Settings_Notifications_Cadency_Month": "Monthly",
     "View_Settings_Notifications_Cadency_Never": "Never",
 
-    "View_AllProductByStore_BeforeStoreName": "All products by store ",
-    "View_AllProductByStore_StoreName": "Products by store {STORE}",
-    "View_AllProductByStore_NoStore": "no store",
-
     "View_Success_BatchCreated": "Batch created",
     "View_Success_ProductCreated": "Product created",
     "View_Success_BatchUpdated": "Batch updated",
@@ -222,7 +208,6 @@
     "View_Success_ProductDeletedDescription": "Product was deleted",
 
     "View_Success_Button_GoToCategory": "Go to category",
-    "View_Success_Button_GoToStore": "Go to store",
     "View_Success_Button_GoToHome": "Go home",
     "View_Success_Button_NavigateToProduct": "Go to product",
 

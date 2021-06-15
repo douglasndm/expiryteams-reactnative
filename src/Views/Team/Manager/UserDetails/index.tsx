@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -88,13 +88,13 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             const { role } = user;
 
             if (role?.toLowerCase() === 'manager')
-                return translate('UserInfo_Role_Manager');
+                return strings.UserInfo_Role_Manager;
             if (role?.toLowerCase() === 'supervisor') {
-                return translate('UserInfo_Role_Supervisor');
+                return strings.UserInfo_Role_Supervisor;
             }
         }
 
-        return translate('UserInfo_Role_Repositor');
+        return strings.UserInfo_Role_Repositor;
     }, [user]);
 
     const handleCopyCode = useCallback(() => {
@@ -177,9 +177,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             <PageHeader>
                 <PageTitleContainer>
                     <BackButton handleOnPress={goBack} />
-                    <PageTitle>
-                        {translate('View_UserDetails_PageTitle')}
-                    </PageTitle>
+                    <PageTitle>{strings.View_UserDetails_PageTitle}</PageTitle>
                 </PageTitleContainer>
 
                 {enableManagerTools && user.id !== preferences.user.uid && (
@@ -217,7 +215,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 {userIsPending && enableManagerTools && (
                     <CodeDetails>
                         <CodeTitle>
-                            {translate('View_UserDetails_Code_Title')}
+                            {strings.View_UserDetails_Code_Title}
                         </CodeTitle>
                         <CodeContainer onPress={handleCopyCode}>
                             <Code>{user.code}</Code>

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { enterTeamCode } from '~/Functions/Team/Users';
 
@@ -61,7 +61,7 @@ const EnterTeam: React.FC<Props> = () => {
 
             // View_TeamList_InvalidTeamCode
             showMessage({
-                message: translate('View_TeamList_SuccessCode'),
+                message: strings.View_TeamList_SuccessCode,
                 type: 'info',
             });
 
@@ -97,9 +97,9 @@ const EnterTeam: React.FC<Props> = () => {
                         <InputText
                             value={userCode}
                             onChangeText={handleOnCodeChange}
-                            placeholder={translate(
-                                'View_TeamList_InputText_EnterCode_Placeholder'
-                            )}
+                            placeholder={
+                                strings.View_TeamList_InputText_EnterCode_Placeholder
+                            }
                             autoCapitalize="none"
                             autoCorrect={false}
                         />

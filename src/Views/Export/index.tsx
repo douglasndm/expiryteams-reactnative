@@ -2,7 +2,7 @@ import React, { useState, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -94,7 +94,7 @@ const Export: React.FC = () => {
 
     return (
         <Container>
-            <Header title={translate('View_Export_PageTitle')} />
+            <Header title={strings.View_Export_PageTitle} />
 
             <Content>
                 {preferences.selectedTeam?.role.toLowerCase() === 'manager' && (
@@ -115,15 +115,13 @@ const Export: React.FC = () => {
 
                 <OptionContainer>
                     <ExplainText>
-                        {translate('View_Export_Explain_Excel')}
+                        {strings.View_Export_Explain_Excel}
                     </ExplainText>
                     <RadioButtonGroupContainer>
-                        <SortTitle>
-                            {translate('View_Export_SortTitle')}
-                        </SortTitle>
+                        <SortTitle>{strings.View_Export_SortTitle}</SortTitle>
                         <RadioButtonContainer>
                             <RadioButtonText>
-                                {translate('View_Export_SortByCreatedDate')}
+                                {strings.View_Export_SortByCreatedDate}
                             </RadioButtonText>
                             <RadioButton
                                 value="created_at"
@@ -138,7 +136,7 @@ const Export: React.FC = () => {
 
                         <RadioButtonContainer>
                             <RadioButtonText>
-                                {translate('View_Export_SortByExpireDate')}
+                                {strings.View_Export_SortByExpireDate}
                             </RadioButtonText>
                             <RadioButton
                                 value="expire_in"
@@ -153,7 +151,7 @@ const Export: React.FC = () => {
                     </RadioButtonGroupContainer>
 
                     <Button
-                        text={translate('View_Export_Button_ExportExcel')}
+                        text={strings.View_Export_Button_ExportExcel}
                         onPress={handleExportToExcel}
                         isLoading={isExcelLoading}
                     />

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import FloatButton from '~/Components/FloatButton';
@@ -124,52 +124,52 @@ const Success: React.FC = () => {
                 />
 
                 {type === 'create_batch' && (
-                    <Title>{translate('View_Success_BatchCreated')}</Title>
+                    <Title>{strings.View_Success_BatchCreated}</Title>
                 )}
                 {type === 'create_product' && (
-                    <Title>{translate('View_Success_ProductCreated')}</Title>
+                    <Title>{strings.View_Success_ProductCreated}</Title>
                 )}
                 {type === 'edit_batch' && (
-                    <Title>{translate('View_Success_BatchUpdated')}</Title>
+                    <Title>{strings.View_Success_BatchUpdated}</Title>
                 )}
                 {type === 'edit_product' && (
-                    <Title>{translate('View_Success_ProductUpdated')}</Title>
+                    <Title>{strings.View_Success_ProductUpdated}</Title>
                 )}
                 {type === 'delete_batch' && (
-                    <Title>{translate('View_Success_BatchDeleted')}</Title>
+                    <Title>{strings.View_Success_BatchDeleted}</Title>
                 )}
                 {type === 'delete_product' && (
-                    <Title>{translate('View_Success_ProductDeleted')}</Title>
+                    <Title>{strings.View_Success_ProductDeleted}</Title>
                 )}
 
                 {type === 'create_batch' && (
                     <Description>
-                        {translate('View_Success_BatchCreatedDescription')}
+                        {strings.View_Success_BatchCreatedDescription}
                     </Description>
                 )}
                 {type === 'create_product' && (
                     <Description>
-                        {translate('View_Success_ProductCreatedDescription')}
+                        {strings.View_Success_ProductCreatedDescription}
                     </Description>
                 )}
                 {type === 'edit_batch' && (
                     <Description>
-                        {translate('View_Success_BatchUpdatedDescription')}
+                        {strings.View_Success_BatchUpdatedDescription}
                     </Description>
                 )}
                 {type === 'edit_product' && (
                     <Description>
-                        {translate('View_Success_ProductUpdatedDescription')}
+                        {strings.View_Success_ProductUpdatedDescription}
                     </Description>
                 )}
                 {type === 'delete_batch' && (
                     <Description>
-                        {translate('View_Success_BatchDeletedDescription')}
+                        {strings.View_Success_BatchDeletedDescription}
                     </Description>
                 )}
                 {type === 'delete_product' && (
                     <Description>
-                        {translate('View_Success_ProductDeletedDescription')}
+                        {strings.View_Success_ProductDeletedDescription}
                     </Description>
                 )}
 
@@ -177,14 +177,14 @@ const Success: React.FC = () => {
                     {category_id && (
                         <Button onPress={handleNavigateToCategory}>
                             <ButtonText>
-                                {translate('View_Success_Button_GoToCategory')}
+                                {strings.View_Success_Button_GoToCategory}
                             </ButtonText>
                         </Button>
                     )}
 
                     <Button onPress={handleNavigateHome}>
                         <ButtonText>
-                            {translate('View_Success_Button_GoToHome')}
+                            {strings.View_Success_Button_GoToHome}
                         </ButtonText>
                     </Button>
 
@@ -195,9 +195,9 @@ const Success: React.FC = () => {
                         !!routeParams.productId && (
                             <Button onPress={handleNavigateToProduct}>
                                 <ButtonText>
-                                    {translate(
-                                        'View_Success_Button_NavigateToProduct'
-                                    )}
+                                    {
+                                        strings.View_Success_Button_NavigateToProduct
+                                    }
                                 </ButtonText>
                             </Button>
                         )}

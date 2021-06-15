@@ -6,7 +6,7 @@ import React, {
     useEffect,
 } from 'react';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 import { getActualAppTheme } from '~/Themes';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -31,43 +31,43 @@ const Appearance: React.FC = () => {
         const availableThemes: Array<IThemeItem> = [];
 
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_System'),
+            label: strings.View_Settings_Appearance_Theme_System,
             value: 'system',
             key: 'system',
         });
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_Light'),
+            label: strings.View_Settings_Appearance_Theme_Light,
             value: 'light',
             key: 'light',
         });
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_Dark'),
+            label: strings.View_Settings_Appearance_Theme_Dark,
             value: 'dark',
             key: 'dark',
         });
 
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_UltraViolet'),
+            label: strings.View_Settings_Appearance_Theme_UltraViolet,
             value: 'ultraviolet',
             key: 'ultraviolet',
         });
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_DarkGreen'),
+            label: strings.View_Settings_Appearance_Theme_DarkGreen,
             value: 'darkgreen',
             key: 'darkgreen',
         });
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_HappyPink'),
+            label: strings.View_Settings_Appearance_Theme_HappyPink,
             value: 'happypink',
             key: 'happypink',
         });
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_OceanBlue'),
+            label: strings.View_Settings_Appearance_Theme_OceanBlue,
             value: 'oceanblue',
             key: 'oceanblue',
         });
         availableThemes.push({
-            label: translate('View_Settings_Appearance_Theme_Relax'),
+            label: strings.View_Settings_Appearance_Theme_Relax,
             value: 'relax',
             key: 'relax',
         });
@@ -100,11 +100,11 @@ const Appearance: React.FC = () => {
     return (
         <Category>
             <CategoryTitle>
-                {translate('View_Settings_CategoryName_Appearance')}
+                {strings.View_Settings_CategoryName_Appearance}
             </CategoryTitle>
 
             <CategoryOptions>
-                <Text>{translate('View_Settings_SettingName_AppTheme')}</Text>
+                <Text>{strings.View_Settings_SettingName_AppTheme}</Text>
                 <PickerContainer>
                     <Picker
                         items={data}

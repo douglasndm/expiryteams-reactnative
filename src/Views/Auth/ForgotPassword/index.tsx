@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { recoveryPassword } from '~/Functions/Auth/Firebase/password';
 
@@ -65,9 +65,9 @@ const ForgotPassword: React.FC = () => {
                 <LoginForm>
                     <InputContainer>
                         <InputText
-                            placeholder={translate(
-                                'View_Login_InputText_Email_Placeholder'
-                            )}
+                            placeholder={
+                                strings.View_Login_InputText_Email_Placeholder
+                            }
                             autoCorrect={false}
                             autoCapitalize="none"
                             value={email}

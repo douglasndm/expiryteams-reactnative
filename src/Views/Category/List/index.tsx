@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import {
     getAllCategoriesFromTeam,
@@ -92,7 +92,7 @@ const List: React.FC = () => {
             if (!newCategoryName) {
                 setInputHasError(true);
                 setInputErrorMessage(
-                    translate('View_Category_List_InputAdd_Error_EmptyText')
+                    strings.View_Category_List_InputAdd_Error_EmptyText
                 );
                 return;
             }
@@ -139,7 +139,7 @@ const List: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header title={translate('View_Category_List_PageTitle')} />
+            <Header title={strings.View_Category_List_PageTitle} />
 
             {!!preferences.selectedTeam &&
                 preferences.selectedTeam.role.toLowerCase() === 'manager' && (
@@ -149,9 +149,9 @@ const List: React.FC = () => {
                                 <InputText
                                     value={newCategoryName}
                                     onChangeText={handleOnTextChange}
-                                    placeholder={translate(
-                                        'View_Category_List_InputAdd_Placeholder'
-                                    )}
+                                    placeholder={
+                                        strings.View_Category_List_InputAdd_Placeholder
+                                    }
                                 />
                             </InputTextContainer>
 
@@ -174,7 +174,7 @@ const List: React.FC = () => {
                 )}
 
             <ListTitle>
-                {translate('View_Category_List_AllCategories_Label')}
+                {strings.View_Category_List_AllCategories_Label}
             </ListTitle>
 
             <ListCategories

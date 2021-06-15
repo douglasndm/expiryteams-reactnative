@@ -6,7 +6,7 @@ import React, {
     useState,
 } from 'react';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -38,13 +38,13 @@ const Info: React.FC = () => {
             const { role } = preferences.selectedTeam;
 
             if (role?.toLowerCase() === 'manager')
-                return translate('UserInfo_Role_Manager');
+                return strings.UserInfo_Role_Manager;
             if (role?.toLowerCase() === 'supervisor') {
-                return translate('UserInfo_Role_Supervisor');
+                return strings.UserInfo_Role_Supervisor;
             }
         }
 
-        return translate('UserInfo_Role_Repositor');
+        return strings.UserInfo_Role_Repositor;
     }, [preferences.selectedTeam]);
 
     useEffect(() => {

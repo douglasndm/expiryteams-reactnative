@@ -1,33 +1,11 @@
-import * as RNLocalize from 'react-native-localize';
-import i18n from 'i18n-js';
-import memoize from 'lodash.memoize';
+import LocalizedStrings from 'react-native-localization';
 
-const translationsGetters = {
-    en: () => require('./en-US.json'),
-    pt: () => require('./pt-BR.json'),
-};
+import ptbr from './pt-BR.json';
+import enus from './en-US.json';
 
-export const translate = memoize(
-    (key, config?) => i18n.t(key, config),
-    (key, config) => (config ? key + JSON.stringify(config) : key)
-);
+const strings = new LocalizedStrings({
+    'pt-BR': ptbr,
+    en: enus,
+});
 
-const setI18nConfig = () => {
-    const fallback = { languageTag: 'en' };
-
-    const { languageTag } =
-        RNLocalize.findBestAvailableLanguage(
-            Object.keys(translationsGetters)
-        ) || fallback;
-
-    if (translate.cache.clear === undefined) {
-        return;
-    }
-
-    translate.cache.clear();
-
-    i18n.translations = { [languageTag]: translationsGetters[languageTag]() };
-    i18n.locale = languageTag;
-};
-
-setI18nConfig();
+export default strings;

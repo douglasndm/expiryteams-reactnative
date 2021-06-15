@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { View, FlatList, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import {
     sortBatches,
@@ -47,9 +47,9 @@ const ListProducts: React.FC<RequestProps> = ({
                 {products.length > 0 && (
                     <CategoryDetails>
                         <CategoryDetailsText>
-                            {translate(
-                                'ListProductsComponent_Title_ProductsNextToExp'
-                            )}
+                            {
+                                strings.ListProductsComponent_Title_ProductsNextToExp
+                            }
                         </CategoryDetailsText>
                     </CategoryDetails>
                 )}
@@ -60,7 +60,7 @@ const ListProducts: React.FC<RequestProps> = ({
     const EmptyList = useCallback(() => {
         return (
             <EmptyListText>
-                {translate('ListProductsComponent_Title_NoProductsInList')}
+                {strings.ListProductsComponent_Title_NoProductsInList}
             </EmptyListText>
         );
     }, []);
@@ -109,7 +109,7 @@ const ListProducts: React.FC<RequestProps> = ({
                         <Icons name="add-outline" color="white" size={22} />
                     )}
                     small
-                    label={translate('View_FloatMenu_AddProduct')}
+                    label={strings.View_FloatMenu_AddProduct}
                     onPress={handleNavigateAddProduct}
                 />
             )}

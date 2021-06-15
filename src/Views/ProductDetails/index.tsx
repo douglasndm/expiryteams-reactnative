@@ -12,7 +12,7 @@ import { format, parseISO } from 'date-fns';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -158,13 +158,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                 await ShareProductImageWithText({
                     productId,
-                    title: translate('View_ShareProduct_Title'),
-                    text: translate('View_ShareProduct_Message')
-                        .replace('{PRODUCT}', product.name)
-                        .replace(
-                            '{DATE}',
-                            format(parseISO(expireDate), dateFormat)
-                        ),
+                    title: strings.View_ShareProduct_Title,
+                    text: strings.View_ShareProduct_Message.replace(
+                        '{PRODUCT}',
+                        product.name
+                    ).replace(
+                        '{DATE}',
+                        format(parseISO(expireDate), dateFormat)
+                    ),
                 });
             }
         }
@@ -181,7 +182,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         <PageTitleContent>
                             <BackButton handleOnPress={goBack} />
                             <PageTitle>
-                                {translate('View_ProductDetails_PageTitle')}
+                                {strings.View_ProductDetails_PageTitle}
                             </PageTitle>
                         </PageTitleContent>
 
@@ -204,17 +205,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     </ProductName>
                                     {!!product.code && product?.code && (
                                         <ProductCode>
-                                            {translate(
-                                                'View_ProductDetails_Code'
-                                            )}
-                                            : {product.code}
+                                            {strings.View_ProductDetails_Code}:{' '}
+                                            {product.code}
                                         </ProductCode>
                                     )}
                                     <ProductInfo>
                                         {product.categories.length > 0 &&
-                                            `${translate(
-                                                'View_ProductDetails_Categories'
-                                            )}: ${product.categories[0].name}`}
+                                            `${strings.View_ProductDetails_Categories}: ${product.categories[0].name}`}
                                     </ProductInfo>
 
                                     <ActionsButtonContainer>
@@ -227,9 +224,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             )}
                                             onPress={handleEdit}
                                         >
-                                            {translate(
-                                                'View_ProductDetails_Button_UpdateProduct'
-                                            )}
+                                            {
+                                                strings.View_ProductDetails_Button_UpdateProduct
+                                            }
                                         </ActionButton>
 
                                         {lotesNaoTratados.length > 0 && (
@@ -242,9 +239,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                                 )}
                                                 onPress={handleShare}
                                             >
-                                                {translate(
-                                                    'View_ProductDetails_Button_ShareProduct'
-                                                )}
+                                                {
+                                                    strings.View_ProductDetails_Button_ShareProduct
+                                                }
                                             </ActionButton>
                                         )}
                                     </ActionsButtonContainer>
@@ -258,9 +255,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <TableContainer>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        {translate(
-                                            'View_ProductDetails_TableTitle_NotTreatedBatches'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_TableTitle_NotTreatedBatches
+                                        }
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
@@ -275,9 +272,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        {translate(
-                                            'View_ProductDetails_TableTitle_TreatedBatches'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_TableTitle_TreatedBatches
+                                        }
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
@@ -297,7 +294,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     <Ionicons name="add-outline" color="white" size={22} />
                 )}
                 small
-                label={translate('View_ProductDetails_FloatButton_AddNewBatch')}
+                label={strings.View_ProductDetails_FloatButton_AddNewBatch}
                 onPress={addNewLote}
             />
         </>

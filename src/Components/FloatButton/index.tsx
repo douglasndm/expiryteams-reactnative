@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { Float, Icons } from './styles';
 
@@ -24,10 +24,10 @@ const FloatButton: React.FC<Props> = ({ navigateTo, productId }: Props) => {
     const label = useMemo(() => {
         switch (navigateTo) {
             case 'AddProduct':
-                return translate('Component_FloatButton_AddProduct');
+                return strings.Component_FloatButton_AddProduct;
 
             case 'AddBatch':
-                return translate('Component_FloatButton_AddBatch');
+                return strings.Component_FloatButton_AddBatch;
 
             default:
                 return '';

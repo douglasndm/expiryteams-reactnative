@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import Loading from '~/Components/Loading';
 import BackButton from '../../Components/BackButton';
@@ -41,13 +41,13 @@ const PhotoView: React.FC<Props> = () => {
                     <PageHeader>
                         <BackButton handleOnPress={goBack} />
                         <PageTitle>
-                            {translate('View_PhotoView_PageTitle')}
+                            {strings.View_PhotoView_PageTitle}
                         </PageTitle>
                     </PageHeader>
 
                     {!!photoPath && <Image source={{ uri: photoPath }} />}
                     <Button
-                        text={translate('View_PhotoView_Button_Back')}
+                        text={strings.View_PhotoView_Button_Back}
                         onPress={goBack}
                     />
                 </Container>

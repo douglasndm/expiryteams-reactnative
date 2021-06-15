@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { translate } from '../../Locales';
+import strings from '~/Locales';
 
-import { getHowManyTimesAppWasOpen } from '../../Functions/Settings';
-import { askUserForAReview } from '../../Functions/UserReview';
+import { getHowManyTimesAppWasOpen } from '~/Functions/Settings';
+import { askUserForAReview } from '~/Functions/UserReview';
 
 import { Dialog, DialogTitle, DialogText, Button } from './styles';
 
@@ -20,7 +20,7 @@ const AskReview: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        getHowManyTimesAppWasOpen().then((howManyTimesOpened) => {
+        getHowManyTimesAppWasOpen().then(howManyTimesOpened => {
             if (howManyTimesOpened) {
                 if (howManyTimesOpened === 15) {
                     setIsVisible(true);
@@ -31,18 +31,16 @@ const AskReview: React.FC = () => {
 
     return (
         <Dialog visible={isVisible} onDismiss={handleDimiss}>
-            <DialogTitle>{translate('AskUserReview_Title')}</DialogTitle>
+            <DialogTitle>{strings.AskUserReview_Title}</DialogTitle>
             <Dialog.Content>
-                <DialogText>
-                    {translate('AskUserReview_Description')}
-                </DialogText>
+                <DialogText>{strings.AskUserReview_Description}</DialogText>
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={handleDimiss}>
-                    {translate('AskUserReview_Button_No')}
+                    {strings.AskUserReview_Button_No}
                 </Button>
                 <Button onPress={handleAskReview}>
-                    {translate('AskUserReview_Button_Yes')}
+                    {strings.AskUserReview_Button_Yes}
                 </Button>
             </Dialog.Actions>
         </Dialog>

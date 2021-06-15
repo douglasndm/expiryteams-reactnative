@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { createAccount } from '~/Functions/Auth/Account';
 
@@ -148,9 +148,9 @@ const CreateAccount: React.FC = () => {
                     </InputContainer>
                     <InputContainer>
                         <InputText
-                            placeholder={translate(
-                                'View_Login_InputText_Email_Placeholder'
-                            )}
+                            placeholder={
+                                strings.View_Login_InputText_Email_Placeholder
+                            }
                             autoCorrect={false}
                             autoCapitalize="none"
                             value={email}

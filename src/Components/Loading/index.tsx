@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import StatusBar from '../StatusBar';
 
@@ -11,7 +11,7 @@ const Loading: React.FC = () => {
         <Container>
             <StatusBar />
             <LoadingIndicator />
-            <LoadingText>{translate('LoadingComponent_Text')}</LoadingText>
+            <LoadingText>{strings.LoadingComponent_Text}</LoadingText>
         </Container>
     );
 };

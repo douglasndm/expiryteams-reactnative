@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { createTeam } from '~/Functions/Team';
 
@@ -42,7 +42,7 @@ const Add: React.FC = () => {
             });
 
             showMessage({
-                message: translate('View_CreateTeam_Message_SuccessCreated'),
+                message: strings.View_CreateTeam_Message_SuccessCreated,
                 type: 'info',
             });
 
@@ -65,15 +65,15 @@ const Add: React.FC = () => {
 
             <PageHeader>
                 <BackButton handleOnPress={goBack} />
-                <PageTitle>{translate('View_CreateTeam_PageTitle')}</PageTitle>
+                <PageTitle>{strings.View_CreateTeam_PageTitle}</PageTitle>
             </PageHeader>
 
             <Content>
                 <InputTextContainer hasError={nameFieldError}>
                     <InputText
-                        placeholder={translate(
-                            'View_CreateTeam_InputText_Name_Placeholder'
-                        )}
+                        placeholder={
+                            strings.View_CreateTeam_InputText_Name_Placeholder
+                        }
                         value={name}
                         onChangeText={value => {
                             setName(value);
@@ -84,14 +84,12 @@ const Add: React.FC = () => {
 
                 {nameFieldError && (
                     <InputTextTip>
-                        {translate(
-                            'View_CreateTeam_InputText_Name_Erro_EmptyText'
-                        )}
+                        {strings.View_CreateTeam_InputText_Name_Erro_EmptyText}
                     </InputTextTip>
                 )}
 
                 <Button
-                    text={translate('View_CreateTeam_Button_CreateTeam')}
+                    text={strings.View_CreateTeam_Button_CreateTeam}
                     isLoading={isCreating}
                     onPress={handleCreate}
                 />
