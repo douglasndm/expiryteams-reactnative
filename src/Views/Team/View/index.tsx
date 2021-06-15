@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+    useMemo,
+} from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO, startOfDay, compareAsc } from 'date-fns';
@@ -11,6 +17,8 @@ import { getTeamSubscriptions } from '~/Functions/Team/Subscriptions';
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
+
+import Advenced from './Components/Advenced';
 
 import {
     Container,
@@ -31,12 +39,21 @@ import {
 const ViewTeam: React.FC = () => {
     const { goBack, navigate } = useNavigation();
 
+    const { preferences } = useContext(PreferencesContext);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isPurchaseLoading, setIsPurchaseLoading] = useState<boolean>(false);
 
     const [subs, setSubs] = useState<ITeamSubscription | null>();
 
-    const { preferences } = useContext(PreferencesContext);
+    const isManager = useMemo(() => {
+        if (preferences.selectedTeam) {
+            if (preferences.selectedTeam.role.toLowerCase() === 'manager') {
+                return true;
+            }
+        }
+        return false;
+    }, [preferences.selectedTeam]);
 
     const loadData = useCallback(async () => {
         if (!preferences.selectedTeam) {
@@ -115,8 +132,7 @@ const ViewTeam: React.FC = () => {
                         <TeamName>
                             {preferences.selectedTeam.team.name}
                         </TeamName>
-                        {preferences.selectedTeam.role.toLowerCase() ===
-                            'manager' && (
+                        {isManager && (
                             <Section>
                                 <SectionTitle>Assinaturas</SectionTitle>
 
@@ -196,6 +212,8 @@ const ViewTeam: React.FC = () => {
                         onPress={handleNavigateToMembers}
                     />
                 </Section>
+
+                {isManager && <Advenced />}
             </PageContent>
         </Container>
     );
