@@ -5,17 +5,11 @@ import strings from '~/Locales';
 
 import api from '~/Services/API';
 
-export async function getUserTeams(): Promise<Array<IUserRoles> | IAPIError> {
+export async function getUserTeams(): Promise<Array<IUserRoles>> {
     try {
         const { currentUser } = auth();
 
-        const token = await currentUser?.getIdTokenResult();
-
-        const response = await api.get(`/users/${currentUser?.uid}`, {
-            headers: {
-                Authorization: `Bearer ${token?.token}`,
-            },
-        });
+        const response = await api.get(`/users/${currentUser?.uid}`);
 
         const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
             role: role.role,
@@ -33,12 +27,10 @@ export async function getUserTeams(): Promise<Array<IUserRoles> | IAPIError> {
         if (err.message === 'Network Error') {
             throw new Error(err);
         }
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
@@ -48,19 +40,10 @@ interface getAllUsersFromTeamProps {
 
 export async function getAllUsersFromTeam({
     team_id,
-}: getAllUsersFromTeamProps): Promise<Array<IUserInTeam> | IAPIError> {
+}: getAllUsersFromTeamProps): Promise<Array<IUserInTeam>> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
         const response = await api.get<Array<IUserInTeam>>(
-            `/team/${team_id}/users`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
+            `/team/${team_id}/users`
         );
 
         return response.data;
@@ -69,12 +52,10 @@ export async function getAllUsersFromTeam({
         if (err.message === 'Network Error') {
             throw new Error(err);
         }
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
@@ -96,19 +77,10 @@ export async function putUserInTeam({
     team_id,
 }: putUserInTeamProps): Promise<putUserInTeamResponse> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
         const response = await api.post<putUserInTeamResponse>(
             `/team/${team_id}/manager/user`,
             {
                 email: user_email,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
             }
         );
 
@@ -140,21 +112,9 @@ export async function enterTeamCode({
     }
 
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
-        await api.post<putUserInTeamResponse>(
-            `/team/${team_id}/join`,
-            {
-                code,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        await api.post<putUserInTeamResponse>(`/team/${team_id}/join`, {
+            code,
+        });
     } catch (err) {
         if (err.message === 'Network Error') {
             throw new Error(err);
@@ -176,18 +136,7 @@ export async function removeUserFromTeam({
     user_id,
 }: removeUserFromTeamProps): Promise<void> {
     try {
-        const { currentUser } = auth();
-        const token = await currentUser?.getIdTokenResult();
-
-        await api.delete(
-            `/team/${team_id}/manager/user/${user_id}`,
-
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        await api.delete(`/team/${team_id}/manager/user/${user_id}`);
     } catch (err) {
         if (err.response.data) {
             throw new Error(err.response.data);

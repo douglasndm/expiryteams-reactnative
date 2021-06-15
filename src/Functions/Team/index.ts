@@ -1,5 +1,3 @@
-import auth from '@react-native-firebase/auth';
-
 import api from '~/Services/API';
 
 interface createTeamProps {
@@ -7,22 +5,10 @@ interface createTeamProps {
 }
 
 export async function createTeam({ name }: createTeamProps): Promise<ITeam> {
-    const userSession = auth().currentUser;
-
-    const token = await userSession?.getIdTokenResult();
-
     try {
-        const response = await api.post<ITeam>(
-            `/team`,
-            {
-                name,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        const response = await api.post<ITeam>(`/team`, {
+            name,
+        });
 
         return response.data;
     } catch (err) {

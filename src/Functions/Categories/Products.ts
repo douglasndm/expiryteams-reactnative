@@ -1,5 +1,3 @@
-import auth from '@react-native-firebase/auth';
-
 import api from '~/Services/API';
 
 interface getAllProductsFromCategoryProps {
@@ -16,18 +14,9 @@ export async function getAllProductsFromCategory({
 }: getAllProductsFromCategoryProps): Promise<
     getAllProductsFromCategoryResponse
 > {
-    const userSession = auth().currentUser;
-
-    const token = await userSession?.getIdTokenResult();
-
     try {
         const response = await api.get<getAllProductsFromCategoryResponse>(
-            `/categories/${category_id}/products`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
+            `/categories/${category_id}/products`
         );
 
         return response.data;

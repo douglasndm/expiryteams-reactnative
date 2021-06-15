@@ -1,5 +1,3 @@
-import auth from '@react-native-firebase/auth';
-
 import api from '~/Services/API';
 
 interface updateUserRoleProps {
@@ -14,22 +12,10 @@ export async function updateUserRole({
     newRole,
 }: updateUserRoleProps): Promise<void> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
-        await api.put(
-            `/team/${team_id}/manager/user`,
-            {
-                user_id,
-                role: newRole,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        await api.put(`/team/${team_id}/manager/user`, {
+            user_id,
+            role: newRole,
+        });
     } catch (err) {
         if (err.response.data.error) {
             throw new Error(err.response.data.error);

@@ -108,18 +108,10 @@ export async function makePurchase({
             // productIdentifier,
         } = await Purchases.purchasePackage(pack, upgrade);
 
-        const { currentUser } = auth();
-        const token = await currentUser?.getIdTokenResult();
-
         // Verificar com o servidor se a compra foi concluida
         // Liberar funções no app
         const apiCheck = await api.get<ITeamSubscription>(
-            `/team/${team_id}/subscriptions/check`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
+            `/team/${team_id}/subscriptions/check`
         );
 
         if (!apiCheck.data) {
@@ -152,17 +144,8 @@ export async function getTeamSubscriptions({
     team_id,
 }: getTeamSubscriptionsProps): Promise<ITeamSubscription> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
         const response = await api.get<ITeamSubscription>(
-            `/team/${team_id}/subscriptions`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
+            `/team/${team_id}/subscriptions`
         );
 
         return response.data;

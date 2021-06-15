@@ -1,4 +1,3 @@
-import auth from '@react-native-firebase/auth';
 import { startOfDay } from 'date-fns';
 
 import api from '~/Services/API';
@@ -14,15 +13,7 @@ export async function getBatch({
     batch_id,
 }: getBatchProps): Promise<getBatchResponse> {
     try {
-        const userSession = auth().currentUser;
-
-        const token = await userSession?.getIdTokenResult();
-
-        const response = await api.get(`/batches/${batch_id}`, {
-            headers: {
-                Authorization: `Bearer ${token?.token}`,
-            },
-        });
+        const response = await api.get(`/batches/${batch_id}`);
 
         const responseData: getBatchResponse = {
             product: response.data.product,
@@ -47,10 +38,6 @@ export async function createBatch({
     batch,
 }: createBatchProps): Promise<IBatch> {
     try {
-        const userSession = auth().currentUser;
-
-        const token = await userSession?.getIdTokenResult();
-
         const date = startOfDay(new Date(batch.exp_date));
 
         let body: any = {
@@ -68,11 +55,7 @@ export async function createBatch({
             };
         }
 
-        const response = await api.post<IBatch>(`/batches`, body, {
-            headers: {
-                Authorization: `Bearer ${token?.token}`,
-            },
-        });
+        const response = await api.post<IBatch>(`/batches`, body);
 
         return response.data;
     } catch (err) {
@@ -89,36 +72,22 @@ interface updatebatchProps {
 
 export async function updateBatch({
     batch,
-}: updatebatchProps): Promise<IBatch | IAPIError> {
+}: updatebatchProps): Promise<IBatch> {
     try {
-        const userSession = auth().currentUser;
-
-        const token = await userSession?.getIdTokenResult();
-
-        const response = await api.put<IBatch>(
-            `/batches/${batch.id}`,
-            {
-                name: batch.name,
-                exp_date: batch.exp_date,
-                amount: batch.amount,
-                price: batch.price,
-                status: batch.status,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        const response = await api.put<IBatch>(`/batches/${batch.id}`, {
+            name: batch.name,
+            exp_date: batch.exp_date,
+            amount: batch.amount,
+            price: batch.price,
+            status: batch.status,
+        });
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
@@ -130,14 +99,7 @@ export async function deleteBatch({
     batch_id,
 }: deleteBatchProps): Promise<void> {
     try {
-        const userSession = auth().currentUser;
-        const token = await userSession?.getIdTokenResult();
-
-        await api.delete<IBatch>(`/batches/${batch_id}`, {
-            headers: {
-                Authorization: `Bearer ${token?.token}`,
-            },
-        });
+        await api.delete<IBatch>(`/batches/${batch_id}`);
     } catch (err) {
         if (err.response.data.error) {
             throw new Error(err.response.data.error);

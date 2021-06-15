@@ -1,5 +1,3 @@
-import auth from '@react-native-firebase/auth';
-
 import API from '~/Services/API';
 
 interface getAllProductsProps {
@@ -10,21 +8,12 @@ export async function getAllProducts({
     team_id,
 }: getAllProductsProps): Promise<Array<IProduct>> {
     try {
-        const userSession = auth().currentUser;
-
-        const token = await userSession?.getIdTokenResult();
-
         if (!team_id) {
             throw new Error('Provider team id');
         }
 
         const response = await API.get<IAllTeamProducts>(
-            `/team/${team_id}/products`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
+            `/team/${team_id}/products`
         );
 
         if (!response.data) {

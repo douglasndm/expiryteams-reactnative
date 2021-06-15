@@ -52,20 +52,9 @@ export async function resendConfirmationEmail(): Promise<void> {
 }
 
 export async function createSeassion(): Promise<void> {
-    const userSession = auth().currentUser;
-    const token = await userSession?.getIdTokenResult();
-
     const deviceToken = await messaging().getToken();
 
-    await api.post(
-        `/sessions`,
-        {
-            device_id: deviceToken,
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${token?.token}`,
-            },
-        }
-    );
+    await api.post(`/sessions`, {
+        device_id: deviceToken,
+    });
 }

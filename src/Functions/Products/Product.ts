@@ -1,5 +1,3 @@
-import auth from '@react-native-firebase/auth';
-
 import api from '~/Services/API';
 
 interface getProductProps {
@@ -8,26 +6,16 @@ interface getProductProps {
 
 export async function getProduct({
     productId,
-}: getProductProps): Promise<IProduct | IAPIError> {
+}: getProductProps): Promise<IProduct> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
-        const response = await api.get<IProduct>(`/products/${productId}`, {
-            headers: {
-                Authorization: `Bearer ${token?.token}`,
-            },
-        });
+        const response = await api.get<IProduct>(`/products/${productId}`);
 
         return response.data;
     } catch (err) {
-        const error: IAPIError = {
-            status: err.response.status,
-            error: err.response.data.error,
-        };
-
-        return error;
+        if (err.response.data.error) {
+            throw new Error(err.response.data.error);
+        }
+        throw new Error(err.message);
     }
 }
 
@@ -43,24 +31,12 @@ export async function createProduct({
     categories,
 }: createProductProps): Promise<IProduct> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
-        const response = await api.post<IProduct>(
-            `/products`,
-            {
-                team_id,
-                name: product.name,
-                code: product.code,
-                categories,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        const response = await api.post<IProduct>(`/products`, {
+            team_id,
+            name: product.name,
+            code: product.code,
+            categories,
+        });
 
         return response.data;
     } catch (err) {
@@ -81,23 +57,11 @@ export async function updateProduct({
     categories,
 }: updateProductProps): Promise<IProduct> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
-        const response = await api.put<IProduct>(
-            `/products/${product.id}`,
-            {
-                name: product.name,
-                code: product.code,
-                categories,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        const response = await api.put<IProduct>(`/products/${product.id}`, {
+            name: product.name,
+            code: product.code,
+            categories,
+        });
 
         return response.data;
     } catch (err) {
@@ -116,15 +80,7 @@ export async function deleteProduct({
     product_id,
 }: deleteProductProps): Promise<void> {
     try {
-        const { currentUser } = auth();
-
-        const token = await currentUser?.getIdTokenResult();
-
-        await api.delete<IProduct>(`/products/${product_id}`, {
-            headers: {
-                Authorization: `Bearer ${token?.token}`,
-            },
-        });
+        await api.delete<IProduct>(`/products/${product_id}`);
     } catch (err) {
         if (err.response.data.error) {
             throw new Error(err.response.data.error);
