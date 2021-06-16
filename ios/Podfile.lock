@@ -177,6 +177,7 @@ PODS:
   - GoogleUtilities/UserDefaults (7.4.1):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.5.0)
+  - hermes-engine (0.7.2)
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - libevent (2.1.12)
@@ -209,6 +210,11 @@ PODS:
     - boost-for-react-native
     - DoubleConversion
     - glog
+  - RCT-Folly/Futures (2020.01.13.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+    - libevent
   - RCTRequired (0.64.2)
   - RCTTypeSafety (0.64.2):
     - FBLazyVector (= 0.64.2)
@@ -264,6 +270,16 @@ PODS:
     - React-jsi (= 0.64.2)
     - React-jsiexecutor (= 0.64.2)
     - React-jsinspector (= 0.64.2)
+    - React-perflogger (= 0.64.2)
+    - Yoga
+  - React-Core/Hermes (0.64.2):
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2020.01.13.00)
+    - RCT-Folly/Futures
+    - React-cxxreact (= 0.64.2)
+    - React-jsi (= 0.64.2)
+    - React-jsiexecutor (= 0.64.2)
     - React-perflogger (= 0.64.2)
     - Yoga
   - React-Core/RCTActionSheetHeaders (0.64.2):
@@ -598,6 +614,8 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (~> 0.75.1)
   - FlipperKit/SKIOSNetworkPlugin (~> 0.75.1)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - hermes-engine (~> 0.7.2)
+  - libevent (~> 2.1.12)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
@@ -608,6 +626,7 @@ DEPENDENCIES:
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Core (from `../node_modules/react-native/`)
   - React-Core/DevSupport (from `../node_modules/react-native/`)
+  - React-Core/Hermes (from `../node_modules/react-native/`)
   - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -682,6 +701,7 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - GTMSessionFetcher
+    - hermes-engine
     - JWT
     - libevent
     - lottie-ios
@@ -851,6 +871,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
@@ -920,6 +941,6 @@ SPEC CHECKSUMS:
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ecf9ca4398a81745ec641d2e942fd312a9766c6a
+PODFILE CHECKSUM: 2a52473bfacf767fa71fe6f70ee1332838a1088b
 
 COCOAPODS: 1.10.1
