@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
@@ -28,11 +28,11 @@ import UserDetails from '~/Views/Team/Manager/UserDetails';
 
 import Test from '~/Views/Test';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const Routes: React.FC = () => {
     return (
-        <Stack.Navigator headerMode="none">
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
 

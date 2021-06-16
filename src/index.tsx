@@ -31,7 +31,7 @@ import StatusBar from './Components/StatusBar';
 
 import DefaultPrefs from '~/Contexts/DefaultPreferences';
 
-screens.enableScreens(false);
+screens.enableScreens(true);
 
 const App: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
