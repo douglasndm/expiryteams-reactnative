@@ -28,7 +28,6 @@ import {
     CustomDatePicker,
 } from '~/Views/Product/Add/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
-import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
 interface Props {
     route: {
@@ -111,27 +110,12 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const loadData = useCallback(async () => {
         const prod = await getProduct({ productId });
 
-        if ('error' in prod) {
-            if (prod.status === 401) {
-                await logoutFirebase();
-
-                reset({
-                    routes: [
-                        {
-                            name: 'Login',
-                        },
-                    ],
-                });
-            }
-            return;
-        }
-
         if (prod) {
             setName(prod.name);
 
             if (prod.code) setCode(prod.code);
         }
-    }, [productId, reset]);
+    }, [productId]);
 
     useEffect(() => {
         loadData();

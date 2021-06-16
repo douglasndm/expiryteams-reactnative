@@ -1,16 +1,10 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    useMemo,
-} from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
 import { getLocales } from 'react-native-localize';
 import { format, parseISO } from 'date-fns';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
@@ -22,8 +16,6 @@ import { getProduct } from '~/Functions/Products/Product';
 
 import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -49,7 +41,6 @@ import {
 } from './styles';
 
 import BatchTable from './Components/BatchesTable';
-import { logoutFirebase } from '~/Functions/Auth/Firebase';
 
 interface Request {
     route: {
@@ -60,9 +51,7 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-    const { preferences } = useContext(PreferencesContext);
-
-    const { navigate, reset, goBack } = useNavigation();
+    const { navigate, goBack } = useNavigation();
 
     const productId = useMemo(() => {
         return route.params.id;
@@ -88,26 +77,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         try {
             const response = await getProduct({ productId });
 
-            if ('error' in response) {
-                showMessage({
-                    message: response.error,
-                    type: 'danger',
-                });
-
-                if (response.status === 401) {
-                    await logoutFirebase();
-
-                    reset({
-                        routes: [
-                            {
-                                name: 'Login',
-                            },
-                        ],
-                    });
-                }
-                return;
-            }
-
             setProduct(response);
         } catch (err) {
             showMessage({
@@ -117,7 +86,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         } finally {
             setIsLoading(false);
         }
-    }, [productId, reset]);
+    }, [productId]);
 
     const addNewLote = useCallback(() => {
         navigate('AddLote', { productId });
@@ -206,7 +175,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                         {!!product && (
                             <ProductContainer>
-                                {preferences.isUserPremium && !!photo && (
+                                {!!photo && (
                                     <ProductImageContainer
                                         onPress={handleOnPhotoPress}
                                     >

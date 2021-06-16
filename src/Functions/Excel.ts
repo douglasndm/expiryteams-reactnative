@@ -51,6 +51,10 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
 
     const selectedTeam = await getSelectedTeam();
 
+    if (!selectedTeam) {
+        throw new Error('Team is now selected');
+    }
+
     try {
         const excelExport: Array<exportModel> = [];
 
@@ -59,10 +63,6 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
         const allProducts = await getAllProducts({
             team_id: selectedTeam.team.id,
         });
-
-        if ('error' in allProducts) {
-            throw new Error(allProducts.error);
-        }
 
         allProducts.forEach(p => {
             p.batches.forEach(l => {

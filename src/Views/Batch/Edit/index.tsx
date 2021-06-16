@@ -150,7 +150,7 @@ const EditBatch: React.FC = () => {
 
         try {
             setIsUpdating(true);
-            const response = await updateBatch({
+            await updateBatch({
                 batch: {
                     id: batchId,
                     name: batch,
@@ -160,14 +160,6 @@ const EditBatch: React.FC = () => {
                     status,
                 },
             });
-
-            if ('error' in response) {
-                showMessage({
-                    message: response.error,
-                    type: 'danger',
-                });
-                return;
-            }
 
             reset({
                 index: 1,
