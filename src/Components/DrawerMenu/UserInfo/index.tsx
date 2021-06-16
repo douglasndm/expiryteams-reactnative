@@ -51,6 +51,18 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
         return strings.UserInfo_Role_Repositor;
     }, [preferences.selectedTeam]);
 
+    const name = useMemo(() => {
+        if (user) {
+            if (user.name && user.lastName) {
+                return `${user.name} ${user.lastName}`;
+            }
+            if (user.name) {
+                return user.name;
+            }
+        }
+        return null;
+    }, [user]);
+
     const handleNavigateToProfile = useCallback(() => {
         navigate('User');
     }, [navigate]);
@@ -70,9 +82,7 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
                     )}
 
                     <TextContainer>
-                        {!!user.name && (
-                            <UserName>{`${user.name} ${user.lastName}`}</UserName>
-                        )}
+                        {!!name && <UserName>{name}</UserName>}
 
                         <UserEmail>{user?.email}</UserEmail>
 
