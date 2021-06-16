@@ -85,3 +85,14 @@ export async function updateUser({
         throw new Error(err.message);
     }
 }
+
+export async function deleteUser(): Promise<void> {
+    try {
+        await api.delete('/users');
+    } catch (err) {
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
+        }
+        throw new Error(err.message);
+    }
+}

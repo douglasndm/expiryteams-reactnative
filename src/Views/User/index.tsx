@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
 import Preferences from '~/Contexts/PreferencesContext';
 
-import { getUser, updateUser } from '~/Functions/User';
+import { getUser, updateUser, deleteUser } from '~/Functions/User';
 
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
@@ -23,7 +25,10 @@ import {
 } from './styles';
 
 const User: React.FC = () => {
+    const { reset } = useNavigation();
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
     const { preferences, setPreferences } = useContext(Preferences);
 
@@ -77,6 +82,30 @@ const User: React.FC = () => {
         }
     }, [lastName, name, preferences, setPreferences]);
 
+    const handleDelete = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            await deleteUser();
+
+            showMessage({
+                message: 'Conta permanentemente apagada',
+                type: 'warning',
+            });
+
+            reset({
+                routes: [{ name: 'Logout' }],
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [reset]);
+
     const handleNameChange = useCallback((value: string) => {
         setName(value);
         setNameError(false);
@@ -85,6 +114,10 @@ const User: React.FC = () => {
     const handleLastNameChange = useCallback((value: string) => {
         setLastName(value);
     }, []);
+
+    const handlwSwitchDeleteVisible = useCallback(() => {
+        setIsDeleteVisible(!isDeleteVisible);
+    }, [isDeleteVisible]);
 
     useEffect(() => {
         loadData();
@@ -130,13 +163,38 @@ const User: React.FC = () => {
 
                     <ActionButton
                         icon={() => <Icons name="trash-outline" size={22} />}
-                        onPress={() => {}}
+                        onPress={handlwSwitchDeleteVisible}
                     >
                         Apagar
                     </ActionButton>
                 </ActionsButtonContainer>
                 <Container />
             </Content>
+
+            <Dialog.Container
+                visible={isDeleteVisible}
+                onBackdropPress={handlwSwitchDeleteVisible}
+            >
+                <Dialog.Title>ATENÇÃO</Dialog.Title>
+                <Dialog.Description>
+                    Apagando sua conta TODOS OS SEUS DADOS serão apagados
+                    permanemente. Se houver assinaturas ativas as mesmas deverão
+                    ser canceladas na App Store ou Google Play. Você será
+                    removido de todos os times que faz parte e dos quais você é
+                    gerente o time e todos os seus produtos/lotes/categorias
+                    serão permanemente apagados Está ação não pode ser desfeita.
+                    Você tem certeza?
+                </Dialog.Description>
+                <Dialog.Button
+                    label="Manter conta"
+                    onPress={handlwSwitchDeleteVisible}
+                />
+                <Dialog.Button
+                    label="APAGAR TUDO"
+                    color="red"
+                    onPress={handleDelete}
+                />
+            </Dialog.Container>
         </Container>
     );
 };
