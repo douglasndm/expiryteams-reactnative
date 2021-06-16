@@ -13,16 +13,11 @@ export async function getUser(): Promise<IResponse> {
     try {
         const { currentUser } = auth();
 
-        const token = await currentUser?.getIdTokenResult();
+        if (!currentUser) {
+            throw new Error('User is not logged');
+        }
 
-        const response = await api.get<IResponse>(
-            `/users/${currentUser?.uid}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token?.token}`,
-                },
-            }
-        );
+        const response = await api.get<IResponse>(`/users/${currentUser.uid}`);
 
         return response.data;
     } catch (err) {
