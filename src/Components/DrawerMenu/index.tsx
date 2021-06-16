@@ -55,7 +55,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         <Container>
             <DrawerContentScrollView {...props}>
                 <View>
-                    <UserInfo />
+                    <UserInfo navigate={navigation.navigate} />
 
                     <DrawerSection>
                         <MenuItemContainer

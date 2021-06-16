@@ -20,7 +20,11 @@ import {
     DefaultUserPhoto,
 } from './styles';
 
-const Info: React.FC = () => {
+interface InfoProps {
+    navigate: (route: string) => void;
+}
+
+const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
     const { preferences } = useContext(PreferencesContext);
 
     const [user, setUser] = useState<IUser | null>(null);
@@ -47,12 +51,16 @@ const Info: React.FC = () => {
         return strings.UserInfo_Role_Repositor;
     }, [preferences.selectedTeam]);
 
+    const handleNavigateToProfile = useCallback(() => {
+        navigate('User');
+    }, [navigate]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
 
     return (
-        <Container>
+        <Container onPress={handleNavigateToProfile}>
             {user && (
                 <>
                     {user?.photo ? (

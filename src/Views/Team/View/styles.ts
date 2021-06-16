@@ -27,7 +27,7 @@ export const TeamName = styled.Text`
 `;
 
 export const PageContent = styled.View`
-    padding: 15px 16px 0 16px;
+    padding: 15px 16px 100px;
 `;
 
 export const Section = styled.View`

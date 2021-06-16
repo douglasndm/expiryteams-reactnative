@@ -61,3 +61,27 @@ export async function createUser({
         throw new Error(err.message);
     }
 }
+
+interface updateUserProps {
+    name?: string;
+    lastName?: string;
+}
+
+export async function updateUser({
+    name,
+    lastName,
+}: updateUserProps): Promise<IUser> {
+    try {
+        const updatedUser = await api.put<IUser>('/users', {
+            name,
+            lastName,
+        });
+
+        return updatedUser.data;
+    } catch (err) {
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
+        }
+        throw new Error(err.message);
+    }
+}
