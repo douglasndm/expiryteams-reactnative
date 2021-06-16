@@ -11,6 +11,7 @@ export const Content = styled.View`
 export const PageTitleContainer = styled.View`
     flex-direction: row;
     align-items: center;
+    flex: 1;
 `;
 
 interface InputTextContainerProps {

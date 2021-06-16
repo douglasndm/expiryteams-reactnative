@@ -6,10 +6,9 @@ import React, {
     useMemo,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Button } from 'react-native-paper';
-import { useTheme } from 'styled-components/native';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
+import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
@@ -52,8 +51,6 @@ import {
     ButtonPaper,
     Icons,
     ActionsButtonContainer,
-    DialogPaper,
-    Text,
     PageTitleContainer,
 } from './styles';
 
@@ -83,7 +80,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     }, [preferences.selectedTeam]);
 
     const { reset, goBack } = useNavigation();
-    const theme = useTheme();
 
     const product = useMemo<IProduct>(() => {
         return JSON.parse(route.params.product);
@@ -247,6 +243,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         [handleDisableCamera]
     );
 
+    const handleSwitchShowDeleteProduct = useCallback(() => {
+        setDeleteComponentVisible(!deleteComponentVisible);
+    }, [deleteComponentVisible]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -268,57 +268,52 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                             onClose={handleDisableBarCodeReader}
                         />
                     ) : (
-                        <>
-                            <Container>
-                                <StatusBar />
-                                <PageHeader>
-                                    <PageTitleContainer>
-                                        <BackButton handleOnPress={goBack} />
-                                        <PageTitle>
-                                            {strings.View_EditProduct_PageTitle}
-                                        </PageTitle>
-                                    </PageTitleContainer>
+                        <Container>
+                            <StatusBar />
+                            <PageHeader>
+                                <PageTitleContainer>
+                                    <BackButton handleOnPress={goBack} />
+                                    <PageTitle>
+                                        {strings.View_EditProduct_PageTitle}
+                                    </PageTitle>
+                                </PageTitleContainer>
 
-                                    <ActionsButtonContainer>
+                                <ActionsButtonContainer>
+                                    <ButtonPaper
+                                        icon={() => (
+                                            <Icons
+                                                name="save-outline"
+                                                size={22}
+                                            />
+                                        )}
+                                        onPress={updateProd}
+                                    >
+                                        {strings.View_EditProduct_Button_Save}
+                                    </ButtonPaper>
+
+                                    {(userRole === 'manager' ||
+                                        userRole === 'supervisor') && (
                                         <ButtonPaper
                                             icon={() => (
                                                 <Icons
-                                                    name="save-outline"
+                                                    name="trash-outline"
                                                     size={22}
                                                 />
                                             )}
-                                            onPress={updateProd}
+                                            onPress={() => {
+                                                setDeleteComponentVisible(true);
+                                            }}
                                         >
                                             {
-                                                strings.View_EditProduct_Button_Save
+                                                strings.View_ProductDetails_Button_DeleteProduct
                                             }
                                         </ButtonPaper>
+                                    )}
+                                </ActionsButtonContainer>
+                            </PageHeader>
 
-                                        {(userRole === 'manager' ||
-                                            userRole === 'supervisor') && (
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="trash-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={() => {
-                                                    setDeleteComponentVisible(
-                                                        true
-                                                    );
-                                                }}
-                                            >
-                                                {
-                                                    strings.View_ProductDetails_Button_DeleteProduct
-                                                }
-                                            </ButtonPaper>
-                                        )}
-                                    </ActionsButtonContainer>
-                                </PageHeader>
-
-                                <PageContent>
-                                    {/* {!!photoPath && (
+                            <PageContent>
+                                {/* {!!photoPath && (
                                         <ProductImageContainer
                                             onPress={handleEnableCamera}
                                         >
@@ -330,131 +325,114 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </ProductImageContainer>
                                     )} */}
 
-                                    <InputContainer>
-                                        <InputGroup>
-                                            <InputTextContainer>
-                                                <InputText
-                                                    placeholder={
-                                                        strings.View_EditProduct_InputPlacehoder_Name
-                                                    }
-                                                    accessibilityLabel={
-                                                        strings.View_EditProduct_InputAccessibility_Name
-                                                    }
-                                                    value={name}
-                                                    onChangeText={value => {
-                                                        setName(value);
-                                                        setNameFieldError(
-                                                            false
-                                                        );
-                                                    }}
-                                                />
-                                            </InputTextContainer>
+                                <InputContainer>
+                                    <InputGroup>
+                                        <InputTextContainer>
+                                            <InputText
+                                                placeholder={
+                                                    strings.View_EditProduct_InputPlacehoder_Name
+                                                }
+                                                accessibilityLabel={
+                                                    strings.View_EditProduct_InputAccessibility_Name
+                                                }
+                                                value={name}
+                                                onChangeText={value => {
+                                                    setName(value);
+                                                    setNameFieldError(false);
+                                                }}
+                                            />
+                                        </InputTextContainer>
 
-                                            {/* <CameraButtonContainer
+                                        {/* <CameraButtonContainer
                                                 onPress={handleEnableCamera}
                                             >
                                                 <CameraButtonIcon />
                                             </CameraButtonContainer> */}
-                                        </InputGroup>
-                                        {nameFieldError && (
-                                            <InputTextTip>
-                                                {
-                                                    strings.View_EditProduct_Error_EmptyProductName
-                                                }
-                                            </InputTextTip>
-                                        )}
+                                    </InputGroup>
+                                    {nameFieldError && (
+                                        <InputTextTip>
+                                            {
+                                                strings.View_EditProduct_Error_EmptyProductName
+                                            }
+                                        </InputTextTip>
+                                    )}
 
-                                        <InputCodeTextContainer>
-                                            <InputCodeText
-                                                placeholder={
-                                                    strings.View_EditProduct_InputPlacehoder_Code
+                                    <InputCodeTextContainer>
+                                        <InputCodeText
+                                            placeholder={
+                                                strings.View_EditProduct_InputPlacehoder_Code
+                                            }
+                                            accessibilityLabel={
+                                                strings.View_EditProduct_InputAccessibility_Code
+                                            }
+                                            value={code}
+                                            onChangeText={value =>
+                                                setCode(value)
+                                            }
+                                        />
+                                        <InputTextIconContainer
+                                            onPress={handleEnableBarCodeReader}
+                                        >
+                                            <InputCodeTextIcon />
+                                        </InputTextIconContainer>
+                                    </InputCodeTextContainer>
+
+                                    <MoreInformationsContainer>
+                                        <MoreInformationsTitle>
+                                            {
+                                                strings.View_AddProduct_MoreInformation_Label
+                                            }
+                                        </MoreInformationsTitle>
+
+                                        <PickerContainer
+                                            style={{ marginBottom: 10 }}
+                                        >
+                                            <Picker
+                                                items={categories}
+                                                onValueChange={
+                                                    handleCategoryChange
                                                 }
-                                                accessibilityLabel={
-                                                    strings.View_EditProduct_InputAccessibility_Code
-                                                }
-                                                value={code}
-                                                onChangeText={value =>
-                                                    setCode(value)
-                                                }
+                                                value={selectedCategory}
+                                                placeholder={{
+                                                    label:
+                                                        strings.View_AddProduct_InputPlaceholder_SelectCategory,
+                                                    value: 'null',
+                                                }}
                                             />
-                                            <InputTextIconContainer
-                                                onPress={
-                                                    handleEnableBarCodeReader
-                                                }
-                                            >
-                                                <InputCodeTextIcon />
-                                            </InputTextIconContainer>
-                                        </InputCodeTextContainer>
+                                        </PickerContainer>
+                                    </MoreInformationsContainer>
+                                </InputContainer>
+                            </PageContent>
 
-                                        <MoreInformationsContainer>
-                                            <MoreInformationsTitle>
-                                                {
-                                                    strings.View_AddProduct_MoreInformation_Label
-                                                }
-                                            </MoreInformationsTitle>
-
-                                            <PickerContainer
-                                                style={{ marginBottom: 10 }}
-                                            >
-                                                <Picker
-                                                    items={categories}
-                                                    onValueChange={
-                                                        handleCategoryChange
-                                                    }
-                                                    value={selectedCategory}
-                                                    placeholder={{
-                                                        label:
-                                                            strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                                                        value: 'null',
-                                                    }}
-                                                />
-                                            </PickerContainer>
-                                        </MoreInformationsContainer>
-                                    </InputContainer>
-                                </PageContent>
-                            </Container>
-                            <DialogPaper
+                            <Dialog.Container
                                 visible={deleteComponentVisible}
-                                onDismiss={() => {
-                                    setDeleteComponentVisible(false);
-                                }}
+                                onBackdropPress={handleSwitchShowDeleteProduct}
                             >
-                                <DialogPaper.Title
-                                    style={{ color: theme.colors.text }}
-                                >
+                                <Dialog.Title>
                                     {
                                         strings.View_ProductDetails_WarningDelete_Title
                                     }
-                                </DialogPaper.Title>
-                                <DialogPaper.Content>
-                                    <Text>
-                                        {
-                                            strings.View_ProductDetails_WarningDelete_Message
-                                        }
-                                    </Text>
-                                </DialogPaper.Content>
-                                <DialogPaper.Actions>
-                                    <Button
-                                        color="red"
-                                        onPress={handleDeleteProduct}
-                                    >
-                                        {
-                                            strings.View_ProductDetails_WarningDelete_Button_Confirm
-                                        }
-                                    </Button>
-                                    <Button
-                                        color={theme.colors.accent}
-                                        onPress={() => {
-                                            setDeleteComponentVisible(false);
-                                        }}
-                                    >
-                                        {
-                                            strings.View_ProductDetails_WarningDelete_Button_Cancel
-                                        }
-                                    </Button>
-                                </DialogPaper.Actions>
-                            </DialogPaper>
-                        </>
+                                </Dialog.Title>
+                                <Dialog.Description>
+                                    {
+                                        strings.View_ProductDetails_WarningDelete_Message
+                                    }
+                                </Dialog.Description>
+                                <Dialog.Button
+                                    label={
+                                        strings.View_ProductDetails_WarningDelete_Button_Cancel
+                                    }
+                                    onPress={handleSwitchShowDeleteProduct}
+                                />
+                                <Dialog.Button
+                                    label={
+                                        strings.View_ProductDetails_WarningDelete_Button_Confirm
+                                    }
+                                    color="red"
+                                    onPress={handleDeleteProduct}
+                                />
+                            </Dialog.Container>
+                        </Container>
                     )}
                 </>
             )}

@@ -72,14 +72,6 @@ const ListUsers: React.FC = () => {
                 team_id: preferences.selectedTeam.team.id,
             });
 
-            if ('error' in response) {
-                showMessage({
-                    message: response.error,
-                    type: 'danger',
-                });
-                return;
-            }
-
             setUsers(response);
         } catch (err) {
             showMessage({
@@ -163,10 +155,12 @@ const ListUsers: React.FC = () => {
 
     interface renderProps {
         item: IUserInTeam;
+        index: number;
+        separators: any;
     }
 
     const renderCategory = useCallback(
-        ({ item }: renderProps) => {
+        ({ item, index, separators }: renderProps) => {
             const isPending =
                 !!item.status && item.status.toLowerCase() === 'pending';
 

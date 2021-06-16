@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components/native';
-import { Button, Dialog } from 'react-native-paper';
+import styled from 'styled-components/native';
+import { Button } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface IProductStatus {
@@ -32,18 +32,4 @@ export const ActionsButtonContainer = styled.View`
     flex-direction: column;
     align-items: flex-start;
     margin-top: 5px;
-`;
-
-export const Text = styled.Text<IProductStatus>`
-    color: ${props => props.theme.colors.text};
-
-    ${props =>
-        props.expiredOrNext &&
-        css`
-            color: white;
-        `}
-`;
-
-export const DialogPaper = styled(Dialog)`
-    background: ${props => props.theme.colors.productBackground};
 `;

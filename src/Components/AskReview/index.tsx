@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
 import { getHowManyTimesAppWasOpen } from '~/Functions/Settings';
 import { askUserForAReview } from '~/Functions/UserReview';
-
-import { Dialog, DialogTitle, DialogText, Button } from './styles';
 
 const AskReview: React.FC = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -30,20 +29,21 @@ const AskReview: React.FC = () => {
     }, []);
 
     return (
-        <Dialog visible={isVisible} onDismiss={handleDimiss}>
-            <DialogTitle>{strings.AskUserReview_Title}</DialogTitle>
-            <Dialog.Content>
-                <DialogText>{strings.AskUserReview_Description}</DialogText>
-            </Dialog.Content>
-            <Dialog.Actions>
-                <Button onPress={handleDimiss}>
-                    {strings.AskUserReview_Button_No}
-                </Button>
-                <Button onPress={handleAskReview}>
-                    {strings.AskUserReview_Button_Yes}
-                </Button>
-            </Dialog.Actions>
-        </Dialog>
+        <Dialog.Container visible={isVisible} onBackdropPress={handleDimiss}>
+            <Dialog.Title>{strings.AskUserReview_Title}</Dialog.Title>
+            <Dialog.Description>
+                {strings.AskUserReview_Description}
+            </Dialog.Description>
+            <Dialog.Button
+                label={strings.AskUserReview_Button_No}
+                color="red"
+                onPress={handleDimiss}
+            />
+            <Dialog.Button
+                label={strings.AskUserReview_Button_Yes}
+                onPress={handleAskReview}
+            />
+        </Dialog.Container>
     );
 };
 

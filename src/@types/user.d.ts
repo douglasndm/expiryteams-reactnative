@@ -9,8 +9,8 @@ interface IUser {
 
 interface IUserInTeam {
     id: string;
-    name: string;
-    lastName: string;
+    name?: string | null;
+    lastName?: string | null;
     email: string;
     role: string;
     code: string;

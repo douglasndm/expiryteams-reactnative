@@ -7,8 +7,7 @@ import React, {
 } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
-import { Button } from 'react-native-paper';
-import { useTheme } from 'styled-components/native';
+import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
@@ -28,8 +27,6 @@ import {
     ActionsButtonContainer,
     ButtonPaper,
     Icons,
-    DialogPaper,
-    Text,
 } from '~/Views/Product/Edit/styles';
 
 import {
@@ -47,7 +44,6 @@ interface Props {
 const Edit: React.FC = () => {
     const { params } = useRoute();
     const { reset, goBack } = useNavigation();
-    const theme = useTheme();
 
     const { preferences } = useContext(PreferencesContext);
 
@@ -153,87 +149,79 @@ const Edit: React.FC = () => {
         }
     }, [routeParams.id, name, reset]);
 
+    const handleSwitchShowDeleteCategory = useCallback(() => {
+        setDeleteComponentVisible(!deleteComponentVisible);
+    }, [deleteComponentVisible]);
+
     return isLoading ? (
         <Loading />
     ) : (
-        <>
-            <Container>
-                <PageHeader>
-                    <PageTitleContainer>
-                        <BackButton handleOnPress={goBack} />
-                        <PageTitle>
-                            {strings.View_Category_Edit_PageTitle}
-                        </PageTitle>
-                    </PageTitleContainer>
+        <Container>
+            <PageHeader>
+                <PageTitleContainer>
+                    <BackButton handleOnPress={goBack} />
+                    <PageTitle>
+                        {strings.View_Category_Edit_PageTitle}
+                    </PageTitle>
+                </PageTitleContainer>
 
-                    <ActionsButtonContainer>
-                        <ButtonPaper
-                            icon={() => <Icons name="save-outline" size={22} />}
-                            onPress={handleUpdate}
-                        >
-                            {strings.View_Category_Edit_ButtonSave}
-                        </ButtonPaper>
-
-                        {(userRole === 'manager' ||
-                            userRole === 'supervisor') && (
-                            <ButtonPaper
-                                icon={() => (
-                                    <Icons name="trash-outline" size={22} />
-                                )}
-                                onPress={() => {
-                                    setDeleteComponentVisible(true);
-                                }}
-                            >
-                                {
-                                    strings.View_ProductDetails_Button_DeleteProduct
-                                }
-                            </ButtonPaper>
-                        )}
-                    </ActionsButtonContainer>
-                </PageHeader>
-
-                <Content>
-                    <InputTextContainer hasError={!!errorName}>
-                        <InputText
-                            placeholder={
-                                strings.View_Category_Edit_InputNamePlaceholder
-                            }
-                            value={name}
-                            onChangeText={onNameChange}
-                        />
-                    </InputTextContainer>
-                    {!!errorName && <InputTextTip>{errorName}</InputTextTip>}
-                </Content>
-            </Container>
-            <DialogPaper
-                visible={deleteComponentVisible}
-                onDismiss={() => {
-                    setDeleteComponentVisible(false);
-                }}
-            >
-                <DialogPaper.Title style={{ color: theme.colors.text }}>
-                    {strings.View_Category_Edit_DeleteModal_Title}
-                </DialogPaper.Title>
-                <DialogPaper.Content>
-                    <Text>
-                        {strings.View_Category_Edit_DeleteModal_Message}
-                    </Text>
-                </DialogPaper.Content>
-                <DialogPaper.Actions>
-                    <Button color="red" onPress={handleDeleteCategory}>
-                        {strings.View_Category_Edit_DeleteModal_Confirm}
-                    </Button>
-                    <Button
-                        color={theme.colors.accent}
-                        onPress={() => {
-                            setDeleteComponentVisible(false);
-                        }}
+                <ActionsButtonContainer>
+                    <ButtonPaper
+                        icon={() => <Icons name="save-outline" size={22} />}
+                        onPress={handleUpdate}
                     >
-                        {strings.View_Category_Edit_DeleteModal_Cancel}
-                    </Button>
-                </DialogPaper.Actions>
-            </DialogPaper>
-        </>
+                        {strings.View_Category_Edit_ButtonSave}
+                    </ButtonPaper>
+
+                    {(userRole === 'manager' || userRole === 'supervisor') && (
+                        <ButtonPaper
+                            icon={() => (
+                                <Icons name="trash-outline" size={22} />
+                            )}
+                            onPress={() => {
+                                setDeleteComponentVisible(true);
+                            }}
+                        >
+                            {strings.View_ProductDetails_Button_DeleteProduct}
+                        </ButtonPaper>
+                    )}
+                </ActionsButtonContainer>
+            </PageHeader>
+
+            <Content>
+                <InputTextContainer hasError={!!errorName}>
+                    <InputText
+                        placeholder={
+                            strings.View_Category_Edit_InputNamePlaceholder
+                        }
+                        value={name}
+                        onChangeText={onNameChange}
+                    />
+                </InputTextContainer>
+                {!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+            </Content>
+
+            <Dialog.Container
+                visible={deleteComponentVisible}
+                onBackdropPress={handleSwitchShowDeleteCategory}
+            >
+                <Dialog.Title>
+                    {strings.View_Category_Edit_DeleteModal_Title}
+                </Dialog.Title>
+                <Dialog.Description>
+                    {strings.View_Category_Edit_DeleteModal_Message}
+                </Dialog.Description>
+                <Dialog.Button
+                    label={strings.View_Category_Edit_DeleteModal_Cancel}
+                    onPress={handleSwitchShowDeleteCategory}
+                />
+                <Dialog.Button
+                    label={strings.View_Category_Edit_DeleteModal_Confirm}
+                    color="red"
+                    onPress={handleDeleteCategory}
+                />
+            </Dialog.Container>
+        </Container>
     );
 };
 

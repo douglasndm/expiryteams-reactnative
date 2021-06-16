@@ -5,12 +5,11 @@ import React, {
     useMemo,
     useContext,
 } from 'react';
-import { Alert, ScrollView, View, Text } from 'react-native';
+import { Alert, ScrollView, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import { Dialog } from 'react-native-paper';
-import { useTheme } from 'styled-components';
 import { showMessage } from 'react-native-flash-message';
+import Dialog from 'react-native-dialog';
 import { parseISO } from 'date-fns';
 
 import strings from '~/Locales';
@@ -50,7 +49,6 @@ import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 import {
     PageTitleContainer,
     ContentHeader,
-    Button,
     Icons,
     RadioButton,
     RadioButtonText,
@@ -102,8 +100,6 @@ const EditBatch: React.FC = () => {
     }, [routeParams]);
 
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
-
-    const theme = useTheme();
 
     const [product, setProduct] = useState<IProduct | null>(null);
     const [batch, setBatch] = useState('');
@@ -224,201 +220,185 @@ const EditBatch: React.FC = () => {
         setPrice(value);
     }, []);
 
+    const handleSwitchShowDeleteBatch = useCallback(() => {
+        setDeleteComponentVisible(!deleteComponentVisible);
+    }, [deleteComponentVisible]);
+
     return isLoading || isUpdating ? (
         <Loading />
     ) : (
-        <>
-            <Container>
-                <StatusBar />
-                <ScrollView>
-                    <PageHeader>
-                        <PageTitleContainer>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {strings.View_EditBatch_PageTitle}
-                            </PageTitle>
-                        </PageTitleContainer>
+        <Container>
+            <StatusBar />
+            <ScrollView>
+                <PageHeader>
+                    <PageTitleContainer>
+                        <BackButton handleOnPress={goBack} />
+                        <PageTitle>
+                            {strings.View_EditBatch_PageTitle}
+                        </PageTitle>
+                    </PageTitleContainer>
 
-                        <ActionsButtonContainer>
+                    <ActionsButtonContainer>
+                        <ButtonPaper
+                            icon={() => <Icons name="save-outline" size={22} />}
+                            onPress={handleUpdate}
+                        >
+                            {strings.View_EditBatch_Button_Save}
+                        </ButtonPaper>
+
+                        {(userRole === 'manager' ||
+                            userRole === 'supervisor') && (
                             <ButtonPaper
                                 icon={() => (
-                                    <Icons name="save-outline" size={22} />
+                                    <Icons name="trash-outline" size={22} />
                                 )}
-                                onPress={handleUpdate}
+                                onPress={() => {
+                                    setDeleteComponentVisible(true);
+                                }}
                             >
-                                {strings.View_EditBatch_Button_Save}
+                                {strings.View_EditBatch_Button_DeleteBatch}
                             </ButtonPaper>
+                        )}
+                    </ActionsButtonContainer>
+                </PageHeader>
 
-                            {(userRole === 'manager' ||
-                                userRole === 'supervisor') && (
-                                <ButtonPaper
-                                    icon={() => (
-                                        <Icons name="trash-outline" size={22} />
-                                    )}
-                                    onPress={() => {
-                                        setDeleteComponentVisible(true);
-                                    }}
-                                >
-                                    {strings.View_EditBatch_Button_DeleteBatch}
-                                </ButtonPaper>
-                            )}
-                        </ActionsButtonContainer>
-                    </PageHeader>
+                <PageContent>
+                    <InputContainer>
+                        <ContentHeader>
+                            <ProductHeader>
+                                {!!product && (
+                                    <ProductName>{product.name}</ProductName>
+                                )}
+                                {!!product && !!product.code && (
+                                    <ProductCode>{product.code}</ProductCode>
+                                )}
+                            </ProductHeader>
+                        </ContentHeader>
 
-                    <PageContent>
-                        <InputContainer>
-                            <ContentHeader>
-                                <ProductHeader>
-                                    {!!product && (
-                                        <ProductName>
-                                            {product.name}
-                                        </ProductName>
-                                    )}
-                                    {!!product && !!product.code && (
-                                        <ProductCode>
-                                            {product.code}
-                                        </ProductCode>
-                                    )}
-                                </ProductHeader>
-                            </ContentHeader>
+                        <InputGroup>
+                            <InputTextContainer
+                                style={{
+                                    flex: 5,
+                                    marginRight: 5,
+                                }}
+                            >
+                                <InputText
+                                    placeholder={
+                                        strings.View_EditBatch_InputPlacehoder_Batch
+                                    }
+                                    value={batch}
+                                    onChangeText={handleBatchChange}
+                                />
+                            </InputTextContainer>
+                            <InputTextContainer
+                                style={{
+                                    flex: 4,
+                                }}
+                            >
+                                <InputText
+                                    placeholder={
+                                        strings.View_EditBatch_InputPlacehoder_Amount
+                                    }
+                                    keyboardType="numeric"
+                                    value={String(amount)}
+                                    onChangeText={handleAmountChange}
+                                />
+                            </InputTextContainer>
+                        </InputGroup>
 
-                            <InputGroup>
-                                <InputTextContainer
-                                    style={{
-                                        flex: 5,
-                                        marginRight: 5,
-                                    }}
-                                >
-                                    <InputText
-                                        placeholder={
-                                            strings.View_EditBatch_InputPlacehoder_Batch
-                                        }
-                                        value={batch}
-                                        onChangeText={handleBatchChange}
-                                    />
-                                </InputTextContainer>
-                                <InputTextContainer
-                                    style={{
-                                        flex: 4,
-                                    }}
-                                >
-                                    <InputText
-                                        placeholder={
-                                            strings.View_EditBatch_InputPlacehoder_Amount
-                                        }
-                                        keyboardType="numeric"
-                                        value={String(amount)}
-                                        onChangeText={handleAmountChange}
-                                    />
-                                </InputTextContainer>
-                            </InputGroup>
+                        <Currency
+                            value={price}
+                            onChangeValue={handlePriceChange}
+                            delimiter={currency === 'BRL' ? ',' : '.'}
+                            placeholder={
+                                strings.View_EditBatch_InputPlacehoder_UnitPrice
+                            }
+                        />
 
-                            <Currency
-                                value={price}
-                                onChangeValue={handlePriceChange}
-                                delimiter={currency === 'BRL' ? ',' : '.'}
-                                placeholder={
-                                    strings.View_EditBatch_InputPlacehoder_UnitPrice
-                                }
-                            />
-
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                            }}
+                        >
                             <View
                                 style={{
                                     flexDirection: 'row',
-                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                 }}
                             >
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <RadioButton
-                                        value="checked"
-                                        status={
-                                            status === 'checked'
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() => setStatus('checked')}
-                                    />
-                                    <RadioButtonText>
-                                        {
-                                            strings.View_EditBatch_RadioButton_Treated
-                                        }
-                                    </RadioButtonText>
-                                </View>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <RadioButton
-                                        value="unchecked"
-                                        status={
-                                            status !== 'checked'
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() => setStatus('unchecked')}
-                                    />
-                                    <RadioButtonText>
-                                        {
-                                            strings.View_EditBatch_RadioButton_NotTreated
-                                        }
-                                    </RadioButtonText>
-                                </View>
-                            </View>
-
-                            <ExpDateGroup>
-                                <ExpDateLabel>
-                                    {strings.View_EditBatch_CalendarTitle}
-                                </ExpDateLabel>
-                                <CustomDatePicker
-                                    date={expDate}
-                                    onDateChange={value => {
-                                        setExpDate(value);
-                                    }}
-                                    locale={locale}
+                                <RadioButton
+                                    value="checked"
+                                    status={
+                                        status === 'checked'
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() => setStatus('checked')}
                                 />
-                            </ExpDateGroup>
-                        </InputContainer>
-                    </PageContent>
-                </ScrollView>
-            </Container>
+                                <RadioButtonText>
+                                    {strings.View_EditBatch_RadioButton_Treated}
+                                </RadioButtonText>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <RadioButton
+                                    value="unchecked"
+                                    status={
+                                        status !== 'checked'
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() => setStatus('unchecked')}
+                                />
+                                <RadioButtonText>
+                                    {
+                                        strings.View_EditBatch_RadioButton_NotTreated
+                                    }
+                                </RadioButtonText>
+                            </View>
+                        </View>
 
-            <Dialog
+                        <ExpDateGroup>
+                            <ExpDateLabel>
+                                {strings.View_EditBatch_CalendarTitle}
+                            </ExpDateLabel>
+                            <CustomDatePicker
+                                date={expDate}
+                                onDateChange={value => {
+                                    setExpDate(value);
+                                }}
+                                locale={locale}
+                            />
+                        </ExpDateGroup>
+                    </InputContainer>
+                </PageContent>
+            </ScrollView>
+            <Dialog.Container
                 visible={deleteComponentVisible}
-                onDismiss={() => {
-                    setDeleteComponentVisible(false);
-                }}
-                style={{ backgroundColor: theme.colors.productBackground }}
+                onBackdropPress={handleSwitchShowDeleteBatch}
             >
                 <Dialog.Title>
                     {strings.View_EditBatch_WarningDelete_Title}
                 </Dialog.Title>
-                <Dialog.Content>
-                    <Text style={{ color: theme.colors.text }}>
-                        {strings.View_EditBatch_WarningDelete_Message}
-                    </Text>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <Button color="red" onPress={handleDelete}>
-                        {strings.View_EditBatch_WarningDelete_Button_Confirm}
-                    </Button>
-                    <Button
-                        color={theme.colors.accent}
-                        onPress={() => {
-                            setDeleteComponentVisible(false);
-                        }}
-                    >
-                        {strings.View_EditBatch_WarningDelete_Button_Cancel}
-                    </Button>
-                </Dialog.Actions>
-            </Dialog>
-        </>
+                <Dialog.Description>
+                    {strings.View_EditBatch_WarningDelete_Message}
+                </Dialog.Description>
+                <Dialog.Button
+                    label={strings.View_EditBatch_WarningDelete_Button_Cancel}
+                    onPress={handleSwitchShowDeleteBatch}
+                />
+                <Dialog.Button
+                    label={strings.View_EditBatch_WarningDelete_Button_Confirm}
+                    color="red"
+                    onPress={handleDelete}
+                />
+            </Dialog.Container>
+        </Container>
     );
 };
 
