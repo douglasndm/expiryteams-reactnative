@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
@@ -31,7 +31,7 @@ import {
 
 const Login: React.FC = () => {
     const { reset, navigate } = useNavigation();
-    const { signed, initializing } = useAuth();
+    const { signed, user, initializing } = useAuth();
 
     const { preferences } = useContext(PreferencesContext);
 
@@ -80,18 +80,10 @@ const Login: React.FC = () => {
             setIsLoging(true);
 
             // Makes login with Firebase after that the subscriber event will handle
-            const fbUser = await loginFirebase({
+            await loginFirebase({
                 email,
                 password,
             });
-
-            if (signed) {
-                if (fbUser.emailVerified) {
-                    handleNavigateUser();
-                } else {
-                    navigate('VerifyEmail');
-                }
-            }
         } catch (err) {
             if (
                 err.code === 'auth/wrong-password' ||
@@ -117,7 +109,7 @@ const Login: React.FC = () => {
 
             setIsLoging(false);
         }
-    }, [email, handleNavigateUser, navigate, password, signed]);
+    }, [email, password]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value),
@@ -136,6 +128,16 @@ const Login: React.FC = () => {
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
     }, [navigate]);
+
+    useEffect(() => {
+        if (signed && user) {
+            if (user.emailVerified) {
+                handleNavigateUser();
+            } else {
+                navigate('VerifyEmail');
+            }
+        }
+    }, [handleNavigateUser, navigate, signed, user]);
 
     return (
         <Container>

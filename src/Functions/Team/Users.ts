@@ -4,8 +4,6 @@ import strings from '~/Locales';
 
 import api from '~/Services/API';
 
-import { destroySession } from '../Auth/Session';
-
 interface getUserTeamsProps {
     user_id: string;
 }
@@ -16,24 +14,24 @@ export async function getUserTeams({
     try {
         const response = await api.get(`/users/${user_id}`);
 
-        const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
-            role: role.role,
-            status: role.status,
-            team: {
-                id: role.team.id,
-                name: role.team.name,
-                active: role.team.isActive === true,
-            },
-        }));
+        if (response.data) {
+            const userRoles: Array<IUserRoles> = response.data.roles.map(
+                role => ({
+                    role: role.role,
+                    status: role.status,
+                    team: {
+                        id: role.team.id,
+                        name: role.team.name,
+                        active: role.team.isActive === true,
+                    },
+                })
+            );
 
-        return userRoles;
-    } catch (err) {
-        const statusCode = err.response.status;
-
-        if (statusCode === 400 || statusCode === 401 || statusCode === 403) {
-            await destroySession();
+            return userRoles;
         }
-        // console.log(err.response.data);
+
+        return [];
+    } catch (err) {
         if (err.message === 'Network Error') {
             throw new Error(err);
         }
