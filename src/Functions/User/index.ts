@@ -1,5 +1,3 @@
-import auth from '@react-native-firebase/auth';
-
 import api from '~/Services/API';
 
 interface IResponse {
@@ -9,20 +7,23 @@ interface IResponse {
     email: string;
 }
 
-export async function getUser(): Promise<IResponse> {
+interface getUserProps {
+    user_id: string;
+}
+
+export async function getUser({
+    user_id,
+}: getUserProps): Promise<IResponse | null> {
     try {
-        const { currentUser } = auth();
+        const response = await api.get<IResponse>(`/users/${user_id}`);
 
-        if (!currentUser) {
-            throw new Error('User is not logged');
+        if (response) {
+            return response.data;
         }
-
-        const response = await api.get<IResponse>(`/users/${currentUser.uid}`);
-
-        return response.data;
+        return null;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -34,6 +35,7 @@ interface createUserProps {
     email: string;
     password?: string;
     passwordConfirm?: string;
+    firebaseUid?: string;
 }
 
 export async function createUser({
@@ -42,17 +44,16 @@ export async function createUser({
     email,
     password,
     passwordConfirm,
+    firebaseUid,
 }: createUserProps): Promise<void> {
     try {
-        const { currentUser } = auth();
-
         await api.post<IUser>('/users', {
-            firebaseUid: currentUser?.uid,
             name,
             lastName,
             email,
             password,
             passwordConfirmation: passwordConfirm,
+            firebaseUid,
         });
     } catch (err) {
         if (err.response.data.error) {

@@ -9,9 +9,9 @@ export async function loginFirebase({
     email,
     password,
 }: loginFirebaseProps): Promise<FirebaseAuthTypes.User> {
-    const user = await auth().signInWithEmailAndPassword(email, password);
+    const { user } = await auth().signInWithEmailAndPassword(email, password);
 
-    return user.user;
+    return user;
 }
 
 export async function logoutFirebase(): Promise<void> {

@@ -8,7 +8,6 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "clean": "react-native-clean-project",
     "postinstall": "patch-package"
   },
   "dependencies": {
@@ -73,11 +72,8 @@
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/crypto-js": "^3.1.47",
-    "@types/i18n-js": "^3.0.3",
     "@types/jest": "^26.0.10",
-    "@types/lodash.memoize": "^4.1.6",
-    "@types/react": "^16.9.46",
-    "@types/react-native": "^0.63.8",
+    "@types/react-native": "^0.64.2",
     "@types/react-native-push-notification": "^5.0.5",
     "@types/react-native-share": "^3.3.0",
     "@types/react-native-uuid-generator": "^4.0.0",
@@ -103,7 +99,6 @@
     "metro-react-native-babel-preset": "^0.64.0",
     "patch-package": "^6.2.2",
     "prettier": "^2.0.5",
-    "react-native-clean-project": "^3.6.3",
     "react-test-renderer": "17.0.1",
     "typescript": "^4.0.2"
   },

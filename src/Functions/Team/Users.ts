@@ -1,15 +1,20 @@
-import auth from '@react-native-firebase/auth';
 import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
 import api from '~/Services/API';
 
-export async function getUserTeams(): Promise<Array<IUserRoles>> {
-    try {
-        const { currentUser } = auth();
+import { destroySession } from '../Auth/Session';
 
-        const response = await api.get(`/users/${currentUser?.uid}`);
+interface getUserTeamsProps {
+    user_id: string;
+}
+
+export async function getUserTeams({
+    user_id,
+}: getUserTeamsProps): Promise<Array<IUserRoles>> {
+    try {
+        const response = await api.get(`/users/${user_id}`);
 
         const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
             role: role.role,
@@ -23,6 +28,11 @@ export async function getUserTeams(): Promise<Array<IUserRoles>> {
 
         return userRoles;
     } catch (err) {
+        const statusCode = err.response.status;
+
+        if (statusCode === 400 || statusCode === 401 || statusCode === 403) {
+            await destroySession();
+        }
         // console.log(err.response.data);
         if (err.message === 'Network Error') {
             throw new Error(err);

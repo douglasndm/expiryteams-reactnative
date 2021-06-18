@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
 import { ActivityIndicator } from 'react-native';
-import { Provider as PaperProvider, Portal } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import {
     NavigationContainer,
@@ -11,7 +11,6 @@ import {
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import screens from 'react-native-screens';
 
 import './Locales';
@@ -25,6 +24,7 @@ import { getAllUserPreferences } from './Functions/UserPreferences';
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
+import { AuthProvider } from '~/Contexts/AuthContext';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
@@ -75,30 +75,6 @@ const App: React.FC = () => {
         loadInitialData();
     }, []);
 
-    const onAuthStateChanged = useCallback(
-        async (user: FirebaseAuthTypes.User | null) => {
-            const prefs = await getAllUserPreferences();
-
-            if (user) {
-                setPreferences({
-                    ...prefs,
-                    user,
-                });
-            } else {
-                setPreferences({
-                    ...prefs,
-                    user: null,
-                });
-            }
-        },
-        []
-    );
-
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber;
-    }, [onAuthStateChanged]);
-
     return isLoading ? (
         <ActivityIndicator size="large" />
     ) : (
@@ -110,17 +86,15 @@ const App: React.FC = () => {
         >
             <ThemeProvider theme={preferences.appTheme}>
                 <PaperProvider>
-                    <Portal>
-                        <NavigationContainer
-                            onStateChange={handleOnScreenChange}
-                        >
+                    <NavigationContainer onStateChange={handleOnScreenChange}>
+                        <AuthProvider>
                             <StatusBar />
                             <Routes />
 
                             <AskReview />
-                        </NavigationContainer>
-                        <FlashMessage duration={7000} />
-                    </Portal>
+                        </AuthProvider>
+                    </NavigationContainer>
+                    <FlashMessage duration={7000} />
                 </PaperProvider>
             </ThemeProvider>
         </PreferencesContext.Provider>

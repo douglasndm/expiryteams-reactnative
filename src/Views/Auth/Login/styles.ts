@@ -87,34 +87,11 @@ export const InputText = styled.TextInput.attrs(props => ({
         `};
 `;
 
-export const Text = styled.Text`
-    color: ${props => props.theme.colors.text};
-    text-align: center;
-`;
-
 export const ForgotPasswordText = styled.Text`
     font-family: 'Open Sans';
     font-size: 13px;
     margin-left: 10px;
     color: ${props => props.theme.colors.subText};
-`;
-
-export const CreateAccountText = styled.Text`
-    margin-bottom: 15px;
-    color: ${props => props.theme.colors.textAccent};
-    font-family: 'Open Sans';
-    font-weight: bold;
-    font-size: 15px;
-`;
-
-export const AboutContainer = styled.View`
-    margin: 30px 15px;
-    align-items: center;
-`;
-
-export const Link = styled.Text`
-    color: ${props => props.theme.colors.accent};
-    font-size: 14px;
 `;
 
 export const Icon = styled(Ionicons).attrs(props => ({

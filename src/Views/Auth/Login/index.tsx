@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Linking } from 'react-native';
+import React, { useState, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
+import { useAuth } from '~/Contexts/AuthContext';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { loginFirebase } from '~/Functions/Auth/Firebase';
-import { createUser, getUser } from '~/Functions/User';
-import { createSeassion } from '~/Functions/Auth/Account';
 
 import Button from '~/Components/Button';
+
+import Footer from './Footer';
 
 import {
     Container,
@@ -26,70 +25,42 @@ import {
     LoginForm,
     InputContainer,
     InputText,
-    Text,
     ForgotPasswordText,
-    CreateAccountText,
-    AboutContainer,
-    Link,
     Icon,
 } from './styles';
 
 const Login: React.FC = () => {
     const { reset, navigate } = useNavigation();
+    const { signed, initializing } = useAuth();
 
-    const { preferences, setPreferences } = useContext(PreferencesContext);
+    const { preferences } = useContext(PreferencesContext);
 
-    const [email, setEmail] = useState<string>('');
+    const [email, setEmail] = useState<string>(
+        'nucleodosdownloads@outlook.com'
+    );
     const [password, setPassword] = useState<string>('');
 
     const [hidePass, setHidePass] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
-    const handleNavigateUser = useCallback(
-        (session: FirebaseAuthTypes.User) => {
-            setPreferences({
-                ...preferences,
-                user: session,
-            });
+    const handleNavigateUser = useCallback(() => {
+        let route = 'TeamList';
 
-            reset({
-                routes: [{ name: 'TeamList' }],
-            });
-        },
-        [reset, preferences, setPreferences]
-    );
-
-    const checkUserAlreadySigned = useCallback(async () => {
-        const session = auth().currentUser;
-
-        if (session) {
-            if (session.emailVerified) {
-                if (preferences.selectedTeam) {
-                    reset({
-                        routes: [
-                            {
-                                name: 'Routes',
-                                state: {
-                                    routes: [
-                                        {
-                                            name: 'Home',
-                                        },
-                                    ],
-                                },
-                            },
-                        ],
-                    });
-                    return;
-                }
-
-                handleNavigateUser(session);
-                return;
-            }
-            reset({
-                routes: [{ name: 'VerifyEmail' }],
-            });
+        if (preferences.selectedTeam) {
+            route = 'Home';
         }
-    }, [handleNavigateUser, preferences.selectedTeam, reset]);
+
+        reset({
+            routes: [
+                {
+                    name: 'Routes',
+                    state: {
+                        routes: [{ name: route }],
+                    },
+                },
+            ],
+        });
+    }, [reset, preferences]);
 
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({
@@ -107,28 +78,19 @@ const Login: React.FC = () => {
 
         try {
             setIsLoging(true);
-            const response = await loginFirebase({
+
+            // Makes login with Firebase after that the subscriber event will handle
+            const fbUser = await loginFirebase({
                 email,
                 password,
             });
 
-            try {
-                await getUser();
-            } catch (err) {
-                if (String(err.message).includes('User was not found')) {
-                    await createUser({
-                        email,
-                    });
+            if (signed) {
+                if (fbUser.emailVerified) {
+                    handleNavigateUser();
+                } else {
+                    navigate('VerifyEmail');
                 }
-            }
-
-            // Here we register the user device
-            await createSeassion();
-
-            if (response.emailVerified) {
-                handleNavigateUser(response);
-            } else {
-                navigate('VerifyEmail');
             }
         } catch (err) {
             if (
@@ -152,10 +114,10 @@ const Login: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
-        } finally {
+
             setIsLoging(false);
         }
-    }, [email, password, handleNavigateUser, navigate]);
+    }, [email, handleNavigateUser, navigate, password, signed]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value),
@@ -174,22 +136,6 @@ const Login: React.FC = () => {
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
     }, [navigate]);
-
-    const handleNavigateToCreateAcc = useCallback(() => {
-        navigate('CreateAccount');
-    }, [navigate]);
-
-    const navigateToTerms = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev/terms');
-    }, []);
-
-    const navigateToPrivacy = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev/privacy');
-    }, []);
-
-    useEffect(() => {
-        checkUserAlreadySigned();
-    }, [checkUserAlreadySigned]);
 
     return (
         <Container>
@@ -243,26 +189,12 @@ const Login: React.FC = () => {
                     <Button
                         text={strings.View_Login_Button_SignIn}
                         onPress={handleLogin}
-                        isLoading={isLoging}
+                        isLoading={isLoging || initializing}
                     />
                 </FormContainer>
             </Content>
 
-            <AboutContainer>
-                <CreateAccountText onPress={handleNavigateToCreateAcc}>
-                    {strings.View_Login_Label_CreateAccount}
-                </CreateAccountText>
-
-                <Text>
-                    {strings.BeforeTermsAndPrivacy}
-                    <Link onPress={navigateToTerms}>{strings.Terms}</Link>
-                    {strings.BetweenTermsAndPrivacy}
-                    <Link onPress={navigateToPrivacy}>
-                        {strings.PrivacyPolicy}
-                    </Link>
-                    .
-                </Text>
-            </AboutContainer>
+            <Footer />
         </Container>
     );
 };

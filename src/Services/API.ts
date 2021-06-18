@@ -1,7 +1,6 @@
 import axios from 'axios';
 import EnvConfig from 'react-native-config';
 import messaging from '@react-native-firebase/messaging';
-import auth from '@react-native-firebase/auth';
 
 import { destroySession } from '~/Functions/Auth/Session';
 
@@ -12,14 +11,6 @@ const api = axios.create({
 api.interceptors.request.use(async config => {
     const token = await messaging().getToken();
     config.headers.deviceid = token;
-
-    // check if user is signed and if it is add token to all future axios requests
-    const { currentUser } = auth();
-    const authToken = await currentUser?.getIdTokenResult();
-
-    if (authToken) {
-        config.headers.Authorization = `Bearer ${authToken.token}`;
-    }
 
     return config;
 });
