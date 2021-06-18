@@ -155,12 +155,10 @@ const ListUsers: React.FC = () => {
 
     interface renderProps {
         item: IUserInTeam;
-        index: number;
-        separators: any;
     }
 
     const renderCategory = useCallback(
-        ({ item, index, separators }: renderProps) => {
+        ({ item }: renderProps) => {
             const isPending =
                 !!item.status && item.status.toLowerCase() === 'pending';
 

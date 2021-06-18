@@ -5,6 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { useAuth } from '~/Contexts/AuthContext';
 import Preferences from '~/Contexts/PreferencesContext';
 
 import { getUser, updateUser, deleteUser } from '~/Functions/User';
@@ -26,6 +27,7 @@ import {
 
 const User: React.FC = () => {
     const { reset } = useNavigation();
+    const { user } = useAuth();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
@@ -40,10 +42,17 @@ const User: React.FC = () => {
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const user = await getUser();
+            if (!user) {
+                throw new Error('User is not logged');
+            }
+            const ownUser = await getUser({ user_id: user.uid });
 
-            if (user.name) setName(user.name);
-            if (user.lastName) setLastName(user.lastName);
+            if (!ownUser) {
+                throw new Error("User doesn't exist in onw database");
+            }
+
+            if (ownUser.name) setName(ownUser.name);
+            if (ownUser.lastName) setLastName(ownUser.lastName);
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -52,7 +61,7 @@ const User: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [user]);
 
     const handleUpdate = useCallback(async () => {
         try {

@@ -9,7 +9,6 @@ const Preferences = createContext({
         appTheme,
         enableNotifications,
         notificationCadency,
-        user,
         selectedTeam,
     }: IPreferences) => {},
 });

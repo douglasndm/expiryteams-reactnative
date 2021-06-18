@@ -7,12 +7,7 @@ const obj: IPreferences = {
     appTheme: Themes.Light,
     enableNotifications: true,
     notificationCadency: NotificationCadency.Day,
-    user: {
-        id: '',
-        name: '',
-        lastName: '',
-        email: '',
-    },
+
     selectedTeam: {
         role: '',
         status: 'Pending',

@@ -527,9 +527,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                         text={
                                             strings.View_AddProduct_Button_Save
                                         }
-                                        accessibilityLabel={
-                                            strings.View_AddProduct_Button_Save_AccessibilityDescription
-                                        }
                                         isLoading={isAdding}
                                         onPress={handleSave}
                                     />
