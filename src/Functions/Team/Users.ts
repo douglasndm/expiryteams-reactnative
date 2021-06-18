@@ -37,8 +37,8 @@ export async function getUserTeams({
         if (err.message === 'Network Error') {
             throw new Error(err);
         }
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -62,8 +62,8 @@ export async function getAllUsersFromTeam({
         if (err.message === 'Network Error') {
             throw new Error(err);
         }
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -96,8 +96,8 @@ export async function putUserInTeam({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -128,7 +128,7 @@ export async function enterTeamCode({
     } catch (err) {
         if (err.message === 'Network Error') {
             throw new Error(err);
-        } else if (err.response.data.error === 'Code is not valid') {
+        } else if (err.response.data.message === 'Code is not valid') {
             throw new Error(strings.Function_Team_JoinTeam_InvalidCode);
         } else {
             throw new Error(err);

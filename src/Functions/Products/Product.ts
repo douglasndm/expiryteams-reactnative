@@ -12,8 +12,8 @@ export async function getProduct({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -40,8 +40,8 @@ export async function createProduct({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -65,8 +65,8 @@ export async function updateProduct({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -82,8 +82,8 @@ export async function deleteProduct({
     try {
         await api.delete<IProduct>(`/products/${product_id}`);
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }

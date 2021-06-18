@@ -25,8 +25,8 @@ export async function getAllProducts({
         if (!err.response) {
             throw new Error('Network error');
         }
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }

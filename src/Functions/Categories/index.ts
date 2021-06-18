@@ -28,8 +28,8 @@ export async function getCategory({
 
         return cat;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -49,8 +49,8 @@ export async function getAllCategoriesFromTeam({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -73,8 +73,8 @@ export async function createCategory({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -96,8 +96,8 @@ export async function updateCategory({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -113,8 +113,8 @@ export async function deleteCategory({
     try {
         await api.delete(`/categories/${category_id}`);
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }

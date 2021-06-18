@@ -21,8 +21,8 @@ export async function getBatch({
         };
         return responseData;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -59,8 +59,8 @@ export async function createBatch({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -84,8 +84,8 @@ export async function updateBatch({
 
         return response.data;
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
@@ -101,8 +101,8 @@ export async function deleteBatch({
     try {
         await api.delete<IBatch>(`/batches/${batch_id}`);
     } catch (err) {
-        if (err.response.data.error) {
-            throw new Error(err.response.data.error);
+        if (err.response.data.message) {
+            throw new Error(err.response.data.message);
         }
         throw new Error(err.message);
     }
