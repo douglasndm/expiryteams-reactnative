@@ -14,6 +14,7 @@ import strings from '~/Locales';
 import { useAuth } from '~/Contexts/AuthContext';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
+import { destroySession } from '~/Functions/Auth/Session';
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
@@ -215,9 +216,9 @@ const List: React.FC = () => {
         navigate('CreateTeam');
     }, [navigate]);
 
-    const handleLogout = useCallback(() => {
-        navigate('Logout');
-    }, [navigate]);
+    const handleLogout = useCallback(async () => {
+        await destroySession();
+    }, []);
 
     useEffect(() => {
         loadData();

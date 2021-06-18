@@ -6,7 +6,6 @@ import ForgotPassword from '~/Views/Auth/ForgotPassword';
 import CreateAccount from '~/Views/Auth/CreateAccount';
 import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
-import CreateTeam from '~/Views/Team/Add';
 import EnterTeam from '~/Views/Team/EnterTeam';
 import Logout from '~/Views/Auth/Logout';
 
@@ -20,7 +19,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CreateAccount" component={CreateAccount} />
             <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
-            <Stack.Screen name="CreateTeam" component={CreateTeam} />
             <Stack.Screen name="EnterTeam" component={EnterTeam} />
 
             <Stack.Screen name="Logout" component={Logout} />
