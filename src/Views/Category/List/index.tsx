@@ -62,7 +62,13 @@ const List: React.FC = () => {
                 team_id: preferences.selectedTeam.team.id,
             });
 
-            setCategories(response);
+            const sorted = response.sort((cat1, cat2) => {
+                if (cat1.name < cat2.name) return -1;
+                if (cat1.name > cat2.name) return 1;
+                return 0;
+            });
+
+            setCategories(sorted);
         } catch (err) {
             showMessage({
                 message: err.message,
