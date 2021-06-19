@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { useAuth } from '~/Contexts/AuthContext';
@@ -13,6 +14,23 @@ const Drawer = createDrawerNavigator();
 const DrawerContainer: React.FC = () => {
     const { signed } = useAuth();
 
+    const handleDisableDrawer = useCallback(({ route }) => {
+        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+
+        switch (routeName) {
+            case 'Subscription':
+                return { swipeEnabled: false };
+            case 'ViewTeam':
+                return { swipeEnabled: false };
+            case 'CreateTeam':
+                return { swipeEnabled: false };
+            case 'TeamList':
+                return { swipeEnabled: false };
+            default:
+                return { swipeEnabled: true };
+        }
+    }, []);
+
     return (
         <Drawer.Navigator
             drawerType="slide"
@@ -21,7 +39,11 @@ const DrawerContainer: React.FC = () => {
             drawerContent={props => <DrawerMenu {...props} />}
         >
             {signed ? (
-                <Drawer.Screen name="Routes" component={Routes} />
+                <Drawer.Screen
+                    name="Routes"
+                    component={Routes}
+                    options={handleDisableDrawer}
+                />
             ) : (
                 <Drawer.Screen
                     name="Auth"

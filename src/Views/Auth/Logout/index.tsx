@@ -21,7 +21,6 @@ const Logout: React.FC = () => {
 
             setPreferences({
                 ...preferences,
-                user: null,
                 selectedTeam: null,
             });
 
@@ -37,7 +36,7 @@ const Logout: React.FC = () => {
 
     useEffect(() => {
         handleLogout();
-    }, []);
+    }, [handleLogout]);
     return <Loading />;
 };
 
