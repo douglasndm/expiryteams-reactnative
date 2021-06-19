@@ -95,38 +95,52 @@ const Subscriptions: React.FC = () => {
                 onPress={handleNavigatePurchase}
             />
 
-            <SubscriptionTableTitle>Sua assinatura</SubscriptionTableTitle>
+            {subscription && (
+                <>
+                    <SubscriptionTableTitle>
+                        Sua assinatura
+                    </SubscriptionTableTitle>
 
-            <SubscriptionContainer>
-                <SubscriptionsTable>
-                    <SubscriptionsTable.Header>
-                        <SubscriptionHeader>#</SubscriptionHeader>
-                        <SubscriptionHeader>Membros</SubscriptionHeader>
-                        <SubscriptionHeader>Expira em</SubscriptionHeader>
-                    </SubscriptionsTable.Header>
+                    <SubscriptionContainer>
+                        <SubscriptionsTable>
+                            <SubscriptionsTable.Header>
+                                <SubscriptionHeader>#</SubscriptionHeader>
+                                <SubscriptionHeader>Membros</SubscriptionHeader>
+                                <SubscriptionHeader>
+                                    Expira em
+                                </SubscriptionHeader>
+                            </SubscriptionsTable.Header>
 
-                    {!!subscription && (
-                        <SubscriptionsTable.Row>
-                            <SubscriptionsTable.Cell>
-                                <SubscriptionText>Plano</SubscriptionText>
-                            </SubscriptionsTable.Cell>
-                            <SubscriptionsTable.Cell>
-                                <SubscriptionText>
-                                    {subscription.membersLimit}
-                                </SubscriptionText>
-                            </SubscriptionsTable.Cell>
-                            <SubscriptionsTable.Cell>
-                                <SubscriptionText>
-                                    {format(
-                                        parseISO(String(subscription.expireIn)),
-                                        'dd/MM/yyyy'
-                                    )}
-                                </SubscriptionText>
-                            </SubscriptionsTable.Cell>
-                        </SubscriptionsTable.Row>
-                    )}
-                </SubscriptionsTable>
-            </SubscriptionContainer>
+                            {!!subscription && (
+                                <SubscriptionsTable.Row>
+                                    <SubscriptionsTable.Cell>
+                                        <SubscriptionText>
+                                            Plano
+                                        </SubscriptionText>
+                                    </SubscriptionsTable.Cell>
+                                    <SubscriptionsTable.Cell>
+                                        <SubscriptionText>
+                                            {subscription.membersLimit}
+                                        </SubscriptionText>
+                                    </SubscriptionsTable.Cell>
+                                    <SubscriptionsTable.Cell>
+                                        <SubscriptionText>
+                                            {format(
+                                                parseISO(
+                                                    String(
+                                                        subscription.expireIn
+                                                    )
+                                                ),
+                                                'dd/MM/yyyy'
+                                            )}
+                                        </SubscriptionText>
+                                    </SubscriptionsTable.Cell>
+                                </SubscriptionsTable.Row>
+                            )}
+                        </SubscriptionsTable>
+                    </SubscriptionContainer>
+                </>
+            )}
         </Section>
     );
 };

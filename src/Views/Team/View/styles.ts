@@ -9,6 +9,7 @@ export const Container = styled.ScrollView`
 
 export const PageHeader = styled.View`
     flex-direction: row;
+    margin: 0 10px;
 `;
 
 export const PageTitle = styled.Text`

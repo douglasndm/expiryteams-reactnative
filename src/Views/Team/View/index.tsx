@@ -47,7 +47,13 @@ const ViewTeam: React.FC = () => {
     return (
         <Container>
             <PageHeader>
-                <BackButton handleOnPress={goBack} />
+                {preferences.selectedTeam?.team.active && (
+                    <BackButton
+                        handleOnPress={goBack}
+                        contentStyle={{ marginLeft: -10 }}
+                    />
+                )}
+
                 <PageTitle>Detalhes do time</PageTitle>
             </PageHeader>
 
