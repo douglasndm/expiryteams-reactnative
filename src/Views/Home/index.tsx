@@ -63,11 +63,13 @@ const Home: React.FC = () => {
                 type: 'danger',
             });
 
-            if (err.message === "Team doesn't have an active subscription") {
+            if (
+                err.message.includes("Team doesn't have an active subscription")
+            ) {
                 reset({
                     routes: [
                         {
-                            name: 'Subscription',
+                            name: 'ViewTeam',
                         },
                     ],
                 });

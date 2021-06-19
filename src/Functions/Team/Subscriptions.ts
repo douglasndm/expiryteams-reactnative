@@ -142,13 +142,15 @@ interface getTeamSubscriptionsProps {
 
 export async function getTeamSubscriptions({
     team_id,
-}: getTeamSubscriptionsProps): Promise<ITeamSubscription> {
+}: getTeamSubscriptionsProps): Promise<ITeamSubscription | null> {
     try {
         const response = await api.get<ITeamSubscription>(
             `/team/${team_id}/subscriptions`
         );
 
-        return response.data;
+        if (response.data) return response.data;
+
+        return null;
     } catch (err) {
         if (err.response.data.message) {
             throw new Error(err.response.data.message);

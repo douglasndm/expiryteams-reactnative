@@ -70,15 +70,18 @@ const ViewTeam: React.FC = () => {
                 team_id: preferences.selectedTeam.team.id,
             });
 
-            if (
-                compareAsc(
-                    startOfDay(new Date()),
-                    startOfDay(parseISO(String(response.expireIn)))
-                ) >= 0
-            ) {
-                setSubs(response);
-                return;
+            if (response) {
+                if (
+                    compareAsc(
+                        startOfDay(new Date()),
+                        startOfDay(parseISO(String(response.expireIn)))
+                    ) >= 0
+                ) {
+                    setSubs(response);
+                    return;
+                }
             }
+
             setSubs(null);
         } catch (err) {
             showMessage({
