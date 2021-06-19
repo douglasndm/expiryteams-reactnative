@@ -85,6 +85,7 @@ const Login: React.FC = () => {
                 password,
             });
         } catch (err) {
+            setIsLoging(false);
             if (
                 err.code === 'auth/wrong-password' ||
                 err.code === 'auth/user-not-found'
@@ -106,8 +107,6 @@ const Login: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
-
-            setIsLoging(false);
         }
     }, [email, password]);
 

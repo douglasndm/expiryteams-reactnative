@@ -25,6 +25,7 @@
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
     "axios": "^0.21.1",
+    "axios-auth-refresh": "^3.1.0",
     "crypto-js": "^3.3.0",
     "date-fns": "^2.22.1",
     "lottie-react-native": "^4.0.2",
