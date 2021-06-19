@@ -129,10 +129,9 @@ export async function makePurchase({
 
         return sub;
     } catch (err) {
-        if (err.userCancelled) {
-            return null;
+        if (!err.userCancelled) {
+            throw new Error(err.message);
         }
-        throw new Error(err.message);
     }
 }
 

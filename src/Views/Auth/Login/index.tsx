@@ -35,9 +35,7 @@ const Login: React.FC = () => {
 
     const { preferences } = useContext(PreferencesContext);
 
-    const [email, setEmail] = useState<string>(
-        'nucleodosdownloads@outlook.com'
-    );
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     const [hidePass, setHidePass] = useState<boolean>(true);

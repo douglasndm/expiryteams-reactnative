@@ -39,8 +39,6 @@ const SubscriptionsList: React.FC = () => {
     const [offers, setOffers] = useState<Array<CatPackage>>([]);
     const [selected, setSelected] = useState('');
 
-    const [currentSub, setCurrentSub] = useState<ITeamSubscription | null>();
-
     const loadData = useCallback(async () => {
         if (!preferences.selectedTeam) {
             showMessage({
@@ -59,11 +57,9 @@ const SubscriptionsList: React.FC = () => {
                 setSelected(response[0].package.offeringIdentifier);
             }
 
-            const current = await getTeamSubscriptions({
+            await getTeamSubscriptions({
                 team_id: preferences.selectedTeam.team.id,
             });
-
-            setCurrentSub(current);
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -142,7 +138,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences, offers, currentSub, reset, selected, setPreferences]);
+    }, [preferences, offers, reset, selected, setPreferences]);
 
     useEffect(() => {
         loadData();
