@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { loginFirebase } from '~/Functions/Auth/Firebase';
 
@@ -33,8 +32,6 @@ const Login: React.FC = () => {
     const { reset, navigate } = useNavigation();
     const { signed, user, initializing } = useAuth();
 
-    const { preferences } = useContext(PreferencesContext);
-
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
@@ -42,23 +39,17 @@ const Login: React.FC = () => {
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
     const handleNavigateUser = useCallback(() => {
-        let route = 'TeamList';
-
-        if (preferences.selectedTeam) {
-            route = 'Home';
-        }
-
         reset({
             routes: [
                 {
                     name: 'Routes',
                     state: {
-                        routes: [{ name: route }],
+                        routes: [{ name: 'TeamList' }],
                     },
                 },
             ],
         });
-    }, [reset, preferences]);
+    }, [reset]);
 
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({
