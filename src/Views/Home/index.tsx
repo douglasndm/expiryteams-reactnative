@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { useTeam } from '~/Contexts/TeamContext';
+
 import { getAllProducts } from '~/Functions/Products/Products';
 import { searchProducts } from '~/Functions/Products/Search';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -23,9 +23,9 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { preferences } = useContext(PreferencesContext);
-
     const { reset } = useNavigation();
+
+    const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -38,10 +38,13 @@ const Home: React.FC = () => {
     );
 
     const getProduts = useCallback(async () => {
+        if (teamContext.isLoading) {
+            return;
+        }
         try {
             setIsLoading(true);
 
-            if (!preferences.selectedTeam) {
+            if (!teamContext.id) {
                 reset({
                     routes: [
                         {
@@ -53,7 +56,7 @@ const Home: React.FC = () => {
             }
 
             const productsResponse = await getAllProducts({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             setProducts(productsResponse);
@@ -77,7 +80,7 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [reset, preferences.selectedTeam]);
+    }, [reset, teamContext.id, teamContext.isLoading]);
 
     useEffect(() => {
         getProduts();

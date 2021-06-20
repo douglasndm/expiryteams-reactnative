@@ -8,6 +8,6 @@ interface IUserRoles {
             membersLimit: number;
         };
     };
-    status: 'Pending' | 'Completed';
+    status: 'pending' | 'completed';
     role: 'manager' | 'supervisor' | 'repositor';
 }

@@ -50,6 +50,7 @@ type RoutesParams = {
         user: IUserInTeam;
     };
 
+    EnterTeam;
     TeamList;
     CreateTeam;
     ViewTeam;

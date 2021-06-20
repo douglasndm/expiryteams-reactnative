@@ -1,10 +1,4 @@
-import React, {
-    useState,
-    useCallback,
-    useEffect,
-    useContext,
-    useRef,
-} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
@@ -12,7 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { destroySession } from '~/Functions/Auth/Session';
 import { getUserTeams } from '~/Functions/Team/Users';
@@ -38,7 +32,7 @@ const List: React.FC = () => {
     const { navigate, reset } = useNavigation();
     const { signed, user } = useAuth();
 
-    const { preferences, setPreferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const mounted = useRef(false);
 
@@ -114,10 +108,15 @@ const List: React.FC = () => {
             }
 
             await setSelectedTeam(selectedTeam);
-            setPreferences({
-                ...preferences,
-                selectedTeam,
-            });
+
+            if (teamContext.reload) {
+                teamContext.reload();
+            } else {
+                showMessage({
+                    message: 'Erro while reload team',
+                    type: 'warning',
+                });
+            }
 
             reset({
                 routes: [
@@ -134,7 +133,7 @@ const List: React.FC = () => {
                 ],
             });
         },
-        [teams, setPreferences, preferences, reset]
+        [teams, teamContext, reset]
     );
 
     const handleNavigateToEnterCode = useCallback(

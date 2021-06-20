@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, parseISO, startOfDay, compareAsc } from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { getTeamSubscriptions } from '~/Functions/Team/Subscriptions';
 
@@ -24,7 +24,7 @@ import {
 const Subscriptions: React.FC = () => {
     const { navigate } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
+    const teamContenxt = useTeam();
 
     const [
         subscription,
@@ -33,7 +33,7 @@ const Subscriptions: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const loadData = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContenxt.id) {
             showMessage({
                 message: 'Nenhum time selecionado',
                 type: 'danger',
@@ -44,7 +44,7 @@ const Subscriptions: React.FC = () => {
         try {
             setIsLoading(true);
             const response = await getTeamSubscriptions({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContenxt.id,
             });
 
             if (response) {
@@ -68,7 +68,7 @@ const Subscriptions: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam]);
+    }, [teamContenxt]);
 
     useEffect(() => {
         loadData();

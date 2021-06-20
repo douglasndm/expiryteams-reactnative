@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { useTeam } from '~/Contexts/TeamContext';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import BackButton from '~/Components/BackButton';
@@ -25,15 +26,16 @@ const ViewTeam: React.FC = () => {
     const { goBack, navigate } = useNavigation();
 
     const { preferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const isManager = useMemo(() => {
-        if (preferences.selectedTeam) {
-            if (preferences.selectedTeam.role.toLowerCase() === 'manager') {
+        if (teamContext.id) {
+            if (teamContext.roleInTeam?.role === 'manager') {
                 return true;
             }
         }
         return false;
-    }, [preferences.selectedTeam]);
+    }, [teamContext.id, teamContext.roleInTeam]);
 
     const handleNavigateToMembers = useCallback(() => {
         navigate('ListUsersFromTeam');
