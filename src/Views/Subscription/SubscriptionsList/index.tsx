@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState, useContext } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
-import Preferences from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import {
     getOfferings,
@@ -13,6 +13,7 @@ import {
     CatPackage,
     getTeamSubscriptions,
 } from '~/Functions/Team/Subscriptions';
+import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import Loading from '~/Components/Loading';
 
@@ -32,7 +33,7 @@ import {
 const SubscriptionsList: React.FC = () => {
     const { reset } = useNavigation();
 
-    const { preferences, setPreferences } = useContext(Preferences);
+    const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -40,7 +41,7 @@ const SubscriptionsList: React.FC = () => {
     const [selected, setSelected] = useState('');
 
     const loadData = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
                 type: 'danger',
@@ -58,7 +59,7 @@ const SubscriptionsList: React.FC = () => {
             }
 
             await getTeamSubscriptions({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
         } catch (err) {
             showMessage({
@@ -68,14 +69,14 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam]);
+    }, [teamContext.id]);
 
     const handleSelectedChange = useCallback((identifier: string) => {
         setSelected(identifier);
     }, []);
 
     const handlePurchase = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id || !teamContext.roleInTeam || !teamContext.reload) {
             return;
         }
 
@@ -96,28 +97,30 @@ const SubscriptionsList: React.FC = () => {
 
             const purchase = await makePurchase({
                 pack: selectedOffer.package,
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             if (purchase) {
-                setPreferences({
-                    ...preferences,
-                    selectedTeam: {
-                        ...preferences.selectedTeam,
-                        team: {
-                            ...preferences.selectedTeam.team,
-                            subscription: {
-                                expireIn: purchase.expireIn,
-                                membersLimit: purchase.membersLimit,
-                            },
-                        },
-                    },
-                });
-
                 showMessage({
                     message: 'Assinatura realizada com sucesso!',
                     type: 'info',
                 });
+
+                await setSelectedTeam({
+                    role: teamContext.roleInTeam.role,
+                    status: teamContext.roleInTeam.status,
+                    team: {
+                        active: true,
+                        id: teamContext.id,
+                        name: teamContext.name || '',
+                        subscription: {
+                            expireIn: purchase.expireIn,
+                            membersLimit: purchase.membersLimit,
+                        },
+                    },
+                });
+
+                teamContext.reload();
 
                 reset({
                     routes: [
@@ -138,7 +141,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences, offers, reset, selected, setPreferences]);
+    }, [teamContext, offers, selected, reset]);
 
     useEffect(() => {
         loadData();

@@ -1,18 +1,12 @@
-import React, {
-    useState,
-    useCallback,
-    useEffect,
-    useContext,
-    useMemo,
-} from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
-import { getAllUsersFromTeam, putUserInTeam } from '~/Functions/Team/Users';
+import { useTeam } from '~/Contexts/TeamContext';
 
-import PreferenceContext from '~/Contexts/PreferencesContext';
+import { getAllUsersFromTeam, putUserInTeam } from '~/Functions/Team/Users';
 
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
@@ -39,16 +33,16 @@ import {
 const ListUsers: React.FC = () => {
     const { navigate } = useNavigation();
 
-    const { preferences } = useContext(PreferenceContext);
+    const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const role = useMemo(() => {
-        if (preferences.selectedTeam) {
-            return preferences.selectedTeam.role.toLowerCase();
+        if (teamContext.id) {
+            return teamContext.roleInTeam?.role.toLowerCase();
         }
         return 'repositor';
-    }, [preferences.selectedTeam]);
+    }, [teamContext.id, teamContext.roleInTeam]);
 
     const [newUserEmail, setNewUserEmail] = useState<string | undefined>();
     const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -58,7 +52,7 @@ const ListUsers: React.FC = () => {
     const [users, setUsers] = useState<Array<IUserInTeam>>([]);
 
     const loadData = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
                 type: 'danger',
@@ -69,7 +63,7 @@ const ListUsers: React.FC = () => {
         try {
             setIsLoading(true);
             const response = await getAllUsersFromTeam({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             setUsers(response);
@@ -81,7 +75,7 @@ const ListUsers: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam]);
+    }, [teamContext.id]);
 
     useEffect(() => {
         loadData();
@@ -94,7 +88,7 @@ const ListUsers: React.FC = () => {
     }, []);
 
     const handleAddUser = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
                 type: 'danger',
@@ -114,7 +108,7 @@ const ListUsers: React.FC = () => {
 
             const userInTeam = await putUserInTeam({
                 user_email: newUserEmail,
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             const newUser: IUserInTeam = {
@@ -144,7 +138,7 @@ const ListUsers: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [newUserEmail, users, preferences.selectedTeam, navigate]);
+    }, [teamContext.id, newUserEmail, users, navigate]);
 
     const handleNavigateToUser = useCallback(
         (user: IUserInTeam) => {

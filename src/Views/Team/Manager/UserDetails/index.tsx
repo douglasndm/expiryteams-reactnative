@@ -60,7 +60,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         'repositor' | 'supervisor' | 'manager'
     >(() => {
         if (user.role) {
-            return user.role;
+            const role = user.role.toLowerCase();
+
+            if (role === 'manager') {
+                return 'manager';
+            }
+            if (role === 'supervisor') {
+                return 'supervisor';
+            }
         }
         return 'repositor';
     });
