@@ -1,23 +1,17 @@
-import React, {
-    useCallback,
-    useState,
-    useEffect,
-    useContext,
-    useMemo,
-} from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
+import { useTeam } from '~/Contexts/TeamContext';
+
 import {
     getCategory,
     updateCategory,
     deleteCategory,
 } from '~/Functions/Categories';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import BackButton from '~/Components/BackButton';
 import Loading from '~/Components/Loading';
@@ -45,14 +39,14 @@ const Edit: React.FC = () => {
     const { params } = useRoute();
     const { reset, goBack } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const userRole = useMemo(() => {
-        if (preferences.selectedTeam) {
-            return preferences.selectedTeam.role.toLowerCase();
+        if (teamContext.roleInTeam) {
+            return teamContext.roleInTeam.role.toLowerCase();
         }
         return 'repositor';
-    }, [preferences.selectedTeam]);
+    }, [teamContext.roleInTeam]);
 
     const [name, setName] = useState<string | undefined>(undefined);
     const [errorName, setErrorName] = useState<string>('');

@@ -1,10 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useMemo,
-    useContext,
-} from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
@@ -14,7 +8,7 @@ import { parseISO } from 'date-fns';
 
 import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import {
     deleteBatch,
@@ -63,7 +57,7 @@ const EditBatch: React.FC = () => {
     const route = useRoute();
     const { reset, goBack } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const routeParams = route.params as Props;
 
@@ -85,11 +79,11 @@ const EditBatch: React.FC = () => {
     });
 
     const userRole = useMemo(() => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.roleInTeam) {
             return null;
         }
-        return preferences.selectedTeam.role.toLowerCase();
-    }, [preferences.selectedTeam]);
+        return teamContext.roleInTeam.role.toLowerCase();
+    }, [teamContext.roleInTeam]);
 
     const productId = useMemo(() => {
         return routeParams.productId;

@@ -1,10 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-    useContext,
-    useCallback,
-    useMemo,
-} from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
@@ -13,6 +7,8 @@ import { showMessage } from 'react-native-flash-message';
 import { exists, unlink } from 'react-native-fs';
 
 import strings from '~/Locales';
+
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { createProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
@@ -24,8 +20,6 @@ import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Loading from '~/Components/Loading';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -72,6 +66,7 @@ interface Request {
 
 const Add: React.FC<Request> = ({ route }: Request) => {
     const { goBack, navigate, reset } = useNavigation();
+    const teamContext = useTeam();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -86,8 +81,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
         return 'BRL';
     }, []);
-
-    const { preferences } = useContext(PreferencesContext);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -120,7 +113,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
                 type: 'danger',
@@ -130,7 +123,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         try {
             setIsLoading(true);
             const response = await getAllCategoriesFromTeam({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             const categoriesArray: Array<ICategoryItem> = [];
@@ -150,10 +143,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam]);
+    }, [teamContext.id]);
 
     const handleSave = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             return;
         }
         if (!name || name.trim() === '') {
@@ -173,7 +166,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             }
 
             const createdProduct = await createProduct({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
                 product: {
                     name,
                     code,
@@ -216,17 +209,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             setIsAdding(false);
         }
     }, [
-        amount,
-        code,
-        codeFieldError,
-        expDate,
-        batch,
+        teamContext.id,
         name,
         nameFieldError,
+        codeFieldError,
+        selectedCategory,
+        code,
+        batch,
+        expDate,
+        amount,
         price,
         reset,
-        selectedCategory,
-        preferences.selectedTeam,
     ]);
 
     useEffect(() => {

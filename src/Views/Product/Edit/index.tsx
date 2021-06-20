@@ -1,16 +1,12 @@
-import React, {
-    useState,
-    useEffect,
-    useContext,
-    useCallback,
-    useMemo,
-} from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
+
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
@@ -20,8 +16,6 @@ import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -69,15 +63,15 @@ interface ICategoryItem {
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
-    const { preferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const userRole = useMemo(() => {
-        if (preferences.selectedTeam) {
-            return preferences.selectedTeam.role.toLowerCase();
+        if (teamContext.roleInTeam) {
+            return teamContext.roleInTeam.role.toLowerCase();
         }
 
         return 'repositor';
-    }, [preferences.selectedTeam]);
+    }, [teamContext.roleInTeam]);
 
     const { reset, goBack } = useNavigation();
 
@@ -103,7 +97,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             return;
         }
         try {
@@ -113,7 +107,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setCode(product.code);
 
             const categoriesResponse = await getAllCategoriesFromTeam({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             const categoriesArray: Array<ICategoryItem> = [];
@@ -138,12 +132,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setIsLoading(false);
         }
-    }, [
-        preferences.selectedTeam,
-        product.categories,
-        product.code,
-        product.name,
-    ]);
+    }, [product.categories, product.code, product.name, teamContext.id]);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {

@@ -1,15 +1,15 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { useTeam } from '~/Contexts/TeamContext';
+
 import {
     getAllCategoriesFromTeam,
     createCategory,
 } from '~/Functions/Categories';
-
-import PreferenceContext from '~/Contexts/PreferencesContext';
 
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
@@ -33,7 +33,7 @@ import {
 const List: React.FC = () => {
     const { navigate } = useNavigation();
 
-    const { preferences } = useContext(PreferenceContext);
+    const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -47,7 +47,7 @@ const List: React.FC = () => {
     const [categories, setCategories] = useState<Array<ICategory>>([]);
 
     const loadData = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
                 type: 'danger',
@@ -59,7 +59,7 @@ const List: React.FC = () => {
             setIsLoading(true);
 
             const response = await getAllCategoriesFromTeam({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             const sorted = response.sort((cat1, cat2) => {
@@ -77,7 +77,7 @@ const List: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam]);
+    }, [teamContext.id]);
 
     useEffect(() => {
         loadData();
@@ -90,7 +90,7 @@ const List: React.FC = () => {
     }, []);
 
     const handleSaveCategory = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             return;
         }
 
@@ -107,7 +107,7 @@ const List: React.FC = () => {
 
             const newCategory = await createCategory({
                 name: newCategoryName,
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             setCategories([...categories, newCategory]);
@@ -117,7 +117,7 @@ const List: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [newCategoryName, categories, preferences.selectedTeam]);
+    }, [teamContext.id, newCategoryName, categories]);
 
     const handleNavigateToCategory = useCallback(
         (categoryId: string, category_name?: string) => {
@@ -147,8 +147,8 @@ const List: React.FC = () => {
         <Container>
             <Header title={strings.View_Category_List_PageTitle} />
 
-            {!!preferences.selectedTeam &&
-                preferences.selectedTeam.role.toLowerCase() === 'manager' && (
+            {!!teamContext.roleInTeam &&
+                teamContext.roleInTeam.role.toLowerCase() === 'manager' && (
                     <AddCategoryContent>
                         <InputContainer>
                             <InputTextContainer hasError={inputHasError}>

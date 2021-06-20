@@ -201,7 +201,7 @@ const List: React.FC = () => {
                 >
                     <TeamItemTitle>{item.team.name}</TeamItemTitle>
                     <TeamItemRole>
-                        {item.status === 'Pending'
+                        {isPending
                             ? item.status.toUpperCase()
                             : role.toUpperCase()}
                     </TeamItemRole>

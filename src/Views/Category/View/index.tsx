@@ -1,18 +1,12 @@
-import React, {
-    useCallback,
-    useEffect,
-    useState,
-    useContext,
-    useMemo,
-} from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
-import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
+import { useTeam } from '~/Contexts/TeamContext';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -39,7 +33,7 @@ const CategoryView: React.FC = () => {
     const { params } = useRoute();
     const { navigate } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const routeParams = params as Props;
 
@@ -92,8 +86,8 @@ const CategoryView: React.FC = () => {
         <Container>
             <Header title={categoryName} />
 
-            {!!preferences.selectedTeam &&
-                preferences.selectedTeam.role.toLowerCase() === 'manager' && (
+            {!!teamContext.roleInTeam &&
+                teamContext.roleInTeam.role.toLowerCase() === 'manager' && (
                     <ActionsButtonContainer>
                         <ActionButton
                             icon={() => (

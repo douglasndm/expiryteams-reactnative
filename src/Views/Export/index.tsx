@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { importExportFileFromApp } from '~/Functions/ImportExport';
 import { exportToExcel } from '~/Functions/Excel';
@@ -27,7 +27,7 @@ import {
 const Export: React.FC = () => {
     const { reset } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const [checked, setChecked] = React.useState('created_at');
 
@@ -35,7 +35,7 @@ const Export: React.FC = () => {
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
 
     const handleImport = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             return;
         }
 
@@ -43,7 +43,7 @@ const Export: React.FC = () => {
             setIsImporting(true);
 
             await importExportFileFromApp({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
             });
 
             showMessage({
@@ -66,7 +66,7 @@ const Export: React.FC = () => {
         } finally {
             setIsImporting(false);
         }
-    }, [preferences.selectedTeam, reset]);
+    }, [reset, teamContext.id]);
 
     const handleExportToExcel = useCallback(async () => {
         try {
@@ -97,7 +97,7 @@ const Export: React.FC = () => {
             <Header title={strings.View_Export_PageTitle} />
 
             <Content>
-                {preferences.selectedTeam?.role.toLowerCase() === 'manager' && (
+                {teamContext.roleInTeam?.role.toLowerCase() === 'manager' && (
                     <OptionContainer>
                         <ExplainText>
                             Tem um arquivo de exportação gerado pelo Controle de

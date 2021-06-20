@@ -1,15 +1,9 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { getUser } from '~/Functions/User';
 
@@ -28,8 +22,8 @@ interface InfoProps {
 }
 
 const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
-    const { preferences } = useContext(PreferencesContext);
     const { user: firebaseUser } = useAuth();
+    const teamContext = useTeam();
 
     const [user, setUser] = useState<IUser | null>(null);
 
@@ -51,8 +45,8 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
     }, [firebaseUser]);
 
     const userRole = useMemo(() => {
-        if (preferences.selectedTeam) {
-            const { role } = preferences.selectedTeam;
+        if (teamContext.roleInTeam) {
+            const { role } = teamContext.roleInTeam;
 
             if (role?.toLowerCase() === 'manager')
                 return strings.UserInfo_Role_Manager;
@@ -62,7 +56,7 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
         }
 
         return strings.UserInfo_Role_Repositor;
-    }, [preferences.selectedTeam]);
+    }, [teamContext.roleInTeam]);
 
     const name = useMemo(() => {
         if (user) {
@@ -99,10 +93,10 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
 
                         <UserEmail>{user?.email}</UserEmail>
 
-                        {!!preferences.selectedTeam && (
+                        {!!teamContext.name && (
                             <UserInfo>
                                 {`${
-                                    preferences.selectedTeam.team.name
+                                    teamContext.name
                                 } (${userRole.toUpperCase()})`}
                             </UserInfo>
                         )}
