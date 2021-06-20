@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
@@ -10,6 +11,7 @@ import Preferences from '~/Contexts/PreferencesContext';
 
 import { getUser, updateUser, deleteUser } from '~/Functions/User';
 
+import Button from '~/Components/Button';
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
 
@@ -20,16 +22,18 @@ import {
     InputTextContainer,
     InputText,
     InputTextTip,
-    ActionsButtonContainer,
     ActionButton,
     Icons,
+    DeleteAccountContainer,
+    DeleteAccountText,
 } from './styles';
 
 const User: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset, replace } = useNavigation<StackNavigationProp<{}>>();
     const { user } = useAuth();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isUpdating, setIsUpdating] = useState<boolean>(false);
     const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
     const { preferences, setPreferences } = useContext(Preferences);
@@ -65,7 +69,7 @@ const User: React.FC = () => {
 
     const handleUpdate = useCallback(async () => {
         try {
-            setIsLoading(true);
+            setIsUpdating(true);
 
             const updatedUser = await updateUser({
                 name,
@@ -81,15 +85,17 @@ const User: React.FC = () => {
                 message: 'Perfil atualizado',
                 type: 'info',
             });
+
+            replace('Home', {});
         } catch (err) {
             showMessage({
                 message: err.message,
                 type: 'danger',
             });
         } finally {
-            setIsLoading(false);
+            setIsUpdating(false);
         }
-    }, [lastName, name, preferences, setPreferences]);
+    }, [lastName, name, preferences, replace, setPreferences]);
 
     const handleDelete = useCallback(async () => {
         try {
@@ -162,23 +168,21 @@ const User: React.FC = () => {
                     </InputTextContainer>
                 </InputGroup>
 
-                <ActionsButtonContainer>
-                    <ActionButton
-                        icon={() => <Icons name="save-outline" size={22} />}
-                        onPress={handleUpdate}
-                    >
-                        Atualizar
-                    </ActionButton>
-
-                    <ActionButton
-                        icon={() => <Icons name="trash-outline" size={22} />}
-                        onPress={handlwSwitchDeleteVisible}
-                    >
-                        Apagar
-                    </ActionButton>
-                </ActionsButtonContainer>
-                <Container />
+                <Button
+                    text="Atualizar"
+                    onPress={handleUpdate}
+                    isLoading={isUpdating}
+                />
             </Content>
+
+            <DeleteAccountContainer>
+                <ActionButton
+                    icon={() => <Icons name="trash-outline" size={22} />}
+                    onPress={handlwSwitchDeleteVisible}
+                >
+                    <DeleteAccountText>Apagar conta</DeleteAccountText>
+                </ActionButton>
+            </DeleteAccountContainer>
 
             <Dialog.Container
                 visible={isDeleteVisible}
