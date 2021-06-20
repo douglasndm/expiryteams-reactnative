@@ -281,7 +281,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const handleNavigateToExistProduct = useCallback(async () => {
         if (existentProduct) {
-            navigate('AddLote', { productId: existentProduct });
+            navigate('AddBatch', { productId: existentProduct });
         }
     }, [existentProduct, navigate]);
 

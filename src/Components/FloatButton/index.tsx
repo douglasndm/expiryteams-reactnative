@@ -17,7 +17,7 @@ const FloatButton: React.FC<Props> = ({ navigateTo, productId }: Props) => {
         if (navigateTo === 'AddProduct') {
             navigate('AddProduct');
         } else if (navigateTo === 'AddBatch' && !!productId) {
-            navigate('AddLote', { productId });
+            navigate('AddBatch', { productId });
         }
     }, [navigate, navigateTo, productId]);
 

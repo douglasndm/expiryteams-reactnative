@@ -89,7 +89,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [productId]);
 
     const addNewLote = useCallback(() => {
-        navigate('AddLote', { productId });
+        navigate('AddBatch', { productId });
     }, [navigate, productId]);
 
     const handleEdit = useCallback(() => {

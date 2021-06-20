@@ -11,7 +11,7 @@ import Button from '../../Components/Button';
 import { Container, PageHeader, PageTitle, Image } from './styles';
 
 interface Props {
-    productId: number;
+    productId: string;
 }
 
 const PhotoView: React.FC<Props> = () => {

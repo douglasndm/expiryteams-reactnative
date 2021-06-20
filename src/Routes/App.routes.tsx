@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
-import AddLote from '~/Views/Batch/Add';
+import AddBatch from '~/Views/Batch/Add';
 import EditProduct from '~/Views/Product/Edit';
-import EditLote from '~/Views/Batch/Edit';
+import EditBatch from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/ProductDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
@@ -33,7 +33,7 @@ import Subscription from '~/Views/Subscription';
 
 import Test from '~/Views/Test';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RoutesParams>();
 
 const Routes: React.FC = () => {
     return (
@@ -44,9 +44,9 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
-            <Stack.Screen name="AddLote" component={AddLote} />
+            <Stack.Screen name="AddBatch" component={AddBatch} />
             <Stack.Screen name="EditProduct" component={EditProduct} />
-            <Stack.Screen name="EditLote" component={EditLote} />
+            <Stack.Screen name="EditBatch" component={EditBatch} />
             <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="Error" component={Error} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
