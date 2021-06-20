@@ -1,8 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import { TeamProvider } from '~/Contexts/TeamContext';
-
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
 import AddBatch from '~/Views/Batch/Add';
@@ -41,48 +39,43 @@ const Stack = createNativeStackNavigator<RoutesParams>();
 
 const Routes: React.FC = () => {
     return (
-        <TeamProvider>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="AddProduct" component={AddProduct} />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="AddProduct" component={AddProduct} />
 
-                <Stack.Screen name="Settings" component={Settings} />
-                <Stack.Screen name="About" component={About} />
-                <Stack.Screen
-                    name="ProductDetails"
-                    component={ProductDetails}
-                />
-                <Stack.Screen name="AddBatch" component={AddBatch} />
-                <Stack.Screen name="EditProduct" component={EditProduct} />
-                <Stack.Screen name="EditBatch" component={EditBatch} />
-                <Stack.Screen name="Success" component={Success} />
-                <Stack.Screen name="Error" component={Error} />
-                <Stack.Screen name="PhotoView" component={PhotoView} />
+            <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="About" component={About} />
+            <Stack.Screen name="ProductDetails" component={ProductDetails} />
+            <Stack.Screen name="AddBatch" component={AddBatch} />
+            <Stack.Screen name="EditProduct" component={EditProduct} />
+            <Stack.Screen name="EditBatch" component={EditBatch} />
+            <Stack.Screen name="Success" component={Success} />
+            <Stack.Screen name="Error" component={Error} />
+            <Stack.Screen name="PhotoView" component={PhotoView} />
 
-                <Stack.Screen name="ListCategory" component={ListCategory} />
-                <Stack.Screen name="CategoryView" component={CategoryView} />
-                <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
+            <Stack.Screen name="ListCategory" component={ListCategory} />
+            <Stack.Screen name="CategoryView" component={CategoryView} />
+            <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
-                <Stack.Screen name="User" component={User} />
+            <Stack.Screen name="User" component={User} />
 
-                <Stack.Screen name="Logout" component={Logout} />
+            <Stack.Screen name="Logout" component={Logout} />
 
-                <Stack.Screen name="Export" component={Export} />
+            <Stack.Screen name="Export" component={Export} />
 
-                <Stack.Screen name="TeamList" component={TeamList} />
+            <Stack.Screen name="TeamList" component={TeamList} />
 
-                <Stack.Screen name="CreateTeam" component={CreateTeam} />
-                <Stack.Screen name="EnterTeam" component={EnterTeam} />
+            <Stack.Screen name="CreateTeam" component={CreateTeam} />
+            <Stack.Screen name="EnterTeam" component={EnterTeam} />
 
-                <Stack.Screen name="ViewTeam" component={ViewTeam} />
-                <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
-                <Stack.Screen name="UserDetails" component={UserDetails} />
+            <Stack.Screen name="ViewTeam" component={ViewTeam} />
+            <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
+            <Stack.Screen name="UserDetails" component={UserDetails} />
 
-                <Stack.Screen name="Subscription" component={Subscription} />
+            <Stack.Screen name="Subscription" component={Subscription} />
 
-                <Stack.Screen name="Test" component={Test} />
-            </Stack.Navigator>
-        </TeamProvider>
+            <Stack.Screen name="Test" component={Test} />
+        </Stack.Navigator>
     );
 };
 

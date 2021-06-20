@@ -3,6 +3,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { useAuth } from '~/Contexts/AuthContext';
+import { TeamProvider } from '~/Contexts/TeamContext';
 
 import DrawerMenu from '../Components/DrawerMenu';
 
@@ -32,26 +33,28 @@ const DrawerContainer: React.FC = () => {
     }, []);
 
     return (
-        <Drawer.Navigator
-            drawerType="slide"
-            openByDefault={false}
-            keyboardDismissMode="on-drag"
-            drawerContent={props => <DrawerMenu {...props} />}
-        >
-            {signed ? (
-                <Drawer.Screen
-                    name="Routes"
-                    component={Routes}
-                    options={handleDisableDrawer}
-                />
-            ) : (
-                <Drawer.Screen
-                    name="Auth"
-                    component={AuthRoutes}
-                    options={{ swipeEnabled: false }}
-                />
-            )}
-        </Drawer.Navigator>
+        <TeamProvider>
+            <Drawer.Navigator
+                drawerType="slide"
+                openByDefault={false}
+                keyboardDismissMode="on-drag"
+                drawerContent={props => <DrawerMenu {...props} />}
+            >
+                {signed ? (
+                    <Drawer.Screen
+                        name="Routes"
+                        component={Routes}
+                        options={handleDisableDrawer}
+                    />
+                ) : (
+                    <Drawer.Screen
+                        name="Auth"
+                        component={AuthRoutes}
+                        options={{ swipeEnabled: false }}
+                    />
+                )}
+            </Drawer.Navigator>
+        </TeamProvider>
     );
 };
 
