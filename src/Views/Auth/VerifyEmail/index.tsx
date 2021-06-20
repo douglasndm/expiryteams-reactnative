@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useAuth } from '~/Contexts/AuthContext';
 
 import {
     isEmailConfirmed,
@@ -25,10 +25,10 @@ import {
 const VerifyEmail: React.FC = () => {
     const { navigate, reset } = useNavigation();
 
+    const { user } = useAuth();
+
     const [isCheckLoading, setIsCheckLoading] = useState<boolean>(false);
     const [resendedEmail, setResendedEmail] = useState<boolean>(false);
-
-    const { preferences } = useContext(PreferencesContext);
 
     const animation = useMemo(() => {
         return require('~/Assets/Animations/email-animation.json');
@@ -84,11 +84,11 @@ const VerifyEmail: React.FC = () => {
                     {strings.View_ConfirmEmail_WaitingTitle}
                 </WaitingConfirmationEmail>
 
-                {!!preferences.user && (
+                {!!user && user.email && (
                     <EmailConfirmationExplain>
                         {strings.View_ConfirmEmail_WaitingDescription.replace(
                             '#{EMAIL}',
-                            preferences.user.email
+                            user.email
                         )}
                     </EmailConfirmationExplain>
                 )}
