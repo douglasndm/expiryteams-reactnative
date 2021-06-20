@@ -15,7 +15,7 @@ export async function getAllUserPreferences(): Promise<IPreferences> {
         const settingTheme = await getAppTheme();
         const settingNotification = await getEnableNotifications();
         const settingNotificationCadency = await getNotificationCadency();
-        const userSession = auth().currentUser;
+
         const selectedTeam = await getSelectedTeam();
 
         const settings: IPreferences = {
@@ -23,7 +23,6 @@ export async function getAllUserPreferences(): Promise<IPreferences> {
             appTheme: getThemeByName(settingTheme),
             enableNotifications: settingNotification,
             notificationCadency: settingNotificationCadency,
-            user: userSession,
             selectedTeam,
         };
 
