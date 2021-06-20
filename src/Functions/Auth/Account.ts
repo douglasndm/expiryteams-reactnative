@@ -17,17 +17,24 @@ export async function createAccount({
     password,
     passwordConfirm,
 }: createAccountProps): Promise<IUser> {
-    const user = await auth().createUserWithEmailAndPassword(email, password);
+    if (password !== passwordConfirm) {
+        throw new Error('Password confirmation is invalid');
+    }
 
-    await user.user.sendEmailVerification();
+    const { user } = await auth().createUserWithEmailAndPassword(
+        email,
+        password
+    );
+
+    await user.sendEmailVerification();
+
+    await user.updateProfile({
+        displayName: `${name} ${lastName}`,
+    });
 
     const response = await api.post<IUser>('/users', {
-        firebaseUid: user.user.uid,
-        name,
-        lastName,
+        firebaseUid: user.uid,
         email,
-        password,
-        passwordConfirmation: passwordConfirm,
     });
 
     return response.data;
@@ -48,4 +55,33 @@ export async function resendConfirmationEmail(): Promise<void> {
     } catch (err) {
         throw new Error(err.message);
     }
+}
+
+interface updateUserProps {
+    name: string;
+}
+
+export async function updateUser({ name }: updateUserProps): Promise<void> {
+    await auth().currentUser?.updateProfile({
+        displayName: name,
+    });
+}
+
+interface updateEmailProps {
+    email: string;
+}
+
+export async function updateEmail({ email }: updateEmailProps): Promise<void> {
+    await auth().currentUser?.verifyBeforeUpdateEmail(email);
+}
+
+interface updatePasswordProps {
+    password: string;
+}
+
+export async function updatePassword({
+    password,
+}: updatePasswordProps): Promise<void> {
+    // should ask user reauth
+    await auth().currentUser?.updatePassword(password);
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
@@ -7,9 +7,13 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
-import Preferences from '~/Contexts/PreferencesContext';
 
-import { getUser, updateUser, deleteUser } from '~/Functions/User';
+import { deleteUser } from '~/Functions/User';
+import {
+    updateUser,
+    updateEmail,
+    updatePassword,
+} from '~/Functions/Auth/Account';
 
 import Button from '~/Components/Button';
 import Header from '~/Components/Header';
@@ -38,10 +42,7 @@ const User: React.FC = () => {
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
     const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
-    const { preferences, setPreferences } = useContext(Preferences);
-
     const [name, setName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
 
     const [nameError, setNameError] = useState<boolean>(false);
 
@@ -51,14 +52,8 @@ const User: React.FC = () => {
             if (!user) {
                 throw new Error('User is not logged');
             }
-            const ownUser = await getUser({ user_id: user.uid });
 
-            if (!ownUser) {
-                throw new Error("User doesn't exist in onw database");
-            }
-
-            if (ownUser.name) setName(ownUser.name);
-            if (ownUser.lastName) setLastName(ownUser.lastName);
+            if (user.displayName) setName(user.displayName);
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -73,14 +68,8 @@ const User: React.FC = () => {
         try {
             setIsUpdating(true);
 
-            const updatedUser = await updateUser({
+            await updateUser({
                 name,
-                lastName,
-            });
-
-            setPreferences({
-                ...preferences,
-                user: updatedUser,
             });
 
             showMessage({
@@ -97,7 +86,7 @@ const User: React.FC = () => {
         } finally {
             setIsUpdating(false);
         }
-    }, [lastName, name, preferences, replace, setPreferences]);
+    }, [name, replace]);
 
     const handleDelete = useCallback(async () => {
         try {
@@ -128,10 +117,6 @@ const User: React.FC = () => {
         setNameError(false);
     }, []);
 
-    const handleLastNameChange = useCallback((value: string) => {
-        setLastName(value);
-    }, []);
-
     const handlwSwitchDeleteVisible = useCallback(() => {
         setIsDeleteVisible(!isDeleteVisible);
     }, [isDeleteVisible]);
@@ -159,16 +144,6 @@ const User: React.FC = () => {
                 {nameError && (
                     <InputTextTip>Digite o nome do usuário</InputTextTip>
                 )}
-
-                <InputGroup>
-                    <InputTextContainer>
-                        <InputText
-                            placeholder="Sobrenome"
-                            value={lastName}
-                            onChangeText={handleLastNameChange}
-                        />
-                    </InputTextContainer>
-                </InputGroup>
 
                 <Button
                     text="Atualizar"
