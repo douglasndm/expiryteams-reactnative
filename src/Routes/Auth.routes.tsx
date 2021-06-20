@@ -6,8 +6,6 @@ import ForgotPassword from '~/Views/Auth/ForgotPassword';
 import CreateAccount from '~/Views/Auth/CreateAccount';
 import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
-import Logout from '~/Views/Auth/Logout';
-
 const Stack = createNativeStackNavigator();
 
 const Routes: React.FC = () => {
@@ -17,8 +15,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="CreateAccount" component={CreateAccount} />
             <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
-
-            <Stack.Screen name="Logout" component={Logout} />
         </Stack.Navigator>
     );
 };

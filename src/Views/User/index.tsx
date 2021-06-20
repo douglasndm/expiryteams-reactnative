@@ -29,7 +29,9 @@ import {
 } from './styles';
 
 const User: React.FC = () => {
-    const { reset, replace } = useNavigation<StackNavigationProp<{}>>();
+    const { reset, replace } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
     const { user } = useAuth();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);

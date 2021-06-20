@@ -16,6 +16,7 @@ import Error from '~/Views/Informations/Error';
 import PhotoView from '~/Views/PhotoView';
 
 import User from '~/Views/User';
+import Logout from '~/Views/Auth/Logout';
 
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
@@ -63,6 +64,8 @@ const Routes: React.FC = () => {
                 <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
                 <Stack.Screen name="User" component={User} />
+
+                <Stack.Screen name="Logout" component={Logout} />
 
                 <Stack.Screen name="Export" component={Export} />
 

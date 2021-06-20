@@ -49,6 +49,7 @@ type RoutesParams = {
     UserDetails: {
         user: IUserInTeam;
     };
+    Logout;
 
     EnterTeam;
     TeamList;
