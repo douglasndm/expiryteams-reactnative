@@ -8,6 +8,7 @@ import strings from '~/Locales';
 import { useAuth } from '~/Contexts/AuthContext';
 
 import { loginFirebase } from '~/Functions/Auth/Firebase';
+import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
 import Button from '~/Components/Button';
 
@@ -73,6 +74,8 @@ const Login: React.FC = () => {
                 email,
                 password,
             });
+
+            await clearSelectedteam();
         } catch (err) {
             setIsLoging(false);
             if (
