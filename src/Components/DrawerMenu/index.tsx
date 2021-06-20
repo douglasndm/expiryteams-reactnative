@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { View, Linking } from 'react-native';
 import {
     DrawerContentOptions,
@@ -7,7 +7,7 @@ import {
 
 import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import UserInfo from './UserInfo';
 
@@ -25,7 +25,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 ) => {
     const { navigation } = props;
 
-    const { preferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const navigateToAddProduct = useCallback(() => {
         navigation.navigate('AddProduct');
@@ -96,12 +96,12 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </MenuContent>
                         </MenuItemContainer>
 
-                        {!!preferences.selectedTeam && (
+                        {!!teamContext.id && (
                             <MenuItemContainer onPress={handleNavigateToTeam}>
                                 <MenuContent>
                                     <Icons name="briefcase-outline" />
                                     <MenuItemText>
-                                        {preferences.selectedTeam.team.name}
+                                        {teamContext.name}
                                     </MenuItemText>
                                 </MenuContent>
                             </MenuItemContainer>

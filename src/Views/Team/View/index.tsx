@@ -1,9 +1,8 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { useTeam } from '~/Contexts/TeamContext';
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
@@ -25,12 +24,11 @@ import {
 const ViewTeam: React.FC = () => {
     const { goBack, navigate } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
     const teamContext = useTeam();
 
     const isManager = useMemo(() => {
         if (teamContext.id) {
-            if (teamContext.roleInTeam?.role === 'manager') {
+            if (teamContext.roleInTeam?.role.toLowerCase() === 'manager') {
                 return true;
             }
         }
@@ -41,15 +39,10 @@ const ViewTeam: React.FC = () => {
         navigate('ListUsersFromTeam');
     }, [navigate]);
 
-    interface renderProps {
-        item: ITeamSubscription;
-        index: number;
-    }
-
     return (
         <Container>
             <PageHeader>
-                {preferences.selectedTeam?.team.active && (
+                {teamContext.active && (
                     <BackButton
                         handleOnPress={goBack}
                         contentStyle={{ marginLeft: -10 }}
@@ -60,16 +53,14 @@ const ViewTeam: React.FC = () => {
             </PageHeader>
 
             <PageContent>
-                {preferences.selectedTeam && (
+                {!!teamContext.name && (
                     <View>
-                        <TeamName>
-                            {preferences.selectedTeam.team.name}
-                        </TeamName>
+                        <TeamName>{teamContext.name}</TeamName>
                         {isManager && <Subscriptions />}
                     </View>
                 )}
 
-                {preferences.selectedTeam?.team.active && (
+                {teamContext.active && (
                     <Section>
                         <SectionTitle>Membros</SectionTitle>
 

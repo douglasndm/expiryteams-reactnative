@@ -1,11 +1,12 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
+import { useAuth } from '~/Contexts/AuthContext';
 
 import { removeUserFromTeam } from '~/Functions/Team/Users';
 import { updateUserRole } from '~/Functions/User/Roles';
@@ -48,10 +49,11 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 }: UserDetailsProps) => {
     const { goBack, reset } = useNavigation();
 
-    const { preferences } = useContext(PreferencesContext);
+    const authContext = useAuth();
+    const teamContext = useTeam();
 
     const user: IUserInTeam = useMemo(() => {
-        return JSON.parse(route.params.user);
+        return JSON.parse(String(route.params.user));
     }, [route.params.user]);
 
     const [selectedRole, setSelectedRole] = useState<
@@ -66,13 +68,13 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const enableManagerTools = useMemo(() => {
-        if (preferences.selectedTeam) {
-            if (preferences.selectedTeam.role.toLowerCase() === 'manager') {
+        if (teamContext.id) {
+            if (teamContext.roleInTeam?.role.toLowerCase() === 'manager') {
                 return true;
             }
         }
         return false;
-    }, [preferences.selectedTeam]);
+    }, [teamContext.id, teamContext.roleInTeam]);
 
     const userIsPending = useMemo(() => {
         if (user.status) {
@@ -107,14 +109,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     }, [user.code]);
 
     const handleRemoveUser = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             return;
         }
 
         try {
             setIsLoading(true);
             await removeUserFromTeam({
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
                 user_id: user.id,
             });
 
@@ -138,10 +140,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam, reset, user.id]);
+    }, [reset, teamContext.id, user.id]);
 
     const handleUpdateRole = useCallback(async () => {
-        if (!preferences.selectedTeam) {
+        if (!teamContext.id) {
             return;
         }
 
@@ -150,7 +152,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
             await updateUserRole({
                 user_id: user.id,
-                team_id: preferences.selectedTeam.team.id,
+                team_id: teamContext.id,
                 newRole: selectedRole,
             });
 
@@ -166,7 +168,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam, selectedRole, user.id]);
+    }, [selectedRole, teamContext.id, user.id]);
 
     return isLoading ? (
         <Loading />
@@ -180,28 +182,33 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                     <PageTitle>{strings.View_UserDetails_PageTitle}</PageTitle>
                 </PageTitleContainer>
 
-                {enableManagerTools && user.id !== preferences.user.uid && (
-                    <ActionsButtonsContainer>
-                        {!userIsPending && (
+                {enableManagerTools &&
+                    authContext.user &&
+                    user.id !== authContext.user.uid && (
+                        <ActionsButtonsContainer>
+                            {!userIsPending && (
+                                <ActionButton
+                                    icon={() => (
+                                        <Icon name="save-outline" size={22} />
+                                    )}
+                                    onPress={handleUpdateRole}
+                                >
+                                    Atualizar
+                                </ActionButton>
+                            )}
                             <ActionButton
                                 icon={() => (
-                                    <Icon name="save-outline" size={22} />
+                                    <Icon
+                                        name="person-remove-outline"
+                                        size={22}
+                                    />
                                 )}
-                                onPress={handleUpdateRole}
+                                onPress={handleRemoveUser}
                             >
-                                Atualizar
+                                Remover
                             </ActionButton>
-                        )}
-                        <ActionButton
-                            icon={() => (
-                                <Icon name="person-remove-outline" size={22} />
-                            )}
-                            onPress={handleRemoveUser}
-                        >
-                            Remover
-                        </ActionButton>
-                    </ActionsButtonsContainer>
-                )}
+                        </ActionsButtonsContainer>
+                    )}
             </PageHeader>
 
             <PageContent>
@@ -224,7 +231,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 )}
 
                 {enableManagerTools &&
-                    user.id !== preferences.user.uid &&
+                    authContext.user &&
+                    user.id !== authContext.user.uid &&
                     !userIsPending && (
                         <RadioButtonContainer>
                             <RadioButtonContent>

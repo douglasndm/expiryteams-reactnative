@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
-import Preferences from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { deleteTeam } from '~/Functions/Team';
 
@@ -17,7 +17,7 @@ const Advenced: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showDeleteTeam, setShowDeleteTeam] = useState<boolean>(false);
 
-    const { preferences } = useContext(Preferences);
+    const teamContext = useTeam();
 
     const { reset } = useNavigation();
 
@@ -29,11 +29,11 @@ const Advenced: React.FC = () => {
         try {
             setIsLoading(true);
 
-            if (!preferences.selectedTeam) {
+            if (!teamContext.id) {
                 throw new Error('Team is not selected');
             }
 
-            await deleteTeam({ team_id: preferences.selectedTeam.team.id });
+            await deleteTeam({ team_id: teamContext.id });
 
             showMessage({
                 message: 'O time foi apagado',
@@ -51,7 +51,7 @@ const Advenced: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [preferences.selectedTeam, reset]);
+    }, [reset, teamContext.id]);
     return isLoading ? (
         <Loading />
     ) : (
