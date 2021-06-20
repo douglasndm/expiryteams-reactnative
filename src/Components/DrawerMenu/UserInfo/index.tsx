@@ -8,7 +8,10 @@ import React, {
 
 import strings from '~/Locales';
 
+import { useAuth } from '~/Contexts/AuthContext';
 import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import { getUser } from '~/Functions/User';
 
 import {
     Container,
@@ -26,16 +29,26 @@ interface InfoProps {
 
 const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
     const { preferences } = useContext(PreferencesContext);
+    const { user: firebaseUser } = useAuth();
 
     const [user, setUser] = useState<IUser | null>(null);
 
     const loadData = useCallback(async () => {
-        if (preferences.user !== null) {
-            setUser(preferences.user);
-            return;
+        if (firebaseUser) {
+            const ownUser = await getUser({ user_id: firebaseUser.uid });
+
+            if (ownUser) {
+                setUser({
+                    firebaseUid: firebaseUser.uid,
+                    email: ownUser.email,
+                    name: ownUser.name,
+                    lastName: ownUser?.email,
+                });
+            } else {
+                setUser(null);
+            }
         }
-        setUser(null);
-    }, [preferences.user]);
+    }, [firebaseUser]);
 
     const userRole = useMemo(() => {
         if (preferences.selectedTeam) {
