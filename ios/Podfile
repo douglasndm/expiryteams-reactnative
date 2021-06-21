@@ -1,7 +1,7 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 target 'expirybusiness' do
     config = use_native_modules!
@@ -9,10 +9,11 @@ target 'expirybusiness' do
     use_react_native!(
       :path => config[:reactNativePath],
       # to enable hermes on iOS, change `false` to `true` and then install pods
-      :hermes_enabled => true
+      :hermes_enabled => false
     )
 
     permissions_path = '../node_modules/react-native-permissions/ios'
+    pod 'Firebase/AppCheck'
     pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
     pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
     pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'

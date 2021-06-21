@@ -144,8 +144,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 14
-        versionName "0.3"
+        versionCode 15
+        versionName "0.4"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -271,6 +271,8 @@ dependencies {
             implementation 'org.webkit:android-jsc:+'
         }
     }
+
+    implementation 'com.google.firebase:firebase-appcheck-safetynet:16.0.0-beta01'
 }
 
 // Run this once to be able to run the application with BUCK
