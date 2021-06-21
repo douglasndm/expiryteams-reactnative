@@ -157,6 +157,8 @@ const Home: React.FC = () => {
                     <ListProducts
                         products={productsSearch}
                         onRefresh={getProduts}
+                        removeProdsWithoutBatches
+                        sortProdsByBatchExpDate
                     />
                 </Container>
             )}

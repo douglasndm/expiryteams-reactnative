@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, FlatList, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
+import { sortProductsByBatchesExpDate } from '~/Functions/Products/Products';
 import {
     sortBatches,
     removeCheckedBatches,
@@ -25,16 +26,47 @@ interface RequestProps {
     products: Array<IProduct>;
     onRefresh?: () => void;
     deactiveFloatButton?: boolean;
+    removeProdsWithoutBatches?: boolean;
+    sortProdsByBatchExpDate?: boolean;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
     products,
     onRefresh,
     deactiveFloatButton,
+    removeProdsWithoutBatches,
+    sortProdsByBatchExpDate,
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const prods = useMemo(() => {
+        let prodsReturn: Array<IProduct> = products;
+
+        if (removeProdsWithoutBatches === true) {
+            const prodsWithoutBatches = products.filter(p => {
+                const batches = removeCheckedBatches(p.batches);
+
+                if (batches.length > 0) {
+                    return true;
+                }
+                return false;
+            });
+
+            prodsReturn = prodsWithoutBatches;
+        }
+
+        if (sortProdsByBatchExpDate === true) {
+            const sortedProducts = sortProductsByBatchesExpDate({
+                products: prodsReturn,
+            });
+
+            prodsReturn = sortedProducts;
+        }
+
+        return prodsReturn;
+    }, [products, removeProdsWithoutBatches, sortProdsByBatchExpDate]);
 
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
@@ -44,7 +76,7 @@ const ListProducts: React.FC<RequestProps> = ({
         return (
             <View>
                 {/* Verificar se há items antes de criar o titulo */}
-                {products.length > 0 && (
+                {prods.length > 0 && (
                     <CategoryDetails>
                         <CategoryDetailsText>
                             {
@@ -55,7 +87,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [products]);
+    }, [prods]);
 
     const EmptyList = useCallback(() => {
         return (
@@ -88,7 +120,7 @@ const ListProducts: React.FC<RequestProps> = ({
     return (
         <Container>
             <FlatList
-                data={products}
+                data={prods}
                 keyExtractor={item => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}

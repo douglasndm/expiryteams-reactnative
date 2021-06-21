@@ -100,7 +100,12 @@ const CategoryView: React.FC = () => {
                     </ActionsButtonContainer>
                 )}
 
-            <ListProducts products={products} deactiveFloatButton />
+            <ListProducts
+                products={products}
+                deactiveFloatButton
+                removeProdsWithoutBatches
+                sortProdsByBatchExpDate
+            />
 
             <FloatButton
                 icon={() => (
@@ -110,8 +115,6 @@ const CategoryView: React.FC = () => {
                 label={strings.View_FloatMenu_AddProduct}
                 onPress={handleNavigateAddProduct}
             />
-
-            <FlashMessage position="top" />
         </Container>
     );
 };
