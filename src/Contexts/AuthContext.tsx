@@ -62,6 +62,21 @@ const AuthProvider: React.FC = ({ children }: any) => {
         []
     );
 
+    const onUserChanged = useCallback(
+        (changedUser: FirebaseAuthTypes.User | null) => {
+            if (changedUser) {
+                setUser(changedUser);
+            }
+        },
+        []
+    );
+
+    useEffect(() => {
+        const subscriber = auth().onUserChanged(onUserChanged);
+
+        return subscriber;
+    }, []);
+
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 
