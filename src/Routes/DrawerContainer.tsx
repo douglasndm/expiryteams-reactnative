@@ -10,6 +10,8 @@ import DrawerMenu from '../Components/DrawerMenu';
 import AuthRoutes from './Auth.routes';
 import Routes from './App.routes';
 
+import DeepLinking from './DeepLinking';
+
 const Drawer = createDrawerNavigator();
 
 const DrawerContainer: React.FC = () => {
@@ -34,6 +36,7 @@ const DrawerContainer: React.FC = () => {
 
     return (
         <TeamProvider>
+            <DeepLinking />
             <Drawer.Navigator
                 drawerType="slide"
                 openByDefault={false}
