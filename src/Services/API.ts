@@ -36,7 +36,7 @@ api.interceptors.response.use(
     },
     async error => {
         console.log('inside interceptor');
-        console.log(error);
+        console.log(error.response);
         if (error.response.status === 403) {
             await destroySession();
         } else {

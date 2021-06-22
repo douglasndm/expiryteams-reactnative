@@ -21,10 +21,12 @@ const Routes: React.FC = () => {
         dynamicLinks()
             .getInitialLink()
             .then(link => {
-                console.log('link from background');
-                console.log(link);
-                if (link.url === 'https://invertase.io/offer') {
-                    // ...set initial route as offers screen
+                if (link) {
+                    console.log('link from background');
+                    console.log(link);
+                    if (link.url && link.url === 'https://invertase.io/offer') {
+                        // ...set initial route as offers screen
+                    }
                 }
             });
     }, []);

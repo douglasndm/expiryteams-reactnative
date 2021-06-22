@@ -84,7 +84,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         getProduts();
-    }, [getProduts]);
+    }, []);
 
     useEffect(() => {
         setProductsSearch(products);
@@ -137,7 +137,7 @@ const Home: React.FC = () => {
             ) : (
                 <Container>
                     {/* <Header title={preferences.selectedTeam.team.name} /> */}
-                    <Header title="Beta 01" />
+                    <Header title="Beta 2" />
 
                     {products.length > 0 && (
                         <InputTextContainer>
