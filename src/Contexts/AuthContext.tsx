@@ -9,7 +9,6 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import api from '~/Services/API';
 
-import { createUser, getUser } from '~/Functions/User';
 import { createSeassion } from '~/Functions/Auth/Session';
 
 interface AuthContextData {
@@ -40,15 +39,6 @@ const AuthProvider: React.FC = ({ children }: any) => {
                 const token = await loggedUser.getIdToken();
 
                 api.defaults.headers.common.Authorization = `Baerer ${token}`;
-
-                const returnedUser = await getUser({ user_id: loggedUser.uid });
-
-                if (!returnedUser) {
-                    await createUser({
-                        email: loggedUser.email,
-                        firebaseUid: loggedUser.uid,
-                    });
-                }
 
                 // Here we register the user device
                 await createSeassion();
