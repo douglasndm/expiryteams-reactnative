@@ -6,9 +6,9 @@ import * as Yup from 'yup';
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
+import { useTeam } from '~/Contexts/TeamContext';
 
 import { loginFirebase } from '~/Functions/Auth/Firebase';
-import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
 import Button from '~/Components/Button';
 
@@ -32,6 +32,7 @@ import {
 const Login: React.FC = () => {
     const { reset, navigate } = useNavigation();
     const { signed, user, initializing } = useAuth();
+    const { clearTeam } = useTeam();
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -75,7 +76,9 @@ const Login: React.FC = () => {
                 password,
             });
 
-            await clearSelectedteam();
+            if (clearTeam) {
+                clearTeam();
+            }
         } catch (err) {
             setIsLoging(false);
             if (
@@ -100,7 +103,7 @@ const Login: React.FC = () => {
                 type: 'danger',
             });
         }
-    }, [email, password]);
+    }, [clearTeam, email, password]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value),

@@ -6,7 +6,10 @@ import React, {
     createContext,
 } from 'react';
 
-import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
+import {
+    getSelectedTeam,
+    clearSelectedteam,
+} from '~/Functions/Team/SelectedTeam';
 
 interface TeamContextData {
     id: string | null;
@@ -17,6 +20,7 @@ interface TeamContextData {
         status: 'pending' | 'completed';
     } | null;
     reload: () => void;
+    clearTeam: () => void;
     isLoading: boolean;
 }
 
@@ -55,12 +59,32 @@ const TeamProvider: React.FC = ({ children }: any) => {
     }, [reloadTeam]);
 
     const reload = useCallback(() => {
+        setIsLoading(true);
         reloadTeam();
+
+        return new Promise(resolve => setTimeout(resolve, 500));
     }, [reloadTeam]);
+
+    const clearTeam = useCallback(async () => {
+        await clearSelectedteam();
+        setId(null);
+        setName(null);
+        setActive(null);
+
+        setRoleInTeam(null);
+    }, []);
 
     return (
         <TeamContext.Provider
-            value={{ id, name, active, roleInTeam, reload, isLoading }}
+            value={{
+                id,
+                name,
+                active,
+                roleInTeam,
+                reload,
+                isLoading,
+                clearTeam,
+            }}
         >
             {children}
         </TeamContext.Provider>
