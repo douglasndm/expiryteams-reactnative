@@ -52,11 +52,11 @@ const TeamProvider: React.FC = ({ children }: any) => {
 
     useEffect(() => {
         reloadTeam();
-    }, []);
+    }, [reloadTeam]);
 
     const reload = useCallback(() => {
         reloadTeam();
-    }, []);
+    }, [reloadTeam]);
 
     return (
         <TeamContext.Provider

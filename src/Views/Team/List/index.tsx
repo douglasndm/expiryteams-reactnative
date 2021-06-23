@@ -116,6 +116,7 @@ const List: React.FC = () => {
                     message: 'Erro while reload team',
                     type: 'warning',
                 });
+                return;
             }
 
             reset({

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { View } from 'react-native';
+
 import { useNavigation } from '@react-navigation/native';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -19,6 +19,10 @@ import {
     SectionTitle,
     SubscriptionDescription,
     TeamName,
+    ActionsButtonContainer,
+    ButtonPaper,
+    Icons,
+    TeamHeaderContainer,
 } from './styles';
 
 const ViewTeam: React.FC = () => {
@@ -39,6 +43,10 @@ const ViewTeam: React.FC = () => {
         navigate('ListUsersFromTeam');
     }, [navigate]);
 
+    const handleNavigateTeams = useCallback(() => {
+        navigate('TeamList');
+    }, [navigate]);
+
     return (
         <Container>
             <PageHeader>
@@ -53,12 +61,26 @@ const ViewTeam: React.FC = () => {
             </PageHeader>
 
             <PageContent>
-                {!!teamContext.name && (
-                    <View>
+                <TeamHeaderContainer>
+                    {!!teamContext.name && (
                         <TeamName>{teamContext.name}</TeamName>
-                        {isManager && <Subscriptions />}
-                    </View>
-                )}
+                    )}
+
+                    {!teamContext.active && (
+                        <ActionsButtonContainer>
+                            <ButtonPaper
+                                icon={() => (
+                                    <Icons name="list-outline" size={22} />
+                                )}
+                                onPress={handleNavigateTeams}
+                            >
+                                Trocar time
+                            </ButtonPaper>
+                        </ActionsButtonContainer>
+                    )}
+                </TeamHeaderContainer>
+
+                {isManager && <Subscriptions />}
 
                 {teamContext.active && (
                     <Section>

@@ -84,7 +84,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         getProduts();
-    }, []);
+    }, [getProduts]);
 
     useEffect(() => {
         setProductsSearch(products);
