@@ -4,7 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 
 import strings from '~/Locales';
 
-import { sortProductsByBatchesExpDate } from '~/Functions/Products/Products';
+import {
+    removeProductsWithCheckedBatches,
+    sortProductsByBatchesExpDate,
+} from '~/Functions/Products/Products';
 import {
     sortBatches,
     removeCheckedBatches,
@@ -45,16 +48,9 @@ const ListProducts: React.FC<RequestProps> = ({
         let prodsReturn: Array<IProduct> = products;
 
         if (removeProdsWithoutBatches === true) {
-            const prodsWithoutBatches = products.filter(p => {
-                const batches = removeCheckedBatches(p.batches);
-
-                if (batches.length > 0) {
-                    return true;
-                }
-                return false;
+            prodsReturn = removeProductsWithCheckedBatches({
+                products,
             });
-
-            prodsReturn = prodsWithoutBatches;
         }
 
         if (sortProdsByBatchExpDate === true) {

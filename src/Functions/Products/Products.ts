@@ -2,7 +2,26 @@ import { compareAsc, startOfDay, parseISO } from 'date-fns';
 
 import API from '~/Services/API';
 
-import { sortBatches } from './Batches';
+import { removeCheckedBatches, sortBatches } from './Batches';
+
+interface removeProductsWithCheckedBatchesProps {
+    products: Array<IProduct>;
+}
+
+export function removeProductsWithCheckedBatches({
+    products,
+}: removeProductsWithCheckedBatchesProps): Array<IProduct> {
+    const prodsWithoutBatches = products.filter(p => {
+        const batches = removeCheckedBatches(p.batches);
+
+        if (batches.length > 0) {
+            return true;
+        }
+        return false;
+    });
+
+    return prodsWithoutBatches;
+}
 
 interface getAllProductsProps {
     team_id: string;
