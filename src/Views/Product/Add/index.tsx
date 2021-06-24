@@ -65,7 +65,7 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { goBack, navigate, reset } = useNavigation();
+    const { goBack, navigate } = useNavigation();
     const teamContext = useTeam();
 
     const locale = useMemo(() => {
@@ -186,25 +186,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 },
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: {
-                            type: 'create_product',
-                            productId: createdProduct.id,
-                            category_id: selectedCategory,
-                        },
-                    },
-                ],
+            navigate('Success', {
+                type: 'create_product',
+                productId: createdProduct.id,
+                category_id: selectedCategory,
             });
         } catch (error) {
-            showMessage({
-                message: error.message,
-                type: 'danger',
-            });
+            console.log(error);
         } finally {
             setIsAdding(false);
         }
@@ -219,7 +207,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         expDate,
         amount,
         price,
-        reset,
+        navigate,
     ]);
 
     useEffect(() => {

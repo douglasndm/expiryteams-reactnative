@@ -30,21 +30,14 @@ export async function createProduct({
     product,
     categories,
 }: createProductProps): Promise<IProduct> {
-    try {
-        const response = await api.post<IProduct>(`/products`, {
-            team_id,
-            name: product.name,
-            code: product.code,
-            categories,
-        });
+    const response = await api.post<IProduct>(`/products`, {
+        team_id,
+        name: product.name,
+        code: product.code,
+        categories,
+    });
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }
 
 interface updateProductProps {
