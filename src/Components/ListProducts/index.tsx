@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { View, FlatList, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -44,25 +44,28 @@ const ListProducts: React.FC<RequestProps> = ({
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-    const prods = useMemo(() => {
-        let prodsReturn: Array<IProduct> = products;
+    const [prods, setProds] = useState<Array<IProduct>>([]);
 
-        if (removeProdsWithoutBatches === true) {
-            prodsReturn = removeProductsWithCheckedBatches({
-                products,
-            });
+    const sortProducts = useMemo(() => sortProdsByBatchExpDate, [
+        sortProdsByBatchExpDate,
+    ]);
+
+    useEffect(() => {
+        if (products) {
+            if (sortProducts === true) {
+                if (sortProducts === true) {
+                    const sortedProducts = sortProductsByBatchesExpDate({
+                        products,
+                    });
+
+                    setProds(sortedProducts);
+                    return;
+                }
+            }
+
+            setProds(products);
         }
-
-        if (sortProdsByBatchExpDate === true) {
-            const sortedProducts = sortProductsByBatchesExpDate({
-                products: prodsReturn,
-            });
-
-            prodsReturn = sortedProducts;
-        }
-
-        return prodsReturn;
-    }, [products, removeProdsWithoutBatches, sortProdsByBatchExpDate]);
+    }, [products, sortProducts]);
 
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');

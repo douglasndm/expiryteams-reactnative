@@ -1,4 +1,4 @@
-import { compareAsc, startOfDay, parseISO } from 'date-fns';
+import { startOfDay, parseISO } from 'date-fns';
 
 import API from '~/Services/API';
 
@@ -69,22 +69,55 @@ export function sortProductsByBatchesExpDate({
         // if one of the products doesnt have batches it will return
         // the another one as biggest
         if (batches1.length > 0 && batches2.length <= 0) {
-            return 1;
+            return -1;
+        }
+        if (batches1.length === 0 && batches2.length === 0) {
+            return 0;
         }
         if (batches1.length <= 0 && batches2.length > 0) {
-            return -1;
+            return 1;
         }
 
         const batch1ExpDate = startOfDay(parseISO(batches1[0].exp_date));
         const batch2ExpDate = startOfDay(parseISO(batches2[0].exp_date));
 
-        if (compareAsc(batch1ExpDate, batch2ExpDate) > 0) {
+        if (
+            batches1[0].status === 'unchecked' &&
+            batches2[0].status === 'checked'
+        ) {
+            return -1;
+        }
+        if (
+            batches1[0].status === 'checked' &&
+            batches2[0].status === 'checked'
+        ) {
+            if (batch1ExpDate > batch2ExpDate) {
+                return 1;
+            }
+            if (batch1ExpDate === batch2ExpDate) {
+                return 0;
+            }
+            if (batch1ExpDate < batch2ExpDate) {
+                return -1;
+            }
+        }
+        if (
+            batches1[0].status === 'unchecked' &&
+            batches2[0].status === 'checked'
+        ) {
             return 1;
         }
-        if (compareAsc(batch1ExpDate, batch2ExpDate) === 0) {
+
+        if (batch1ExpDate > batch2ExpDate) {
+            return 1;
+        }
+        if (batch1ExpDate === batch2ExpDate) {
             return 0;
         }
-        return -1;
+        if (batch1ExpDate < batch2ExpDate) {
+            return -1;
+        }
+        return 0;
     });
 
     return prodsWithSortedBatchs;
