@@ -19,6 +19,18 @@
     "Menu_Button_KnowOthersApps": "Outros apps",
     "Menu_Button_GoToTest": "Teste",
 
+    "API_Error_Code1": "Verifique se as informações fornecidas estão corretas",
+    "API_Error_Code2": "Você não tem permissão para fazer isso",
+    "API_Error_Code3": "Por favor, realize o login novamente",
+    "API_Error_Code4": "Problemas ao encontrar o caminho para enviar a informção",
+    "API_Error_Code5": "O time não tem uma assinatura",
+    "API_Error_Code6": "Time não encontrado",
+    "API_Error_Code7": "Usuário não encontrado",
+    "API_Error_Code8": "Produto não encontrado",
+    "API_Error_Code9": "Lote não encontrado",
+    "API_Error_Code10": "Categoria não encontrada",
+    "API_Error_Code11": "Produto já existe",
+
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",
     "BarCodeReader_PermissionRequired": "Precisamos da sua permissão para acessar a câmera do seu dispostivo para habilitar o leitor de código de barras.",

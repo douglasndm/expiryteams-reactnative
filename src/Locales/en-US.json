@@ -19,6 +19,18 @@
     "Menu_Button_KnowOthersApps": "Others apps",
     "Menu_Button_GoToTest": "Test",
 
+    "API_Error_Code1": "Double check at info",
+    "API_Error_Code2": "You don't have permission to do this",
+    "API_Error_Code3": "Please, make login again",
+    "API_Error_Code4": "We have problems to find the correct way to send this",
+    "API_Error_Code5": "Team doesn't have a subscription",
+    "API_Error_Code6": "Team was not found",
+    "API_Error_Code7": "User was not found",
+    "API_Error_Code8": "Product was not found",
+    "API_Error_Code9": "Batch was not found",
+    "API_Error_Code10": "Category was not found",
+    "API_Error_Code11": "Product already exists",
+
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
     "BarCodeReader_PermissionRequired": "We need your permission to access the device's camera to user barcode reader.",
