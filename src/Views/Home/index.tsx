@@ -45,6 +45,7 @@ const Home: React.FC = () => {
             setIsLoading(true);
 
             if (!teamContext.id) {
+                console.log('From Home -> no Team context id');
                 reset({
                     routes: [
                         {
@@ -137,7 +138,7 @@ const Home: React.FC = () => {
             ) : (
                 <Container>
                     {/* <Header title={preferences.selectedTeam.team.name} /> */}
-                    <Header title="Beta 2" />
+                    <Header title="Beta 4" />
 
                     {products.length > 0 && (
                         <InputTextContainer>
@@ -157,8 +158,7 @@ const Home: React.FC = () => {
                     <ListProducts
                         products={productsSearch}
                         onRefresh={getProduts}
-                        removeProdsWithoutBatches
-                        sortProdsByBatchExpDate
+                        sortProdsByBatchExpDate={false}
                     />
                 </Container>
             )}

@@ -1,4 +1,4 @@
-import { startOfDay, parseISO } from 'date-fns';
+import { startOfDay, parseISO, compareAsc } from 'date-fns';
 
 import API from '~/Services/API';
 
@@ -36,7 +36,7 @@ export async function getAllProducts({
         }
 
         const response = await API.get<IAllTeamProducts>(
-            `/team/${team_id}/products`
+            `/team/${team_id}/products?removeCheckedBatches=true&sortByBatches=true`
         );
 
         if (response) {
@@ -91,33 +91,16 @@ export function sortProductsByBatchesExpDate({
             batches1[0].status === 'checked' &&
             batches2[0].status === 'checked'
         ) {
-            if (batch1ExpDate > batch2ExpDate) {
-                return 1;
-            }
-            if (batch1ExpDate === batch2ExpDate) {
-                return 0;
-            }
-            if (batch1ExpDate < batch2ExpDate) {
-                return -1;
-            }
+            return compareAsc(batch1ExpDate, batch2ExpDate);
         }
         if (
-            batches1[0].status === 'unchecked' &&
-            batches2[0].status === 'checked'
+            batches1[0].status === 'checked' &&
+            batches2[0].status === 'unchecked'
         ) {
             return 1;
         }
 
-        if (batch1ExpDate > batch2ExpDate) {
-            return 1;
-        }
-        if (batch1ExpDate === batch2ExpDate) {
-            return 0;
-        }
-        if (batch1ExpDate < batch2ExpDate) {
-            return -1;
-        }
-        return 0;
+        return compareAsc(batch1ExpDate, batch2ExpDate);
     });
 
     return prodsWithSortedBatchs;

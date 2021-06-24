@@ -41,6 +41,10 @@ const List: React.FC = () => {
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
 
+    const [selectedTeamRole, setSelectedTeamRole] = useState<IUserRoles | null>(
+        null
+    );
+
     // This is for check if user is already manager on any team
     // If so, disable creating of new team
     // This is due limition of identify user and teams on revenuecat
@@ -99,26 +103,19 @@ const List: React.FC = () => {
         }
     }, [reset, signed, user]);
 
-    const handleSetTeam = useCallback(
-        async (teamId: string) => {
-            const selectedTeam = teams.find(t => t.team.id === teamId);
+    const handleSelectedTeamChange = useCallback(async () => {
+        if (!selectedTeamRole) {
+            return;
+        }
+        await setSelectedTeam(selectedTeamRole);
 
-            if (!selectedTeam) {
-                throw new Error('Team not found');
-            }
+        if (teamContext.reload) {
+            teamContext.reload();
+        } else {
+            return;
+        }
 
-            await setSelectedTeam(selectedTeam);
-
-            if (teamContext.reload) {
-                teamContext.reload();
-            } else {
-                showMessage({
-                    message: 'Erro while reload team',
-                    type: 'warning',
-                });
-                return;
-            }
-
+        if (!teamContext.isLoading) {
             reset({
                 routes: [
                     {
@@ -133,9 +130,27 @@ const List: React.FC = () => {
                     },
                 ],
             });
+        }
+    }, [reset, selectedTeamRole, teamContext]);
+
+    const handleSetTeam = useCallback(
+        (teamId: string) => {
+            const selectedTeam = teams.find(t => t.team.id === teamId);
+
+            if (!selectedTeam) {
+                throw new Error('Team not found');
+            }
+
+            setSelectedTeamRole(selectedTeam);
         },
-        [teams, teamContext, reset]
+        [teams]
     );
+
+    useEffect(() => {
+        if (selectedTeamRole) {
+            handleSelectedTeamChange();
+        }
+    }, [handleSelectedTeamChange, selectedTeamRole]);
 
     const handleNavigateToEnterCode = useCallback(
         (userRole: IUserRoles) => {
