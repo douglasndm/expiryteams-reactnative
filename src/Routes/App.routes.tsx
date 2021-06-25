@@ -13,6 +13,8 @@ import Success from '~/Views/Informations/Success';
 import Error from '~/Views/Informations/Error';
 import PhotoView from '~/Views/PhotoView';
 
+import BatchView from '~/Views/Batch/View';
+
 import User from '~/Views/User';
 import Logout from '~/Views/Auth/Logout';
 
@@ -52,6 +54,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="Error" component={Error} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
+
+            <Stack.Screen name="BatchView" component={BatchView} />
 
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />

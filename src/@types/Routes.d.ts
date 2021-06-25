@@ -45,6 +45,10 @@ type RoutesParams = {
     };
     Export;
 
+    BatchView: {
+        batch: string;
+    };
+
     User;
     UserDetails: {
         user: IUserInTeam;
