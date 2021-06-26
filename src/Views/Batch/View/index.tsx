@@ -1,11 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import { isPast, addDays, format, parseISO } from 'date-fns';//eslint-disable-line
+import { showMessage } from 'react-native-flash-message';
+import {  format, parseISO } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
 import BackButton from '~/Components/BackButton';
+import Button from '~/Components/Button';
+
+import { sendBatchNotification } from '~/Functions/Notifications/Batch';
 
 import { PageTitle } from '~/Views/Product/Add/styles';
 
@@ -36,6 +40,8 @@ const View: React.FC = () => {
     const { goBack, navigate } = useNavigation();
 
     const routeParams = params as Props;
+
+    const [isSendingNotification, setIsSendingNotification] = useState(false);
 
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -74,6 +80,28 @@ const View: React.FC = () => {
             });
         }
     }, [batch, navigate, routeParams.productId]);
+
+    const handleSendNotification = useCallback(async () => {
+        try {
+            setIsSendingNotification(true);
+
+            if (!batch) {
+                return;
+            }
+
+            await sendBatchNotification({ batch_id: batch.id });
+
+            showMessage({
+                message: 'Notificação enviada',
+                description: 'O time foi avisado sobre o lote',
+                type: 'info',
+            });
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsSendingNotification(false);
+        }
+    }, [batch]);
     return (
         <Container>
             <PageHeader>
@@ -119,6 +147,12 @@ const View: React.FC = () => {
                             decimalScale={2}
                         />
                     </BatchPrice>
+
+                    <Button
+                        text="Enviar notificação para o time"
+                        onPress={handleSendNotification}
+                        isLoading={isSendingNotification}
+                    />
                 </BatchContainer>
             )}
         </Container>
