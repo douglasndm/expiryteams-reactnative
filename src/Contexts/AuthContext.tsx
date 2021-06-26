@@ -9,8 +9,6 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import api from '~/Services/API';
 
-import { createSeassion } from '~/Functions/Auth/Session';
-
 interface AuthContextData {
     user: FirebaseAuthTypes.User | null;
     token: string | null;
@@ -39,9 +37,6 @@ const AuthProvider: React.FC = ({ children }: any) => {
                 const token = await loggedUser.getIdToken();
 
                 api.defaults.headers.common.Authorization = `Baerer ${token}`;
-
-                // Here we register the user device
-                await createSeassion();
             } else {
                 setIsSigned(false);
                 setUser(null);

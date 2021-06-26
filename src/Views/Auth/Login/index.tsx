@@ -8,8 +8,6 @@ import strings from '~/Locales';
 import { useAuth } from '~/Contexts/AuthContext';
 import { useTeam } from '~/Contexts/TeamContext';
 
-import { loginFirebase } from '~/Functions/Auth/Firebase';
-
 import Button from '~/Components/Button';
 
 import Footer from './Footer';
@@ -28,6 +26,7 @@ import {
     ForgotPasswordText,
     Icon,
 } from './styles';
+import { login } from '~/Functions/Auth';
 
 const Login: React.FC = () => {
     const { reset, navigate } = useNavigation();
@@ -71,10 +70,7 @@ const Login: React.FC = () => {
             setIsLoging(true);
 
             // Makes login with Firebase after that the subscriber event will handle
-            await loginFirebase({
-                email,
-                password,
-            });
+            await login({ email, password });
 
             if (clearTeam) {
                 clearTeam();
