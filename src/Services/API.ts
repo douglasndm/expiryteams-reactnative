@@ -1,5 +1,6 @@
 import axios from 'axios';
 import EnvConfig from 'react-native-config';
+import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
@@ -11,19 +12,20 @@ const api = axios.create({
 });
 
 // Instantiate the interceptor (you can chain it as it returns the axios instance)
-createAuthRefreshInterceptor(api, RefreshTokens, {
-    statusCodes: [403],
-});
+// createAuthRefreshInterceptor(api, RefreshTokens, {
+//     statusCodes: [403],
+// });
 
 api.interceptors.request.use(async config => {
     const token = await messaging().getToken();
     config.headers.deviceid = token;
 
+    const userToken = await auth().currentUser?.getIdToken();
+    config.headers.Authorization = `Bearer ${userToken}`;
+
     return config;
 });
 
-api.interceptors.response.use(response => {
-    return response;
-}, errorsHandler);
+api.interceptors.response.use(response => response, errorsHandler);
 
 export default api;
