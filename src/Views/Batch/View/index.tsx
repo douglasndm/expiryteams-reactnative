@@ -6,6 +6,8 @@ import {  format, parseISO } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
+import { useTeam } from '~/Contexts/TeamContext';
+
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
 
@@ -39,9 +41,18 @@ const View: React.FC = () => {
     const { params } = useRoute();
     const { goBack, navigate } = useNavigation();
 
+    const teamContext = useTeam();
+
     const routeParams = params as Props;
 
     const [isSendingNotification, setIsSendingNotification] = useState(false);
+
+    const userRole = useMemo(() => {
+        if (teamContext.roleInTeam) {
+            return teamContext.roleInTeam.role.toLowerCase();
+        }
+        return 'repositor';
+    }, [teamContext.roleInTeam]);
 
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -148,11 +159,13 @@ const View: React.FC = () => {
                         />
                     </BatchPrice>
 
-                    <Button
-                        text="Enviar notificação para o time"
-                        onPress={handleSendNotification}
-                        isLoading={isSendingNotification}
-                    />
+                    {(userRole === 'manager' || userRole === 'supervisor') && (
+                        <Button
+                            text="Enviar notificação para o time"
+                            onPress={handleSendNotification}
+                            isLoading={isSendingNotification}
+                        />
+                    )}
                 </BatchContainer>
             )}
         </Container>
