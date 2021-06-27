@@ -63,4 +63,11 @@ type RoutesParams = {
 
     Subscription;
     Test;
+
+    DeleteTeam;
+};
+
+type DrawerParams = {
+    Routes;
+    Auth;
 };

@@ -2,17 +2,25 @@ import React, { useCallback } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
+import BackButton from '../BackButton';
 import StatusBar from '../StatusBar';
 
-import { HeaderContainer, TextLogo, MenuIcon, MenuButton } from './styles';
+import {
+    HeaderContainerNoDrawner,
+    HeaderContainer,
+    TextLogo,
+    MenuIcon,
+    MenuButton,
+} from './styles';
 
 interface RequestProps {
     title?: string;
+    noDrawer?: boolean;
 }
 
-const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
+const Header: React.FC<RequestProps> = ({ title, noDrawer }: RequestProps) => {
     const navigation = useNavigation();
 
     const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
@@ -21,7 +29,19 @@ const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
         navigation.toggleDrawer();
     }, [navigation]);
 
-    return (
+    const handleGoBack = useCallback(() => {
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        }
+    }, [navigation]);
+
+    return noDrawer ? (
+        <HeaderContainerNoDrawner>
+            <BackButton handleOnPress={handleGoBack} />
+
+            <TextLogo noDrawer={noDrawer}>{title}</TextLogo>
+        </HeaderContainerNoDrawner>
+    ) : (
         <>
             <StatusBar forceWhiteTextIOS />
 

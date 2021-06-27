@@ -4,6 +4,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
+export const HeaderContainerNoDrawner = styled.SafeAreaView`
+    flex-direction: row;
+`;
+
 export const HeaderContainer = styled.View`
     width: 100%;
     padding: 30px 30px 15px 0px;
@@ -11,7 +15,7 @@ export const HeaderContainer = styled.View`
     justify-content: flex-start;
     align-items: center;
 
-    background-color: ${(props) => props.theme.colors.accent};
+    background-color: ${props => props.theme.colors.accent};
 
     flex-direction: row;
 
@@ -25,10 +29,20 @@ export const HeaderContainer = styled.View`
     `}
 `;
 
-export const TextLogo = styled.Text`
+interface TextLogoProps {
+    noDrawer?: boolean;
+}
+
+export const TextLogo = styled.Text<TextLogoProps>`
     font-size: 28px;
     font-weight: bold;
     color: white;
+
+    ${props =>
+        props.noDrawer &&
+        css`
+            color: ${({ theme }) => theme.colors.text};
+        `}
 `;
 
 export const MenuButton = styled(RectButton)`
