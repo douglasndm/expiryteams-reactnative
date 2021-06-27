@@ -1,9 +1,6 @@
 import React, { useCallback } from 'react';
-import { View, Linking } from 'react-native';
-import {
-    DrawerContentOptions,
-    DrawerContentScrollView,
-} from '@react-navigation/drawer';
+import { Linking } from 'react-native';
+import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
 
@@ -13,6 +10,7 @@ import UserInfo from './UserInfo';
 
 import {
     Container,
+    MainMenuContainer,
     MenuItemContainer,
     MenuContent,
     MenuItemText,
@@ -53,62 +51,58 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
     return (
         <Container>
-            <DrawerContentScrollView {...props}>
-                <View>
-                    <UserInfo navigate={navigation.navigate} />
+            <MainMenuContainer>
+                <UserInfo navigate={navigation.navigate} />
 
-                    <DrawerSection>
-                        <MenuItemContainer
-                            onPress={() => navigation.navigate('Home')}
-                        >
+                <DrawerSection>
+                    <MenuItemContainer
+                        onPress={() => navigation.navigate('Home')}
+                    >
+                        <MenuContent>
+                            <Icons name="home-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToHome}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer onPress={navigateToAddProduct}>
+                        <MenuContent>
+                            <Icons name="add" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToAddProduct}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer onPress={navigateToCategories}>
+                        <MenuContent>
+                            <Icons name="file-tray-full-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToCategories}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer onPress={navigateToExport}>
+                        <MenuContent>
+                            <Icons name="download-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToExport}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+
+                    {!!teamContext.id && (
+                        <MenuItemContainer onPress={handleNavigateToTeam}>
                             <MenuContent>
-                                <Icons name="home-outline" />
-                                <MenuItemText>
-                                    {strings.Menu_Button_GoToHome}
-                                </MenuItemText>
+                                <Icons name="briefcase-outline" />
+                                <MenuItemText>{teamContext.name}</MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
-
-                        <MenuItemContainer onPress={navigateToAddProduct}>
-                            <MenuContent>
-                                <Icons name="add" />
-                                <MenuItemText>
-                                    {strings.Menu_Button_GoToAddProduct}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
-
-                        <MenuItemContainer onPress={navigateToCategories}>
-                            <MenuContent>
-                                <Icons name="file-tray-full-outline" />
-                                <MenuItemText>
-                                    {strings.Menu_Button_GoToCategories}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
-
-                        <MenuItemContainer onPress={navigateToExport}>
-                            <MenuContent>
-                                <Icons name="download-outline" />
-                                <MenuItemText>
-                                    {strings.Menu_Button_GoToExport}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
-
-                        {!!teamContext.id && (
-                            <MenuItemContainer onPress={handleNavigateToTeam}>
-                                <MenuContent>
-                                    <Icons name="briefcase-outline" />
-                                    <MenuItemText>
-                                        {teamContext.name}
-                                    </MenuItemText>
-                                </MenuContent>
-                            </MenuItemContainer>
-                        )}
-                    </DrawerSection>
-                </View>
-            </DrawerContentScrollView>
+                    )}
+                </DrawerSection>
+            </MainMenuContainer>
 
             <DrawerSection>
                 <MenuItemContainer onPress={navigateToTeamList}>
