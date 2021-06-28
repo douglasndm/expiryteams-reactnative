@@ -30,6 +30,10 @@
     "API_Error_Code9": "Batch was not found",
     "API_Error_Code10": "Category was not found",
     "API_Error_Code11": "Product already exists",
+    "API_Error_Code12": "Batch already exists",
+    "API_Error_Code13": "Category already exists",
+    "API_Error_Code14": "Team already exists",
+    "API_Error_Code15": "Product was not found inside category",
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",

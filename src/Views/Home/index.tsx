@@ -45,7 +45,6 @@ const Home: React.FC = () => {
             setIsLoading(true);
 
             if (!teamContext.id) {
-                console.log('From Home -> no Team context id');
                 reset({
                     routes: [
                         {

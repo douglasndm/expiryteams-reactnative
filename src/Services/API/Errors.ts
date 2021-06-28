@@ -53,6 +53,10 @@ async function errorsHandler(error: any): Promise<void> {
                     break;
 
                 default:
+                    if (error.response.data.message) {
+                        console.log('Message from server');
+                        console.log(error.response.data.message);
+                    }
                     err = 'Error';
                     break;
             }
@@ -63,19 +67,16 @@ async function errorsHandler(error: any): Promise<void> {
             });
         }
 
-        if (error.response.data.message) {
-            console.log('Message from server');
-            console.log(error.response.data.message);
-        }
-
         if (error.response.status && error.response.status === 403) {
             await destroySession();
         }
     } else if (error.request) {
         // The request was made but no response was received
         console.log(error.request);
+        return Promise.reject(error);
+    } else {
+        return Promise.reject(error);
     }
-    return Promise.reject(error);
 }
 
 export default errorsHandler;

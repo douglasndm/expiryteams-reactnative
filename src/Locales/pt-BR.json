@@ -30,6 +30,10 @@
     "API_Error_Code9": "Lote não encontrado",
     "API_Error_Code10": "Categoria não encontrada",
     "API_Error_Code11": "Produto já existe",
+    "API_Error_Code12": "Lote já existe",
+    "API_Error_Code13": "Categoria já existe",
+    "API_Error_Code14": "Time já existe",
+    "API_Error_Code15": "Produto não foi encontrado na categoria",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",
