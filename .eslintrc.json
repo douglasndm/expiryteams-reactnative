@@ -27,6 +27,7 @@
         "react-hooks"
     ],
     "rules": {
+        "jsx-a11y/accessible-emoji": "off",
         "react/jsx-props-no-spreading":"off",
         "react/require-default-props": "off",
         "react/jsx-indent" : ["error", 4],

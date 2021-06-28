@@ -7202,6 +7202,11 @@ react-localization@^1.0.17:
   dependencies:
     localized-strings "^0.2.0"
 
+react-native-bouncy-checkbox@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-bouncy-checkbox/-/react-native-bouncy-checkbox-2.1.2.tgz#fa0f2e93ef698a68231a9ce3e2b7bc9934e76228"
+  integrity sha512-z4bRU+3cXFKahXVsW64NNuKaatwBL0C89beip4SjzY1HM/1KWch/l7N7zOTuTwoDwgwAaGKQeal3Oojl4yqj3A==
+
 react-native-camera@^3.40.0:
   version "3.42.0"
   resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.42.0.tgz#e9778b77a2da96e42d604d1766ca331281b5b85f"

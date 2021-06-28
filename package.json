@@ -33,6 +33,7 @@
     "polished": "^4.1.1",
     "react": "17.0.1",
     "react-native": "0.64.2",
+    "react-native-bouncy-checkbox": "^2.1.2",
     "react-native-camera": "^3.40.0",
     "react-native-code-push": "^7.0.1",
     "react-native-config": "^1.4.2",

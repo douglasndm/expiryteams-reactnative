@@ -158,4 +158,14 @@ export async function getTeamSubscriptions({
     }
 }
 
+export async function getAllSubscriptionsFromRevenue({
+    team_id,
+}: getTeamSubscriptionsProps): Promise<Subscription[]> {
+    const response = await api.get<Subscription[]>(
+        `/team/${team_id}/subscriptions/recheck`
+    );
+
+    return response.data;
+}
+
 setup();

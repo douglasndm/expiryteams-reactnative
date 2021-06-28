@@ -33,6 +33,8 @@ import ViewTeam from '~/Views/Team/View';
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
 
+import DeleteTeam from '~/Views/Informations/Delete/Team';
+
 import Subscription from '~/Views/Subscription';
 
 import Test from '~/Views/Test';
@@ -77,6 +79,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="UserDetails" component={UserDetails} />
 
             <Stack.Screen name="Subscription" component={Subscription} />
+
+            <Stack.Screen name="DeleteTeam" component={DeleteTeam} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>
