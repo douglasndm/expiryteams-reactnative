@@ -1,6 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
+import App from '~/Views/App';
+
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
 import AddBatch from '~/Views/Batch/Add';
@@ -33,6 +35,8 @@ import ViewTeam from '~/Views/Team/View';
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
 
+import VerifyEmail from '~/Views/Auth/VerifyEmail';
+
 import DeleteTeam from '~/Views/Informations/Delete/Team';
 
 import Subscription from '~/Views/Subscription';
@@ -44,6 +48,7 @@ const Stack = createNativeStackNavigator<RoutesParams>();
 const Routes: React.FC = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="App" component={App} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
 
@@ -81,6 +86,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Subscription" component={Subscription} />
 
             <Stack.Screen name="DeleteTeam" component={DeleteTeam} />
+
+            <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>

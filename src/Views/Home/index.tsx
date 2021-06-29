@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 import strings from '~/Locales';
 
@@ -22,8 +21,6 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation();
-
     const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -44,13 +41,6 @@ const Home: React.FC = () => {
             setIsLoading(true);
 
             if (!teamContext.id) {
-                reset({
-                    routes: [
-                        {
-                            name: 'TeamList',
-                        },
-                    ],
-                });
                 return;
             }
 
@@ -62,7 +52,7 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [reset, teamContext.id, teamContext.isLoading]);
+    }, [teamContext.id, teamContext.isLoading]);
 
     useEffect(() => {
         getProduts();

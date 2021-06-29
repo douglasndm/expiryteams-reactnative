@@ -1,4 +1,5 @@
 type RoutesParams = {
+    App;
     Home;
     AddProduct: {
         category?: string;

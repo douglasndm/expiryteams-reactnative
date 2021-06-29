@@ -4,13 +4,13 @@ import { NavigationContainerRef } from '@react-navigation/native';
 export const navigationRef = createRef<NavigationContainerRef>();
 
 interface NavigateProps {
-    routeHandler: 'Routes' | 'Auth';
+    routeHandler?: 'Routes' | 'Auth';
     routeName: string;
     params?: any;
 }
 
 export function navigate({
-    routeHandler,
+    routeHandler = 'Routes',
     routeName,
     params,
 }: NavigateProps): void {
@@ -20,7 +20,10 @@ export function navigate({
     });
 }
 
-export function reset({ routeHandler, routeName }: NavigateProps): void {
+export function reset({
+    routeHandler = 'Routes',
+    routeName,
+}: NavigateProps): void {
     navigationRef.current?.reset({
         routes: [
             {

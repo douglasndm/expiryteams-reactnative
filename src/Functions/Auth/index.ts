@@ -1,17 +1,29 @@
 import { loginFirebase } from './Firebase';
 import { createSeassion } from './Session';
 
+import { reset } from '~/References/Navigation';
+
 interface loginProps {
     email: string;
     password: string;
 }
 
 export async function login({ email, password }: loginProps): Promise<void> {
-    await loginFirebase({
+    const user = await loginFirebase({
         email,
         password,
     });
 
     // Here we register the user device
     await createSeassion();
+
+    if (user.emailVerified) {
+        reset({
+            routeName: 'TeamList',
+        });
+    } else {
+        reset({
+            routeName: 'VerifyEmail',
+        });
+    }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
@@ -29,8 +29,8 @@ import {
 import { login } from '~/Functions/Auth';
 
 const Login: React.FC = () => {
-    const { reset, navigate } = useNavigation();
-    const { signed, user, initializing } = useAuth();
+    const { navigate } = useNavigation();
+    const { initializing } = useAuth();
     const { clearTeam } = useTeam();
 
     const [email, setEmail] = useState<string>('');
@@ -38,19 +38,6 @@ const Login: React.FC = () => {
 
     const [hidePass, setHidePass] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
-
-    const handleNavigateUser = useCallback(() => {
-        reset({
-            routes: [
-                {
-                    name: 'Routes',
-                    state: {
-                        routes: [{ name: 'TeamList' }],
-                    },
-                },
-            ],
-        });
-    }, [reset]);
 
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({
@@ -94,6 +81,7 @@ const Login: React.FC = () => {
                 });
                 return;
             }
+            console.log('ultimo');
             showMessage({
                 message: err.message,
                 type: 'danger',
@@ -118,16 +106,6 @@ const Login: React.FC = () => {
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
     }, [navigate]);
-
-    useEffect(() => {
-        if (signed && user) {
-            if (user.emailVerified) {
-                handleNavigateUser();
-            } else {
-                navigate('VerifyEmail');
-            }
-        }
-    }, [handleNavigateUser, navigate, signed, user]);
 
     return (
         <Container>
