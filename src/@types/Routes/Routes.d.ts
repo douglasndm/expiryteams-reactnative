@@ -55,7 +55,9 @@ type RoutesParams = {
     };
     Logout;
 
-    EnterTeam;
+    EnterTeam: {
+        userRole: IUserRoles;
+    };
     TeamList;
     CreateTeam;
     ViewTeam;
