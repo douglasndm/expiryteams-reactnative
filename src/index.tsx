@@ -25,7 +25,7 @@ import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 import { AuthProvider } from '~/Contexts/AuthContext';
-import { navigationRef } from '~/Contexts/Navigation';
+import { navigationRef } from '~/References/Navigation';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';

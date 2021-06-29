@@ -4,7 +4,7 @@ import { destroySession } from '@utils/Auth/Session';
 
 import strings from '~/Locales';
 
-import { reset } from '~/Contexts/Navigation';
+import { reset } from '~/References/Navigation';
 
 async function errorsHandler(error: any): Promise<void> {
     if (error.response) {
