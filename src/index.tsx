@@ -24,13 +24,14 @@ import { getAllUserPreferences } from '@utils/UserPreferences';
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
+import DefaultPrefs from '~/Contexts/DefaultPreferences';
 import { AuthProvider } from '~/Contexts/AuthContext';
+import { TeamProvider } from '~/Contexts/TeamContext';
+
 import { navigationRef } from '~/References/Navigation';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
-
-import DefaultPrefs from '~/Contexts/DefaultPreferences';
 
 screens.enableScreens(true);
 
@@ -92,10 +93,12 @@ const App: React.FC = () => {
                         onStateChange={handleOnScreenChange}
                     >
                         <AuthProvider>
-                            <StatusBar />
-                            <Routes />
+                            <TeamProvider>
+                                <StatusBar />
+                                <Routes />
 
-                            <AskReview />
+                                <AskReview />
+                            </TeamProvider>
                         </AuthProvider>
                     </NavigationContainer>
                     <FlashMessage duration={7000} />

@@ -3,7 +3,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { useAuth } from '~/Contexts/AuthContext';
-import { TeamProvider } from '~/Contexts/TeamContext';
 
 import DrawerMenu from '../Components/DrawerMenu';
 
@@ -35,7 +34,7 @@ const DrawerContainer: React.FC = () => {
     }, []);
 
     return (
-        <TeamProvider>
+        <>
             <DeepLinking />
             <Drawer.Navigator
                 drawerType="slide"
@@ -57,7 +56,7 @@ const DrawerContainer: React.FC = () => {
                     />
                 )}
             </Drawer.Navigator>
-        </TeamProvider>
+        </>
     );
 };
 
