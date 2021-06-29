@@ -1,8 +1,10 @@
 import { showMessage } from 'react-native-flash-message';
 
+import { destroySession } from '@utils/Auth/Session';
+
 import strings from '~/Locales';
 
-import { destroySession } from '~/Functions/Auth/Session';
+import { reset } from '~/Contexts/Navigation';
 
 async function errorsHandler(error: any): Promise<void> {
     if (error.response) {
@@ -31,7 +33,12 @@ async function errorsHandler(error: any): Promise<void> {
                     err = strings.API_Error_Code4;
                     break;
                 case 5:
+                    // Subscription is not active
                     err = strings.API_Error_Code5;
+                    reset({
+                        routeHandler: 'Routes',
+                        routeName: 'Subscription',
+                    });
                     break;
                 case 6:
                     err = strings.API_Error_Code6;
