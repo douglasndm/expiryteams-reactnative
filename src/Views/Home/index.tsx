@@ -109,7 +109,7 @@ const Home: React.FC = () => {
             ) : (
                 <Container>
                     {/* <Header title={preferences.selectedTeam.team.name} /> */}
-                    <Header title="Beta 5" />
+                    <Header title="Beta 6" />
 
                     {products.length > 0 && (
                         <InputTextContainer>
