@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
@@ -60,23 +59,6 @@ const Home: React.FC = () => {
             });
 
             setProducts(productsResponse);
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-
-            if (
-                err.message.includes("Team doesn't have an active subscription")
-            ) {
-                reset({
-                    routes: [
-                        {
-                            name: 'ViewTeam',
-                        },
-                    ],
-                });
-            }
         } finally {
             setIsLoading(false);
         }
