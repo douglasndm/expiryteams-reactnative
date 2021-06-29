@@ -17,14 +17,15 @@ import './Locales';
 
 import './Services/Analytics';
 
-import './Functions/Team/Subscriptions';
-import './Functions/PushNotifications';
-import { getAllUserPreferences } from './Functions/UserPreferences';
+import '@utils/Team/Subscriptions';
+import '@utils/PushNotifications';
+import { getAllUserPreferences } from '@utils/UserPreferences';
 
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 import { AuthProvider } from '~/Contexts/AuthContext';
+import { navigationRef } from '~/Contexts/Navigation';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
@@ -86,7 +87,10 @@ const App: React.FC = () => {
         >
             <ThemeProvider theme={preferences.appTheme}>
                 <PaperProvider>
-                    <NavigationContainer onStateChange={handleOnScreenChange}>
+                    <NavigationContainer
+                        ref={navigationRef}
+                        onStateChange={handleOnScreenChange}
+                    >
                         <AuthProvider>
                             <StatusBar />
                             <Routes />
