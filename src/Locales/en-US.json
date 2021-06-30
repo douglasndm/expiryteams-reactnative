@@ -36,6 +36,7 @@
     "API_Error_Code15": "Product was not found inside category",
     "API_Error_Code16": "Team reach the members limit",
     "API_Error_Code17": "User is not in team",
+    "API_Error_Code18": "A user was not found with this e-mail",
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
