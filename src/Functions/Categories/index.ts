@@ -15,24 +15,17 @@ export async function getCategory({
         throw new Error('Team is not selected');
     }
 
-    try {
-        const response = await api.get<Array<ICategory>>(
-            `/categories/team/${selectedTeam.team.id}`
-        );
+    const response = await api.get<Array<ICategory>>(
+        `/categories/team/${selectedTeam.team.id}`
+    );
 
-        const cat = response.data.find(c => c.id === category_id);
+    const cat = response.data.find(c => c.id === category_id);
 
-        if (!cat) {
-            throw new Error('Category not found');
-        }
-
-        return cat;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
+    if (!cat) {
+        throw new Error('Category not found');
     }
+
+    return cat;
 }
 
 interface getAllCategoriesProps {
@@ -42,18 +35,11 @@ interface getAllCategoriesProps {
 export async function getAllCategoriesFromTeam({
     team_id,
 }: getAllCategoriesProps): Promise<Array<ICategory>> {
-    try {
-        const response = await api.get<Array<ICategory>>(
-            `/categories/team/${team_id}`
-        );
+    const response = await api.get<Array<ICategory>>(
+        `/categories/team/${team_id}`
+    );
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }
 
 interface createCategoryProps {
@@ -65,19 +51,12 @@ export async function createCategory({
     name,
     team_id,
 }: createCategoryProps): Promise<ICategory> {
-    try {
-        const response = await api.post<ICategory>(`/categories`, {
-            name,
-            team_id,
-        });
+    const response = await api.post<ICategory>(`/categories`, {
+        name,
+        team_id,
+    });
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }
 
 interface updateCategoryProps {
@@ -86,21 +65,11 @@ interface updateCategoryProps {
 export async function updateCategory({
     category,
 }: updateCategoryProps): Promise<ICategory> {
-    try {
-        const response = await api.put<ICategory>(
-            `/categories/${category.id}`,
-            {
-                name: category.name,
-            }
-        );
+    const response = await api.put<ICategory>(`/categories/${category.id}`, {
+        name: category.name,
+    });
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }
 
 interface deleteCategoryProps {
@@ -110,12 +79,5 @@ interface deleteCategoryProps {
 export async function deleteCategory({
     category_id,
 }: deleteCategoryProps): Promise<void> {
-    try {
-        await api.delete(`/categories/${category_id}`);
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    await api.delete(`/categories/${category_id}`);
 }
