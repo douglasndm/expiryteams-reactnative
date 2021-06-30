@@ -20,20 +20,33 @@ export function navigate({
     });
 }
 
+interface ResetProps {
+    routeHandler?: 'Routes' | 'Auth';
+    routesNames: string[];
+}
+
 export function reset({
     routeHandler = 'Routes',
-    routeName,
-}: NavigateProps): void {
+    routesNames,
+}: ResetProps): void {
+    interface Props {
+        name: string;
+    }
+
+    const routes: Array<Props> = [];
+
+    routesNames.forEach(route => {
+        routes.push({
+            name: route,
+        });
+    });
+
     navigationRef.current?.reset({
         routes: [
             {
                 name: routeHandler,
                 state: {
-                    routes: [
-                        {
-                            name: routeName,
-                        },
-                    ],
+                    routes,
                 },
             },
         ],

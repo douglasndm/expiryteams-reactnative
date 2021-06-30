@@ -229,7 +229,7 @@ const SubscriptionsList: React.FC = () => {
 
             {offers.length <= 0 && (
                 <ButtonSubscription disabled>
-                    <TextSubscription>
+                    <TextSubscription style={{ color: '#fff' }}>
                         A loja não está disponível no momento.
                     </TextSubscription>
                 </ButtonSubscription>
