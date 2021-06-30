@@ -34,6 +34,8 @@
     "API_Error_Code13": "Categoria já existe",
     "API_Error_Code14": "Time já existe",
     "API_Error_Code15": "Produto não foi encontrado na categoria",
+    "API_Error_Code16": "O time atingiu o limite de usuários",
+    "API_Error_Code17": "O usuário não está no time",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",

@@ -37,7 +37,7 @@ async function errorsHandler(error: any): Promise<void> {
                     err = strings.API_Error_Code5;
                     reset({
                         routeHandler: 'Routes',
-                        routeName: 'Subscription',
+                        routesNames: ['ViewTeam'],
                     });
                     break;
                 case 6:
@@ -47,7 +47,7 @@ async function errorsHandler(error: any): Promise<void> {
                     // User was not found
                     err = strings.API_Error_Code7;
                     reset({
-                        routeName: 'Logout',
+                        routesNames: ['Logout'],
                     });
                     break;
                 case 8:
@@ -61,6 +61,24 @@ async function errorsHandler(error: any): Promise<void> {
                     break;
                 case 11:
                     err = strings.API_Error_Code11;
+                    break;
+                case 12:
+                    err = strings.API_Error_Code12;
+                    break;
+                case 13:
+                    err = strings.API_Error_Code13;
+                    break;
+                case 14:
+                    err = strings.API_Error_Code14;
+                    break;
+                case 15:
+                    err = strings.API_Error_Code15;
+                    break;
+                case 16:
+                    err = strings.API_Error_Code16;
+                    break;
+                case 17:
+                    err = strings.API_Error_Code17;
                     break;
 
                 default:
