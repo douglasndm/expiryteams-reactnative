@@ -44,7 +44,11 @@ async function errorsHandler(error: any): Promise<void> {
                     err = strings.API_Error_Code6;
                     break;
                 case 7:
+                    // User was not found
                     err = strings.API_Error_Code7;
+                    reset({
+                        routeName: 'Logout',
+                    });
                     break;
                 case 8:
                     err = strings.API_Error_Code8;
