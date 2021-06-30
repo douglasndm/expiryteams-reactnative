@@ -1,5 +1,3 @@
-import { showMessage } from 'react-native-flash-message';
-
 import { destroySession } from '@utils/Auth/Session';
 
 import strings from '~/Locales';
@@ -7,6 +5,9 @@ import strings from '~/Locales';
 import { reset } from '~/References/Navigation';
 
 async function errorsHandler(error: any): Promise<void> {
+    let knownError = false;
+    let err = '';
+
     if (error.response) {
         // Request made and server responded
 
@@ -17,7 +18,9 @@ async function errorsHandler(error: any): Promise<void> {
         if (error.response.data.errorCode) {
             const { errorCode } = error.response.data;
 
-            let err = '';
+            if (errorCode) {
+                knownError = true;
+            }
 
             switch (errorCode) {
                 case 1:
@@ -89,22 +92,21 @@ async function errorsHandler(error: any): Promise<void> {
                     err = 'Error';
                     break;
             }
-
-            showMessage({
-                message: err,
-                type: 'danger',
-            });
         }
 
         if (error.response.status && error.response.status === 403) {
             await destroySession();
         }
-    } else if (error.request) {
+
+        throw new Error(err);
+    }
+    if (error.request) {
         // The request was made but no response was received
+        console.log('request error');
         console.log(error.request);
-        return Promise.reject(error);
-    } else {
-        return Promise.reject(error);
+    }
+    if (!knownError) {
+        Promise.reject(error);
     }
 }
 
