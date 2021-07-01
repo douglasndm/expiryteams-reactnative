@@ -19,11 +19,11 @@ export async function login({ email, password }: loginProps): Promise<void> {
 
     if (user.emailVerified) {
         reset({
-            routeName: 'TeamList',
+            routesNames: ['TeamList'],
         });
     } else {
         reset({
-            routeName: 'VerifyEmail',
+            routesNames: ['VerifyEmail'],
         });
     }
 }
