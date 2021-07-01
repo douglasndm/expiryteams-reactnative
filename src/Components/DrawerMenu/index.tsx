@@ -6,6 +6,9 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
+import { reset } from '~/References/Navigation';
+import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
+
 import UserInfo from './UserInfo';
 
 import {
@@ -33,9 +36,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('ListCategory');
     }, [navigation]);
 
-    const navigateToTeamList = useCallback(() => {
-        navigation.navigate('TeamList');
-    }, [navigation]);
+    const navigateToTeamList = useCallback(async () => {
+        if (teamContext.clearTeam)
+            Promise.all([
+                await clearSelectedteam(),
+                teamContext.clearTeam(),
+                reset({
+                    routesNames: ['TeamList'],
+                }),
+            ]);
+    }, [teamContext]);
 
     const navigateToExport = useCallback(() => {
         navigation.navigate('Export');

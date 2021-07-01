@@ -30,7 +30,7 @@ import {
 
 const List: React.FC = () => {
     const { navigate, reset } = useNavigation();
-    const { signed, user } = useAuth();
+    const { user } = useAuth();
 
     const teamContext = useTeam();
 
@@ -59,49 +59,51 @@ const List: React.FC = () => {
     });
 
     const loadData = useCallback(async () => {
-        try {
-            setIsLoading(true);
+        if (!teamContext.isLoading) {
+            try {
+                setIsLoading(true);
 
-            if (!signed || !user) {
+                if (!user) {
+                    showMessage({
+                        message: 'User is not signed',
+                        type: 'danger',
+                    });
+                    return;
+                }
+
+                const response = await getUserTeams({ user_id: user.uid });
+
+                if (mounted) {
+                    response.forEach(item => {
+                        if (
+                            item.role.toLowerCase() === 'Manager'.toLowerCase()
+                        ) {
+                            setIsManager(true);
+                        }
+                    });
+
+                    const sortedTeams = response.sort((team1, team2) => {
+                        if (team1.team.active && !team2.team.active) {
+                            return 1;
+                        }
+                        if (team1.team.active && team2.team.active) {
+                            return 0;
+                        }
+                        return -1;
+                    });
+
+                    setTeams(sortedTeams);
+                }
+            } catch (err) {
                 showMessage({
-                    message: 'Você foi desconectado',
-                    description: 'Por favor faça login novamente',
-                    type: 'warning',
+                    message: err.message,
+                    type: 'danger',
                 });
-                reset({ routes: [{ name: 'Login' }] });
-                return;
+            } finally {
+                setIsLoading(false);
             }
-
-            const response = await getUserTeams({ user_id: user.uid });
-
-            if (mounted) {
-                response.forEach(item => {
-                    if (item.role.toLowerCase() === 'Manager'.toLowerCase()) {
-                        setIsManager(true);
-                    }
-                });
-
-                const sortedTeams = response.sort((team1, team2) => {
-                    if (team1.team.active && !team2.team.active) {
-                        return 1;
-                    }
-                    if (team1.team.active && team2.team.active) {
-                        return 0;
-                    }
-                    return -1;
-                });
-
-                setTeams(sortedTeams);
-            }
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-        } finally {
-            setIsLoading(false);
         }
-    }, [reset, signed, user]);
+    }, [teamContext.isLoading, user]);
 
     const handleSelectedTeamChange = useCallback(async () => {
         if (!selectedTeamRole) {
@@ -235,9 +237,15 @@ const List: React.FC = () => {
         await destroySession();
     }, []);
 
+    const checkIfTeamIsAlreadySelected = useCallback(() => {
+        if (teamContext.id) {
+            navigate('Home');
+        }
+    }, [navigate, teamContext.id]);
+
     useEffect(() => {
-        loadData();
-    }, [loadData]);
+        Promise.all([loadData(), checkIfTeamIsAlreadySelected()]);
+    }, [checkIfTeamIsAlreadySelected, loadData]);
 
     const handleRefresh = useCallback(async () => {
         try {

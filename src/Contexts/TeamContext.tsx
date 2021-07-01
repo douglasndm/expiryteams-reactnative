@@ -66,12 +66,13 @@ const TeamProvider: React.FC = ({ children }: any) => {
     }, [reloadTeam]);
 
     const clearTeam = useCallback(async () => {
-        await clearSelectedteam();
-        setId(null);
-        setName(null);
-        setActive(null);
-
-        setRoleInTeam(null);
+        Promise.all([
+            await clearSelectedteam(),
+            setId(null),
+            setName(null),
+            setActive(null),
+            setRoleInTeam(null),
+        ]);
     }, []);
 
     return (
