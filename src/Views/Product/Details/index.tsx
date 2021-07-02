@@ -19,11 +19,8 @@ import { getProductImagePath } from '~/Functions/Products/Image';
 
 import {
     Container,
-    ScrollView,
     PageHeader,
     ProductContainer,
-    PageTitleContent,
-    PageTitle,
     ProductInformationContent,
     ProductName,
     ProductCode,

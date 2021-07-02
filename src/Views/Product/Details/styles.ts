@@ -16,18 +16,6 @@ export const PageHeader = styled.View`
     padding: ${Platform.OS === 'ios' ? 0 : 10}px 5px 10px 5px;
 `;
 
-export const PageTitleContent = styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
-
-export const PageTitle = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-
-    color: ${({ theme }) => theme.colors.text};
-`;
-
 export const ProductContainer = styled.View`
     flex-direction: row;
     align-items: center;
