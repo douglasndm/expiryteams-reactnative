@@ -14,6 +14,14 @@ export const Content = styled.View`
     flex: 1;
 `;
 
+export const InputGroupTitle = styled.Text`
+    font-family: 'Open Sans';
+    font-size: 18px;
+    text-align: right;
+    margin: 5px 15px 5px;
+    color: ${({ theme }) => theme.colors.subText};
+`;
+
 export const InputGroup = styled.View`
     flex-direction: row;
     justify-content: space-between;

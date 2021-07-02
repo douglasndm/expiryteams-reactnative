@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
+import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
@@ -22,6 +23,7 @@ import Loading from '~/Components/Loading';
 import {
     Container,
     Content,
+    InputGroupTitle,
     InputGroup,
     InputTextContainer,
     InputText,
@@ -33,9 +35,7 @@ import {
 } from './styles';
 
 const User: React.FC = () => {
-    const { reset, replace } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { reset, pop } = useNavigation<StackNavigationProp<RoutesParams>>();
     const { user } = useAuth();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -43,8 +43,15 @@ const User: React.FC = () => {
     const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
     const [name, setName] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [newPasswordConfi, setNewPasswordConfi] = useState<string>('');
 
     const [nameError, setNameError] = useState<boolean>(false);
+    const [newPasswordError, setNewPasswordError] = useState<boolean>(false);
+    const [newPasswordConfiError, setNewPasswordConfiError] = useState<boolean>(
+        false
+    );
 
     const loadData = useCallback(async () => {
         try {
@@ -65,9 +72,40 @@ const User: React.FC = () => {
     }, [user]);
 
     const handleUpdate = useCallback(async () => {
-        try {
-            setIsUpdating(true);
+        setIsUpdating(true);
 
+        // this should be before try catch cause it has it own try catch
+        try {
+            if (password) {
+                const schema = Yup.object().shape({
+                    newPassword: Yup.string().required('Digite a senha').min(6),
+                    newPasswordConfi: Yup.string().oneOf(
+                        [Yup.ref('newPassword'), null],
+                        'Confirmação da senha não pode está em branco e deve ser a mesma que a nova senha'
+                    ),
+                });
+
+                await schema.validate({ newPassword, newPasswordConfi });
+
+                await updatePassword({
+                    password,
+                    newPassword,
+                });
+            }
+        } catch (err) {
+            let error = err.message;
+            if (err.code === 'auth/wrong-password') {
+                error = 'Senha incorreta';
+            }
+            showMessage({
+                message: error,
+                type: 'danger',
+            });
+            setIsUpdating(false);
+            return;
+        }
+
+        try {
             await updateUser({
                 name,
             });
@@ -77,7 +115,7 @@ const User: React.FC = () => {
                 type: 'info',
             });
 
-            replace('Home', {});
+            pop();
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -86,7 +124,7 @@ const User: React.FC = () => {
         } finally {
             setIsUpdating(false);
         }
-    }, [name, replace]);
+    }, [name, newPassword, newPasswordConfi, password, pop]);
 
     const handleDelete = useCallback(async () => {
         try {
@@ -117,6 +155,20 @@ const User: React.FC = () => {
         setNameError(false);
     }, []);
 
+    const handlePasswordChange = useCallback((value: string) => {
+        setPassword(value);
+    }, []);
+
+    const handleNewPasswordChange = useCallback((value: string) => {
+        setNewPassword(value);
+        setNewPasswordError(false);
+    }, []);
+
+    const handleNewPasswordConfiChange = useCallback((value: string) => {
+        setNewPasswordConfi(value);
+        setNewPasswordConfiError(false);
+    }, []);
+
     const handlwSwitchDeleteVisible = useCallback(() => {
         setIsDeleteVisible(!isDeleteVisible);
     }, [isDeleteVisible]);
@@ -129,7 +181,7 @@ const User: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header title="Perfil" />
+            <Header title="Perfil" noDrawer />
 
             <Content>
                 <InputGroup>
@@ -143,6 +195,44 @@ const User: React.FC = () => {
                 </InputGroup>
                 {nameError && (
                     <InputTextTip>Digite o nome do usuário</InputTextTip>
+                )}
+
+                <InputGroupTitle>Alteração de senha</InputGroupTitle>
+
+                <InputGroup>
+                    <InputTextContainer>
+                        <InputText
+                            placeholder="Senha atual"
+                            value={password}
+                            onChangeText={handlePasswordChange}
+                        />
+                    </InputTextContainer>
+                </InputGroup>
+
+                <InputGroup>
+                    <InputTextContainer hasError={newPasswordError}>
+                        <InputText
+                            placeholder="Nova senha"
+                            value={newPassword}
+                            onChangeText={handleNewPasswordChange}
+                        />
+                    </InputTextContainer>
+                </InputGroup>
+                {newPasswordError && (
+                    <InputTextTip>Digite sua nova senha</InputTextTip>
+                )}
+
+                <InputGroup>
+                    <InputTextContainer hasError={newPasswordConfiError}>
+                        <InputText
+                            placeholder="Confirmação da senha"
+                            value={newPasswordConfi}
+                            onChangeText={handleNewPasswordConfiChange}
+                        />
+                    </InputTextContainer>
+                </InputGroup>
+                {newPasswordConfiError && (
+                    <InputTextTip>Confirme sua nova senha</InputTextTip>
                 )}
 
                 <Button

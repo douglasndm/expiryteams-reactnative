@@ -1,4 +1,4 @@
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 
 import api from '~/Services/API';
 
@@ -77,11 +77,24 @@ export async function updateEmail({ email }: updateEmailProps): Promise<void> {
 
 interface updatePasswordProps {
     password: string;
+    newPassword: string;
 }
 
 export async function updatePassword({
     password,
+    newPassword,
 }: updatePasswordProps): Promise<void> {
+    const user = auth().currentUser;
+
+    if (!user || !user?.email) {
+        throw new Error("User doesn't have an Email");
+    }
+
+    const provider = firebase.auth.EmailAuthProvider;
+    const authCredential = provider.credential(user.email, password);
+
+    await user.reauthenticateWithCredential(authCredential);
+
     // should ask user reauth
-    await auth().currentUser?.updatePassword(password);
+    await user.updatePassword(newPassword);
 }
