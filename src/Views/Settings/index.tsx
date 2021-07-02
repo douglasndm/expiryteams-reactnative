@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -23,8 +23,6 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     SettingsContent,
     Category,
     CategoryTitle,
@@ -40,7 +38,7 @@ const Settings: React.FC = () => {
 
     const { preferences, setPreferences } = useContext(PreferencesContext);
 
-    const { goBack, reset } = useNavigation();
+    const { reset } = useNavigation();
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
@@ -95,57 +93,49 @@ const Settings: React.FC = () => {
     }, [cancelSubscriptionLink, reset]);
 
     return (
-        <>
-            <Container>
-                <StatusBar />
-                <ScrollView>
-                    <PageHeader>
-                        <BackButton handleOnPress={goBack} />
+        <Container>
+            <StatusBar />
+            <ScrollView>
+                <Header title={strings.View_Settings_PageTitle} noDrawer />
 
-                        <PageTitle>{strings.View_Settings_PageTitle}</PageTitle>
-                    </PageHeader>
+                <SettingsContent>
+                    <Category>
+                        <CategoryTitle>
+                            {strings.View_Settings_CategoryName_General}
+                        </CategoryTitle>
 
-                    <SettingsContent>
-                        <Category>
-                            <CategoryTitle>
-                                {strings.View_Settings_CategoryName_General}
-                            </CategoryTitle>
+                        <CategoryOptions>
+                            <SettingDescription>
+                                {
+                                    strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
+                                }
+                            </SettingDescription>
+                            <InputSetting
+                                keyboardType="numeric"
+                                placeholder="Quantidade de dias"
+                                value={daysToBeNext}
+                                onChangeText={v => {
+                                    const regex = /^[0-9\b]+$/;
 
-                            <CategoryOptions>
-                                <SettingDescription>
-                                    {
-                                        strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
+                                    if (v === '' || regex.test(v)) {
+                                        setDaysToBeNext(v);
                                     }
-                                </SettingDescription>
-                                <InputSetting
-                                    keyboardType="numeric"
-                                    placeholder="Quantidade de dias"
-                                    value={daysToBeNext}
-                                    onChangeText={v => {
-                                        const regex = /^[0-9\b]+$/;
+                                }}
+                            />
+                            {/* <Notifications /> */}
+                        </CategoryOptions>
+                    </Category>
 
-                                        if (v === '' || regex.test(v)) {
-                                            setDaysToBeNext(v);
-                                        }
-                                    }}
-                                />
-                                <Notifications />
-                            </CategoryOptions>
-                        </Category>
+                    <Appearance />
 
-                        <Appearance />
+                    <Account />
 
-                        <Account />
-
-                        <ButtonCancel onPress={handleNavigateCancel}>
-                            <ButtonCancelText>
-                                Cancelar assinatura
-                            </ButtonCancelText>
-                        </ButtonCancel>
-                    </SettingsContent>
-                </ScrollView>
-            </Container>
-        </>
+                    <ButtonCancel onPress={handleNavigateCancel}>
+                        <ButtonCancelText>Cancelar assinatura</ButtonCancelText>
+                    </ButtonCancel>
+                </SettingsContent>
+            </ScrollView>
+        </Container>
     );
 };
 
