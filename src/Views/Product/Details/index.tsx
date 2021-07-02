@@ -10,7 +10,7 @@ import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 
 import { getProduct } from '~/Functions/Products/Product';
 
@@ -164,115 +164,110 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         <>
             <Container>
                 <StatusBar />
-                <ScrollView>
-                    <PageHeader>
-                        <PageTitleContent>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {strings.View_ProductDetails_PageTitle}
-                            </PageTitle>
-                        </PageTitleContent>
-
-                        {!!product && (
-                            <ProductContainer>
-                                {!!photo && (
-                                    <ProductImageContainer
-                                        onPress={handleOnPhotoPress}
-                                    >
-                                        <ProductImage
-                                            source={{
-                                                uri: photo,
-                                            }}
-                                        />
-                                    </ProductImageContainer>
+                <Header
+                    title={strings.View_ProductDetails_PageTitle}
+                    noDrawer
+                />
+                <PageHeader>
+                    {!!product && (
+                        <ProductContainer>
+                            {!!photo && (
+                                <ProductImageContainer
+                                    onPress={handleOnPhotoPress}
+                                >
+                                    <ProductImage
+                                        source={{
+                                            uri: photo,
+                                        }}
+                                    />
+                                </ProductImageContainer>
+                            )}
+                            <ProductInformationContent>
+                                <ProductName>
+                                    {!!product && product?.name}
+                                </ProductName>
+                                {!!product.code && product?.code && (
+                                    <ProductCode>
+                                        {strings.View_ProductDetails_Code}:{' '}
+                                        {product.code}
+                                    </ProductCode>
                                 )}
-                                <ProductInformationContent>
-                                    <ProductName>
-                                        {!!product && product?.name}
-                                    </ProductName>
-                                    {!!product.code && product?.code && (
-                                        <ProductCode>
-                                            {strings.View_ProductDetails_Code}:{' '}
-                                            {product.code}
-                                        </ProductCode>
-                                    )}
-                                    <ProductInfo>
-                                        {product.categories.length > 0 &&
-                                            `${strings.View_ProductDetails_Categories}: ${product.categories[0].name}`}
-                                    </ProductInfo>
+                                <ProductInfo>
+                                    {product.categories.length > 0 &&
+                                        `${strings.View_ProductDetails_Categories}: ${product.categories[0].name}`}
+                                </ProductInfo>
 
-                                    <ActionsButtonContainer>
+                                <ActionsButtonContainer>
+                                    <ActionButton
+                                        icon={() => (
+                                            <Icons
+                                                name="create-outline"
+                                                size={22}
+                                            />
+                                        )}
+                                        onPress={handleEdit}
+                                    >
+                                        {
+                                            strings.View_ProductDetails_Button_UpdateProduct
+                                        }
+                                    </ActionButton>
+
+                                    {lotesNaoTratados.length > 0 && (
                                         <ActionButton
                                             icon={() => (
                                                 <Icons
-                                                    name="create-outline"
+                                                    name="share-social-outline"
                                                     size={22}
                                                 />
                                             )}
-                                            onPress={handleEdit}
+                                            onPress={handleShare}
                                         >
                                             {
-                                                strings.View_ProductDetails_Button_UpdateProduct
+                                                strings.View_ProductDetails_Button_ShareProduct
                                             }
                                         </ActionButton>
+                                    )}
+                                </ActionsButtonContainer>
+                            </ProductInformationContent>
+                        </ProductContainer>
+                    )}
+                </PageHeader>
 
-                                        {lotesNaoTratados.length > 0 && (
-                                            <ActionButton
-                                                icon={() => (
-                                                    <Icons
-                                                        name="share-social-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={handleShare}
-                                            >
-                                                {
-                                                    strings.View_ProductDetails_Button_ShareProduct
-                                                }
-                                            </ActionButton>
-                                        )}
-                                    </ActionsButtonContainer>
-                                </ProductInformationContent>
-                            </ProductContainer>
-                        )}
-                    </PageHeader>
+                <PageContent>
+                    {lotesNaoTratados.length > 0 && (
+                        <TableContainer>
+                            <CategoryDetails>
+                                <CategoryDetailsText>
+                                    {
+                                        strings.View_ProductDetails_TableTitle_NotTreatedBatches
+                                    }
+                                </CategoryDetailsText>
+                            </CategoryDetails>
 
-                    <PageContent>
-                        {lotesNaoTratados.length > 0 && (
-                            <TableContainer>
-                                <CategoryDetails>
-                                    <CategoryDetailsText>
-                                        {
-                                            strings.View_ProductDetails_TableTitle_NotTreatedBatches
-                                        }
-                                    </CategoryDetailsText>
-                                </CategoryDetails>
+                            <BatchTable
+                                batches={lotesNaoTratados}
+                                productId={productId}
+                            />
+                        </TableContainer>
+                    )}
 
-                                <BatchTable
-                                    batches={lotesNaoTratados}
-                                    productId={productId}
-                                />
-                            </TableContainer>
-                        )}
+                    {lotesTratados.length > 0 && (
+                        <>
+                            <CategoryDetails>
+                                <CategoryDetailsText>
+                                    {
+                                        strings.View_ProductDetails_TableTitle_TreatedBatches
+                                    }
+                                </CategoryDetailsText>
+                            </CategoryDetails>
 
-                        {lotesTratados.length > 0 && (
-                            <>
-                                <CategoryDetails>
-                                    <CategoryDetailsText>
-                                        {
-                                            strings.View_ProductDetails_TableTitle_TreatedBatches
-                                        }
-                                    </CategoryDetailsText>
-                                </CategoryDetails>
-
-                                <BatchTable
-                                    batches={lotesTratados}
-                                    productId={productId}
-                                />
-                            </>
-                        )}
-                    </PageContent>
-                </ScrollView>
+                            <BatchTable
+                                batches={lotesTratados}
+                                productId={productId}
+                            />
+                        </>
+                    )}
+                </PageContent>
             </Container>
 
             <FloatButton

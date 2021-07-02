@@ -8,7 +8,7 @@ import AddProduct from '~/Views/Product/Add';
 import AddBatch from '~/Views/Batch/Add';
 import EditProduct from '~/Views/Product/Edit';
 import EditBatch from '~/Views/Batch/Edit';
-import ProductDetails from '~/Views/ProductDetails';
+import ProductDetails from '~/Views/Product/Details';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import Success from '~/Views/Informations/Success';

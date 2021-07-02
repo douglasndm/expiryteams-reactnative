@@ -5,7 +5,7 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { ScrollView, Platform, Linking } from 'react-native';
+import { Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import strings from '~/Locales';
@@ -95,46 +95,44 @@ const Settings: React.FC = () => {
     return (
         <Container>
             <StatusBar />
-            <ScrollView>
-                <Header title={strings.View_Settings_PageTitle} noDrawer />
+            <Header title={strings.View_Settings_PageTitle} noDrawer />
 
-                <SettingsContent>
-                    <Category>
-                        <CategoryTitle>
-                            {strings.View_Settings_CategoryName_General}
-                        </CategoryTitle>
+            <SettingsContent>
+                <Category>
+                    <CategoryTitle>
+                        {strings.View_Settings_CategoryName_General}
+                    </CategoryTitle>
 
-                        <CategoryOptions>
-                            <SettingDescription>
-                                {
-                                    strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
+                    <CategoryOptions>
+                        <SettingDescription>
+                            {
+                                strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
+                            }
+                        </SettingDescription>
+                        <InputSetting
+                            keyboardType="numeric"
+                            placeholder="Quantidade de dias"
+                            value={daysToBeNext}
+                            onChangeText={v => {
+                                const regex = /^[0-9\b]+$/;
+
+                                if (v === '' || regex.test(v)) {
+                                    setDaysToBeNext(v);
                                 }
-                            </SettingDescription>
-                            <InputSetting
-                                keyboardType="numeric"
-                                placeholder="Quantidade de dias"
-                                value={daysToBeNext}
-                                onChangeText={v => {
-                                    const regex = /^[0-9\b]+$/;
+                            }}
+                        />
+                        {/* <Notifications /> */}
+                    </CategoryOptions>
+                </Category>
 
-                                    if (v === '' || regex.test(v)) {
-                                        setDaysToBeNext(v);
-                                    }
-                                }}
-                            />
-                            {/* <Notifications /> */}
-                        </CategoryOptions>
-                    </Category>
+                <Appearance />
 
-                    <Appearance />
+                <Account />
 
-                    <Account />
-
-                    <ButtonCancel onPress={handleNavigateCancel}>
-                        <ButtonCancelText>Cancelar assinatura</ButtonCancelText>
-                    </ButtonCancel>
-                </SettingsContent>
-            </ScrollView>
+                <ButtonCancel onPress={handleNavigateCancel}>
+                    <ButtonCancelText>Cancelar assinatura</ButtonCancelText>
+                </ButtonCancel>
+            </SettingsContent>
         </Container>
     );
 };
