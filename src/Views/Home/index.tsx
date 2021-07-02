@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
@@ -49,6 +50,11 @@ const Home: React.FC = () => {
             });
 
             setProducts(productsResponse);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
