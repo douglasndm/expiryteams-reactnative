@@ -19,14 +19,13 @@ import {
 import Button from '~/Components/Button';
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
+import Input from '~/Components/InputText';
 
 import {
     Container,
     Content,
     InputGroupTitle,
     InputGroup,
-    InputTextContainer,
-    InputText,
     InputTextTip,
     ActionButton,
     Icons,
@@ -185,51 +184,48 @@ const User: React.FC = () => {
 
             <Content>
                 <InputGroup>
-                    <InputTextContainer hasError={nameError}>
-                        <InputText
-                            placeholder="Nome"
-                            value={name}
-                            onChangeText={handleNameChange}
-                        />
-                    </InputTextContainer>
+                    <Input
+                        value={name}
+                        onChange={handleNameChange}
+                        placeholder="Nome"
+                        hasError={nameError}
+                    />
                 </InputGroup>
                 {nameError && (
                     <InputTextTip>Digite o nome do usuário</InputTextTip>
                 )}
 
                 <InputGroupTitle>Alteração de senha</InputGroupTitle>
-
                 <InputGroup>
-                    <InputTextContainer>
-                        <InputText
-                            placeholder="Senha atual"
-                            value={password}
-                            onChangeText={handlePasswordChange}
-                        />
-                    </InputTextContainer>
+                    <Input
+                        placeholder="Senha atual"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        isPassword
+                    />
                 </InputGroup>
 
                 <InputGroup>
-                    <InputTextContainer hasError={newPasswordError}>
-                        <InputText
-                            placeholder="Nova senha"
-                            value={newPassword}
-                            onChangeText={handleNewPasswordChange}
-                        />
-                    </InputTextContainer>
+                    <Input
+                        placeholder="Nova senha"
+                        value={newPassword}
+                        onChange={handleNewPasswordChange}
+                        hasError={newPasswordError}
+                        isPassword
+                    />
                 </InputGroup>
                 {newPasswordError && (
                     <InputTextTip>Digite sua nova senha</InputTextTip>
                 )}
 
                 <InputGroup>
-                    <InputTextContainer hasError={newPasswordConfiError}>
-                        <InputText
-                            placeholder="Confirmação da senha"
-                            value={newPasswordConfi}
-                            onChangeText={handleNewPasswordConfiChange}
-                        />
-                    </InputTextContainer>
+                    <Input
+                        placeholder="Confirmação da senha"
+                        value={newPasswordConfi}
+                        onChange={handleNewPasswordConfiChange}
+                        hasError={newPasswordConfiError}
+                        isPassword
+                    />
                 </InputGroup>
                 {newPasswordConfiError && (
                     <InputTextTip>Confirme sua nova senha</InputTextTip>
