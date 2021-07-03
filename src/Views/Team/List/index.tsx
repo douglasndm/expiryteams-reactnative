@@ -233,19 +233,13 @@ const List: React.FC = () => {
         navigate('CreateTeam');
     }, [navigate]);
 
-    const handleLogout = useCallback(async () => {
-        await destroySession();
-    }, []);
-
-    const checkIfTeamIsAlreadySelected = useCallback(() => {
-        if (teamContext.id) {
-            navigate('Home');
-        }
-    }, [navigate, teamContext.id]);
+    const handleLogout = useCallback(() => {
+        navigate('Logout');
+    }, [navigate]);
 
     useEffect(() => {
-        Promise.all([loadData(), checkIfTeamIsAlreadySelected()]);
-    }, [checkIfTeamIsAlreadySelected, loadData]);
+        loadData();
+    }, [loadData]);
 
     const handleRefresh = useCallback(async () => {
         try {
