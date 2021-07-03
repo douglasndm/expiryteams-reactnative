@@ -4,14 +4,8 @@ import strings from '~/Locales';
 
 import api from '~/Services/API';
 
-interface getUserTeamsProps {
-    user_id: string;
-}
-
-export async function getUserTeams({
-    user_id,
-}: getUserTeamsProps): Promise<Array<IUserRoles>> {
-    const response = await api.get(`/users/${user_id}`);
+export async function getUserTeams(): Promise<Array<IUserRoles>> {
+    const response = await api.get(`/users`);
 
     if (response.data) {
         const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({

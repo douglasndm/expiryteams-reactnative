@@ -81,7 +81,6 @@ const Login: React.FC = () => {
                 });
                 return;
             }
-            console.log('ultimo');
             showMessage({
                 message: err.message,
                 type: 'danger',

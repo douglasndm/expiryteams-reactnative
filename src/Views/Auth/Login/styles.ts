@@ -24,7 +24,7 @@ export const LogoContainer = styled.View`
 
     ${Platform.OS === 'android' &&
     css`
-        height: 220px;
+        height: 180px;
     `};
 `;
 
@@ -38,6 +38,8 @@ export const Logo = styled.Image.attrs(() => ({
     ${Platform.OS === 'android' &&
     css`
         margin-top: 0;
+        width: 120px;
+        height: 120px;
     `};
 `;
 

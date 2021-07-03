@@ -71,7 +71,7 @@ const List: React.FC = () => {
                     return;
                 }
 
-                const response = await getUserTeams({ user_id: user.uid });
+                const response = await getUserTeams();
 
                 if (mounted) {
                     response.forEach(item => {

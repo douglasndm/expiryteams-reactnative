@@ -5,6 +5,7 @@ import { destroySession } from '@utils/Auth/Session';
 import strings from '~/Locales';
 
 import { reset } from '~/References/Navigation';
+import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
 async function errorsHandler(error: any): Promise<void> {
     let knownError = false;
@@ -83,7 +84,13 @@ async function errorsHandler(error: any): Promise<void> {
                     err = strings.API_Error_Code16;
                     break;
                 case 17:
+                    // User is not in team
+                    // could be removed or manager deleted the team
                     err = strings.API_Error_Code17;
+                    await clearSelectedteam();
+                    reset({
+                        routesNames: ['TeamList'],
+                    });
                     break;
                 case 18:
                     err = strings.API_Error_Code18;
