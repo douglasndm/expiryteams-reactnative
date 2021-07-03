@@ -69,6 +69,7 @@ type RoutesParams = {
 
     VerifyEmail;
     DeleteTeam;
+    DeleteUser;
 };
 
 type DrawerParams = {

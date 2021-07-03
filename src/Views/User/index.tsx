@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
@@ -9,7 +8,6 @@ import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
 
-import { deleteUser } from '~/Functions/User';
 import {
     updateUser,
     updateEmail,
@@ -27,19 +25,14 @@ import {
     InputGroupTitle,
     InputGroup,
     InputTextTip,
-    ActionButton,
-    Icons,
-    DeleteAccountContainer,
-    DeleteAccountText,
 } from './styles';
 
 const User: React.FC = () => {
-    const { reset, pop } = useNavigation<StackNavigationProp<RoutesParams>>();
+    const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
     const { user } = useAuth();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
-    const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
     const [name, setName] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -125,30 +118,6 @@ const User: React.FC = () => {
         }
     }, [name, newPassword, newPasswordConfi, password, pop]);
 
-    const handleDelete = useCallback(async () => {
-        try {
-            setIsLoading(true);
-
-            await deleteUser();
-
-            showMessage({
-                message: 'Conta permanentemente apagada',
-                type: 'warning',
-            });
-
-            reset({
-                routes: [{ name: 'Logout' }],
-            });
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [reset]);
-
     const handleNameChange = useCallback((value: string) => {
         setName(value);
         setNameError(false);
@@ -167,10 +136,6 @@ const User: React.FC = () => {
         setNewPasswordConfi(value);
         setNewPasswordConfiError(false);
     }, []);
-
-    const handlwSwitchDeleteVisible = useCallback(() => {
-        setIsDeleteVisible(!isDeleteVisible);
-    }, [isDeleteVisible]);
 
     useEffect(() => {
         loadData();
@@ -237,40 +202,6 @@ const User: React.FC = () => {
                     isLoading={isUpdating}
                 />
             </Content>
-
-            <DeleteAccountContainer>
-                <ActionButton
-                    icon={() => <Icons name="trash-outline" size={22} />}
-                    onPress={handlwSwitchDeleteVisible}
-                >
-                    <DeleteAccountText>Apagar conta</DeleteAccountText>
-                </ActionButton>
-            </DeleteAccountContainer>
-
-            <Dialog.Container
-                visible={isDeleteVisible}
-                onBackdropPress={handlwSwitchDeleteVisible}
-            >
-                <Dialog.Title>ATENÇÃO</Dialog.Title>
-                <Dialog.Description>
-                    Apagando sua conta TODOS OS SEUS DADOS serão apagados
-                    permanemente. Se houver assinaturas ativas as mesmas deverão
-                    ser canceladas na App Store ou Google Play. Você será
-                    removido de todos os times que faz parte e dos quais você é
-                    gerente o time e todos os seus produtos/lotes/categorias
-                    serão permanemente apagados Está ação não pode ser desfeita.
-                    Você tem certeza?
-                </Dialog.Description>
-                <Dialog.Button
-                    label="Manter conta"
-                    onPress={handlwSwitchDeleteVisible}
-                />
-                <Dialog.Button
-                    label="APAGAR TUDO"
-                    color="red"
-                    onPress={handleDelete}
-                />
-            </Dialog.Container>
         </Container>
     );
 };

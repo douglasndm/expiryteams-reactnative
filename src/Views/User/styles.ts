@@ -1,6 +1,4 @@
 import styled from 'styled-components/native';
-import { Button } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.ScrollView.attrs(() => ({
     contentContainerStyle: { flexGrow: 1 },
@@ -32,20 +30,4 @@ export const InputGroup = styled.View`
 export const InputTextTip = styled.Text`
     color: red;
     margin: -5px 10px 5px;
-`;
-
-export const ActionButton = styled(Button).attrs(props => ({
-    color: props.theme.colors.accent,
-}))``;
-
-export const Icons = styled(Ionicons)`
-    color: ${({ theme }) => theme.colors.text};
-`;
-
-export const DeleteAccountContainer = styled.View`
-    margin: 15px 0;
-`;
-
-export const DeleteAccountText = styled.Text`
-    color: red;
 `;

@@ -38,6 +38,7 @@ import UserDetails from '~/Views/Team/Manager/UserDetails';
 import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
 import DeleteTeam from '~/Views/Informations/Delete/Team';
+import DeleteUser from '~/Views/Informations/Delete/User';
 
 import Subscription from '~/Views/Subscription';
 
@@ -86,6 +87,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Subscription" component={Subscription} />
 
             <Stack.Screen name="DeleteTeam" component={DeleteTeam} />
+            <Stack.Screen name="DeleteUser" component={DeleteUser} />
 
             <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
