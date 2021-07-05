@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
+import { ViewStyle } from 'react-native';
 
-import { Container, Input, Icon } from './styles';
+import { Container, Content, Input, Icon } from './styles';
 
 interface Props {
     value: string;
@@ -8,6 +9,9 @@ interface Props {
     onChange: (value: string) => void;
     hasError?: boolean;
     isPassword?: boolean;
+    autoCorrect?: boolean;
+    autoCapitalize?: 'none' | 'characters' | 'sentences' | 'words';
+    contentStyle?: ViewStyle;
 }
 
 const InputText: React.FC<Props> = ({
@@ -16,6 +20,9 @@ const InputText: React.FC<Props> = ({
     onChange,
     hasError,
     isPassword,
+    autoCorrect,
+    autoCapitalize,
+    contentStyle,
 }: Props) => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -24,19 +31,23 @@ const InputText: React.FC<Props> = ({
     }, [showPassword]);
 
     return (
-        <Container hasError={hasError}>
-            <Input
-                value={value}
-                placeholder={placeholder}
-                onChangeText={onChange}
-                secureTextEntry={isPassword && !showPassword}
-            />
-            {isPassword && (
-                <Icon
-                    name={!showPassword ? 'eye-outline' : 'eye-off-outline'}
-                    onPress={handleSwitchShowPassword}
+        <Container hasError={hasError} style={contentStyle}>
+            <Content>
+                <Input
+                    value={value}
+                    placeholder={placeholder}
+                    onChangeText={onChange}
+                    secureTextEntry={isPassword && !showPassword}
+                    autoCapitalize={autoCapitalize}
+                    autoCorrect={autoCorrect}
                 />
-            )}
+                {isPassword && (
+                    <Icon
+                        name={!showPassword ? 'eye-outline' : 'eye-off-outline'}
+                        onPress={handleSwitchShowPassword}
+                    />
+                )}
+            </Content>
         </Container>
     );
 };

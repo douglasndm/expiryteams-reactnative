@@ -14,6 +14,8 @@ import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import { reset } from '~/References/Navigation';
 
+import Loading from '~/Components/Loading';
+import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 
 import Footer from './Footer';
@@ -27,10 +29,7 @@ import {
     FormContainer,
     FormTitle,
     LoginForm,
-    InputContainer,
-    InputText,
     ForgotPasswordText,
-    Icon,
 } from './styles';
 
 const Login: React.FC = () => {
@@ -40,7 +39,7 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const [hidePass, setHidePass] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
     const handleSelectedTeam = useCallback(async () => {
@@ -133,14 +132,10 @@ const Login: React.FC = () => {
         []
     );
 
-    const handleEmailPassword = useCallback(
+    const handlePasswordChange = useCallback(
         (value: string) => setPassword(value),
         []
     );
-
-    const handleShowPass = useCallback(() => {
-        setHidePass(!hidePass);
-    }, [hidePass]);
 
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
@@ -148,11 +143,17 @@ const Login: React.FC = () => {
 
     useEffect(() => {
         if (auth().currentUser) {
-            handleSelectedTeam();
+            handleSelectedTeam()
+                .then(() => setIsLoading(false))
+                .catch(() => setIsLoading(false));
+        } else {
+            setIsLoading(false);
         }
     }, []);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Content>
                 <LogoContainer>
@@ -165,34 +166,25 @@ const Login: React.FC = () => {
                 <FormContainer>
                     <FormTitle>{strings.View_Login_FormLogin_Title}</FormTitle>
                     <LoginForm>
-                        <InputContainer>
-                            <InputText
-                                placeholder={
-                                    strings.View_Login_InputText_Email_Placeholder
-                                }
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                value={email}
-                                onChangeText={handleEmailChange}
-                            />
-                        </InputContainer>
+                        <Input
+                            value={email}
+                            onChange={handleEmailChange}
+                            placeholder={
+                                strings.View_Login_InputText_Email_Placeholder
+                            }
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            contentStyle={{ marginBottom: 5 }}
+                        />
 
-                        <InputContainer>
-                            <InputText
-                                placeholder={
-                                    strings.View_Login_InputText_Password_Placeholder
-                                }
-                                secureTextEntry={hidePass}
-                                value={password}
-                                onChangeText={handleEmailPassword}
-                            />
-                            <Icon
-                                name={
-                                    hidePass ? 'eye-outline' : 'eye-off-outline'
-                                }
-                                onPress={handleShowPass}
-                            />
-                        </InputContainer>
+                        <Input
+                            value={password}
+                            onChange={handlePasswordChange}
+                            placeholder={
+                                strings.View_Login_InputText_Password_Placeholder
+                            }
+                            isPassword
+                        />
 
                         <ForgotPasswordText
                             onPress={handleNavigateToForgotPass}
