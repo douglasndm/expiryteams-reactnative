@@ -43,6 +43,10 @@ const ViewTeam: React.FC = () => {
         navigate('ListUsersFromTeam');
     }, [navigate]);
 
+    const handleNavigateEditTeam = useCallback(() => {
+        navigate('EditTeam');
+    }, [navigate]);
+
     const handleNavigateTeams = useCallback(() => {
         navigate('TeamList');
     }, [navigate]);
@@ -64,6 +68,19 @@ const ViewTeam: React.FC = () => {
                 <TeamHeaderContainer>
                     {!!teamContext.name && (
                         <TeamName>{teamContext.name}</TeamName>
+                    )}
+
+                    {teamContext.active && isManager && (
+                        <ActionsButtonContainer>
+                            <ButtonPaper
+                                icon={() => (
+                                    <Icons name="create-outline" size={22} />
+                                )}
+                                onPress={handleNavigateEditTeam}
+                            >
+                                Editar
+                            </ButtonPaper>
+                        </ActionsButtonContainer>
                     )}
 
                     {!teamContext.active && (

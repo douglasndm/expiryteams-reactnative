@@ -61,6 +61,7 @@ type RoutesParams = {
     TeamList;
     CreateTeam;
     ViewTeam;
+    EditTeam;
     ListUsersFromTeam;
 
     Subscription;

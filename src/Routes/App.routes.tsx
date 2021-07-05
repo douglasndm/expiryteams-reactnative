@@ -29,6 +29,7 @@ import TeamList from '~/Views/Team/List';
 // Team managerment
 import EnterTeam from '~/Views/Team/EnterTeam';
 import CreateTeam from '~/Views/Team/Add';
+import EditTeam from '~/Views/Team/Edit';
 import ViewTeam from '~/Views/Team/View';
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
@@ -78,6 +79,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="EnterTeam" component={EnterTeam} />
 
             <Stack.Screen name="ViewTeam" component={ViewTeam} />
+            <Stack.Screen name="EditTeam" component={EditTeam} />
             <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
             <Stack.Screen name="UserDetails" component={UserDetails} />
 

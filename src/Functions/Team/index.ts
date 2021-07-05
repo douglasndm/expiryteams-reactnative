@@ -7,18 +7,25 @@ interface createTeamProps {
 }
 
 export async function createTeam({ name }: createTeamProps): Promise<ITeam> {
-    try {
-        const response = await api.post<ITeam>(`/team`, {
-            name,
-        });
+    const response = await api.post<ITeam>(`/team`, {
+        name,
+    });
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
+}
+
+interface editTeamProps {
+    team_id: string;
+    name: string;
+}
+
+export async function editTeam({
+    team_id,
+    name,
+}: editTeamProps): Promise<void> {
+    await api.put<ITeam>(`/team/${team_id}`, {
+        name,
+    });
 }
 
 interface deleteTeamProps {
@@ -26,13 +33,6 @@ interface deleteTeamProps {
 }
 
 export async function deleteTeam({ team_id }: deleteTeamProps): Promise<void> {
-    try {
-        await clearSelectedteam();
-        await api.delete(`/team/${team_id}`);
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    await clearSelectedteam();
+    await api.delete(`/team/${team_id}`);
 }
