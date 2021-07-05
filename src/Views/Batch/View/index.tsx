@@ -191,19 +191,23 @@ const View: React.FC = () => {
                         )}`}
                     </BatchExpDate>
 
-                    <BatchAmount>Quantidade {batch.amount}</BatchAmount>
+                    {!!batch.amount && (
+                        <BatchAmount>Quantidade {batch.amount}</BatchAmount>
+                    )}
 
-                    <BatchPrice>
-                        {`Preço unitário `}
-                        <NumberFormat
-                            value={batch.price}
-                            displayType="text"
-                            thousandSeparator
-                            prefix={currencyPrefix}
-                            renderText={value => value}
-                            decimalScale={2}
-                        />
-                    </BatchPrice>
+                    {!!batch.price && (
+                        <BatchPrice>
+                            {`Preço unitário `}
+                            <NumberFormat
+                                value={batch.price}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
 
                     {(userRole === 'manager' || userRole === 'supervisor') && (
                         <Button
