@@ -37,6 +37,10 @@
     "API_Error_Code16": "Team reach the members limit",
     "API_Error_Code17": "User is not in team",
     "API_Error_Code18": "A user was not found with this e-mail",
+    "API_Error_Code19": "User is still pending to enter the team",
+    "API_Error_Code20": "You can't add another manager on team",
+    "API_Error_Code21": "This role is not valid",
+    "API_Error_Code22": "You've connected from another device, please make login again",
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",

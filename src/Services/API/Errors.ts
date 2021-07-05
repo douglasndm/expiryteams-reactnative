@@ -20,6 +20,7 @@ async function errorsHandler(error: any): Promise<void> {
 
         if (error.response.data.errorCode) {
             const { errorCode } = error.response.data;
+            const { message } = error.response.data;
 
             if (errorCode) {
                 knownError = true;
@@ -95,13 +96,23 @@ async function errorsHandler(error: any): Promise<void> {
                 case 18:
                     err = strings.API_Error_Code18;
                     break;
+                case 19:
+                    err = strings.API_Error_Code19;
+                    break;
+                case 20:
+                    err = strings.API_Error_Code20;
+                    break;
+                case 21:
+                    err = strings.API_Error_Code21;
+                    break;
+                case 22:
+                    err = strings.API_Error_Code22;
+                    break;
 
                 default:
                     if (error.response.data.message) {
-                        console.log('Message from server');
-                        console.log(error.response.data.message);
+                        err = message;
                     }
-                    err = 'Error';
                     break;
             }
         }
