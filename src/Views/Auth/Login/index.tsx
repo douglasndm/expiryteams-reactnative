@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
@@ -79,12 +79,13 @@ const Login: React.FC = () => {
             password: Yup.string().required(),
         });
 
-        if (!(await schema.isValid({ email, password }))) {
+        try {
+            await schema.validate({ email, password });
+        } catch (err) {
             showMessage({
                 message: strings.View_Login_InputText_EmptyText,
                 type: 'warning',
             });
-            return;
         }
 
         try {
@@ -127,15 +128,6 @@ const Login: React.FC = () => {
         }
     }, [email, handleSelectedTeam, password]);
 
-    const onAuthStateChanged = useCallback(
-        async (loggedUser: FirebaseAuthTypes.User | null) => {
-            if (loggedUser) {
-                await handleSelectedTeam();
-            }
-        },
-        [handleSelectedTeam]
-    );
-
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value),
         []
@@ -155,9 +147,9 @@ const Login: React.FC = () => {
     }, [navigate]);
 
     useEffect(() => {
-        const subscriber = auth().onUserChanged(onAuthStateChanged);
-
-        return subscriber;
+        if (auth().currentUser) {
+            handleSelectedTeam();
+        }
     }, []);
 
     return (
