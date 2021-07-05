@@ -6,6 +6,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { editTeam } from '~/Functions/Team';
+import {
+    getSelectedTeam,
+    setSelectedTeam,
+} from '~/Functions/Team/SelectedTeam';
 
 import Header from '~/Components/Header';
 import Input from '~/Components/InputText';
@@ -35,6 +39,22 @@ const Edit: React.FC = () => {
 
             await editTeam({ team_id: teamContext.id, name });
 
+            const settedTeam = await getSelectedTeam();
+
+            if (settedTeam) {
+                await setSelectedTeam({
+                    ...settedTeam,
+                    team: {
+                        ...settedTeam.team,
+                        name,
+                    },
+                });
+
+                if (teamContext.reload) {
+                    teamContext.reload();
+                }
+            }
+
             showMessage({
                 message: 'Time editado',
                 type: 'info',
@@ -49,7 +69,7 @@ const Edit: React.FC = () => {
         } finally {
             setIsUpdating(false);
         }
-    }, [name, pop, teamContext.id]);
+    }, [name, pop, teamContext]);
 
     const handleNameChange = useCallback((value: string) => {
         setName(value);
