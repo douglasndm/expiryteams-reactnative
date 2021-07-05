@@ -37,14 +37,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     }, [navigation]);
 
     const navigateToTeamList = useCallback(async () => {
-        if (teamContext.clearTeam)
-            Promise.all([
-                await clearSelectedteam(),
-                teamContext.clearTeam(),
-                reset({
-                    routesNames: ['TeamList'],
-                }),
-            ]);
+        if (teamContext.clearTeam) {
+            await clearSelectedteam();
+            teamContext.clearTeam();
+            reset({
+                routesNames: ['TeamList'],
+            });
+        }
     }, [teamContext]);
 
     const navigateToExport = useCallback(() => {

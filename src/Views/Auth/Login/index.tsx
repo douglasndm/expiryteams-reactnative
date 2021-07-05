@@ -1,12 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
-import { useTeam } from '~/Contexts/TeamContext';
+
+import { login } from '~/Functions/Auth';
+import { getUserTeams } from '~/Functions/Team/Users';
+import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
+
+import { reset } from '~/References/Navigation';
 
 import Button from '~/Components/Button';
 
@@ -26,18 +32,46 @@ import {
     ForgotPasswordText,
     Icon,
 } from './styles';
-import { login } from '~/Functions/Auth';
 
 const Login: React.FC = () => {
     const { navigate } = useNavigation();
     const { initializing } = useAuth();
-    const { clearTeam } = useTeam();
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     const [hidePass, setHidePass] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
+
+    const handleSelectedTeam = useCallback(async () => {
+        try {
+            const user = auth().currentUser;
+
+            if (user) {
+                const userTeams = await getUserTeams();
+                const currentSelectedTeam = await getSelectedTeam();
+
+                const team = userTeams.find(
+                    t => t.team.id === currentSelectedTeam?.team.id
+                );
+
+                if (team && team.team.active) {
+                    reset({
+                        routesNames: ['Home'],
+                    });
+                } else {
+                    reset({
+                        routesNames: ['TeamList'],
+                    });
+                }
+            }
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        }
+    }, []);
 
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({
@@ -57,11 +91,16 @@ const Login: React.FC = () => {
             setIsLoging(true);
 
             // Makes login with Firebase after that the subscriber event will handle
-            await login({ email, password });
+            const user = await login({ email, password });
 
-            if (clearTeam) {
-                clearTeam();
+            if (user && !user.emailVerified) {
+                reset({
+                    routesNames: ['VerifyEmail'],
+                });
+                return;
             }
+
+            await handleSelectedTeam();
         } catch (err) {
             setIsLoging(false);
             if (
@@ -86,7 +125,16 @@ const Login: React.FC = () => {
                 type: 'danger',
             });
         }
-    }, [clearTeam, email, password]);
+    }, [email, handleSelectedTeam, password]);
+
+    const onAuthStateChanged = useCallback(
+        async (loggedUser: FirebaseAuthTypes.User | null) => {
+            if (loggedUser) {
+                await handleSelectedTeam();
+            }
+        },
+        [handleSelectedTeam]
+    );
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value),
@@ -105,6 +153,12 @@ const Login: React.FC = () => {
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
     }, [navigate]);
+
+    useEffect(() => {
+        const subscriber = auth().onUserChanged(onAuthStateChanged);
+
+        return subscriber;
+    }, []);
 
     return (
         <Container>

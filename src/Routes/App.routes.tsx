@@ -1,8 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import App from '~/Views/App';
-
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
 import AddBatch from '~/Views/Batch/Add';
@@ -49,7 +47,6 @@ const Stack = createNativeStackNavigator<RoutesParams>();
 const Routes: React.FC = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="App" component={App} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
 

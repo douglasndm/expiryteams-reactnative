@@ -1,14 +1,17 @@
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
+
 import { loginFirebase } from './Firebase';
 import { createSeassion } from './Session';
-
-import { reset } from '~/References/Navigation';
 
 interface loginProps {
     email: string;
     password: string;
 }
 
-export async function login({ email, password }: loginProps): Promise<void> {
+export async function login({
+    email,
+    password,
+}: loginProps): Promise<FirebaseAuthTypes.User> {
     const user = await loginFirebase({
         email,
         password,
@@ -17,13 +20,5 @@ export async function login({ email, password }: loginProps): Promise<void> {
     // Here we register the user device
     await createSeassion();
 
-    if (user.emailVerified) {
-        reset({
-            routesNames: ['TeamList'],
-        });
-    } else {
-        reset({
-            routesNames: ['VerifyEmail'],
-        });
-    }
+    return user;
 }

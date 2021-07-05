@@ -2,8 +2,6 @@ import React, { useCallback } from 'react';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { useAuth } from '~/Contexts/AuthContext';
-
 import DrawerMenu from '../Components/DrawerMenu';
 
 import AuthRoutes from './Auth.routes';
@@ -14,8 +12,6 @@ import DeepLinking from './DeepLinking';
 const Drawer = createDrawerNavigator();
 
 const DrawerContainer: React.FC = () => {
-    const { signed } = useAuth();
-
     const handleDisableDrawer = useCallback(({ route }) => {
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
 
@@ -42,19 +38,16 @@ const DrawerContainer: React.FC = () => {
                 keyboardDismissMode="on-drag"
                 drawerContent={props => <DrawerMenu {...props} />}
             >
-                {signed ? (
-                    <Drawer.Screen
-                        name="Routes"
-                        component={Routes}
-                        options={handleDisableDrawer}
-                    />
-                ) : (
-                    <Drawer.Screen
-                        name="Auth"
-                        component={AuthRoutes}
-                        options={{ swipeEnabled: false }}
-                    />
-                )}
+                <Drawer.Screen
+                    name="Auth"
+                    component={AuthRoutes}
+                    options={{ swipeEnabled: false }}
+                />
+                <Drawer.Screen
+                    name="Routes"
+                    component={Routes}
+                    options={handleDisableDrawer}
+                />
             </Drawer.Navigator>
         </>
     );

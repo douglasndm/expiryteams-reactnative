@@ -8,7 +8,6 @@ import strings from '~/Locales';
 import { useAuth } from '~/Contexts/AuthContext';
 import { useTeam } from '~/Contexts/TeamContext';
 
-import { destroySession } from '~/Functions/Auth/Session';
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
@@ -64,10 +63,6 @@ const List: React.FC = () => {
                 setIsLoading(true);
 
                 if (!user) {
-                    showMessage({
-                        message: 'User is not signed',
-                        type: 'danger',
-                    });
                     return;
                 }
 
