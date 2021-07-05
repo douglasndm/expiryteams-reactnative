@@ -46,6 +46,7 @@ type RoutesParams = {
     Export;
 
     BatchView: {
+        product: string;
         batch: string;
     };
 

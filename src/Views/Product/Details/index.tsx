@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
-import { getLocales } from 'react-native-localize';
-import { format, parseISO } from 'date-fns';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { showMessage } from 'react-native-flash-message';
 
@@ -48,20 +46,13 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-    const { navigate, goBack } = useNavigation();
+    const { navigate } = useNavigation();
 
     const productId = useMemo(() => {
         return route.params.id;
     }, [route.params.id]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const dateFormat = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'MM/dd/yyyy';
-        }
-        return 'dd/MM/yyyy';
-    }, []);
 
     const [photo, setPhoto] = useState<string | null>(null);
     const [product, setProduct] = useState<IProduct>();
@@ -117,44 +108,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         }
     }, [navigate, product, productId]);
 
-    const handleShare = useCallback(async () => {
-        if (product) {
-            if (lotesNaoTratados.length > 0) {
-                const expireDate = lotesNaoTratados[0].exp_date;
-
-                const { amount } = lotesNaoTratados[0];
-
-                let text = '';
-
-                if (!!amount && amount > 0) {
-                    text = strings.View_ShareProduct_MessageWithAmount.replace(
-                        '{PRODUCT}',
-                        product.name
-                    )
-                        .replace('{AMOUNT}', String(amount))
-                        .replace(
-                            '{DATE}',
-                            format(parseISO(expireDate), dateFormat)
-                        );
-                } else {
-                    text = strings.View_ShareProduct_Message.replace(
-                        '{PRODUCT}',
-                        product.name
-                    ).replace(
-                        '{DATE}',
-                        format(parseISO(expireDate), dateFormat)
-                    );
-                }
-
-                await ShareProductImageWithText({
-                    productId,
-                    title: strings.View_ShareProduct_Title,
-                    text,
-                });
-            }
-        }
-    }, [productId, product, lotesNaoTratados, dateFormat]);
-
     return isLoading ? (
         <Loading />
     ) : (
@@ -208,22 +161,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             strings.View_ProductDetails_Button_UpdateProduct
                                         }
                                     </ActionButton>
-
-                                    {lotesNaoTratados.length > 0 && (
-                                        <ActionButton
-                                            icon={() => (
-                                                <Icons
-                                                    name="share-social-outline"
-                                                    size={22}
-                                                />
-                                            )}
-                                            onPress={handleShare}
-                                        >
-                                            {
-                                                strings.View_ProductDetails_Button_ShareProduct
-                                            }
-                                        </ActionButton>
-                                    )}
                                 </ActionsButtonContainer>
                             </ProductInformationContent>
                         </ProductContainer>
@@ -243,7 +180,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                             <BatchTable
                                 batches={lotesNaoTratados}
-                                productId={productId}
+                                product={JSON.stringify(product)}
                             />
                         </TableContainer>
                     )}
@@ -260,7 +197,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                             <BatchTable
                                 batches={lotesTratados}
-                                productId={productId}
+                                product={JSON.stringify(product)}
                             />
                         </>
                     )}
