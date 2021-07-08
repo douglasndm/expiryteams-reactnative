@@ -66,10 +66,15 @@ const User: React.FC = () => {
     const handleUpdate = useCallback(async () => {
         setIsUpdating(true);
 
-        // this should be before try catch cause it has it own try catch
         try {
+            const schema = Yup.object().shape({
+                name: Yup.string().required('Nome é obrigatório'),
+            });
+
+            await schema.validate({ name });
+
             if (password) {
-                const schema = Yup.object().shape({
+                const schemaPass = Yup.object().shape({
                     newPassword: Yup.string().required('Digite a senha').min(6),
                     newPasswordConfi: Yup.string().oneOf(
                         [Yup.ref('newPassword'), null],
@@ -77,24 +82,35 @@ const User: React.FC = () => {
                     ),
                 });
 
-                await schema.validate({ newPassword, newPasswordConfi });
-
-                await updatePassword({
-                    password,
-                    newPassword,
-                });
+                await schemaPass.validate({ newPassword, newPasswordConfi });
             }
         } catch (err) {
-            let error = err.message;
-            if (err.code === 'auth/wrong-password') {
-                error = 'Senha incorreta';
-            }
             showMessage({
-                message: error,
+                message: err.message,
                 type: 'danger',
             });
             setIsUpdating(false);
             return;
+        }
+
+        if (password) {
+            try {
+                await updatePassword({
+                    password,
+                    newPassword,
+                });
+            } catch (err) {
+                let error = err.message;
+                if (err.code === 'auth/wrong-password') {
+                    error = 'Senha incorreta';
+                }
+                showMessage({
+                    message: error,
+                    type: 'danger',
+                });
+                setIsUpdating(false);
+                return;
+            }
         }
 
         try {

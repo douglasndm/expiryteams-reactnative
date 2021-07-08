@@ -9,7 +9,6 @@ export const Container = styled.ScrollView.attrs(() => ({
 
 export const Content = styled.View`
     margin-top: 15px;
-    flex: 1;
 `;
 
 export const InputGroupTitle = styled.Text`
@@ -21,9 +20,6 @@ export const InputGroupTitle = styled.Text`
 `;
 
 export const InputGroup = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     margin: 0 10px 10px;
 `;
 
