@@ -7,29 +7,21 @@ import strings from '~/Locales';
 
 import { createAccount } from '~/Functions/Auth/Account';
 
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
+import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 
-import {
-    FormContainer,
-    LoginForm,
-    InputContainer,
-    InputText,
-    Icon,
-} from '../Login/styles';
-import { Container, Content, PageTitle } from './styles';
+import { FormContainer } from '../Login/styles';
+import { Container } from './styles';
 
 const CreateAccount: React.FC = () => {
-    const { goBack, reset } = useNavigation();
+    const { reset } = useNavigation();
 
     const [name, setName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordConfirm, setPasswordConfirm] = useState<string>('');
-
-    const [hidePass, setHidePass] = useState<boolean>(true);
-    const [hidePassConf, setHidePassConf] = useState<boolean>(true);
 
     const [isCreating, setIsCreating] = useState<boolean>(false);
 
@@ -52,14 +44,6 @@ const CreateAccount: React.FC = () => {
         (value: string) => setPasswordConfirm(value),
         []
     );
-
-    const handleShowPass = useCallback(() => {
-        setHidePass(!hidePass);
-    }, [hidePass]);
-
-    const handleShowPassConf = useCallback(() => {
-        setHidePassConf(!hidePassConf);
-    }, [hidePassConf]);
 
     const handleCreateAccount = useCallback(async () => {
         const schema = Yup.object().shape({
@@ -121,73 +105,55 @@ const CreateAccount: React.FC = () => {
 
     return (
         <Container>
-            <Content>
-                <BackButton handleOnPress={goBack} />
-                <PageTitle>Criar conta</PageTitle>
-            </Content>
+            <Header title="Criar conta" noDrawer />
 
             <FormContainer>
-                <LoginForm>
-                    <InputContainer>
-                        <InputText
-                            placeholder="Nome"
-                            autoCorrect={false}
-                            autoCapitalize="words"
-                            value={name}
-                            onChangeText={handleNameChange}
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <InputText
-                            placeholder="Sobrenome"
-                            autoCorrect={false}
-                            autoCapitalize="words"
-                            value={lastName}
-                            onChangeText={handleLastNameChange}
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <InputText
-                            placeholder={
-                                strings.View_Login_InputText_Email_Placeholder
-                            }
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            value={email}
-                            onChangeText={handleEmailChange}
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <InputText
-                            placeholder="Senha"
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            secureTextEntry={hidePass}
-                            value={password}
-                            onChangeText={handlePasswordChange}
-                        />
-                        <Icon
-                            name={hidePass ? 'eye-outline' : 'eye-off-outline'}
-                            onPress={handleShowPass}
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <InputText
-                            placeholder="Confirmação da senha"
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            secureTextEntry={hidePassConf}
-                            value={passwordConfirm}
-                            onChangeText={handlePasswordConfirmChange}
-                        />
-                        <Icon
-                            name={
-                                hidePassConf ? 'eye-outline' : 'eye-off-outline'
-                            }
-                            onPress={handleShowPassConf}
-                        />
-                    </InputContainer>
-                </LoginForm>
+                <Input
+                    placeholder="Nome"
+                    autoCorrect={false}
+                    autoCapitalize="words"
+                    value={name}
+                    onChange={handleNameChange}
+                    contentStyle={{ marginBottom: 7 }}
+                />
+
+                <Input
+                    placeholder="Sobrenome"
+                    autoCorrect={false}
+                    autoCapitalize="words"
+                    value={lastName}
+                    onChange={handleLastNameChange}
+                    contentStyle={{ marginBottom: 7 }}
+                />
+
+                <Input
+                    placeholder={strings.View_Login_InputText_Email_Placeholder}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    value={email}
+                    onChange={handleEmailChange}
+                    contentStyle={{ marginBottom: 7 }}
+                />
+
+                <Input
+                    placeholder="Senha"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    isPassword
+                    value={password}
+                    onChange={handlePasswordChange}
+                    contentStyle={{ marginBottom: 7 }}
+                />
+
+                <Input
+                    placeholder="Confirmação da senha"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    isPassword
+                    value={passwordConfirm}
+                    onChange={handlePasswordConfirmChange}
+                    contentStyle={{ marginBottom: 7 }}
+                />
 
                 <Button
                     text="Cria conta"
