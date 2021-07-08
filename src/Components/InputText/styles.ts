@@ -6,7 +6,6 @@ interface InputTextContainerProps {
 }
 
 export const Container = styled.View<InputTextContainerProps>`
-    flex: 1;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     font-size: 18px;
