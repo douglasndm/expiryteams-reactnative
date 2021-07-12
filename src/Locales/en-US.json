@@ -297,6 +297,7 @@
     "Function_Team_JoinTeam_InvalidCode": "Invalid code.",
 
     "Subscription_TeamLimit_1person": "1 person",
+    "Subscription_TeamLimit_2people": "2 people",
     "Subscription_TeamLimit_3people": "3 people",
     "Subscription_TeamLimit_5people": "5 people",
     "Subscription_TeamLimit_10people": "10 people",

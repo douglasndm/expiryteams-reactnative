@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -157,6 +157,9 @@ const SubscriptionsList: React.FC = () => {
             let limit = strings.Subscription_TeamLimit_1person;
 
             switch (type) {
+                case '2 people':
+                    limit = strings.Subscription_TeamLimit_2people;
+                    break;
                 case '3 people':
                     limit = strings.Subscription_TeamLimit_3people;
                     break;
@@ -193,6 +196,7 @@ const SubscriptionsList: React.FC = () => {
                         <SubscriptionDescription isSelected={isSelected}>
                             <TextSubscription isSelected={isSelected}>
                                 {!!introPrice &&
+                                    Platform.OS === 'android' &&
                                     `${introPrice.priceString} no primeiro mês, depois `}
                                 {`${price} mensais`}
                             </TextSubscription>
