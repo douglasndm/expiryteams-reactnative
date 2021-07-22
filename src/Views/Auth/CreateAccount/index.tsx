@@ -31,7 +31,7 @@ const CreateAccount: React.FC = () => {
         []
     );
     const handleEmailChange = useCallback(
-        (value: string) => setEmail(value),
+        (value: string) => setEmail(value.trim()),
         []
     );
 

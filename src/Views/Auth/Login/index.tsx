@@ -128,7 +128,7 @@ const Login: React.FC = () => {
     }, [email, handleSelectedTeam, password]);
 
     const handleEmailChange = useCallback(
-        (value: string) => setEmail(value),
+        (value: string) => setEmail(value.trim()),
         []
     );
 
