@@ -41,6 +41,10 @@
     "API_Error_Code20": "You can't add another manager on team",
     "API_Error_Code21": "This role is not valid",
     "API_Error_Code22": "You've connected from another device, please make login again",
+    "API_Error_Code23": "User is already on team",
+    "API_Error_Code24": "Invalid code",
+    "API_Error_Code25": "User was not invited for team",
+    "API_Error_Code26": "Invalid file",
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",

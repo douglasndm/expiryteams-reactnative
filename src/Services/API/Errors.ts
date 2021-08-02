@@ -108,6 +108,18 @@ async function errorsHandler(error: any): Promise<void> {
                 case 22:
                     err = strings.API_Error_Code22;
                     break;
+                case 23:
+                    err = strings.API_Error_Code23;
+                    break;
+                case 24:
+                    err = strings.API_Error_Code24;
+                    break;
+                case 25:
+                    err = strings.API_Error_Code25;
+                    break;
+                case 26:
+                    err = strings.API_Error_Code26;
+                    break;
 
                 default:
                     if (error.response.data.message) {
