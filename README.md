@@ -1,4 +1,6 @@
-# Controle de validade
+<strong>iOS: </strong><img src="https://build.appcenter.ms/v0.1/apps/5a7b5548-8897-4bef-93c6-b3dc3db8b041/branches/main/badge" />
+
+# Expiry Checker Teams
 
 Passos necessários para realizar uma build bem sucedida do app. Atenção que o aplicativo só foi desenvolvido para o Android.
 

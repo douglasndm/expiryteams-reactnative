@@ -124,6 +124,8 @@ const Login: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsLoading(false);
         }
     }, [email, handleSelectedTeam, password]);
 

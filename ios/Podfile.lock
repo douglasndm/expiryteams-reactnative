@@ -207,11 +207,11 @@ PODS:
   - Permission-Notifications (3.0.1):
     - RNPermissions
   - PromisesObjC (1.2.12)
-  - Purchases (3.11.1):
-    - PurchasesCoreSwift (= 3.11.1)
-  - PurchasesCoreSwift (3.11.1)
-  - PurchasesHybridCommon (1.7.1):
-    - Purchases (= 3.11.1)
+  - Purchases (3.12.2):
+    - PurchasesCoreSwift (= 3.12.2)
+  - PurchasesCoreSwift (3.12.2)
+  - PurchasesHybridCommon (1.8.0):
+    - Purchases (= 3.12.2)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -539,8 +539,8 @@ PODS:
     - React-Core
   - RNPermissions (3.0.1):
     - React-Core
-  - RNPurchases (4.2.0):
-    - PurchasesHybridCommon (= 1.7.1)
+  - RNPurchases (4.3.0):
+    - PurchasesHybridCommon (= 1.8.0)
     - React-Core
   - RNReanimated (2.1.0):
     - DoubleConversion
@@ -853,7 +853,7 @@ SPEC CHECKSUMS:
   CodePush: 9bb93f52a44ee80b72739d89dead9c7e86c3bd3a
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: a97895c4341f22fafddab2845a7f2ba6c6b33cfd
+  FBReactNativeSpec: f9c42863e3468ab059c4576c430162bf401dec87
   Firebase: 4bb49ae87756034cef870fa3c4006235eb46f475
   FirebaseAnalytics: d6dd061b26a04744cb988c66e29697181152b2a3
   FirebaseAppCheck: b385525032c42fc323b42a364d6cfaecfdf7dbe3
@@ -885,9 +885,9 @@ SPEC CHECKSUMS:
   Permission-Camera: b2e50546c095139bb1264be9c34c796332340d32
   Permission-Notifications: 504dcbc12f929b72cdab0c89a4245816d53d1452
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Purchases: 6351f9ff6bd514e5ec5aa0f989ea181effa94bf5
-  PurchasesCoreSwift: ee857e4c21e6254b09d7e303a756fcf2b9164408
-  PurchasesHybridCommon: e3b25475328b58169e811135a3476ed0e5a4243a
+  Purchases: 3e20881892483ab6ca17cb86a89af4c6d1731562
+  PurchasesCoreSwift: e614645840af49d465dee1918011f784365d79a6
+  PurchasesHybridCommon: f87cfd2fb1a55df8daa2a996a1d19d48e5bfbf4f
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
   RCTTypeSafety: c1f31d19349c6b53085766359caac425926fafaa
@@ -936,7 +936,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 4c8a37b4dde50f1f152bf8cd08c4a43d2355829e
-  RNPurchases: de0ff23450a6a264e4309ffce1530efb6510201d
+  RNPurchases: e067a4eb18561125d119de8148f27aa0bae2f9db
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
   RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
   RNShare: 5ac8f6532ca4cd80fc71caef1cfbba1854a6a045
@@ -948,4 +948,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a435e160ab2b8d440005570e5465b7a680d3ee3f
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2
