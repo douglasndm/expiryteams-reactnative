@@ -64,8 +64,6 @@ type RoutesParams = {
     Subscription;
     Test;
 
-    VerifyEmail;
-
     DeleteTeam;
 };
 

@@ -37,8 +37,6 @@ import DeleteTeam from '~/Views/Informations/Delete/Team';
 
 import Subscription from '~/Views/Subscription';
 
-import VerifyEmail from '~/Views/Auth/VerifyEmail';
-
 import Test from '~/Views/Test';
 
 const Stack = createNativeStackNavigator<RoutesParams>();
@@ -83,8 +81,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Subscription" component={Subscription} />
 
             <Stack.Screen name="DeleteTeam" component={DeleteTeam} />
-
-            <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>
