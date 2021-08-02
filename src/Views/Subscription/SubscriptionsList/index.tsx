@@ -178,6 +178,23 @@ const SubscriptionsList: React.FC = () => {
 
             const isSelected = selected === pack.offeringIdentifier;
 
+            let text = ``;
+            const introPriceStr =
+                introPrice.price > 0 ? introPrice.priceString : 'Grátis';
+
+            if (Platform.OS === 'android' && !!introPrice) {
+                const periodUnit = pack.product.introPrice?.periodUnit;
+
+                if (!!periodUnit && periodUnit === 'DAY') {
+                    const period = pack.product.introPrice?.periodNumberOfUnits;
+
+                    text = `${introPriceStr} nos primeiros ${period} dias, e depois `;
+                } else {
+                    text = `${introPriceStr} no primeiro mês, depois `;
+                }
+            }
+            text += `${price} mensais`;
+
             return (
                 <SubscriptionContainer
                     onPress={() =>
@@ -195,10 +212,7 @@ const SubscriptionsList: React.FC = () => {
                     <DetailsContainer isSelected={isSelected}>
                         <SubscriptionDescription isSelected={isSelected}>
                             <TextSubscription isSelected={isSelected}>
-                                {!!introPrice &&
-                                    Platform.OS === 'android' &&
-                                    `${introPrice.priceString} no primeiro mês, depois `}
-                                {`${price} mensais`}
+                                {text}
                             </TextSubscription>
                         </SubscriptionDescription>
                     </DetailsContainer>
