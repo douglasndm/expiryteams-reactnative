@@ -71,6 +71,10 @@ const List: React.FC = () => {
                 reset({ routes: [{ name: 'Login' }] });
                 return;
             }
+            if (!user.emailVerified) {
+                reset({ routes: [{ name: 'VerifyEmail' }] });
+                return;
+            }
 
             const response = await getUserTeams({ user_id: user.uid });
 
