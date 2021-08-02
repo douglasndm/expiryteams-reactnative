@@ -34,6 +34,13 @@
     "API_Error_Code13": "Categoria já existe",
     "API_Error_Code14": "Time já existe",
     "API_Error_Code15": "Produto não foi encontrado na categoria",
+    "API_Error_Code16": "O time atingiu o limite de usuários",
+    "API_Error_Code17": "O usuário não está no time",
+    "API_Error_Code18": "Nenhum usuário foi encontrado com esse e-mail",
+    "API_Error_Code19": "Usuário ainda está pendente para entrar no time",
+    "API_Error_Code20": "Você não pode adicionar outro gerente ao time",
+    "API_Error_Code21": "Esse cargo não é valido",
+    "API_Error_Code22": "Você entrou em outro dispositivo, por favor faça login novamente",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",
@@ -288,6 +295,7 @@
     "Function_Team_JoinTeam_InvalidCode": "Código inválido.",
 
     "Subscription_TeamLimit_1person": "1 pessoa",
+    "Subscription_TeamLimit_2people": "2 pessoas",
     "Subscription_TeamLimit_3people": "3 pessoas",
     "Subscription_TeamLimit_5people": "5 pessoas",
     "Subscription_TeamLimit_10people": "10 pessoas",

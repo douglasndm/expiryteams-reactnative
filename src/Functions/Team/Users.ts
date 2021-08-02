@@ -4,42 +4,24 @@ import strings from '~/Locales';
 
 import api from '~/Services/API';
 
-interface getUserTeamsProps {
-    user_id: string;
-}
+export async function getUserTeams(): Promise<Array<IUserRoles>> {
+    const response = await api.get(`/users`);
 
-export async function getUserTeams({
-    user_id,
-}: getUserTeamsProps): Promise<Array<IUserRoles>> {
-    try {
-        const response = await api.get(`/users/${user_id}`);
+    if (response.data) {
+        const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
+            role: role.role,
+            status: role.status,
+            team: {
+                id: role.team.id,
+                name: role.team.name,
+                active: role.team.isActive === true,
+            },
+        }));
 
-        if (response.data) {
-            const userRoles: Array<IUserRoles> = response.data.roles.map(
-                role => ({
-                    role: role.role,
-                    status: role.status,
-                    team: {
-                        id: role.team.id,
-                        name: role.team.name,
-                        active: role.team.isActive === true,
-                    },
-                })
-            );
-
-            return userRoles;
-        }
-
-        return [];
-    } catch (err) {
-        if (err.message === 'Network Error') {
-            throw new Error(err);
-        }
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
+        return userRoles;
     }
+
+    return [];
 }
 
 interface getAllUsersFromTeamProps {
@@ -49,22 +31,11 @@ interface getAllUsersFromTeamProps {
 export async function getAllUsersFromTeam({
     team_id,
 }: getAllUsersFromTeamProps): Promise<Array<IUserInTeam>> {
-    try {
-        const response = await api.get<Array<IUserInTeam>>(
-            `/team/${team_id}/users`
-        );
+    const response = await api.get<Array<IUserInTeam>>(
+        `/team/${team_id}/users`
+    );
 
-        return response.data;
-    } catch (err) {
-        // console.log(err.response.data);
-        if (err.message === 'Network Error') {
-            throw new Error(err);
-        }
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }
 
 interface putUserInTeamProps {
@@ -84,21 +55,14 @@ export async function putUserInTeam({
     user_email,
     team_id,
 }: putUserInTeamProps): Promise<putUserInTeamResponse> {
-    try {
-        const response = await api.post<putUserInTeamResponse>(
-            `/team/${team_id}/manager/user`,
-            {
-                email: user_email,
-            }
-        );
-
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
+    const response = await api.post<putUserInTeamResponse>(
+        `/team/${team_id}/manager/user`,
+        {
+            email: user_email,
         }
-        throw new Error(err.message);
-    }
+    );
+
+    return response.data;
 }
 
 interface enterTeamCode {
@@ -143,12 +107,5 @@ export async function removeUserFromTeam({
     team_id,
     user_id,
 }: removeUserFromTeamProps): Promise<void> {
-    try {
-        await api.delete(`/team/${team_id}/manager/user/${user_id}`);
-    } catch (err) {
-        if (err.response.data) {
-            throw new Error(err.response.data);
-        }
-        throw new Error(err.message);
-    }
+    await api.delete(`/team/${team_id}/manager/user/${user_id}`);
 }

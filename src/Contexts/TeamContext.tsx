@@ -61,17 +61,16 @@ const TeamProvider: React.FC = ({ children }: any) => {
     const reload = useCallback(() => {
         setIsLoading(true);
         reloadTeam();
-
-        return new Promise(resolve => setTimeout(resolve, 500));
     }, [reloadTeam]);
 
     const clearTeam = useCallback(async () => {
-        await clearSelectedteam();
-        setId(null);
-        setName(null);
-        setActive(null);
-
-        setRoleInTeam(null);
+        Promise.all([
+            await clearSelectedteam(),
+            setId(null),
+            setName(null),
+            setActive(null),
+            setRoleInTeam(null),
+        ]);
     }, []);
 
     return (

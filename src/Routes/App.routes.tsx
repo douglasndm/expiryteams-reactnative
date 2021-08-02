@@ -6,7 +6,7 @@ import AddProduct from '~/Views/Product/Add';
 import AddBatch from '~/Views/Batch/Add';
 import EditProduct from '~/Views/Product/Edit';
 import EditBatch from '~/Views/Batch/Edit';
-import ProductDetails from '~/Views/ProductDetails';
+import ProductDetails from '~/Views/Product/Details';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import Success from '~/Views/Informations/Success';
@@ -29,11 +29,15 @@ import TeamList from '~/Views/Team/List';
 // Team managerment
 import EnterTeam from '~/Views/Team/EnterTeam';
 import CreateTeam from '~/Views/Team/Add';
+import EditTeam from '~/Views/Team/Edit';
 import ViewTeam from '~/Views/Team/View';
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
 
+import VerifyEmail from '~/Views/Auth/VerifyEmail';
+
 import DeleteTeam from '~/Views/Informations/Delete/Team';
+import DeleteUser from '~/Views/Informations/Delete/User';
 
 import Subscription from '~/Views/Subscription';
 
@@ -75,12 +79,16 @@ const Routes: React.FC = () => {
             <Stack.Screen name="EnterTeam" component={EnterTeam} />
 
             <Stack.Screen name="ViewTeam" component={ViewTeam} />
+            <Stack.Screen name="EditTeam" component={EditTeam} />
             <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
             <Stack.Screen name="UserDetails" component={UserDetails} />
 
             <Stack.Screen name="Subscription" component={Subscription} />
 
             <Stack.Screen name="DeleteTeam" component={DeleteTeam} />
+            <Stack.Screen name="DeleteUser" component={DeleteUser} />
+
+            <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>

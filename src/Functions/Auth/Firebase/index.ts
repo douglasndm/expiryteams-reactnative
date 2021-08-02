@@ -15,7 +15,15 @@ export async function loginFirebase({
 }
 
 export async function logoutFirebase(): Promise<void> {
-    if (auth().currentUser) {
-        await auth().signOut();
+    const user = auth().currentUser;
+
+    try {
+        if (user) {
+            await auth().signOut();
+        }
+    } catch (err) {
+        if (err.code !== 'auth/no-current-user') {
+            throw new Error(err.message);
+        }
     }
 }

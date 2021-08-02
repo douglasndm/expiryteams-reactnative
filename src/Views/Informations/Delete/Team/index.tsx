@@ -26,7 +26,7 @@ import {
 } from './styles';
 
 const Team: React.FC = () => {
-    const { reset } = useNavigation();
+    const { navigate, reset } = useNavigation();
     const teamContext = useTeam();
 
     const [activesSubs, setActivesSubs] = useState<Subscription[]>([]);
@@ -36,7 +36,6 @@ const Team: React.FC = () => {
     const [allSubsCanceled, setAllSubsCanceled] = useState<boolean>(false);
 
     const [isCheckingSub, setIsCheckingSub] = useState<boolean>(false);
-    const [isExporting, setIsExporting] = useState<boolean>(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
     const loadSubscriptions = useCallback(async () => {
@@ -67,17 +66,8 @@ const Team: React.FC = () => {
     }, [agreeConsequence]);
 
     const handleExcelExport = useCallback(() => {
-        try {
-            setIsExporting(true);
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-        } finally {
-            setIsExporting(false);
-        }
-    }, []);
+        navigate('Export');
+    }, [navigate]);
 
     const handleCheckSubscription = useCallback(async () => {
         try {
@@ -171,11 +161,7 @@ const Team: React.FC = () => {
                         todos os seus produtos
                     </BlockDescription>
 
-                    <Button
-                        text="Gerar arquivo"
-                        onPress={handleExcelExport}
-                        isLoading={isExporting}
-                    />
+                    <Button text="Gerar arquivo" onPress={handleExcelExport} />
 
                     <CheckBoxContainer>
                         <CheckBox

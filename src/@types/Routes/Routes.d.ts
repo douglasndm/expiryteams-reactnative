@@ -46,6 +46,7 @@ type RoutesParams = {
     Export;
 
     BatchView: {
+        product: string;
         batch: string;
     };
 
@@ -55,16 +56,21 @@ type RoutesParams = {
     };
     Logout;
 
-    EnterTeam;
+    EnterTeam: {
+        userRole: IUserRoles;
+    };
     TeamList;
     CreateTeam;
     ViewTeam;
+    EditTeam;
     ListUsersFromTeam;
 
     Subscription;
     Test;
 
+    VerifyEmail;
     DeleteTeam;
+    DeleteUser;
 };
 
 type DrawerParams = {

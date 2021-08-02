@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
+
+import { clearSelectedteam } from '@utils/Team/SelectedTeam';
+import { logoutFirebase } from '@utils/Auth/Firebase';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
-import { logoutFirebase } from '~/Functions/Auth/Firebase';
+import { reset } from '~/References/Navigation';
 
 import Loading from '~/Components/Loading';
 
 const Logout: React.FC = () => {
-    const { reset } = useNavigation();
-
     const teamContext = useTeam();
 
     const handleLogout = useCallback(async () => {
@@ -24,14 +23,16 @@ const Logout: React.FC = () => {
             }
 
             reset({
-                routes: [{ name: 'Login' }],
+                routeHandler: 'Auth',
+                routesNames: ['Login'],
             });
         } catch (err) {
             showMessage({
                 message: err.message,
+                type: 'danger',
             });
         }
-    }, [teamContext, reset]);
+    }, [teamContext]);
 
     useEffect(() => {
         handleLogout();

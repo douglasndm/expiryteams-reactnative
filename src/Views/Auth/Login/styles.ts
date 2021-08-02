@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import LogoImg from '~/Assets/Logo.png';
 
@@ -24,7 +23,7 @@ export const LogoContainer = styled.View`
 
     ${Platform.OS === 'android' &&
     css`
-        height: 220px;
+        height: 180px;
     `};
 `;
 
@@ -38,6 +37,8 @@ export const Logo = styled.Image.attrs(() => ({
     ${Platform.OS === 'android' &&
     css`
         margin-top: 0;
+        width: 120px;
+        height: 120px;
     `};
 `;
 
@@ -49,8 +50,9 @@ export const LogoTitle = styled.Text`
 `;
 
 export const FormContainer = styled.View`
-    align-items: center;
+    align-items: stretch;
     margin-top: 14px;
+    padding: 0 15px;
 `;
 
 export const FormTitle = styled.Text`
@@ -58,33 +60,12 @@ export const FormTitle = styled.Text`
     font-family: 'Open Sans';
     margin-bottom: 15px;
     font-size: 26px;
-    text-align: left;
+    text-align: center;
 `;
 
 export const LoginForm = styled.View`
     flex-direction: column;
-`;
-
-export const InputContainer = styled.View`
-    background-color: ${props => props.theme.colors.inputBackground};
-    padding: 0 15px;
-    width: 350px;
-    margin-bottom: 10px;
-    border-radius: 12px;
-    flex-direction: row;
-    align-items: center;
-`;
-
-export const InputText = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
-}))`
-    margin: 5px 0;
-    color: ${props => props.theme.colors.text};
-    flex: 1
-        ${Platform.OS === 'ios' &&
-        css`
-            padding: 15px 0;
-        `};
+    flex: 1;
 `;
 
 export const ForgotPasswordText = styled.Text`
@@ -93,8 +74,3 @@ export const ForgotPasswordText = styled.Text`
     margin-left: 10px;
     color: ${props => props.theme.colors.subText};
 `;
-
-export const Icon = styled(Ionicons).attrs(props => ({
-    size: 28,
-    color: props.theme.colors.subText,
-}))``;

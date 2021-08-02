@@ -81,10 +81,10 @@ const ListUsers: React.FC = () => {
         loadData();
     }, [loadData]);
 
-    const handleOnTextChange = useCallback(value => {
+    const handleOnTextChange = useCallback((value: string) => {
         setInputHasError(false);
         setInputErrorMessage('');
-        setNewUserEmail(value);
+        setNewUserEmail(value.trim());
     }, []);
 
     const handleAddUser = useCallback(async () => {

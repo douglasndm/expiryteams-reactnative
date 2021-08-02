@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components/native';
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
+import styled from 'styled-components/native';
 
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -7,26 +6,10 @@ interface Request {
     notPremium?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
     flex: 1;
     background: ${props => props.theme.colors.background};
 `;
-export const PageHeader = styled.View`
-    margin-top: 25px;
-    flex-direction: row;
-    align-items: center;
-
-    ${isIphoneX() &&
-    css`
-        margin-top: ${getStatusBarHeight() + 25}px;
-    `}
-`;
-export const PageTitle = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-    color: ${props => props.theme.colors.text};
-`;
-
 export const SettingsContent = styled.View`
     padding: 0 16px 16px 16px;
 `;
