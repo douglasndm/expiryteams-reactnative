@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -23,8 +22,6 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation();
-
     const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -45,13 +42,6 @@ const Home: React.FC = () => {
             setIsLoading(true);
 
             if (!teamContext.id) {
-                reset({
-                    routes: [
-                        {
-                            name: 'TeamList',
-                        },
-                    ],
-                });
                 return;
             }
 
@@ -65,22 +55,10 @@ const Home: React.FC = () => {
                 message: err.message,
                 type: 'danger',
             });
-
-            if (
-                err.message.includes("Team doesn't have an active subscription")
-            ) {
-                reset({
-                    routes: [
-                        {
-                            name: 'ViewTeam',
-                        },
-                    ],
-                });
-            }
         } finally {
             setIsLoading(false);
         }
-    }, [reset, teamContext.id, teamContext.isLoading]);
+    }, [teamContext.id, teamContext.isLoading]);
 
     useEffect(() => {
         getProduts();
@@ -136,8 +114,7 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <Container>
-                    {/* <Header title={preferences.selectedTeam.team.name} /> */}
-                    <Header title="Beta 5" />
+                    {teamContext.name && <Header title={teamContext.name} />}
 
                     {products.length > 0 && (
                         <InputTextContainer>

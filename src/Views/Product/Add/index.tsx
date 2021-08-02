@@ -192,7 +192,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 category_id: selectedCategory,
             });
         } catch (error) {
-            console.log(error);
+            showMessage({
+                message: error.message,
+                type: 'danger',
+            });
         } finally {
             setIsAdding(false);
         }

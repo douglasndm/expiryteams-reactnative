@@ -1,12 +1,14 @@
 import styled from 'styled-components/native';
 import { RadioButton as Radio } from 'react-native-paper';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
     flex: 1;
     background-color: ${props => props.theme.colors.background};
 `;
 
-export const Content = styled.ScrollView``;
+export const Content = styled.View`
+    margin-top: 7px;
+`;
 
 export const OptionContainer = styled.View`
     margin: 10px;

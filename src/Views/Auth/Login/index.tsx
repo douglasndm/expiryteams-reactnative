@@ -1,13 +1,21 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
-import { useTeam } from '~/Contexts/TeamContext';
 
+import { login } from '~/Functions/Auth';
+import { getUserTeams } from '~/Functions/Team/Users';
+import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
+
+import { reset } from '~/References/Navigation';
+
+import Loading from '~/Components/Loading';
+import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 
 import Footer from './Footer';
@@ -21,36 +29,48 @@ import {
     FormContainer,
     FormTitle,
     LoginForm,
-    InputContainer,
-    InputText,
     ForgotPasswordText,
-    Icon,
 } from './styles';
-import { login } from '~/Functions/Auth';
 
 const Login: React.FC = () => {
-    const { reset, navigate } = useNavigation();
-    const { signed, user, initializing } = useAuth();
-    const { clearTeam } = useTeam();
+    const { navigate } = useNavigation();
+    const { initializing } = useAuth();
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const [hidePass, setHidePass] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
-    const handleNavigateUser = useCallback(() => {
-        reset({
-            routes: [
-                {
-                    name: 'Routes',
-                    state: {
-                        routes: [{ name: 'TeamList' }],
-                    },
-                },
-            ],
-        });
-    }, [reset]);
+    const handleSelectedTeam = useCallback(async () => {
+        try {
+            const user = auth().currentUser;
+
+            if (user) {
+                const userTeams = await getUserTeams();
+                const currentSelectedTeam = await getSelectedTeam();
+
+                const team = userTeams.find(
+                    t => t.team.id === currentSelectedTeam?.team.id
+                );
+
+                if (team && team.team.active) {
+                    reset({
+                        routesNames: ['Home'],
+                    });
+                } else {
+                    reset({
+                        routesNames: ['TeamList'],
+                    });
+                }
+            }
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        }
+    }, []);
 
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({
@@ -58,23 +78,29 @@ const Login: React.FC = () => {
             password: Yup.string().required(),
         });
 
-        if (!(await schema.isValid({ email, password }))) {
+        try {
+            await schema.validate({ email, password });
+        } catch (err) {
             showMessage({
                 message: strings.View_Login_InputText_EmptyText,
                 type: 'warning',
             });
-            return;
         }
 
         try {
             setIsLoging(true);
 
             // Makes login with Firebase after that the subscriber event will handle
-            await login({ email, password });
+            const user = await login({ email, password });
 
-            if (clearTeam) {
-                clearTeam();
+            if (user && !user.emailVerified) {
+                reset({
+                    routesNames: ['VerifyEmail'],
+                });
+                return;
             }
+
+            await handleSelectedTeam();
         } catch (err) {
             setIsLoging(false);
             if (
@@ -99,37 +125,35 @@ const Login: React.FC = () => {
                 type: 'danger',
             });
         }
-    }, [clearTeam, email, password]);
+    }, [email, handleSelectedTeam, password]);
 
     const handleEmailChange = useCallback(
-        (value: string) => setEmail(value),
+        (value: string) => setEmail(value.trim()),
         []
     );
 
-    const handleEmailPassword = useCallback(
+    const handlePasswordChange = useCallback(
         (value: string) => setPassword(value),
         []
     );
-
-    const handleShowPass = useCallback(() => {
-        setHidePass(!hidePass);
-    }, [hidePass]);
 
     const handleNavigateToForgotPass = useCallback(() => {
         navigate('ForgotPassword');
     }, [navigate]);
 
     useEffect(() => {
-        if (signed && user) {
-            if (user.emailVerified) {
-                handleNavigateUser();
-            } else {
-                navigate('VerifyEmail');
-            }
+        if (auth().currentUser) {
+            handleSelectedTeam()
+                .then(() => setIsLoading(false))
+                .catch(() => setIsLoading(false));
+        } else {
+            setIsLoading(false);
         }
-    }, [handleNavigateUser, navigate, signed, user]);
+    }, []);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Content>
                 <LogoContainer>
@@ -142,34 +166,25 @@ const Login: React.FC = () => {
                 <FormContainer>
                     <FormTitle>{strings.View_Login_FormLogin_Title}</FormTitle>
                     <LoginForm>
-                        <InputContainer>
-                            <InputText
-                                placeholder={
-                                    strings.View_Login_InputText_Email_Placeholder
-                                }
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                value={email}
-                                onChangeText={handleEmailChange}
-                            />
-                        </InputContainer>
+                        <Input
+                            value={email}
+                            onChange={handleEmailChange}
+                            placeholder={
+                                strings.View_Login_InputText_Email_Placeholder
+                            }
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            contentStyle={{ marginBottom: 5 }}
+                        />
 
-                        <InputContainer>
-                            <InputText
-                                placeholder={
-                                    strings.View_Login_InputText_Password_Placeholder
-                                }
-                                secureTextEntry={hidePass}
-                                value={password}
-                                onChangeText={handleEmailPassword}
-                            />
-                            <Icon
-                                name={
-                                    hidePass ? 'eye-outline' : 'eye-off-outline'
-                                }
-                                onPress={handleShowPass}
-                            />
-                        </InputContainer>
+                        <Input
+                            value={password}
+                            onChange={handlePasswordChange}
+                            placeholder={
+                                strings.View_Login_InputText_Password_Placeholder
+                            }
+                            isPassword
+                        />
 
                         <ForgotPasswordText
                             onPress={handleNavigateToForgotPass}

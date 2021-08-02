@@ -602,8 +602,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
@@ -612,7 +613,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -620,7 +621,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.douglasndm.expirychecker.business;
 				PRODUCT_NAME = expirybusiness;
-				PROVISIONING_PROFILE_SPECIFIER = "Profile for Expiry Teams";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "expirybusiness-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -635,8 +636,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -644,7 +646,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -652,7 +654,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.douglasndm.expirychecker.business;
 				PRODUCT_NAME = expirybusiness;
-				PROVISIONING_PROFILE_SPECIFIER = "Profile for Expiry Teams";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "expirybusiness-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -5,6 +5,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const HeaderContainerNoDrawner = styled.SafeAreaView`
+    margin-top: 15px;
     flex-direction: row;
 `;
 

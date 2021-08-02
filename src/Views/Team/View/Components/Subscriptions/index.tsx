@@ -85,9 +85,9 @@ const Subscriptions: React.FC = () => {
             <SectionTitle>Assinaturas</SectionTitle>
 
             <SubscriptionDescription>
-                Com uma assinatura você tem a possibilidade de criar um time com
-                até 5 pessoas e todas as modificações feitas por elas são
-                sincronizadas entre todos os dispositivos.
+                Com uma assinatura você pode manter um time e adicionar pessoas
+                a ele. Todas as mudanças feitas serão refletidas em todos os
+                dispositivos
             </SubscriptionDescription>
 
             <Button

@@ -1,3 +1,5 @@
+import auth, { firebase } from '@react-native-firebase/auth';
+
 import api from '~/Services/API';
 
 interface IResponse {
@@ -14,86 +16,33 @@ interface getUserProps {
 export async function getUser({
     user_id,
 }: getUserProps): Promise<IResponse | null> {
-    try {
-        const response = await api.get<IResponse>(`/users/${user_id}`);
+    const response = await api.get<IResponse>(`/users/${user_id}`);
 
-        if (response) {
-            return response.data;
-        }
-        return null;
-    } catch (err) {
-        if (err.response) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
+    if (response) {
+        return response.data;
     }
+    return null;
 }
 
-interface createUserProps {
-    name?: string;
-    lastName?: string;
-    email: string;
-    password?: string;
-    passwordConfirm?: string;
-    firebaseUid?: string;
+interface deleteUserProps {
+    password: string;
 }
 
-export async function createUser({
-    name,
-    lastName,
-    email,
-    password,
-    passwordConfirm,
-    firebaseUid,
-}: createUserProps): Promise<void> {
-    try {
-        await api.post<IUser>('/users', {
-            name,
-            lastName,
-            email,
-            password,
-            passwordConfirmation: passwordConfirm,
-            firebaseUid,
-        });
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
+export async function deleteUser({ password }: deleteUserProps): Promise<void> {
+    const user = auth().currentUser;
+
+    if (!user || !user?.email) {
+        throw new Error("User doesn't have an Email");
     }
-}
 
-interface updateUserProps {
-    name?: string;
-    lastName?: string;
-}
+    const provider = firebase.auth.EmailAuthProvider;
+    const authCredential = provider.credential(user.email, password);
 
-export async function updateUser({
-    name,
-    lastName,
-}: updateUserProps): Promise<IUser> {
-    try {
-        const updatedUser = await api.put<IUser>('/users', {
-            name,
-            lastName,
-        });
+    await user.reauthenticateWithCredential(authCredential);
 
-        return updatedUser.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
-}
+    await api.delete('/users');
 
-export async function deleteUser(): Promise<void> {
-    try {
-        await api.delete('/users');
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
+    if (user) {
+        await user.delete();
     }
 }

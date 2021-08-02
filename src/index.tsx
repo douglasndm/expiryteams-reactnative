@@ -17,19 +17,21 @@ import './Locales';
 
 import './Services/Analytics';
 
-import './Functions/Team/Subscriptions';
-import './Functions/PushNotifications';
-import { getAllUserPreferences } from './Functions/UserPreferences';
+import '@utils/Team/Subscriptions';
+import '@utils/PushNotifications';
+import { getAllUserPreferences } from '@utils/UserPreferences';
 
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
+import DefaultPrefs from '~/Contexts/DefaultPreferences';
 import { AuthProvider } from '~/Contexts/AuthContext';
+import { TeamProvider } from '~/Contexts/TeamContext';
+
+import { navigationRef } from '~/References/Navigation';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
-
-import DefaultPrefs from '~/Contexts/DefaultPreferences';
 
 screens.enableScreens(true);
 
@@ -86,12 +88,17 @@ const App: React.FC = () => {
         >
             <ThemeProvider theme={preferences.appTheme}>
                 <PaperProvider>
-                    <NavigationContainer onStateChange={handleOnScreenChange}>
+                    <NavigationContainer
+                        ref={navigationRef}
+                        onStateChange={handleOnScreenChange}
+                    >
                         <AuthProvider>
-                            <StatusBar />
-                            <Routes />
+                            <TeamProvider>
+                                <StatusBar />
+                                <Routes />
 
-                            <AskReview />
+                                <AskReview />
+                            </TeamProvider>
                         </AuthProvider>
                     </NavigationContainer>
                     <FlashMessage duration={7000} />

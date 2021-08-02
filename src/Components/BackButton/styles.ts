@@ -7,7 +7,7 @@ export const ButtonContainer = styled(RectButton).attrs(props => ({
 }))`
     padding: 2px 7px;
     margin: 0 3px;
-    justify-content: center;
+    justify-content: flex-end;
 `;
 
 export const BackButtonImage = styled(Ionicons).attrs(props => ({

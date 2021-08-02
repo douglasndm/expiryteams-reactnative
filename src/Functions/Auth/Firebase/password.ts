@@ -7,5 +7,12 @@ interface recoveryPasswordProps {
 export async function recoveryPassword({
     email,
 }: recoveryPasswordProps): Promise<void> {
-    await auth().sendPasswordResetEmail(email);
+    try {
+        await auth().sendPasswordResetEmail(email);
+    } catch (err) {
+        if (err.code === 'auth/user-not-found') {
+            throw new Error('Nenhum usuário encontrado com este e-mail');
+        }
+        throw new Error(err.message);
+    }
 }

@@ -2,9 +2,12 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
+import Share from 'react-native-share';
 import {  format, parseISO } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
+
+import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
@@ -33,7 +36,7 @@ import {
 } from './styles';
 
 interface Props {
-    productId: string;
+    product: string;
     batch: string;
 }
 
@@ -46,6 +49,11 @@ const View: React.FC = () => {
     const routeParams = params as Props;
 
     const [isSendingNotification, setIsSendingNotification] = useState(false);
+    const [isSharing, setIsSharing] = useState<boolean>(false);
+
+    const prod = useMemo(() => {
+        return JSON.parse(routeParams.product) as IProduct;
+    }, [routeParams.product]);
 
     const userRole = useMemo(() => {
         if (teamContext.roleInTeam) {
@@ -76,21 +84,17 @@ const View: React.FC = () => {
     }, []);
 
     const batch = useMemo(() => {
-        if (routeParams.batch) {
-            return JSON.parse(routeParams.batch) as IBatch;
-        }
-
-        return null;
+        return JSON.parse(routeParams.batch) as IBatch;
     }, [routeParams.batch]);
 
     const handleNaviEdit = useCallback(() => {
         if (batch) {
             navigate('EditBatch', {
-                productId: routeParams.productId,
+                productId: prod.id,
                 batchId: batch.id,
             });
         }
-    }, [batch, navigate, routeParams.productId]);
+    }, [batch, navigate, prod.id]);
 
     const handleSendNotification = useCallback(async () => {
         try {
@@ -108,11 +112,53 @@ const View: React.FC = () => {
                 type: 'info',
             });
         } catch (err) {
-            console.log(err);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsSendingNotification(false);
         }
     }, [batch]);
+
+    const handleShare = useCallback(async () => {
+        try {
+            setIsSharing(true);
+
+            const expireDate = format(parseISO(batch.exp_date), dateFormat);
+
+            let text = '';
+
+            if (!!batch.amount && batch.amount > 0) {
+                text = strings.View_ShareProduct_MessageWithAmount.replace(
+                    '{PRODUCT}',
+                    prod.name
+                )
+                    .replace('{AMOUNT}', String(batch.amount))
+                    .replace('{DATE}', expireDate);
+            } else {
+                text = strings.View_ShareProduct_Message.replace(
+                    '{PRODUCT}',
+                    prod.name
+                ).replace('{DATE}', expireDate);
+            }
+
+            await Share.open({
+                title: strings.View_ShareProduct_Title,
+                message: text,
+            });
+        } catch (err) {
+            if (err.message !== 'User did not share') {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
+        } finally {
+            setIsSharing(false);
+        }
+    }, [batch.exp_date, batch.amount, dateFormat, prod.name]);
+
     return (
         <Container>
             <PageHeader>
@@ -145,27 +191,39 @@ const View: React.FC = () => {
                         )}`}
                     </BatchExpDate>
 
-                    <BatchAmount>Quantidade {batch.amount}</BatchAmount>
+                    {!!batch.amount && (
+                        <BatchAmount>Quantidade {batch.amount}</BatchAmount>
+                    )}
 
-                    <BatchPrice>
-                        {`Preço unitário `}
-                        <NumberFormat
-                            value={batch.price}
-                            displayType="text"
-                            thousandSeparator
-                            prefix={currencyPrefix}
-                            renderText={value => value}
-                            decimalScale={2}
-                        />
-                    </BatchPrice>
+                    {!!batch.price && (
+                        <BatchPrice>
+                            {`Preço unitário `}
+                            <NumberFormat
+                                value={batch.price}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
 
                     {(userRole === 'manager' || userRole === 'supervisor') && (
                         <Button
                             text="Enviar notificação para o time"
                             onPress={handleSendNotification}
                             isLoading={isSendingNotification}
+                            contentStyle={{ width: 250 }}
                         />
                     )}
+
+                    <Button
+                        text="Compartilhar com outros apps"
+                        onPress={handleShare}
+                        isLoading={isSharing}
+                        contentStyle={{ marginTop: -5, width: 250 }}
+                    />
                 </BatchContainer>
             )}
         </Container>

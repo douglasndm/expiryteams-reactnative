@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
+import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
 import { useAuth } from '~/Contexts/AuthContext';
 
-import { deleteUser } from '~/Functions/User';
 import {
     updateUser,
     updateEmail,
@@ -18,33 +17,33 @@ import {
 import Button from '~/Components/Button';
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
+import Input from '~/Components/InputText';
 
 import {
     Container,
     Content,
+    InputGroupTitle,
     InputGroup,
-    InputTextContainer,
-    InputText,
     InputTextTip,
-    ActionButton,
-    Icons,
-    DeleteAccountContainer,
-    DeleteAccountText,
 } from './styles';
 
 const User: React.FC = () => {
-    const { reset, replace } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
     const { user } = useAuth();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
-    const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
 
     const [name, setName] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [newPasswordConfi, setNewPasswordConfi] = useState<string>('');
 
     const [nameError, setNameError] = useState<boolean>(false);
+    const [newPasswordError, setNewPasswordError] = useState<boolean>(false);
+    const [newPasswordConfiError, setNewPasswordConfiError] = useState<boolean>(
+        false
+    );
 
     const loadData = useCallback(async () => {
         try {
@@ -65,9 +64,56 @@ const User: React.FC = () => {
     }, [user]);
 
     const handleUpdate = useCallback(async () => {
-        try {
-            setIsUpdating(true);
+        setIsUpdating(true);
 
+        try {
+            const schema = Yup.object().shape({
+                name: Yup.string().required('Nome é obrigatório'),
+            });
+
+            await schema.validate({ name });
+
+            if (password) {
+                const schemaPass = Yup.object().shape({
+                    newPassword: Yup.string().required('Digite a senha').min(6),
+                    newPasswordConfi: Yup.string().oneOf(
+                        [Yup.ref('newPassword'), null],
+                        'Confirmação da senha não pode está em branco e deve ser a mesma que a nova senha'
+                    ),
+                });
+
+                await schemaPass.validate({ newPassword, newPasswordConfi });
+            }
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+            setIsUpdating(false);
+            return;
+        }
+
+        if (password) {
+            try {
+                await updatePassword({
+                    password,
+                    newPassword,
+                });
+            } catch (err) {
+                let error = err.message;
+                if (err.code === 'auth/wrong-password') {
+                    error = 'Senha incorreta';
+                }
+                showMessage({
+                    message: error,
+                    type: 'danger',
+                });
+                setIsUpdating(false);
+                return;
+            }
+        }
+
+        try {
             await updateUser({
                 name,
             });
@@ -77,7 +123,7 @@ const User: React.FC = () => {
                 type: 'info',
             });
 
-            replace('Home', {});
+            pop();
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -86,40 +132,26 @@ const User: React.FC = () => {
         } finally {
             setIsUpdating(false);
         }
-    }, [name, replace]);
-
-    const handleDelete = useCallback(async () => {
-        try {
-            setIsLoading(true);
-
-            await deleteUser();
-
-            showMessage({
-                message: 'Conta permanentemente apagada',
-                type: 'warning',
-            });
-
-            reset({
-                routes: [{ name: 'Logout' }],
-            });
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [reset]);
+    }, [name, newPassword, newPasswordConfi, password, pop]);
 
     const handleNameChange = useCallback((value: string) => {
         setName(value);
         setNameError(false);
     }, []);
 
-    const handlwSwitchDeleteVisible = useCallback(() => {
-        setIsDeleteVisible(!isDeleteVisible);
-    }, [isDeleteVisible]);
+    const handlePasswordChange = useCallback((value: string) => {
+        setPassword(value);
+    }, []);
+
+    const handleNewPasswordChange = useCallback((value: string) => {
+        setNewPassword(value);
+        setNewPasswordError(false);
+    }, []);
+
+    const handleNewPasswordConfiChange = useCallback((value: string) => {
+        setNewPasswordConfi(value);
+        setNewPasswordConfiError(false);
+    }, []);
 
     useEffect(() => {
         loadData();
@@ -129,20 +161,55 @@ const User: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header title="Perfil" />
+            <Header title="Perfil" noDrawer />
 
             <Content>
                 <InputGroup>
-                    <InputTextContainer hasError={nameError}>
-                        <InputText
-                            placeholder="Nome"
-                            value={name}
-                            onChangeText={handleNameChange}
-                        />
-                    </InputTextContainer>
+                    <Input
+                        value={name}
+                        onChange={handleNameChange}
+                        placeholder="Nome"
+                        hasError={nameError}
+                    />
                 </InputGroup>
                 {nameError && (
                     <InputTextTip>Digite o nome do usuário</InputTextTip>
+                )}
+
+                <InputGroupTitle>Alteração de senha</InputGroupTitle>
+                <InputGroup>
+                    <Input
+                        placeholder="Senha atual"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        isPassword
+                    />
+                </InputGroup>
+
+                <InputGroup>
+                    <Input
+                        placeholder="Nova senha"
+                        value={newPassword}
+                        onChange={handleNewPasswordChange}
+                        hasError={newPasswordError}
+                        isPassword
+                    />
+                </InputGroup>
+                {newPasswordError && (
+                    <InputTextTip>Digite sua nova senha</InputTextTip>
+                )}
+
+                <InputGroup>
+                    <Input
+                        placeholder="Confirmação da senha"
+                        value={newPasswordConfi}
+                        onChange={handleNewPasswordConfiChange}
+                        hasError={newPasswordConfiError}
+                        isPassword
+                    />
+                </InputGroup>
+                {newPasswordConfiError && (
+                    <InputTextTip>Confirme sua nova senha</InputTextTip>
                 )}
 
                 <Button
@@ -151,40 +218,6 @@ const User: React.FC = () => {
                     isLoading={isUpdating}
                 />
             </Content>
-
-            <DeleteAccountContainer>
-                <ActionButton
-                    icon={() => <Icons name="trash-outline" size={22} />}
-                    onPress={handlwSwitchDeleteVisible}
-                >
-                    <DeleteAccountText>Apagar conta</DeleteAccountText>
-                </ActionButton>
-            </DeleteAccountContainer>
-
-            <Dialog.Container
-                visible={isDeleteVisible}
-                onBackdropPress={handlwSwitchDeleteVisible}
-            >
-                <Dialog.Title>ATENÇÃO</Dialog.Title>
-                <Dialog.Description>
-                    Apagando sua conta TODOS OS SEUS DADOS serão apagados
-                    permanemente. Se houver assinaturas ativas as mesmas deverão
-                    ser canceladas na App Store ou Google Play. Você será
-                    removido de todos os times que faz parte e dos quais você é
-                    gerente o time e todos os seus produtos/lotes/categorias
-                    serão permanemente apagados Está ação não pode ser desfeita.
-                    Você tem certeza?
-                </Dialog.Description>
-                <Dialog.Button
-                    label="Manter conta"
-                    onPress={handlwSwitchDeleteVisible}
-                />
-                <Dialog.Button
-                    label="APAGAR TUDO"
-                    color="red"
-                    onPress={handleDelete}
-                />
-            </Dialog.Container>
         </Container>
     );
 };

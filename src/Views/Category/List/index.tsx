@@ -113,7 +113,10 @@ const List: React.FC = () => {
             setCategories([...categories, newCategory]);
             setNewCategoryName('');
         } catch (err) {
-            setInputErrorMessage(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsAdding(false);
         }

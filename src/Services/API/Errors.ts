@@ -1,10 +1,16 @@
 import { showMessage } from 'react-native-flash-message';
 
+import { destroySession } from '@utils/Auth/Session';
+
 import strings from '~/Locales';
 
-import { destroySession } from '~/Functions/Auth/Session';
+import { reset } from '~/References/Navigation';
+import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
 async function errorsHandler(error: any): Promise<void> {
+    let knownError = false;
+    let err = '';
+
     if (error.response) {
         // Request made and server responded
 
@@ -14,8 +20,11 @@ async function errorsHandler(error: any): Promise<void> {
 
         if (error.response.data.errorCode) {
             const { errorCode } = error.response.data;
+            const { message } = error.response.data;
 
-            let err = '';
+            if (errorCode) {
+                knownError = true;
+            }
 
             switch (errorCode) {
                 case 1:
@@ -31,13 +40,22 @@ async function errorsHandler(error: any): Promise<void> {
                     err = strings.API_Error_Code4;
                     break;
                 case 5:
+                    // Subscription is not active
                     err = strings.API_Error_Code5;
+                    reset({
+                        routeHandler: 'Routes',
+                        routesNames: ['ViewTeam'],
+                    });
                     break;
                 case 6:
                     err = strings.API_Error_Code6;
                     break;
                 case 7:
+                    // User was not found
                     err = strings.API_Error_Code7;
+                    reset({
+                        routesNames: ['Logout'],
+                    });
                     break;
                 case 8:
                     err = strings.API_Error_Code8;
@@ -51,31 +69,72 @@ async function errorsHandler(error: any): Promise<void> {
                 case 11:
                     err = strings.API_Error_Code11;
                     break;
+                case 12:
+                    err = strings.API_Error_Code12;
+                    break;
+                case 13:
+                    err = strings.API_Error_Code13;
+                    break;
+                case 14:
+                    err = strings.API_Error_Code14;
+                    break;
+                case 15:
+                    err = strings.API_Error_Code15;
+                    break;
+                case 16:
+                    err = strings.API_Error_Code16;
+                    break;
+                case 17:
+                    // User is not in team
+                    // could be removed or manager deleted the team
+                    err = strings.API_Error_Code17;
+                    await clearSelectedteam();
+                    reset({
+                        routesNames: ['TeamList'],
+                    });
+                    break;
+                case 18:
+                    err = strings.API_Error_Code18;
+                    break;
+                case 19:
+                    err = strings.API_Error_Code19;
+                    break;
+                case 20:
+                    err = strings.API_Error_Code20;
+                    break;
+                case 21:
+                    err = strings.API_Error_Code21;
+                    break;
+                case 22:
+                    err = strings.API_Error_Code22;
+                    break;
 
                 default:
                     if (error.response.data.message) {
-                        console.log('Message from server');
-                        console.log(error.response.data.message);
+                        err = message;
                     }
-                    err = 'Error';
                     break;
             }
-
-            showMessage({
-                message: err,
-                type: 'danger',
-            });
         }
 
         if (error.response.status && error.response.status === 403) {
             await destroySession();
         }
-    } else if (error.request) {
+
+        throw new Error(err);
+    }
+    if (error.request) {
         // The request was made but no response was received
+        console.log('request error');
         console.log(error.request);
-        return Promise.reject(error);
+    }
+    if (knownError) {
+        showMessage({
+            message: err,
+            type: 'danger',
+        });
     } else {
-        return Promise.reject(error);
+        Promise.reject(error);
     }
 }
 

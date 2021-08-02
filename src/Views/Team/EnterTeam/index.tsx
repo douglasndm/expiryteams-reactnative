@@ -21,13 +21,9 @@ import {
     InputTextTip,
 } from './styles';
 
-interface Props {
-    userRole: IUserRoles;
-}
-
-const EnterTeam: React.FC<Props> = () => {
+const EnterTeam: React.FC = () => {
     const { goBack, reset } = useNavigation();
-    const { params } = useRoute<RouteProp<Props, 'userRole'>>();
+    const { params } = useRoute<RouteProp<RoutesParams, 'EnterTeam'>>();
 
     const userRole = useMemo(() => {
         return params.userRole || null;

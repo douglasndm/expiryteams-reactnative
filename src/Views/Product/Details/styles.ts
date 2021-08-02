@@ -1,25 +1,12 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import { Button, FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
     flex: 1;
     background: ${({ theme }) => theme.colors.background};
-`;
-
-export const ScrollView = styled.ScrollView`
-    padding: 30px 0;
-    ${isIphoneX() &&
-    css`
-        padding-top: ${getStatusBarHeight() + 20}px;
-    `}
-    ${Platform.OS === 'android' &&
-    css`
-        padding-top: 0;
-    `}
 `;
 
 export const PageHeader = styled.View`
@@ -27,18 +14,6 @@ export const PageHeader = styled.View`
     justify-content: space-between;
 
     padding: ${Platform.OS === 'ios' ? 0 : 10}px 5px 10px 5px;
-`;
-
-export const PageTitleContent = styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
-
-export const PageTitle = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-
-    color: ${({ theme }) => theme.colors.text};
 `;
 
 export const ProductContainer = styled.View`

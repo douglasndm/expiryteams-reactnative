@@ -7,16 +7,9 @@ interface getProductProps {
 export async function getProduct({
     productId,
 }: getProductProps): Promise<IProduct> {
-    try {
-        const response = await api.get<IProduct>(`/products/${productId}`);
+    const response = await api.get<IProduct>(`/products/${productId}`);
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }
 
 interface createProductProps {
@@ -49,20 +42,13 @@ export async function updateProduct({
     product,
     categories,
 }: updateProductProps): Promise<IProduct> {
-    try {
-        const response = await api.put<IProduct>(`/products/${product.id}`, {
-            name: product.name,
-            code: product.code,
-            categories,
-        });
+    const response = await api.put<IProduct>(`/products/${product.id}`, {
+        name: product.name,
+        code: product.code,
+        categories,
+    });
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }
 
 interface deleteProductProps {
@@ -72,12 +58,5 @@ interface deleteProductProps {
 export async function deleteProduct({
     product_id,
 }: deleteProductProps): Promise<void> {
-    try {
-        await api.delete<IProduct>(`/products/${product_id}`);
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    await api.delete<IProduct>(`/products/${product_id}`);
 }
