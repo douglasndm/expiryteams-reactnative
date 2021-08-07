@@ -45,6 +45,7 @@
     "API_Error_Code24": "Código inválido",
     "API_Error_Code25": "Usuário não foi convidado para o time",
     "API_Error_Code26": "Arquivo inválido, por favor gere novamente o arquivo de exportação",
+    "API_Error_Code27": "Não há usuários para enviar a notificação",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",

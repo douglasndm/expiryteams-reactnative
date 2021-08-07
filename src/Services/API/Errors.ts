@@ -22,6 +22,10 @@ async function errorsHandler(error: any): Promise<void> {
             const { errorCode } = error.response.data;
             const { message } = error.response.data;
 
+            if (message) {
+                err = message;
+            }
+
             if (errorCode) {
                 knownError = true;
             }
@@ -119,6 +123,9 @@ async function errorsHandler(error: any): Promise<void> {
                     break;
                 case 26:
                     err = strings.API_Error_Code26;
+                    break;
+                case 27:
+                    err = strings.API_Error_Code27;
                     break;
 
                 default:
