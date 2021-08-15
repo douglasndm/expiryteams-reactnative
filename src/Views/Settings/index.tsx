@@ -121,7 +121,7 @@ const Settings: React.FC = () => {
                                 }
                             }}
                         />
-                        {/* <Notifications /> */}
+                        <Notifications />
                     </CategoryOptions>
                 </Category>
 

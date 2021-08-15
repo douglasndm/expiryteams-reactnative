@@ -7,7 +7,7 @@ import messaging from '@react-native-firebase/messaging';
 import errorsHandler from './API/Errors';
 
 const api = axios.create({
-    baseURL: __DEV__ ? 'http://192.168.1.3:3213' : EnvConfig.API_URL,
+    baseURL: __DEV__ ? 'http://localhost:3213' : EnvConfig.API_URL,
 });
 
 api.interceptors.request.use(async config => {
