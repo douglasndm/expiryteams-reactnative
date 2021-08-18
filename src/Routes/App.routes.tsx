@@ -9,7 +9,6 @@ import EditBatch from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/Product/Details';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
-import Success from '~/Views/Informations/Success';
 import Error from '~/Views/Informations/Error';
 import PhotoView from '~/Views/PhotoView';
 
@@ -58,7 +57,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="AddBatch" component={AddBatch} />
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditBatch" component={EditBatch} />
-            <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="Error" component={Error} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
 

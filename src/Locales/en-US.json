@@ -230,17 +230,6 @@
     "View_Success_BatchDeleted": "Batch deleted",
     "View_Success_ProductDeleted": "Product deleted",
 
-    "View_Success_BatchCreatedDescription": "The batch was added",
-    "View_Success_ProductCreatedDescription": "The product was added",
-    "View_Success_BatchUpdatedDescription": "The batch has been updated",
-    "View_Success_ProductUpdatedDescription": "The product has been updated",
-    "View_Success_BatchDeletedDescription": "Batch was deleted",
-    "View_Success_ProductDeletedDescription": "Product was deleted",
-
-    "View_Success_Button_GoToCategory": "Go to category",
-    "View_Success_Button_GoToHome": "Go home",
-    "View_Success_Button_NavigateToProduct": "Go to product",
-
     "View_Category_List_PageTitle": "Categories",
     "View_Category_List_InputAdd_Placeholder": "New category name",
     "View_Category_List_InputAdd_Error_EmptyText": "Enter the category's name",

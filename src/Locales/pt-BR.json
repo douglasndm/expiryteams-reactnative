@@ -227,17 +227,6 @@
     "View_Success_BatchDeleted": "Lote apagado",
     "View_Success_ProductDeleted": "Produto apagado",
 
-    "View_Success_BatchCreatedDescription": "O lote foi criado.",
-    "View_Success_ProductCreatedDescription": "O produto foi criado.",
-    "View_Success_BatchUpdatedDescription": "O lote foi atualizado.",
-    "View_Success_ProductUpdatedDescription": "O produto foi atualizado.",
-    "View_Success_BatchDeletedDescription": "O lote foi deletado.",
-    "View_Success_ProductDeletedDescription": "O produto foi deletado.",
-
-    "View_Success_Button_GoToCategory": "Ir para categoria",
-    "View_Success_Button_GoToHome": "Ir para o início",
-    "View_Success_Button_NavigateToProduct": "Ir para o produto",
-
     "View_PhotoView_PageTitle": "Visualizar foto",
     "View_PhotoView_Button_Back": "Voltar",
 

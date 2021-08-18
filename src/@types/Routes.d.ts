@@ -18,19 +18,6 @@ type RoutesParams = {
         productId: string;
         batchId: string;
     };
-    Success: {
-        type:
-            | 'create_batch'
-            | 'create_product'
-            | 'edit_batch'
-            | 'edit_product'
-            | 'delete_batch'
-            | 'delete_product';
-        productId?: number;
-
-        category_id?: string;
-        store_id?: string;
-    };
     Error;
     PhotoView: {
         productId: string;

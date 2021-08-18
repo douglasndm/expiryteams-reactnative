@@ -6,6 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 import { parseISO } from 'date-fns';
 
+import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -55,7 +56,9 @@ interface Props {
 
 const EditBatch: React.FC = () => {
     const route = useRoute();
-    const { reset, goBack } = useNavigation();
+    const { goBack, replace } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const teamContext = useTeam();
 
@@ -151,15 +154,13 @@ const EditBatch: React.FC = () => {
                 },
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: { productId, type: 'edit_batch' },
-                    },
-                ],
+            showMessage({
+                message: strings.View_Success_BatchUpdated,
+                type: 'info',
+            });
+
+            replace('ProductDetails', {
+                id: productId,
             });
         } catch (err) {
             showMessage({
@@ -169,7 +170,7 @@ const EditBatch: React.FC = () => {
         } finally {
             setIsUpdating(false);
         }
-    }, [amount, batch, batchId, expDate, price, productId, reset, status]);
+    }, [amount, batch, batchId, expDate, price, productId, replace, status]);
 
     useEffect(() => {
         loadData();
@@ -179,12 +180,13 @@ const EditBatch: React.FC = () => {
         try {
             await deleteBatch({ batch_id: batchId });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    { name: 'Success', params: { type: 'delete_batch' } },
-                ],
+            showMessage({
+                message: strings.View_Success_BatchDeleted,
+                type: 'info',
+            });
+
+            replace('ProductDetails', {
+                id: productId,
             });
         } catch (err) {
             showMessage({
@@ -192,7 +194,7 @@ const EditBatch: React.FC = () => {
                 type: 'danger',
             });
         }
-    }, [batchId, reset]);
+    }, [batchId, productId, replace]);
 
     const handleBatchChange = useCallback(value => {
         setBatch(value);

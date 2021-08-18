@@ -4,6 +4,7 @@ import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -63,6 +64,10 @@ interface ICategoryItem {
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
+    const { reset, goBack, replace } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
+
     const teamContext = useTeam();
 
     const userRole = useMemo(() => {
@@ -72,8 +77,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
         return 'repositor';
     }, [teamContext.roleInTeam]);
-
-    const { reset, goBack } = useNavigation();
 
     const product = useMemo<IProduct>(() => {
         return JSON.parse(route.params.product);
@@ -156,15 +159,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 categories: prodCategories,
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: { productId: product.id, type: 'edit_product' },
-                    },
-                ],
+            showMessage({
+                message: strings.View_Success_ProductUpdated,
+                type: 'info',
+            });
+
+            replace('ProductDetails', {
+                id: product.id,
             });
         } catch (err) {
             showMessage({
@@ -172,18 +173,19 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 type: 'danger',
             });
         }
-    }, [code, name, product.id, reset, selectedCategory]);
+    }, [code, name, product.id, replace, selectedCategory]);
 
     const handleDeleteProduct = useCallback(async () => {
         try {
             await deleteProduct({ product_id: product.id });
 
+            showMessage({
+                message: strings.View_Success_ProductDeleted,
+                type: 'info',
+            });
+
             reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    { name: 'Success', params: { type: 'delete_product' } },
-                ],
+                routes: [{ name: 'Home' }],
             });
         } catch (err) {
             showMessage({

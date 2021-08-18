@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { exists, unlink } from 'react-native-fs';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-
-import { exists, unlink } from 'react-native-fs';
 
 import strings from '~/Locales';
 
@@ -65,7 +65,9 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { goBack, navigate } = useNavigation();
+    const { goBack, navigate, replace } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
     const teamContext = useTeam();
 
     const locale = useMemo(() => {
@@ -186,10 +188,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 },
             });
 
-            navigate('Success', {
-                type: 'create_product',
-                productId: createdProduct.id,
-                category_id: selectedCategory,
+            showMessage({
+                message: strings.View_Success_ProductCreated,
+                type: 'info',
+            });
+
+            replace('ProductDetails', {
+                id: createdProduct.id,
             });
         } catch (error) {
             showMessage({
@@ -210,7 +215,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         expDate,
         amount,
         price,
-        navigate,
+        replace,
     ]);
 
     useEffect(() => {
