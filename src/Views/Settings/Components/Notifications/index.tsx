@@ -3,18 +3,17 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
-import Loading from '~/Components/Loading';
+import {
+    getNotificationsPreferences,
+    updateNotificationsPreferences,
+} from '~/Functions/Settings/Notifications';
 
 import {
     SettingNotificationContainer,
     SettingNotificationDescription,
     CheckBox,
+    Loading,
 } from './styles';
-
-import {
-    getNotificationsPreferences,
-    updateNotificationsPreferences,
-} from '~/Functions/Settings/Notifications';
 
 interface INotificationCadencyItem {
     label: string;
