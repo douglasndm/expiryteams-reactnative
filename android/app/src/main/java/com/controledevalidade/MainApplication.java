@@ -17,6 +17,10 @@ import androidx.multidex.MultiDexApplication;
 import com.microsoft.codepush.react.CodePush;
 import com.google.firebase.FirebaseApp;
 
+// for reanimated
+import com.facebook.react.bridge.JSIModulePackage;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
+
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -46,6 +50,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         @Override
         protected String getJSBundleFile() {
             return CodePush.getJSBundleFile();
+        }
+
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+            return new ReanimatedJSIModulePackage(); // <- add
         }
       };
 

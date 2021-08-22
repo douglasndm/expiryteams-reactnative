@@ -33,9 +33,8 @@ const DrawerContainer: React.FC = () => {
         <>
             <DeepLinking />
             <Drawer.Navigator
-                drawerType="slide"
-                openByDefault={false}
-                keyboardDismissMode="on-drag"
+                screenOptions={{ drawerType: 'back', headerShown: false }}
+                defaultStatus="closed"
                 drawerContent={props => <DrawerMenu {...props} />}
             >
                 <Drawer.Screen
