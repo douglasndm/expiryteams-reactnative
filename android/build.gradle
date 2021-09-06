@@ -2,18 +2,19 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "30.0.2"
+        buildToolsVersion = "29.0.3"
         minSdkVersion = 21
-        compileSdkVersion = 30
-        targetSdkVersion = 30
+        compileSdkVersion = 29
+        targetSdkVersion = 29
         ndkVersion = "20.1.5948944"
     }
     repositories {
         google()
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath('com.android.tools.build:gradle:4.2.2')
+
         classpath 'com.google.gms:google-services:4.3.8'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -24,7 +25,7 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
+        mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
@@ -35,9 +36,7 @@ allprojects {
         }
 
         google()
-        maven { url 'https://www.jitpack.io' }
-
-        // For react-native-date-picker
         jcenter()
+        maven { url 'https://www.jitpack.io' }
     }
 }

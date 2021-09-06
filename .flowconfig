@@ -30,6 +30,9 @@ emoji=true
 
 exact_by_default=true
 
+esproposal.optional_chaining=enable
+esproposal.nullish_coalescing=enable
+
 module.file_ext=.js
 module.file_ext=.json
 module.file_ext=.ios.js
@@ -65,4 +68,4 @@ untyped-import
 untyped-type-import
 
 [version]
-^0.149.0
+^0.137.0
