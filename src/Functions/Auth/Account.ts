@@ -48,13 +48,9 @@ export async function isEmailConfirmed(): Promise<boolean> {
 }
 
 export async function resendConfirmationEmail(): Promise<void> {
-    try {
-        const user = auth().currentUser;
+    const user = auth().currentUser;
 
-        await user?.sendEmailVerification();
-    } catch (err) {
-        throw new Error(err.message);
-    }
+    await user?.sendEmailVerification();
 }
 
 interface updateUserProps {

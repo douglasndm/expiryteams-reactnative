@@ -102,26 +102,20 @@ const Login: React.FC = () => {
 
             await handleSelectedTeam();
         } catch (err) {
-            setIsLoging(false);
+            let error = err.message;
             if (
                 err.code === 'auth/wrong-password' ||
                 err.code === 'auth/user-not-found'
             ) {
-                showMessage({
-                    message: strings.View_Login_Error_WrongEmailOrPassword,
-                    type: 'danger',
-                });
-                return;
+                error = strings.View_Login_Error_WrongEmailOrPassword;
+            } else if (err.code === 'auth/network-request-failed') {
+                error = strings.View_Login_Error_NetworkError;
+            } else if (error === 'request error') {
+                error = 'Erro de conexão';
             }
-            if (err.code === 'auth/network-request-failed') {
-                showMessage({
-                    message: strings.View_Login_Error_NetworkError,
-                    type: 'danger',
-                });
-                return;
-            }
+
             showMessage({
-                message: err.message,
+                message: error,
                 type: 'danger',
             });
         } finally {

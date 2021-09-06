@@ -141,8 +141,8 @@ async function errorsHandler(error: any): Promise<void> {
         }
 
         throw new Error(err);
-    }
-    if (error.request) {
+    } else if (error.request) {
+        err = error.request._response;
         // The request was made but no response was received
         console.log('request error');
         console.log(error.request);
