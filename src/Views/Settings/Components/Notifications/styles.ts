@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { ActivityIndicator } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 export const SettingNotificationContainer = styled.View`
@@ -21,10 +20,3 @@ export const CheckBox = styled(BouncyCheckbox).attrs(props => ({
         color: props.theme.colors.subText,
     },
 }))``;
-
-export const Loading = styled(ActivityIndicator).attrs(() => ({
-    size: 48,
-    color: '#fff',
-}))`
-    margin-top: 15px;
-`;
