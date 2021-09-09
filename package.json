@@ -58,11 +58,7 @@
     "react-native-purchases": "^4.3.0",
     "react-native-push-notification": "^7.3.1",
     "react-native-qrcode-scanner": "^1.5.1",
-<<<<<<< HEAD
-    "react-native-reanimated": "2.3.0-alpha.3",
-=======
     "react-native-reanimated": "^2.1.0",
->>>>>>> parent of 22948a1 (Updating to React Native 0.65)
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.1.1",
     "react-native-share": "^6.2.1",
