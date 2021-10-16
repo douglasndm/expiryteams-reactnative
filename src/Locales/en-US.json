@@ -234,6 +234,8 @@
     "View_Category_List_InputAdd_Placeholder": "New category name",
     "View_Category_List_InputAdd_Error_EmptyText": "Enter the category's name",
     "View_Category_List_AllCategories_Label": "All categories",
+    "View_Category_List_View_BeforeCategoryName": "Category ",
+    "View_Category_View_ExcelExportedSuccess": "Excel file created",
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
 
