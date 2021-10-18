@@ -53,11 +53,13 @@ export const TeamMembersLimit = styled.Text<Offer>`
 
 export const DetailsContainer = styled.View<Offer>`
     flex: 1;
-    justify-content: center;
     padding: 12px;
 
+    height: 75px;
     background-color: ${({ theme }) => theme.colors.productBackground};
 
+    justify-content: center;
+    align-items: center;
     ${props =>
         props.isSelected &&
         css`
@@ -70,9 +72,9 @@ export const SubscriptionDescription = styled.Text.attrs(() => ({
     textBreakStrategy: 'simple',
 }))<Offer>`
     color: white;
-    text-align: center;
-    align-self: center;
     font-size: 16px;
+    max-height: 60px;
+
     ${props =>
         props.isSelected &&
         css`

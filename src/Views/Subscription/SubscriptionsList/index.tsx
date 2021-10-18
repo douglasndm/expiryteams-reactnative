@@ -179,10 +179,11 @@ const SubscriptionsList: React.FC = () => {
             const isSelected = selected === pack.offeringIdentifier;
 
             let text = ``;
-            const introPriceStr =
-                introPrice.price > 0 ? introPrice.priceString : 'Grátis';
 
             if (Platform.OS === 'android' && !!introPrice) {
+                const introPriceStr =
+                    introPrice.price > 0 ? introPrice.priceString : 'Grátis';
+
                 const periodUnit = pack.product.introPrice?.periodUnit;
 
                 if (!!periodUnit && periodUnit === 'DAY') {
