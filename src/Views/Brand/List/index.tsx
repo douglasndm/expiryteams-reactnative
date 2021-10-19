@@ -100,9 +100,10 @@ const ListView: React.FC = () => {
     }, [brands, newBrandName, teamContext.id]);
 
     const handleNavigateToCategory = useCallback(
-        (brand_id: string) => {
+        (brand_id: string, brand_name: string) => {
             navigate('BrandView', {
                 brand_id,
+                brand_name,
             });
         },
         [navigate]
@@ -112,7 +113,7 @@ const ListView: React.FC = () => {
         ({ item }) => {
             return (
                 <ListItemContainer
-                    onPress={() => handleNavigateToCategory(item.id)}
+                    onPress={() => handleNavigateToCategory(item.id, item.name)}
                 >
                     <ListItemTitle>{item.name}</ListItemTitle>
                 </ListItemContainer>

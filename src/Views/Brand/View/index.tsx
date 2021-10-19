@@ -30,6 +30,7 @@ import {
 
 interface Props {
     brand_id: string;
+    brand_name: string;
 }
 
 const View: React.FC = () => {
@@ -40,7 +41,7 @@ const View: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [brandName, setBrandName] = useState<string>('Brand Name');
+    const [brandName] = useState<string>(() => routeParams.brand_name);
 
     const [products, setProducts] = useState<IProduct[]>([]);
 
