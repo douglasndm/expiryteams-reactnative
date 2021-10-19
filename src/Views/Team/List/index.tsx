@@ -49,6 +49,19 @@ const List: React.FC = () => {
     // This is due limition of identify user and teams on revenuecat
     const [isManager, setIsManager] = useState<boolean>(false);
 
+    const handleSetTeam = useCallback(
+        (teamId: string) => {
+            const selectedTeam = teams.find(t => t.team.id === teamId);
+
+            if (!selectedTeam) {
+                throw new Error('Team not found');
+            }
+
+            setSelectedTeamRole(selectedTeam);
+        },
+        [teams]
+    );
+
     useEffect(() => {
         mounted.current = true;
 
@@ -70,9 +83,7 @@ const List: React.FC = () => {
 
                 if (mounted) {
                     response.forEach(item => {
-                        if (
-                            item.role.toLowerCase() === 'Manager'.toLowerCase()
-                        ) {
+                        if (item.role.toLowerCase() === 'manager') {
                             setIsManager(true);
                         }
                     });
@@ -87,18 +98,24 @@ const List: React.FC = () => {
                         return -1;
                     });
 
+                    if (sortedTeams.length === 1) {
+                        handleSetTeam(sortedTeams[0].team.id);
+                    }
+
                     setTeams(sortedTeams);
                 }
             } catch (err) {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
+                if (err instanceof Error) {
+                    showMessage({
+                        message: err.message,
+                        type: 'danger',
+                    });
+                }
             } finally {
                 setIsLoading(false);
             }
         }
-    }, [teamContext.isLoading, user]);
+    }, [handleSetTeam, teamContext.isLoading, user]);
 
     const handleSelectedTeamChange = useCallback(async () => {
         if (!selectedTeamRole) {
@@ -129,19 +146,6 @@ const List: React.FC = () => {
             });
         }
     }, [reset, selectedTeamRole, teamContext]);
-
-    const handleSetTeam = useCallback(
-        (teamId: string) => {
-            const selectedTeam = teams.find(t => t.team.id === teamId);
-
-            if (!selectedTeam) {
-                throw new Error('Team not found');
-            }
-
-            setSelectedTeamRole(selectedTeam);
-        },
-        [teams]
-    );
 
     useEffect(() => {
         if (selectedTeamRole) {
