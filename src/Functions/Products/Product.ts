@@ -27,6 +27,7 @@ export async function createProduct({
         team_id,
         name: product.name,
         code: product.code,
+        brand: product.brand,
         categories,
     });
 
@@ -45,6 +46,7 @@ export async function updateProduct({
     const response = await api.put<IProduct>(`/products/${product.id}`, {
         name: product.name,
         code: product.code,
+        brand: product.brand,
         categories,
     });
 

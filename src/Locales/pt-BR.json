@@ -117,6 +117,7 @@
     "View_AddProduct_InputPlacehoder_Amount": "Quantidade",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Preço unitário",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Selecione a categoria",
+    "View_AddProduct_InputPlaceholder_SelectBrand": "Selecione a marca",
     "View_AddProduct_InputAccessibility_Name": "Campo para digitar o nome do produto",
     "View_AddProduct_InputAccessibility_Code": "Campo para digitar o código do produto",
     "View_AddProduct_InputAccessibility_Batch": "Campo para digitar o lote do produto",

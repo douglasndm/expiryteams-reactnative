@@ -11,6 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
+import { getAllBrands } from '~/Functions/Brand';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -57,12 +58,6 @@ interface RequestParams {
     };
 }
 
-interface ICategoryItem {
-    label: string;
-    value: string;
-    key: string;
-}
-
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { reset, goBack, replace } = useNavigation<
         StackNavigationProp<RoutesParams>
@@ -89,10 +84,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [code, setCode] = useState<string | undefined>('');
     const [photoPath, setPhotoPath] = useState<string>('');
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [brands, setBrands] = useState<Array<IBrandItem>>([]);
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
+    const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
@@ -124,14 +121,28 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             );
             setCategories(categoriesArray);
 
+            const allBrands = await getAllBrands({ team_id: teamContext.id });
+            const brandsArray: Array<IBrandItem> = [];
+
+            allBrands.forEach(brand =>
+                brandsArray.push({
+                    key: brand.id,
+                    label: brand.name,
+                    value: brand.id,
+                })
+            );
+
+            setBrands(brandsArray);
+
             if (product.categories.length > 0) {
                 setSelectedCategory(product.categories[0].id);
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -155,6 +166,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     id: product.id,
                     name,
                     code,
+                    brand: selectedBrand || undefined,
                 },
                 categories: prodCategories,
             });
@@ -168,12 +180,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 id: product.id,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
-    }, [code, name, product.id, replace, selectedCategory]);
+    }, [code, name, product.id, replace, selectedBrand, selectedCategory]);
 
     const handleDeleteProduct = useCallback(async () => {
         try {
@@ -188,10 +201,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 routes: [{ name: 'Home' }],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setDeleteComponentVisible(false);
         }
@@ -222,6 +236,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
+    }, []);
+
+    const handleBrandChange = useCallback(value => {
+        setSelectedBrand(value);
     }, []);
 
     const onPhotoTaked = useCallback(
@@ -387,6 +405,25 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 placeholder={{
                                                     label:
                                                         strings.View_AddProduct_InputPlaceholder_SelectCategory,
+                                                    value: 'null',
+                                                }}
+                                            />
+                                        </PickerContainer>
+
+                                        <PickerContainer
+                                            style={{
+                                                marginBottom: 10,
+                                            }}
+                                        >
+                                            <Picker
+                                                items={brands}
+                                                onValueChange={
+                                                    handleBrandChange
+                                                }
+                                                value={selectedBrand}
+                                                placeholder={{
+                                                    label:
+                                                        strings.View_AddProduct_InputPlaceholder_SelectBrand,
                                                     value: 'null',
                                                 }}
                                             />
