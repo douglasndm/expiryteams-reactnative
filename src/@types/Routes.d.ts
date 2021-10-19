@@ -30,6 +30,15 @@ type RoutesParams = {
     CategoryEdit: {
         id: string;
     };
+
+    BrandList;
+    BrandView: {
+        brand_id: string;
+    };
+    BrandEdit: {
+        brand_id: string;
+    };
+
     Export;
 
     BatchView: {

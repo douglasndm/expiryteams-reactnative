@@ -36,6 +36,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('ListCategory');
     }, [navigation]);
 
+    const navigateToBrands = useCallback(() => {
+        navigation.navigate('BrandList');
+    }, [navigation]);
+
     const navigateToTeamList = useCallback(async () => {
         if (teamContext.clearTeam) {
             await clearSelectedteam();
@@ -90,6 +94,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <MenuItemText>
                                 {strings.Menu_Button_GoToCategories}
                             </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer onPress={navigateToBrands}>
+                        <MenuContent>
+                            <Icons name="ribbon-outline" />
+                            <MenuItemText>Marcas</MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
 

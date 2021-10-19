@@ -249,6 +249,17 @@
     "View_Category_Edit_DeleteModal_Confirm": "I'm sure",
     "View_Category_Edit_DeleteModal_Cancel": "Keep category",
 
+    "View_Brand_Edit_PageTitle": "Edit brand",
+    "View_Brand_Edit_InputNamePlaceholder": "Brand name",
+    "View_Brand_Edit_ButtonSave": "Save",
+    "View_Brand_Edit_SuccessText": "Success",
+    "View_Brand_Edit_ErrorEmtpyName": "Type the brand name",
+    "View_Brand_Success_OnDelete": "Brand deleted",
+    "View_Brand_Edit_DeleteModal_Title": "Are you sure?",
+    "View_Brand_Edit_DeleteModal_Message": "All products in brand will be set as no brand.",
+    "View_Brand_Edit_DeleteModal_Confirm": "I'm sure",
+    "View_Brand_Edit_DeleteModal_Cancel": "Keep brand",
+
     "View_Export_PageTitle": "Export",
     "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",
     "View_Export_SortTitle": "Sort products by",

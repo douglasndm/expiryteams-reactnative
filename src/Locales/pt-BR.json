@@ -257,6 +257,14 @@
     "View_Category_Edit_DeleteModal_Confirm": "Tenho certeza",
     "View_Category_Edit_DeleteModal_Cancel": "Manter categoria",
 
+    "View_Brand_List_PageTitle": "Marcas",
+    "View_Brand_List_InputAdd_Placeholder": "Nome da nova marca",
+    "View_Brand_List_InputAdd_Error_EmptyTextField": "Digite o nome da nova marca",
+    "View_Brand_List_AllCategories_Label": "Todas as marcas",
+    "View_Brand_List_View_BeforeCategoryName": "Marca ",
+    "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Esta marca já existe",
+
+
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
     "View_Export_SortTitle": "Escolha como organizar o arquivo",
