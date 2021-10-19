@@ -70,7 +70,7 @@ export const LoginForm = styled.View`
 
 export const ForgotPasswordText = styled.Text`
     font-family: 'Open Sans';
-    font-size: 13px;
-    margin-left: 10px;
+    font-size: 15px;
+    margin: 5px 10px 0;
     color: ${props => props.theme.colors.subText};
 `;
