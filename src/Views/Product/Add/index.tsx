@@ -13,6 +13,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { createProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
+import { getAllBrands } from '~/Functions/Brand';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -49,23 +50,18 @@ import {
     InputTextIconContainer,
 } from './styles';
 
-interface ICategoryItem {
-    label: string;
-    value: string;
-    key: string;
-}
-
 interface Request {
     route: {
         params: {
             store?: string;
             category?: string;
+            brand?: string;
         };
     };
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { goBack, navigate, replace } = useNavigation<
+    const { goBack, replace } = useNavigation<
         StackNavigationProp<RoutesParams>
     >();
     const teamContext = useTeam();
@@ -101,15 +97,21 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         }
     );
 
+    const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
+        if (route.params && route.params.brand) {
+            return route.params.brand;
+        }
+        return null;
+    });
+
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [brands, setBrands] = useState<Array<IBrandItem>>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isAdding, setIsAdding] = useState<boolean>(false);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
-
-    const [existentProduct, setExistentProduct] = useState<number | null>(null);
 
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
@@ -137,11 +139,25 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 })
             );
             setCategories(categoriesArray);
+
+            const allBrands = await getAllBrands({ team_id: teamContext.id });
+            const brandsArray: Array<IBrandItem> = [];
+
+            allBrands.forEach(brand =>
+                brandsArray.push({
+                    key: brand.id,
+                    label: brand.name,
+                    value: brand.id,
+                })
+            );
+
+            setBrands(brandsArray);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -172,6 +188,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 product: {
                     name,
                     code,
+                    brand: selectedBrand || undefined,
                     batches: [],
                 },
                 categories: prodCategories,
@@ -196,11 +213,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             replace('ProductDetails', {
                 id: createdProduct.id,
             });
-        } catch (error) {
-            showMessage({
-                message: error.message,
-                type: 'danger',
-            });
+        } catch (err) {
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsAdding(false);
         }
@@ -224,6 +242,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
+    }, []);
+
+    const handleBrandChange = useCallback(value => {
+        setSelectedBrand(value);
     }, []);
 
     const handleAmountChange = useCallback(value => {
@@ -267,12 +289,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         },
         [handleDisableCamera]
     );
-
-    const handleNavigateToExistProduct = useCallback(async () => {
-        if (existentProduct) {
-            navigate('AddBatch', { productId: existentProduct });
-        }
-    }, [existentProduct, navigate]);
 
     const handleOnCodeRead = useCallback(async (codeRead: string) => {
         setCode(codeRead);
@@ -390,18 +406,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             </InputTextIconContainer>
                                         </InputCodeTextContainer>
 
-                                        {codeFieldError && (
-                                            <InputTextTip
-                                                onPress={
-                                                    handleNavigateToExistProduct
-                                                }
-                                            >
-                                                {
-                                                    strings.View_AddProduct_Tip_DuplicateProduct
-                                                }
-                                            </InputTextTip>
-                                        )}
-
                                         <MoreInformationsContainer>
                                             <MoreInformationsTitle>
                                                 {
@@ -486,6 +490,25 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                     placeholder={{
                                                         label:
                                                             strings.View_AddProduct_InputPlaceholder_SelectCategory,
+                                                        value: 'null',
+                                                    }}
+                                                />
+                                            </PickerContainer>
+
+                                            <PickerContainer
+                                                style={{
+                                                    marginBottom: 10,
+                                                }}
+                                            >
+                                                <Picker
+                                                    items={brands}
+                                                    onValueChange={
+                                                        handleBrandChange
+                                                    }
+                                                    value={selectedBrand}
+                                                    placeholder={{
+                                                        label:
+                                                            strings.View_AddProduct_InputPlaceholder_SelectBrand,
                                                         value: 'null',
                                                     }}
                                                 />

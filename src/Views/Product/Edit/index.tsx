@@ -137,6 +137,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             if (product.categories.length > 0) {
                 setSelectedCategory(product.categories[0].id);
             }
+            if (product.brand) {
+                setSelectedBrand(product.brand);
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -146,7 +149,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setIsLoading(false);
         }
-    }, [product.categories, product.code, product.name, teamContext.id]);
+    }, [product, teamContext.id]);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -166,7 +169,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     id: product.id,
                     name,
                     code,
-                    brand: selectedBrand || undefined,
+                    brand: selectedBrand || null,
                 },
                 categories: prodCategories,
             });
