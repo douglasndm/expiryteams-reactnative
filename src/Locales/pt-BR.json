@@ -265,6 +265,20 @@
     "View_Brand_List_View_BeforeCategoryName": "Marca ",
     "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Esta marca já existe",
 
+    "View_Brand_View_PageTitle": "Marca",
+    "View_Brand_View_ActionButton_GenereteExcel": "Gerar Excel",
+    "View_Brand_View_SuccessExportExcel": "Arquivo Excel gerado",
+
+    "View_Brand_Edit_PageTitle": "Editar marca",
+    "View_Brand_Edit_InputNamePlaceholder": "Digite o nome da marca",
+    "View_Brand_Edit_ButtonSave": "Salvar",
+    "View_Brand_Edit_SuccessText": "Atualizado",
+    "View_Brand_Edit_ErrorEmtpyName": "Digite o nome da marca",
+    "View_Brand_Success_OnDelete": "A marca foi apagada",
+    "View_Brand_Edit_DeleteModal_Title": "Você tem certeza?",
+    "View_Brand_Edit_DeleteModal_Message": "Continuando você irá apagar a marca. Todos os produtos referenciados a marca deixará de exibir a marca.",
+    "View_Brand_Edit_DeleteModal_Confirm": "Tenho certeza",
+    "View_Brand_Edit_DeleteModal_Cancel": "Manter marca",
 
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
@@ -296,6 +310,10 @@
     "Function_Excel_ColumnName_BatchExpDate": "Vencimento em",
     "Function_Excel_Workbook_Name": "Controle de validade",
     "Function_Excel_filename": "controledevalidade",
+    "Function_Excel_ColumnName_ProductBrand": "Marca",
+    "Function_Excel_ColumnName_Status": "Status",
+    "Function_Excel_ColumnName_Status_Checked": "Já verificado",
+    "Function_Excel_ColumnName_Status_Unchecked": "Não verificado",
 
     "Function_Team_JoinTeam_InvalidCode": "Código inválido.",
 

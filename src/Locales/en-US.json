@@ -238,6 +238,17 @@
     "View_Category_List_View_BeforeCategoryName": "Category ",
     "View_Category_View_ExcelExportedSuccess": "Excel file created",
 
+    "View_Brand_List_PageTitle": "Brands",
+    "View_Brand_List_InputAdd_Placeholder": "New brand name",
+    "View_Brand_List_InputAdd_Error_EmptyTextField": "Type the brand name",
+    "View_Brand_List_AllCategories_Label": "All brands",
+    "View_Brand_List_View_BeforeCategoryName": "Brand ",
+    "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Brand already exists",
+
+    "View_Brand_View_PageTitle": "Brand",
+    "View_Brand_View_ActionButton_GenereteExcel": "Generate Excel",
+    "View_Brand_View_SuccessExportExcel": "Excel file generated",
+
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
 
     "View_Category_Edit_PageTitle": "Edit category",
@@ -302,6 +313,10 @@
     "Function_Excel_ColumnName_BatchExpDate": "Expire in",
     "Function_Excel_Workbook_Name": "Expiration checker",
     "Function_Excel_filename": "expirationcheck",
+    "Function_Excel_ColumnName_ProductBrand": "Brand",
+    "Function_Excel_ColumnName_Status": "Status",
+    "Function_Excel_ColumnName_Status_Checked": "Checked",
+    "Function_Excel_ColumnName_Status_Unchecked": "Unchecked",
 
     "Function_Team_JoinTeam_InvalidCode": "Invalid code.",
 
