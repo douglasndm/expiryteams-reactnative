@@ -15,7 +15,7 @@ export async function importExportFileFromApp({
         });
 
         const data = new FormData();
-        data.append('file', picked);
+        data.append('file', picked[0]);
 
         await api.post(`/team/${team_id}/products/import`, data, {
             headers: {
