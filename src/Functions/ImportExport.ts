@@ -23,7 +23,7 @@ export async function importExportFileFromApp({
             },
         });
     } catch (err) {
-        if (!DocumentPicker.isCancel(err)) {
+        if (!DocumentPicker.isCancel(err) && err instanceof Error) {
             throw new Error(err.message);
         }
     }
