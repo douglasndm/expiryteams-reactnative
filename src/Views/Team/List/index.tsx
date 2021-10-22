@@ -54,7 +54,7 @@ const List: React.FC = () => {
             const selectedTeam = teams.find(t => t.team.id === teamId);
 
             if (!selectedTeam) {
-                throw new Error('Team not found');
+                return;
             }
 
             setSelectedTeamRole(selectedTeam);
@@ -97,12 +97,11 @@ const List: React.FC = () => {
                         }
                         return -1;
                     });
+                    setTeams(sortedTeams);
 
                     if (sortedTeams.length === 1) {
                         handleSetTeam(sortedTeams[0].team.id);
                     }
-
-                    setTeams(sortedTeams);
                 }
             } catch (err) {
                 if (err instanceof Error) {

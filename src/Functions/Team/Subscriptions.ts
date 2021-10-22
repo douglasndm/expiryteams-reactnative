@@ -1,98 +1,69 @@
-import auth from '@react-native-firebase/auth';
-import Purchases, {
-    PurchasesPackage,
-    UpgradeInfo,
-} from 'react-native-purchases';
+import Purchases, { UpgradeInfo } from 'react-native-purchases';
 import EnvConfig from 'react-native-config';
 import { compareAsc, parseISO } from 'date-fns';
 
 import api from '~/Services/API';
+import { getSelectedTeam } from './SelectedTeam';
 
 async function setup() {
     Purchases.setDebugLogsEnabled(true);
     Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
-    const user = auth().currentUser;
+    const selectedTeam = await getSelectedTeam();
 
-    if (user) {
-        await Purchases.identify(user.uid);
+    if (selectedTeam) {
+        await Purchases.logIn(selectedTeam.team.id);
     }
-}
-
-export interface CatPackage {
-    type:
-        | '1 person'
-        | '2 people'
-        | '3 people'
-        | '5 people'
-        | '10 people'
-        | '15 people';
-    package: PurchasesPackage;
 }
 
 export async function getOfferings(): Promise<Array<CatPackage>> {
     const packages: Array<CatPackage> = [];
 
-    try {
-        const offerings = await Purchases.getOfferings();
+    const offerings = await Purchases.getOfferings();
 
-        if (!offerings.current) {
-            return [];
-        }
-
-        if (offerings.current.availablePackages.length !== 0) {
-            if (!!offerings.all.TeamWith1 && offerings.all.TeamWith1.monthly) {
-                packages.push({
-                    type: '1 person',
-                    package: offerings.all.TeamWith1.monthly,
-                });
-            }
-            if (!!offerings.all.TeamWith2 && offerings.all.TeamWith2.monthly) {
-                packages.push({
-                    type: '2 people',
-                    package: offerings.all.TeamWith2.monthly,
-                });
-            }
-            if (!!offerings.all.TeamWith3 && offerings.all.TeamWith3.monthly) {
-                packages.push({
-                    type: '3 people',
-                    package: offerings.all.TeamWith3.monthly,
-                });
-            }
-            if (!!offerings.all.TeamWith5 && offerings.all.TeamWith5.monthly) {
-                packages.push({
-                    type: '5 people',
-                    package: offerings.all.TeamWith5.monthly,
-                });
-            }
-            if (
-                !!offerings.all.TeamWith10 &&
-                offerings.all.TeamWith10.monthly
-            ) {
-                packages.push({
-                    type: '10 people',
-                    package: offerings.all.TeamWith10.monthly,
-                });
-            }
-            if (
-                !!offerings.all.TeamWith15 &&
-                offerings.all.TeamWith15.monthly
-            ) {
-                packages.push({
-                    type: '15 people',
-                    package: offerings.all.TeamWith15.monthly,
-                });
-            }
-        }
-        return packages;
-    } catch (err) {
-        throw new Error(err.message);
+    if (!offerings.current) {
+        return [];
     }
-}
 
-interface makePurchaseProps {
-    pack: PurchasesPackage;
-    team_id: string;
+    if (offerings.current.availablePackages.length !== 0) {
+        if (!!offerings.all.TeamWith1 && offerings.all.TeamWith1.monthly) {
+            packages.push({
+                type: '1 person',
+                package: offerings.all.TeamWith1.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith2 && offerings.all.TeamWith2.monthly) {
+            packages.push({
+                type: '2 people',
+                package: offerings.all.TeamWith2.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith3 && offerings.all.TeamWith3.monthly) {
+            packages.push({
+                type: '3 people',
+                package: offerings.all.TeamWith3.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith5 && offerings.all.TeamWith5.monthly) {
+            packages.push({
+                type: '5 people',
+                package: offerings.all.TeamWith5.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith10 && offerings.all.TeamWith10.monthly) {
+            packages.push({
+                type: '10 people',
+                package: offerings.all.TeamWith10.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith15 && offerings.all.TeamWith15.monthly) {
+            packages.push({
+                type: '15 people',
+                package: offerings.all.TeamWith15.monthly,
+            });
+        }
+    }
+    return packages;
 }
 
 export async function makePurchase({
@@ -100,11 +71,7 @@ export async function makePurchase({
     team_id,
 }: makePurchaseProps): Promise<ITeamSubscription | null> {
     try {
-        if (!team_id) {
-            throw new Error('Provider team id');
-        }
-
-        await Purchases.identify(team_id);
+        await Purchases.logIn(team_id);
 
         const prevPurchases = await Purchases.getPurchaserInfo();
 
@@ -147,27 +114,16 @@ export async function makePurchase({
     }
 }
 
-interface getTeamSubscriptionsProps {
-    team_id: string;
-}
-
 export async function getTeamSubscriptions({
     team_id,
 }: getTeamSubscriptionsProps): Promise<ITeamSubscription | null> {
-    try {
-        const response = await api.get<ITeamSubscription>(
-            `/team/${team_id}/subscriptions`
-        );
+    const response = await api.get<ITeamSubscription>(
+        `/team/${team_id}/subscriptions`
+    );
 
-        if (response.data) return response.data;
+    if (response.data) return response.data;
 
-        return null;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return null;
 }
 
 export async function getAllSubscriptionsFromRevenue({
