@@ -8,20 +8,21 @@ import DeviceId from './DeviceID';
 import errorsHandler from './API/Errors';
 
 const api = axios.create({
-    baseURL: EnvConfig.API_URL,
+    baseURL: __DEV__ ? EnvConfig.DEV_URL : EnvConfig.API_URL,
 });
 
 api.interceptors.request.use(async config => {
-    config.headers.appbuildnumber = getBuildNumber();
-    config.headers.appversion = getVersion();
+    if (config.headers) {
+        config.headers.appbuildnumber = getBuildNumber();
+        config.headers.appversion = getVersion();
 
-    const deviceId = new DeviceId();
+        const deviceId = new DeviceId();
 
-    config.headers.deviceid = await deviceId.getDeviceId();
+        config.headers.deviceid = await deviceId.getDeviceId();
 
-    const userToken = await auth().currentUser?.getIdToken();
-    config.headers.Authorization = `Bearer ${userToken}`;
-
+        const userToken = await auth().currentUser?.getIdToken();
+        config.headers.Authorization = `Bearer ${userToken}`;
+    }
     return config;
 });
 
