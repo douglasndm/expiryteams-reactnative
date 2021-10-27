@@ -16,6 +16,7 @@ import screens from 'react-native-screens';
 import './Locales';
 
 import './Services/Analytics';
+import DeepLinking from './Services/DeepLinking';
 
 import '@utils/Team/Subscriptions';
 import '@utils/PushNotifications';
@@ -90,6 +91,7 @@ const App: React.FC = () => {
                 <PaperProvider>
                     <NavigationContainer
                         ref={navigationRef}
+                        linking={DeepLinking}
                         onStateChange={handleOnScreenChange}
                     >
                         <AuthProvider>

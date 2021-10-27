@@ -7,8 +7,6 @@ import DrawerMenu from '../Components/DrawerMenu';
 import AuthRoutes from './Auth.routes';
 import Routes from './App.routes';
 
-import DeepLinking from './DeepLinking';
-
 const Drawer = createDrawerNavigator();
 
 const DrawerContainer: React.FC = () => {
@@ -30,26 +28,23 @@ const DrawerContainer: React.FC = () => {
     }, []);
 
     return (
-        <>
-            <DeepLinking />
-            <Drawer.Navigator
-                drawerType="slide"
-                openByDefault={false}
-                keyboardDismissMode="on-drag"
-                drawerContent={props => <DrawerMenu {...props} />}
-            >
-                <Drawer.Screen
-                    name="Auth"
-                    component={AuthRoutes}
-                    options={{ swipeEnabled: false }}
-                />
-                <Drawer.Screen
-                    name="Routes"
-                    component={Routes}
-                    options={handleDisableDrawer}
-                />
-            </Drawer.Navigator>
-        </>
+        <Drawer.Navigator
+            drawerType="slide"
+            openByDefault={false}
+            keyboardDismissMode="on-drag"
+            drawerContent={props => <DrawerMenu {...props} />}
+        >
+            <Drawer.Screen
+                name="Auth"
+                component={AuthRoutes}
+                options={{ swipeEnabled: false }}
+            />
+            <Drawer.Screen
+                name="Routes"
+                component={Routes}
+                options={handleDisableDrawer}
+            />
+        </Drawer.Navigator>
     );
 };
 

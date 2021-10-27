@@ -98,10 +98,6 @@ const List: React.FC = () => {
                         return -1;
                     });
                     setTeams(sortedTeams);
-
-                    if (sortedTeams.length === 1) {
-                        handleSetTeam(sortedTeams[0].team.id);
-                    }
                 }
             } catch (err) {
                 if (err instanceof Error) {
@@ -114,7 +110,7 @@ const List: React.FC = () => {
                 setIsLoading(false);
             }
         }
-    }, [handleSetTeam, teamContext.isLoading, user]);
+    }, [teamContext.isLoading, user]);
 
     const handleSelectedTeamChange = useCallback(async () => {
         if (!selectedTeamRole) {
