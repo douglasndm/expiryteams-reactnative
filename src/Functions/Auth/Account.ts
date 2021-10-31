@@ -35,6 +35,9 @@ export async function createAccount({
     const response = await api.post<IUser>('/users', {
         firebaseUid: user.uid,
         email,
+        name,
+        lastName,
+        password,
     });
 
     return response.data;
@@ -93,4 +96,8 @@ export async function updatePassword({
 
     // should ask user reauth
     await user.updatePassword(newPassword);
+
+    await api.put<IUser>(`/users`, {
+        password,
+    });
 }
