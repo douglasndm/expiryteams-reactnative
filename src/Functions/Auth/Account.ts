@@ -64,6 +64,10 @@ export async function updateUser({ name }: updateUserProps): Promise<void> {
     await auth().currentUser?.updateProfile({
         displayName: name,
     });
+
+    await api.put<IUser>(`/users`, {
+        name,
+    });
 }
 
 interface updateEmailProps {
