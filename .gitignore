@@ -5,6 +5,7 @@
 
 java_pid24724.hprof
 .hprof
+*.hprof
 
 # react-native-config codegen
 ios/tmp.xcconfig
