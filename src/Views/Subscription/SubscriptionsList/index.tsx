@@ -62,10 +62,11 @@ const SubscriptionsList: React.FC = () => {
                 team_id: teamContext.id,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -182,7 +183,7 @@ const SubscriptionsList: React.FC = () => {
 
             if (Platform.OS === 'android' && !!introPrice) {
                 const introPriceStr =
-                    introPrice.price > 0 ? introPrice.priceString : 'Grátis';
+                    introPrice.price > 0 ? introPrice.priceString : 'Teste';
 
                 const periodUnit = pack.product.introPrice?.periodUnit;
 

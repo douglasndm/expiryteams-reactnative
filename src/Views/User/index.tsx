@@ -54,10 +54,11 @@ const User: React.FC = () => {
 
             if (user.displayName) setName(user.displayName);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -85,10 +86,11 @@ const User: React.FC = () => {
                 await schemaPass.validate({ newPassword, newPasswordConfi });
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
             setIsUpdating(false);
             return;
         }
@@ -125,10 +127,11 @@ const User: React.FC = () => {
 
             pop();
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsUpdating(false);
         }

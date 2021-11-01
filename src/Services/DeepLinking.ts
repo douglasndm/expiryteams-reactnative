@@ -7,6 +7,7 @@ const linking: LinkingOptions = {
             Routes: {
                 screens: {
                     About: 'about',
+                    ProductDetails: 'product/:id',
                 },
             },
         },
