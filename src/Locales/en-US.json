@@ -196,10 +196,14 @@
     "View_Settings_Button_SignOut": "Sign out",
 
     "View_TeamList_PageTitle": "Select a team",
+    "View_TeamList_ListTitle": "Teams",
+    "View_TeamList_EmptyTeamList": "You don't have any teams now. Create a team or ask your manager to invite you by e-mail",
     "View_TeamList_InputText_EnterCode_Placeholder": "Code to enter the team",
+    "View_TeamList_Error_ManagerShouldActiveTeam": "Your manager should active the team",
     "View_TeamList_InvalidTeamCode": "Invalid code",
     "View_TeamList_SuccessCode": "Welcome to the team",
     "View_TeamList_Button_CreateTeam": "Create team",
+    "View_TeamList_Button_Logout": "Logout",
 
     "View_CreateTeam_PageTitle": "New team",
     "View_CreateTeam_InputText_Name_Placeholder": "Team's name",

@@ -193,10 +193,14 @@
     "View_Settings_Button_SignOut": "Sair",
 
     "View_TeamList_PageTitle": "Selecione um time",
+    "View_TeamList_ListTitle": "Times",
+    "View_TeamList_EmptyTeamList": "Você não está em nenhum time no momento. Crie um time ou peça para seu gerente te convidar para um time atraves do e-mail",
     "View_TeamList_InputText_EnterCode_Placeholder": "Código para entrar no time",
+    "View_TeamList_Error_ManagerShouldActiveTeam": "Seu gerente precisa ativar o time primeiro",
     "View_TeamList_InvalidTeamCode": "Código inválido",
     "View_TeamList_SuccessCode": "Bem vindo ao time",
     "View_TeamList_Button_CreateTeam": "Criar um time",
+    "View_TeamList_Button_Logout": "Sair da conta",
 
     "View_CreateTeam_PageTitle": "Novo time",
     "View_CreateTeam_InputText_Name_Placeholder": "Nome do time",

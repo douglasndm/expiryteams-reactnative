@@ -1,11 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, memo } from 'react';
 import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
-import { useAuth } from '~/Contexts/AuthContext';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { getUserTeams } from '~/Functions/Team/Users';
@@ -29,14 +28,11 @@ import {
 
 const List: React.FC = () => {
     const { navigate, reset } = useNavigation();
-    const { user } = useAuth();
 
     const teamContext = useTeam();
 
-    const mounted = useRef(false);
-
     const [isLoading, setIsLoading] = useState(true);
-    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
 
@@ -49,56 +45,29 @@ const List: React.FC = () => {
     // This is due limition of identify user and teams on revenuecat
     const [isManager, setIsManager] = useState<boolean>(false);
 
-    const handleSetTeam = useCallback(
-        (teamId: string) => {
-            const selectedTeam = teams.find(t => t.team.id === teamId);
-
-            if (!selectedTeam) {
-                return;
-            }
-
-            setSelectedTeamRole(selectedTeam);
-        },
-        [teams]
-    );
-
-    useEffect(() => {
-        mounted.current = true;
-
-        return () => {
-            mounted.current = false;
-        };
-    });
-
     const loadData = useCallback(async () => {
         if (!teamContext.isLoading) {
             try {
                 setIsLoading(true);
 
-                if (!user) {
-                    return;
-                }
-
                 const response = await getUserTeams();
 
-                if (mounted) {
-                    response.forEach(item => {
-                        if (item.role.toLowerCase() === 'manager') {
-                            setIsManager(true);
-                        }
-                    });
+                response.forEach(item => {
+                    if (item.role.toLowerCase() === 'manager') {
+                        setIsManager(true);
+                    }
+                });
 
-                    const sortedTeams = response.sort((team1, team2) => {
-                        if (team1.team.active && !team2.team.active) {
-                            return 1;
-                        }
-                        if (team1.team.active && team2.team.active) {
-                            return 0;
-                        }
-                        return -1;
-                    });
-                    setTeams(sortedTeams);
-                }
+                const sortedTeams = response.sort((team1, team2) => {
+                    if (team1.team.active && !team2.team.active) {
+                        return 1;
+                    }
+                    if (team1.team.active && team2.team.active) {
+                        return 0;
+                    }
+                    return -1;
+                });
+                setTeams(sortedTeams);
             } catch (err) {
                 if (err instanceof Error) {
                     showMessage({
@@ -110,7 +79,7 @@ const List: React.FC = () => {
                 setIsLoading(false);
             }
         }
-    }, [teamContext.isLoading, user]);
+    }, [teamContext.isLoading]);
 
     const handleSelectedTeamChange = useCallback(async () => {
         if (!selectedTeamRole) {
@@ -155,14 +124,33 @@ const List: React.FC = () => {
         [navigate]
     );
 
+    const handleSelectTeam = useCallback(
+        (userRoles: IUserRoles) => {
+            if (userRoles.team.active !== true) {
+                if (userRoles.role.toLowerCase() !== 'manager') {
+                    showMessage({
+                        message:
+                            strings.View_TeamList_Error_ManagerShouldActiveTeam,
+                        type: 'warning',
+                    });
+                    return;
+                }
+            } else if (userRoles.status === 'pending') {
+                handleNavigateToEnterCode(userRoles);
+                return;
+            }
+
+            if (userRoles.team) setSelectedTeamRole(userRoles);
+        },
+        [handleNavigateToEnterCode]
+    );
+
     interface renderProps {
         item: IUserRoles;
     }
 
     const renderCategory = useCallback(
         ({ item }: renderProps) => {
-            const teamToNavigate = item.team.id;
-
             let role = item.role.toLowerCase();
 
             let isPending = true;
@@ -190,26 +178,10 @@ const List: React.FC = () => {
                 role = strings.UserInfo_Role_Repositor;
             }
 
-            function handleNavigate() {
-                if (item.team.active !== true) {
-                    if (item.role.toLowerCase() !== 'manager') {
-                        showMessage({
-                            message: 'O gerente precisa ativar o time.',
-                            type: 'danger',
-                        });
-                        return;
-                    }
-                } else if (isPending) {
-                    handleNavigateToEnterCode(item);
-                    return;
-                }
-                handleSetTeam(teamToNavigate);
-            }
-
             return (
                 <TeamItemContainer
                     isPending={isPending || !item.team.active}
-                    onPress={handleNavigate}
+                    onPress={() => handleSelectTeam(item)}
                 >
                     <TeamItemTitle>{item.team.name}</TeamItemTitle>
                     <TeamItemRole>
@@ -220,7 +192,7 @@ const List: React.FC = () => {
                 </TeamItemContainer>
             );
         },
-        [handleNavigateToEnterCode, handleSetTeam]
+        [handleSelectTeam]
     );
 
     const handleNavigateCreateTeam = useCallback(() => {
@@ -231,10 +203,6 @@ const List: React.FC = () => {
         navigate('Logout');
     }, [navigate]);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
-
     const handleRefresh = useCallback(async () => {
         try {
             setRefreshing(true);
@@ -242,7 +210,11 @@ const List: React.FC = () => {
         } finally {
             setRefreshing(false);
         }
-    }, [loadData]);
+    }, []);
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     return isLoading ? (
         <Loading />
@@ -252,11 +224,13 @@ const List: React.FC = () => {
 
             <Content>
                 {teams.length <= 0 && (
-                    <EmptyText>
-                        Você não está em nenhum time no momento
-                    </EmptyText>
+                    <EmptyText>{strings.View_TeamList_EmptyTeamList}</EmptyText>
                 )}
-                {teams.length > 0 && <ListTeamsTitle>Times</ListTeamsTitle>}
+                {teams.length > 0 && (
+                    <ListTeamsTitle>
+                        {strings.View_TeamList_ListTitle}
+                    </ListTeamsTitle>
+                )}
 
                 <ListCategories
                     data={teams}
@@ -281,7 +255,7 @@ const List: React.FC = () => {
                 )}
 
                 <Button
-                    text="Sair da conta"
+                    text={strings.View_TeamList_Button_Logout}
                     onPress={handleLogout}
                     contentStyle={{ width: 150 }}
                 />
@@ -290,4 +264,4 @@ const List: React.FC = () => {
     );
 };
 
-export default List;
+export default memo(List);
