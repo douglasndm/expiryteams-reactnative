@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -35,9 +35,6 @@ const Home: React.FC = () => {
     );
 
     const getProduts = useCallback(async () => {
-        if (teamContext.isLoading) {
-            return;
-        }
         try {
             setIsLoading(true);
 
@@ -51,18 +48,19 @@ const Home: React.FC = () => {
 
             setProducts(productsResponse);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
-    }, [teamContext.id, teamContext.isLoading]);
+    }, [teamContext.id]);
 
     useEffect(() => {
         getProduts();
-    }, [getProduts]);
+    }, []);
 
     useEffect(() => {
         setProductsSearch(products);
@@ -142,4 +140,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default memo(Home);
