@@ -135,7 +135,7 @@ const List: React.FC = () => {
                     });
                     return;
                 }
-            } else if (userRoles.status === 'pending') {
+            } else if (userRoles.status.toLowerCase() === 'pending') {
                 handleNavigateToEnterCode(userRoles);
                 return;
             }
