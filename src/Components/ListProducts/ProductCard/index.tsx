@@ -24,8 +24,9 @@ interface Request {
 
     expired: boolean;
     nextToExp: boolean;
+    onLongPress: () => void;
 }
-const Product = ({ product, expired, nextToExp }: Request) => {
+const Product = ({ product, expired, nextToExp, onLongPress }: Request) => {
     const { navigate } = useNavigation();
 
     const [imagePath, setImagePath] = useState<string>('');
@@ -78,6 +79,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
             nextToExp={nextToExp}
             threated={batch?.status === 'checked'}
             onPress={handleNavigateToProduct}
+            onLongPress={onLongPress}
         >
             <Content>
                 {!!imagePath && <ProductImage source={{ uri: imagePath }} />}

@@ -5,14 +5,14 @@ import ProductCard from '~/Components/ListProducts/ProductCard';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { Container } from './styles';
-
 interface RequestProps {
     product: IProduct;
+    handleEnableSelect: () => void;
 }
 
 const ProductContainer: React.FC<RequestProps> = ({
     product,
+    handleEnableSelect,
 }: RequestProps) => {
     const { preferences } = useContext(PreferencesContext);
 
@@ -58,13 +58,12 @@ const ProductContainer: React.FC<RequestProps> = ({
     }, [preferences.howManyDaysToBeNextToExpire, exp_date]);
 
     return (
-        <Container>
-            <ProductCard
-                product={product}
-                expired={expired}
-                nextToExp={nextToExp}
-            />
-        </Container>
+        <ProductCard
+            product={product}
+            expired={expired}
+            nextToExp={nextToExp}
+            onLongPress={handleEnableSelect}
+        />
     );
 };
 

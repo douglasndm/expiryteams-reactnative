@@ -11,9 +11,9 @@ interface IProductInfo {
     expiredOrNext?: boolean;
 }
 
-export const Card = styled(RectButton)<ICard>`
+export const Card = styled.Pressable<ICard>`
     flex-direction: column;
-
+    flex: 1;
     margin: 3px 6px;
     padding: 15px;
     border-radius: 12px;
