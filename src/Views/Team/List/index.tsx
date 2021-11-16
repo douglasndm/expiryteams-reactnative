@@ -93,22 +93,20 @@ const List: React.FC = () => {
             return;
         }
 
-        if (!teamContext.isLoading) {
-            reset({
-                routes: [
-                    {
-                        name: 'Routes',
-                        state: {
-                            routes: [
-                                {
-                                    name: 'Home',
-                                },
-                            ],
-                        },
+        reset({
+            routes: [
+                {
+                    name: 'Routes',
+                    state: {
+                        routes: [
+                            {
+                                name: 'Home',
+                            },
+                        ],
                     },
-                ],
-            });
-        }
+                },
+            ],
+        });
     }, [reset, selectedTeamRole, teamContext]);
 
     useEffect(() => {
@@ -135,9 +133,11 @@ const List: React.FC = () => {
                     });
                     return;
                 }
-            } else if (userRoles.status.toLowerCase() === 'pending') {
-                handleNavigateToEnterCode(userRoles);
-                return;
+            } else if (userRoles.status) {
+                if (userRoles.status.toLowerCase() === 'pending') {
+                    handleNavigateToEnterCode(userRoles);
+                    return;
+                }
             }
 
             if (userRoles.team) setSelectedTeamRole(userRoles);
