@@ -1,9 +1,13 @@
 import Purchases, { UpgradeInfo } from 'react-native-purchases';
+import Auth from '@react-native-firebase/auth';
 import EnvConfig from 'react-native-config';
 import { compareAsc, parseISO } from 'date-fns';
 
 import api from '~/Services/API';
+
 import { getSelectedTeam } from './SelectedTeam';
+
+import { CatPackage } from '~/@types/Functions/Subscriptions';
 
 async function setup() {
     Purchases.setDebugLogsEnabled(true);
@@ -71,7 +75,17 @@ export async function makePurchase({
     team_id,
 }: makePurchaseProps): Promise<ITeamSubscription | null> {
     try {
-        await Purchases.logIn(team_id);
+        const { currentUser } = Auth();
+
+        if (currentUser && currentUser.uid) {
+            await Purchases.logIn(currentUser.uid);
+        } else {
+            await Purchases.logIn(team_id);
+        }
+
+        Purchases.setAttributes({
+            team_id,
+        });
 
         const prevPurchases = await Purchases.getPurchaserInfo();
 
@@ -112,6 +126,8 @@ export async function makePurchase({
             throw new Error(err.message);
         }
     }
+
+    return null;
 }
 
 export async function getTeamSubscriptions({

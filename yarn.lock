@@ -2272,16 +2272,6 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
-"@types/styled-components@5.1.4":
-  version "5.1.4"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.1.4.tgz#11f167dbde268635c66adc89b5a5db2e69d75384"
-  integrity sha512-78f5Zuy0v/LTQNOYfpH+CINHpchzMMmAt9amY2YNtSgsk1TmlKm8L2Wijss/mtTrsUAVTm2CdGB8VOM65vA8xg==
-  dependencies:
-    "@types/hoist-non-react-statics" "*"
-    "@types/react" "*"
-    "@types/react-native" "*"
-    csstype "^3.0.2"
-
 "@types/yargs-parser@*":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-15.0.0.tgz#cb3f9f741869e20cce330ffbeb9271590483882d"
@@ -7997,10 +7987,10 @@ react-native-picker-select@^8.0.4:
     "@react-native-picker/picker" "^1.8.3"
     lodash.isequal "^4.5.0"
 
-react-native-purchases@^4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-4.3.1.tgz#d8372e8715665729b98f58042fad6296ecd2ac07"
-  integrity sha512-h55jPvb9ye5+h+welEb06q18M3tyDsAJ6WC/wt1KJ7VN2OvN7zFQg92AKW0rWMPBCP2AWj6yjbWNfGIJc018fA==
+react-native-purchases@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-4.4.1.tgz#be2edd72cd00a636577a496ad4f637e8573a559d"
+  integrity sha512-hxg9IZhr73dxZmYjmGtzHLwdxmS9Yb1rPVtbZMKXAGKOipG7NahmbkRYCCKYhuYsSIRYITBhJj7fK9JnNx1x1A==
 
 react-native-push-notification@^7.3.1:
   version "7.3.1"
