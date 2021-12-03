@@ -242,7 +242,7 @@ const View: React.FC = () => {
                         text="Compartilhar com outros apps"
                         onPress={handleShare}
                         isLoading={isSharing}
-                        contentStyle={{ marginTop: -5, width: 250 }}
+                        contentStyle={{ width: 250 }}
                     />
 
                     <Button
