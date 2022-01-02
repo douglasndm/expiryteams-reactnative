@@ -42,6 +42,8 @@ const Login: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
+    const [isMounted, setIsMounted] = useState(true);
+
     const handleSelectedTeam = useCallback(async () => {
         try {
             const user = auth().currentUser;
@@ -142,14 +144,22 @@ const Login: React.FC = () => {
     }, [navigate]);
 
     useEffect(() => {
-        if (auth().currentUser) {
-            handleSelectedTeam()
-                .then(() => setIsLoading(false))
-                .catch(() => setIsLoading(false));
-        } else {
-            setIsLoading(false);
-        }
-    }, []);
+        if (isMounted)
+            if (auth().currentUser) {
+                try {
+                    setIsLoading(false);
+                    handleSelectedTeam();
+                } finally {
+                    setIsLoading(false);
+                }
+            } else {
+                setIsLoading(false);
+            }
+
+        return () => {
+            setIsMounted(false);
+        };
+    }, [handleSelectedTeam, isMounted]);
 
     return isLoading ? (
         <Loading />
