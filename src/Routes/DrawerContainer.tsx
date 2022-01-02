@@ -30,8 +30,8 @@ const DrawerContainer: React.FC = () => {
     return (
         <Drawer.Navigator
             drawerType="slide"
-            openByDefault={false}
             keyboardDismissMode="on-drag"
+            screenOptions={{ headerShown: false }}
             drawerContent={props => <DrawerMenu {...props} />}
         >
             <Drawer.Screen
