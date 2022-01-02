@@ -70,29 +70,6 @@ export const InputTextTip = styled.Text`
     margin: -5px 10px 5px;
 `;
 
-export const CameraButtonContainer = styled(RectButton)`
-    margin-left: 15px;
-`;
-
-export const CameraButtonIcon = styled(Ionicons).attrs(props => ({
-    name: 'camera-outline',
-    size: 36,
-    color: props.theme.colors.text,
-}))``;
-
-export const ProductImageContainer = styled(RectButton)`
-    align-items: center;
-    margin-top: 10px;
-`;
-
-export const ProductImage = styled.Image`
-    margin-top: 15px;
-    border-radius: 75px;
-
-    width: 150px;
-    height: 150px;
-`;
-
 export const Currency = styled(CurrencyInput).attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`

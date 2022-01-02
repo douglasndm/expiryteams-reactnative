@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { exists } from 'react-native-fs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { showMessage } from 'react-native-flash-message';
 
@@ -12,9 +11,6 @@ import Header from '~/Components/Header';
 
 import { getProduct } from '~/Functions/Products/Product';
 
-import { ShareProductImageWithText } from '~/Functions/Share';
-import { getProductImagePath } from '~/Functions/Products/Image';
-
 import {
     Container,
     PageHeader,
@@ -23,8 +19,6 @@ import {
     ProductName,
     ProductCode,
     ProductInfo,
-    ProductImageContainer,
-    ProductImage,
     ActionsButtonContainer,
     ActionButton,
     PageContent,
@@ -54,7 +48,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [photo, setPhoto] = useState<string | null>(null);
     const [product, setProduct] = useState<IProduct>();
 
     const [lotesTratados, setLotesTratados] = useState<Array<IBatch>>([]);
@@ -67,10 +60,11 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
             setProduct(response);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -100,14 +94,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         }
     }, [product]);
 
-    const handleOnPhotoPress = useCallback(() => {
-        if (product && product.photo) {
-            navigate('PhotoView', {
-                productId,
-            });
-        }
-    }, [navigate, product, productId]);
-
     return isLoading ? (
         <Loading />
     ) : (
@@ -121,17 +107,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                 <PageHeader>
                     {!!product && (
                         <ProductContainer>
-                            {!!photo && (
-                                <ProductImageContainer
-                                    onPress={handleOnPhotoPress}
-                                >
-                                    <ProductImage
-                                        source={{
-                                            uri: photo,
-                                        }}
-                                    />
-                                </ProductImageContainer>
-                            )}
                             <ProductInformationContent>
                                 <ProductName>
                                     {!!product && product?.name}

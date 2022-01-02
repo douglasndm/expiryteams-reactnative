@@ -147,6 +147,8 @@ async function errorsHandler(error: any): Promise<void> {
         console.log('request error');
         console.log(error.request);
     }
+    console.log('LOG DE ERROR');
+    console.error(err);
     if (knownError) {
         showMessage({
             message: err,
@@ -158,16 +160,3 @@ async function errorsHandler(error: any): Promise<void> {
 }
 
 export default errorsHandler;
-
-/* async error => {
-        console.log('inside interceptor');
-        // console.log(error.response);
-        if (error.response.status && error.response.status === 403) {
-            console.log(`error code ${error.response.status}`);
-            await destroySession();
-        } else {
-            return Promise.reject(error);
-        }
-    }
-
-    */

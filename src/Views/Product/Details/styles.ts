@@ -44,14 +44,6 @@ export const ProductInfo = styled.Text`
     color: ${({ theme }) => theme.colors.text};
 `;
 
-export const ProductImageContainer = styled(RectButton)``;
-
-export const ProductImage = styled.Image`
-    width: 75px;
-    height: 75px;
-    border-radius: 37px;
-`;
-
 export const ActionsButtonContainer = styled.View`
     flex-direction: row;
 `;
