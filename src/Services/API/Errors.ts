@@ -1,5 +1,3 @@
-import { showMessage } from 'react-native-flash-message';
-
 import { destroySession } from '@utils/Auth/Session';
 
 import strings from '~/Locales';
@@ -143,17 +141,12 @@ async function errorsHandler(error: any): Promise<void> {
         throw new Error(err);
     } else if (error.request) {
         err = error.request._response;
-        // The request was made but no response was received
-        console.log('request error');
-        console.log(error.request);
+
+        console.log('The request was made but no response was received');
+        console.error(error.request);
     }
-    console.log('LOG DE ERROR');
-    console.error(err);
-    if (knownError) {
-        showMessage({
-            message: err,
-            type: 'danger',
-        });
+    if (error instanceof Error) {
+        throw new Error(err);
     } else {
         Promise.reject(error);
     }
