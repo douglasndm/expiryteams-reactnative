@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { LogBox, ActivityIndicator } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import {
@@ -33,6 +33,8 @@ import { navigationRef } from '~/References/Navigation';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
+
+LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
 
 screens.enableScreens(true);
 
