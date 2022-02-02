@@ -7,7 +7,10 @@ interface CatPackage {
         | '3 people'
         | '5 people'
         | '10 people'
-        | '15 people';
+        | '15 people'
+        | '30 people'
+        | '45 people'
+        | '60 people';
     package: PurchasesPackage;
 }
 

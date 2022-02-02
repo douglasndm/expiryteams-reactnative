@@ -67,6 +67,24 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
                 package: offerings.all.TeamWith15.monthly,
             });
         }
+        if (!!offerings.all.TeamWith30 && offerings.all.TeamWith30.monthly) {
+            packages.push({
+                type: '30 people',
+                package: offerings.all.TeamWith30.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith45 && offerings.all.TeamWith45.monthly) {
+            packages.push({
+                type: '45 people',
+                package: offerings.all.TeamWith45.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith60 && offerings.all.TeamWith60.monthly) {
+            packages.push({
+                type: '60 people',
+                package: offerings.all.TeamWith60.monthly,
+            });
+        }
     }
     return packages;
 }

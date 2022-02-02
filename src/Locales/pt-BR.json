@@ -327,6 +327,9 @@
     "Subscription_TeamLimit_5people": "5 pessoas",
     "Subscription_TeamLimit_10people": "10 pessoas",
     "Subscription_TeamLimit_15people": "15 pessoas",
+    "Subscription_TeamLimit_30people": "30 pessoas",
+    "Subscription_TeamLimit_45people": "45 pessoas",
+    "Subscription_TeamLimit_60people": "60 pessoas",
 
     "AskUserReview_Title": "Você está gostando do aplicativo?",
     "AskUserReview_Description": "Estou me esforçando para criar o melhor aplicativo da categoria, você poderia tirar alguns segundos para dizer como está o meu trabalho?",
