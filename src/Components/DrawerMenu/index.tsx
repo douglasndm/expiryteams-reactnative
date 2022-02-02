@@ -145,15 +145,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     </MenuContent>
                 </MenuItemContainer>
 
-                <MenuItemContainer onPress={handleNavigateToSite}>
-                    <MenuContent>
-                        <Icons name="globe-outline" />
-                        <MenuItemText>
-                            {strings.Menu_Button_KnowOthersApps}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
-
                 <MenuItemContainer onPress={() => navigation.navigate('About')}>
                     <MenuContent>
                         <Icons name="help-circle-outline" />

@@ -68,10 +68,11 @@ const ListUsers: React.FC = () => {
 
             setUsers(response);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -131,10 +132,11 @@ const ListUsers: React.FC = () => {
             });
             navigate('UserDetails', { user: JSON.stringify(newUser) });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsAdding(false);
         }
@@ -185,7 +187,10 @@ const ListUsers: React.FC = () => {
                 <Loading />
             ) : (
                 <Container>
-                    <Header title={strings.View_UsersInTeam_PageTitle} />
+                    <Header
+                        title={strings.View_UsersInTeam_PageTitle}
+                        noDrawer
+                    />
 
                     {role === 'manager' && (
                         <AddCategoryContent>

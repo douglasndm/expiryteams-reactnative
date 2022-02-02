@@ -25,6 +25,7 @@ const Home: React.FC = () => {
     const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isMounted, setIsMounted] = useState(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
@@ -59,12 +60,20 @@ const Home: React.FC = () => {
     }, [teamContext.id]);
 
     useEffect(() => {
-        getProduts();
-    }, []);
+        if (isMounted) {
+            getProduts();
+        }
+
+        return () => {
+            setIsMounted(false);
+        };
+    }, [getProduts, isMounted]);
 
     useEffect(() => {
-        setProductsSearch(products);
-    }, [products]);
+        if (isMounted) {
+            setProductsSearch(products);
+        }
+    }, [isMounted, products]);
 
     const handleSearchChange = useCallback(
         async (search: string) => {
