@@ -29,12 +29,14 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
     }
 
     if (offerings.current.availablePackages.length !== 0) {
+        /*
         if (!!offerings.all.TeamWith1 && offerings.all.TeamWith1.monthly) {
             packages.push({
                 type: '1 person',
                 package: offerings.all.TeamWith1.monthly,
             });
         }
+        */
         if (!!offerings.all.TeamWith2 && offerings.all.TeamWith2.monthly) {
             packages.push({
                 type: '2 people',
