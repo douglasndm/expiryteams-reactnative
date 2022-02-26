@@ -43,7 +43,7 @@ const Subscription: React.FC = () => {
         <Container>
             <HeaderContainer>
                 <TitleContainer>
-                    <AppNameTitle>VALIDADES PARA EMPRESAS</AppNameTitle>
+                    <AppNameTitle>TIMES</AppNameTitle>
                     <IntroductionText>
                         CONHEÇA AS VANTAGENS DAS
                     </IntroductionText>

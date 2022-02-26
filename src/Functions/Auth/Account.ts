@@ -35,6 +35,9 @@ export async function createAccount({
     const response = await api.post<IUser>('/users', {
         firebaseUid: user.uid,
         email,
+        name,
+        lastName,
+        password,
     });
 
     return response.data;
@@ -48,13 +51,9 @@ export async function isEmailConfirmed(): Promise<boolean> {
 }
 
 export async function resendConfirmationEmail(): Promise<void> {
-    try {
-        const user = auth().currentUser;
+    const user = auth().currentUser;
 
-        await user?.sendEmailVerification();
-    } catch (err) {
-        throw new Error(err.message);
-    }
+    await user?.sendEmailVerification();
 }
 
 interface updateUserProps {
@@ -64,6 +63,10 @@ interface updateUserProps {
 export async function updateUser({ name }: updateUserProps): Promise<void> {
     await auth().currentUser?.updateProfile({
         displayName: name,
+    });
+
+    await api.put<IUser>(`/users`, {
+        name,
     });
 }
 
@@ -97,4 +100,8 @@ export async function updatePassword({
 
     // should ask user reauth
     await user.updatePassword(newPassword);
+
+    await api.put<IUser>(`/users`, {
+        password,
+    });
 }

@@ -1,21 +1,26 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
+import { getAllBrands } from '~/Functions/Brand';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
-import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
+
+import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
 import {
     Container,
@@ -30,14 +35,8 @@ import {
     InputCodeTextIcon,
     InputCodeText,
     InputTextIconContainer,
-    ProductImage,
-    CameraButtonContainer,
-    CameraButtonIcon,
-    ProductImageContainer,
     MoreInformationsContainer,
     MoreInformationsTitle,
-    PickerContainer,
-    Picker,
 } from '../Add/styles';
 
 import {
@@ -56,13 +55,11 @@ interface RequestParams {
     };
 }
 
-interface ICategoryItem {
-    label: string;
-    value: string;
-    key: string;
-}
-
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
+    const { reset, goBack, replace } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
+
     const teamContext = useTeam();
 
     const userRole = useMemo(() => {
@@ -73,8 +70,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         return 'repositor';
     }, [teamContext.roleInTeam]);
 
-    const { reset, goBack } = useNavigation();
-
     const product = useMemo<IProduct>(() => {
         return JSON.parse(route.params.product);
     }, [route.params.product]);
@@ -84,16 +79,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState<string | undefined>('');
-    const [photoPath, setPhotoPath] = useState<string>('');
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [brands, setBrands] = useState<Array<IBrandItem>>([]);
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
+    const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
-    const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
@@ -121,18 +116,35 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             );
             setCategories(categoriesArray);
 
+            const allBrands = await getAllBrands({ team_id: teamContext.id });
+            const brandsArray: Array<IBrandItem> = [];
+
+            allBrands.forEach(brand =>
+                brandsArray.push({
+                    key: brand.id,
+                    label: brand.name,
+                    value: brand.id,
+                })
+            );
+
+            setBrands(brandsArray);
+
             if (product.categories.length > 0) {
                 setSelectedCategory(product.categories[0].id);
             }
+            if (product.brand) {
+                setSelectedBrand(product.brand);
+            }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
-    }, [product.categories, product.code, product.name, teamContext.id]);
+    }, [product, teamContext.id]);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -152,44 +164,46 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     id: product.id,
                     name,
                     code,
+                    brand: selectedBrand || undefined,
                 },
                 categories: prodCategories,
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: { productId: product.id, type: 'edit_product' },
-                    },
-                ],
+            showMessage({
+                message: strings.View_Success_ProductUpdated,
+                type: 'info',
+            });
+
+            replace('ProductDetails', {
+                id: product.id,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
-    }, [code, name, product.id, reset, selectedCategory]);
+    }, [code, name, product.id, replace, selectedBrand, selectedCategory]);
 
     const handleDeleteProduct = useCallback(async () => {
         try {
             await deleteProduct({ product_id: product.id });
 
+            showMessage({
+                message: strings.View_Success_ProductDeleted,
+                type: 'info',
+            });
+
             reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    { name: 'Success', params: { type: 'delete_product' } },
-                ],
+                routes: [{ name: 'Home' }],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setDeleteComponentVisible(false);
         }
@@ -200,37 +214,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         setIsBarCodeEnabled(false);
     }, []);
 
-    const handleEnableCamera = useCallback(() => {
-        setIsBarCodeEnabled(false);
-        setIsCameraEnabled(true);
-    }, []);
-
-    const handleDisableCamera = useCallback(() => {
-        setIsCameraEnabled(false);
-    }, []);
-
     const handleEnableBarCodeReader = useCallback(() => {
-        setIsCameraEnabled(false);
         setIsBarCodeEnabled(true);
     }, []);
 
     const handleDisableBarCodeReader = useCallback(() => {
         setIsBarCodeEnabled(false);
     }, []);
-
-    const handleCategoryChange = useCallback(value => {
-        setSelectedCategory(value);
-    }, []);
-
-    const onPhotoTaked = useCallback(
-        async ({ fileName, filePath }: onPhotoTakedProps) => {
-            if (await exists(filePath)) {
-                setPhotoPath(filePath);
-            }
-            handleDisableCamera();
-        },
-        [handleDisableCamera]
-    );
 
     const handleSwitchShowDeleteProduct = useCallback(() => {
         setDeleteComponentVisible(!deleteComponentVisible);
@@ -244,186 +234,148 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         <Loading />
     ) : (
         <>
-            {isCameraEnabled ? (
-                <Camera
-                    onPhotoTaked={onPhotoTaked}
-                    onBackButtonPressed={handleDisableCamera}
+            {isBarCodeEnabled ? (
+                <BarCodeReader
+                    onCodeRead={handleOnCodeRead}
+                    onClose={handleDisableBarCodeReader}
                 />
             ) : (
-                <>
-                    {isBarCodeEnabled ? (
-                        <BarCodeReader
-                            onCodeRead={handleOnCodeRead}
-                            onClose={handleDisableBarCodeReader}
-                        />
-                    ) : (
-                        <Container>
-                            <StatusBar />
-                            <PageHeader>
-                                <PageTitleContainer>
-                                    <BackButton handleOnPress={goBack} />
-                                    <PageTitle>
-                                        {strings.View_EditProduct_PageTitle}
-                                    </PageTitle>
-                                </PageTitleContainer>
+                <Container>
+                    <StatusBar />
+                    <PageHeader>
+                        <PageTitleContainer>
+                            <BackButton handleOnPress={goBack} />
+                            <PageTitle>
+                                {strings.View_EditProduct_PageTitle}
+                            </PageTitle>
+                        </PageTitleContainer>
 
-                                <ActionsButtonContainer>
-                                    <ButtonPaper
-                                        icon={() => (
-                                            <Icons
-                                                name="save-outline"
-                                                size={22}
-                                            />
-                                        )}
-                                        onPress={updateProd}
-                                    >
-                                        {strings.View_EditProduct_Button_Save}
-                                    </ButtonPaper>
-
-                                    {(userRole === 'manager' ||
-                                        userRole === 'supervisor') && (
-                                        <ButtonPaper
-                                            icon={() => (
-                                                <Icons
-                                                    name="trash-outline"
-                                                    size={22}
-                                                />
-                                            )}
-                                            onPress={() => {
-                                                setDeleteComponentVisible(true);
-                                            }}
-                                        >
-                                            {
-                                                strings.View_ProductDetails_Button_DeleteProduct
-                                            }
-                                        </ButtonPaper>
-                                    )}
-                                </ActionsButtonContainer>
-                            </PageHeader>
-
-                            <PageContent>
-                                {/* {!!photoPath && (
-                                        <ProductImageContainer
-                                            onPress={handleEnableCamera}
-                                        >
-                                            <ProductImage
-                                                source={{
-                                                    uri: `file://${photoPath}`,
-                                                }}
-                                            />
-                                        </ProductImageContainer>
-                                    )} */}
-
-                                <InputContainer>
-                                    <InputGroup>
-                                        <InputTextContainer>
-                                            <InputText
-                                                placeholder={
-                                                    strings.View_EditProduct_InputPlacehoder_Name
-                                                }
-                                                accessibilityLabel={
-                                                    strings.View_EditProduct_InputAccessibility_Name
-                                                }
-                                                value={name}
-                                                onChangeText={value => {
-                                                    setName(value);
-                                                    setNameFieldError(false);
-                                                }}
-                                            />
-                                        </InputTextContainer>
-
-                                        {/* <CameraButtonContainer
-                                                onPress={handleEnableCamera}
-                                            >
-                                                <CameraButtonIcon />
-                                            </CameraButtonContainer> */}
-                                    </InputGroup>
-                                    {nameFieldError && (
-                                        <InputTextTip>
-                                            {
-                                                strings.View_EditProduct_Error_EmptyProductName
-                                            }
-                                        </InputTextTip>
-                                    )}
-
-                                    <InputCodeTextContainer>
-                                        <InputCodeText
-                                            placeholder={
-                                                strings.View_EditProduct_InputPlacehoder_Code
-                                            }
-                                            accessibilityLabel={
-                                                strings.View_EditProduct_InputAccessibility_Code
-                                            }
-                                            value={code}
-                                            onChangeText={value =>
-                                                setCode(value)
-                                            }
-                                        />
-                                        <InputTextIconContainer
-                                            onPress={handleEnableBarCodeReader}
-                                        >
-                                            <InputCodeTextIcon />
-                                        </InputTextIconContainer>
-                                    </InputCodeTextContainer>
-
-                                    <MoreInformationsContainer>
-                                        <MoreInformationsTitle>
-                                            {
-                                                strings.View_AddProduct_MoreInformation_Label
-                                            }
-                                        </MoreInformationsTitle>
-
-                                        <PickerContainer
-                                            style={{ marginBottom: 10 }}
-                                        >
-                                            <Picker
-                                                items={categories}
-                                                onValueChange={
-                                                    handleCategoryChange
-                                                }
-                                                value={selectedCategory}
-                                                placeholder={{
-                                                    label:
-                                                        strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                                                    value: 'null',
-                                                }}
-                                            />
-                                        </PickerContainer>
-                                    </MoreInformationsContainer>
-                                </InputContainer>
-                            </PageContent>
-
-                            <Dialog.Container
-                                visible={deleteComponentVisible}
-                                onBackdropPress={handleSwitchShowDeleteProduct}
+                        <ActionsButtonContainer>
+                            <ButtonPaper
+                                icon={() => (
+                                    <Icons name="save-outline" size={22} />
+                                )}
+                                onPress={updateProd}
                             >
-                                <Dialog.Title>
+                                {strings.View_EditProduct_Button_Save}
+                            </ButtonPaper>
+
+                            {(userRole === 'manager' ||
+                                userRole === 'supervisor') && (
+                                <ButtonPaper
+                                    icon={() => (
+                                        <Icons name="trash-outline" size={22} />
+                                    )}
+                                    onPress={() => {
+                                        setDeleteComponentVisible(true);
+                                    }}
+                                >
                                     {
-                                        strings.View_ProductDetails_WarningDelete_Title
+                                        strings.View_ProductDetails_Button_DeleteProduct
                                     }
-                                </Dialog.Title>
-                                <Dialog.Description>
+                                </ButtonPaper>
+                            )}
+                        </ActionsButtonContainer>
+                    </PageHeader>
+
+                    <PageContent>
+                        <InputContainer>
+                            <InputGroup>
+                                <InputTextContainer>
+                                    <InputText
+                                        placeholder={
+                                            strings.View_EditProduct_InputPlacehoder_Name
+                                        }
+                                        accessibilityLabel={
+                                            strings.View_EditProduct_InputAccessibility_Name
+                                        }
+                                        value={name}
+                                        onChangeText={value => {
+                                            setName(value);
+                                            setNameFieldError(false);
+                                        }}
+                                    />
+                                </InputTextContainer>
+                            </InputGroup>
+                            {nameFieldError && (
+                                <InputTextTip>
                                     {
-                                        strings.View_ProductDetails_WarningDelete_Message
+                                        strings.View_EditProduct_Error_EmptyProductName
                                     }
-                                </Dialog.Description>
-                                <Dialog.Button
-                                    label={
-                                        strings.View_ProductDetails_WarningDelete_Button_Cancel
+                                </InputTextTip>
+                            )}
+
+                            <InputCodeTextContainer>
+                                <InputCodeText
+                                    placeholder={
+                                        strings.View_EditProduct_InputPlacehoder_Code
                                     }
-                                    onPress={handleSwitchShowDeleteProduct}
+                                    accessibilityLabel={
+                                        strings.View_EditProduct_InputAccessibility_Code
+                                    }
+                                    value={code}
+                                    onChangeText={value => setCode(value)}
                                 />
-                                <Dialog.Button
-                                    label={
-                                        strings.View_ProductDetails_WarningDelete_Button_Confirm
+                                <InputTextIconContainer
+                                    onPress={handleEnableBarCodeReader}
+                                >
+                                    <InputCodeTextIcon />
+                                </InputTextIconContainer>
+                            </InputCodeTextContainer>
+
+                            <MoreInformationsContainer>
+                                <MoreInformationsTitle>
+                                    {
+                                        strings.View_AddProduct_MoreInformation_Label
                                     }
-                                    color="red"
-                                    onPress={handleDeleteProduct}
+                                </MoreInformationsTitle>
+
+                                <CategorySelect
+                                    categories={categories}
+                                    onChange={setSelectedCategory}
+                                    defaultValue={selectedCategory}
+                                    containerStyle={{
+                                        marginBottom: 10,
+                                    }}
                                 />
-                            </Dialog.Container>
-                        </Container>
-                    )}
-                </>
+
+                                <BrandSelect
+                                    brands={brands}
+                                    onChange={setSelectedBrand}
+                                    defaultValue={selectedBrand}
+                                    containerStyle={{
+                                        marginBottom: 10,
+                                    }}
+                                />
+                            </MoreInformationsContainer>
+                        </InputContainer>
+                    </PageContent>
+
+                    <Dialog.Container
+                        visible={deleteComponentVisible}
+                        onBackdropPress={handleSwitchShowDeleteProduct}
+                    >
+                        <Dialog.Title>
+                            {strings.View_ProductDetails_WarningDelete_Title}
+                        </Dialog.Title>
+                        <Dialog.Description>
+                            {strings.View_ProductDetails_WarningDelete_Message}
+                        </Dialog.Description>
+                        <Dialog.Button
+                            label={
+                                strings.View_ProductDetails_WarningDelete_Button_Cancel
+                            }
+                            onPress={handleSwitchShowDeleteProduct}
+                        />
+                        <Dialog.Button
+                            label={
+                                strings.View_ProductDetails_WarningDelete_Button_Confirm
+                            }
+                            color="red"
+                            onPress={handleDeleteProduct}
+                        />
+                    </Dialog.Container>
+                </Container>
             )}
         </>
     );

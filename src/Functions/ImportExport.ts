@@ -15,7 +15,7 @@ export async function importExportFileFromApp({
         });
 
         const data = new FormData();
-        data.append('file', picked);
+        data.append('file', picked[0]);
 
         await api.post(`/team/${team_id}/products/import`, data, {
             headers: {
@@ -23,7 +23,7 @@ export async function importExportFileFromApp({
             },
         });
     } catch (err) {
-        if (!DocumentPicker.isCancel(err)) {
+        if (!DocumentPicker.isCancel(err) && err instanceof Error) {
             throw new Error(err.message);
         }
     }

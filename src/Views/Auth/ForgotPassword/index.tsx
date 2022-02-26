@@ -20,7 +20,7 @@ const ForgotPassword: React.FC = () => {
     const [email, setEmail] = useState<string>('');
 
     const handleEmailChange = useCallback(
-        (value: string) => setEmail(value),
+        (value: string) => setEmail(value.trim()),
         []
     );
 
@@ -43,10 +43,11 @@ const ForgotPassword: React.FC = () => {
 
             goBack();
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsRecovering(false);
         }

@@ -7,21 +7,17 @@ import api from '~/Services/API';
 export async function getUserTeams(): Promise<Array<IUserRoles>> {
     const response = await api.get(`/users`);
 
-    if (response.data) {
-        const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
-            role: role.role,
-            status: role.status,
-            team: {
-                id: role.team.id,
-                name: role.team.name,
-                active: role.team.isActive === true,
-            },
-        }));
+    const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
+        role: role.role,
+        status: role.status,
+        team: {
+            id: role.team.id,
+            name: role.team.name,
+            active: role.team.isActive === true,
+        },
+    }));
 
-        return userRoles;
-    }
-
-    return [];
+    return userRoles;
 }
 
 interface getAllUsersFromTeamProps {

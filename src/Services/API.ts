@@ -2,24 +2,27 @@ import axios from 'axios';
 import EnvConfig from 'react-native-config';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
 import auth from '@react-native-firebase/auth';
-import messaging from '@react-native-firebase/messaging';
+
+import DeviceId from './DeviceID';
 
 import errorsHandler from './API/Errors';
 
 const api = axios.create({
-    baseURL: __DEV__ ? 'http://192.168.1.3:3213' : EnvConfig.API_URL,
+    baseURL: __DEV__ ? EnvConfig.DEV_URL : EnvConfig.API_URL,
 });
 
 api.interceptors.request.use(async config => {
-    config.headers.appbuildnumber = getBuildNumber();
-    config.headers.appversion = getVersion();
+    if (config.headers) {
+        config.headers.appbuildnumber = getBuildNumber();
+        config.headers.appversion = getVersion();
 
-    const token = await messaging().getToken();
-    config.headers.deviceid = token;
+        const deviceId = new DeviceId();
 
-    const userToken = await auth().currentUser?.getIdToken();
-    config.headers.Authorization = `Bearer ${userToken}`;
+        config.headers.deviceid = await deviceId.getDeviceId();
 
+        const userToken = await auth().currentUser?.getIdToken();
+        config.headers.Authorization = `Bearer ${userToken}`;
+    }
     return config;
 });
 

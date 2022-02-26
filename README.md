@@ -1,4 +1,6 @@
-# Controle de validade
+<strong>iOS: </strong><img src="https://build.appcenter.ms/v0.1/apps/5a7b5548-8897-4bef-93c6-b3dc3db8b041/branches/main/badge" />
+
+# Expiry Checker Teams
 
 Passos necessários para realizar uma build bem sucedida do app. Atenção que o aplicativo só foi desenvolvido para o Android.
 
@@ -22,8 +24,6 @@ ANDROID_UPLOAD_KEY_PASSWORD <- Key password do arquivo keystore criado no passo 
 
 
 APPLICATION_SECRET_BACKUP_CRYPT= <- UMA CHAVE ÚNICA DA SUA APLICAÇÃO USADA PARA CRIPTOGRAFAR E DESCRIPTOGRAFAR OS BACKUPS GERADO PELO APLICATIVO (ATENÇÃO SE VOCÊ MUDAR ESSE VALOR NO FUTURO SEUS BACKUPS ANTERIORES SERÃO INVALIDADOS)
-
-GOOGLE_SIGNIN_CLIENT_ID= <- Client ID encontrado nas configurações do firebase console
 
 REVENUECAT_PUBLIC_APP_ID= <- ID do aplicativo na Revenuecat
 ```

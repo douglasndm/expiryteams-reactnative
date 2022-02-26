@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Teams</string>
+	<string>Validades</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>Bundle Id</string>
+			<string>expiryteams</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>dev.douglasndm.expirychecker.business</string>
+				<string>expiryteams</string>
 			</array>
 		</dict>
 	</array>

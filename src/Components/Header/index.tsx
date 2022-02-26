@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
-import { PixelRatio } from 'react-native';
+import { PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
 
@@ -18,10 +19,15 @@ import {
 interface RequestProps {
     title?: string;
     noDrawer?: boolean;
+    listRef?: React.RefObject<FlatList<IProduct>>;
 }
 
-const Header: React.FC<RequestProps> = ({ title, noDrawer }: RequestProps) => {
-    const navigation = useNavigation();
+const Header: React.FC<RequestProps> = ({
+    title,
+    noDrawer,
+    listRef,
+}: RequestProps) => {
+    const navigation = useNavigation<DrawerNavigationProp<RoutesParams>>();
 
     const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
 
@@ -35,6 +41,26 @@ const Header: React.FC<RequestProps> = ({ title, noDrawer }: RequestProps) => {
         }
     }, [navigation]);
 
+    let lastPress = 0;
+
+    const onDoublePress = useCallback(() => {
+        const time = new Date().getTime();
+        const delta = time - lastPress;
+
+        const DOUBLE_PRESS_DELAY = 400;
+        if (delta < DOUBLE_PRESS_DELAY) {
+            // Success double press
+
+            if (listRef && listRef.current) {
+                listRef.current.scrollToIndex({
+                    animated: true,
+                    index: 0,
+                });
+            }
+        }
+        lastPress = time;
+    }, []);
+
     return noDrawer ? (
         <HeaderContainerNoDrawner>
             <BackButton handleOnPress={handleGoBack} />
@@ -45,20 +71,22 @@ const Header: React.FC<RequestProps> = ({ title, noDrawer }: RequestProps) => {
         <>
             <StatusBar forceWhiteTextIOS />
 
-            <HeaderContainer>
-                <MenuButton onPress={handleOpenMenu}>
-                    <MenuIcon />
-                </MenuButton>
+            <HeaderContainer onPress={onDoublePress}>
+                <>
+                    <MenuButton onPress={handleOpenMenu}>
+                        <MenuIcon />
+                    </MenuButton>
 
-                {title ? (
-                    <TextLogo style={{ fontSize: titleFontSize }}>
-                        {title}
-                    </TextLogo>
-                ) : (
-                    <TextLogo style={{ fontSize: titleFontSize }}>
-                        {strings.AppName}
-                    </TextLogo>
-                )}
+                    {title ? (
+                        <TextLogo style={{ fontSize: titleFontSize }}>
+                            {title}
+                        </TextLogo>
+                    ) : (
+                        <TextLogo style={{ fontSize: titleFontSize }}>
+                            {strings.AppName}
+                        </TextLogo>
+                    )}
+                </>
             </HeaderContainer>
         </>
     );

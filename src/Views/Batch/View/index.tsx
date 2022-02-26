@@ -159,6 +159,12 @@ const View: React.FC = () => {
         }
     }, [batch.exp_date, batch.amount, dateFormat, prod.name]);
 
+    const handleNavigateToDiscount = useCallback(() => {
+        navigate('BatchDiscount', {
+            batch: JSON.stringify(batch),
+        });
+    }, [batch, navigate]);
+
     return (
         <Container>
             <PageHeader>
@@ -209,6 +215,20 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
+                    {!!batch.price_tmp && (
+                        <BatchPrice>
+                            {`Preço temporário `}
+                            <NumberFormat
+                                value={batch.price_tmp}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
+
                     {(userRole === 'manager' || userRole === 'supervisor') && (
                         <Button
                             text="Enviar notificação para o time"
@@ -222,6 +242,12 @@ const View: React.FC = () => {
                         text="Compartilhar com outros apps"
                         onPress={handleShare}
                         isLoading={isSharing}
+                        contentStyle={{ width: 250 }}
+                    />
+
+                    <Button
+                        text="Adicionar desconto"
+                        onPress={handleNavigateToDiscount}
                         contentStyle={{ marginTop: -5, width: 250 }}
                     />
                 </BatchContainer>

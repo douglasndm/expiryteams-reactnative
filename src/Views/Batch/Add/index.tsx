@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 
@@ -40,7 +41,9 @@ interface Props {
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
 
-    const { reset, goBack } = useNavigation();
+    const { goBack, replace } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -87,15 +90,13 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 },
             });
 
-            reset({
-                routes: [
-                    { name: 'Home' },
-                    { name: 'ProductDetails', params: { id: productId } },
-                    {
-                        name: 'Success',
-                        params: { type: 'create_batch', productId },
-                    },
-                ],
+            showMessage({
+                message: strings.View_Success_BatchCreated,
+                type: 'info',
+            });
+
+            replace('ProductDetails', {
+                id: productId,
             });
         } catch (err) {
             showMessage({
@@ -105,7 +106,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         } finally {
             setIsAdding(false);
         }
-    }, [amount, productId, expDate, lote, reset, price]);
+    }, [lote, productId, amount, expDate, price, replace]);
 
     const loadData = useCallback(async () => {
         const prod = await getProduct({ productId });

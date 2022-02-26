@@ -1,5 +1,3 @@
-import { showMessage } from 'react-native-flash-message';
-
 import { destroySession } from '@utils/Auth/Session';
 
 import strings from '~/Locales';
@@ -21,6 +19,10 @@ async function errorsHandler(error: any): Promise<void> {
         if (error.response.data.errorCode) {
             const { errorCode } = error.response.data;
             const { message } = error.response.data;
+
+            if (message) {
+                err = message;
+            }
 
             if (errorCode) {
                 knownError = true;
@@ -108,6 +110,21 @@ async function errorsHandler(error: any): Promise<void> {
                 case 22:
                     err = strings.API_Error_Code22;
                     break;
+                case 23:
+                    err = strings.API_Error_Code23;
+                    break;
+                case 24:
+                    err = strings.API_Error_Code24;
+                    break;
+                case 25:
+                    err = strings.API_Error_Code25;
+                    break;
+                case 26:
+                    err = strings.API_Error_Code26;
+                    break;
+                case 27:
+                    err = strings.API_Error_Code27;
+                    break;
 
                 default:
                     if (error.response.data.message) {
@@ -122,33 +139,17 @@ async function errorsHandler(error: any): Promise<void> {
         }
 
         throw new Error(err);
+    } else if (error.request) {
+        err = error.request._response;
+
+        console.log('The request was made but no response was received');
+        console.error(error.request);
     }
-    if (error.request) {
-        // The request was made but no response was received
-        console.log('request error');
-        console.log(error.request);
-    }
-    if (knownError) {
-        showMessage({
-            message: err,
-            type: 'danger',
-        });
+    if (error instanceof Error) {
+        throw new Error(err);
     } else {
         Promise.reject(error);
     }
 }
 
 export default errorsHandler;
-
-/* async error => {
-        console.log('inside interceptor');
-        // console.log(error.response);
-        if (error.response.status && error.response.status === 403) {
-            console.log(`error code ${error.response.status}`);
-            await destroySession();
-        } else {
-            return Promise.reject(error);
-        }
-    }
-
-    */

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
+import { FlatList } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -24,7 +25,10 @@ import {
 const Home: React.FC = () => {
     const teamContext = useTeam();
 
+    const listRef = useRef<FlatList<IProduct>>(null);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isMounted, setIsMounted] = useState(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
@@ -35,9 +39,6 @@ const Home: React.FC = () => {
     );
 
     const getProduts = useCallback(async () => {
-        if (teamContext.isLoading) {
-            return;
-        }
         try {
             setIsLoading(true);
 
@@ -51,22 +52,31 @@ const Home: React.FC = () => {
 
             setProducts(productsResponse);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
-    }, [teamContext.id, teamContext.isLoading]);
+    }, [teamContext.id]);
 
     useEffect(() => {
-        getProduts();
-    }, [getProduts]);
+        if (isMounted) {
+            getProduts();
+        }
+
+        return () => {
+            setIsMounted(false);
+        };
+    }, [getProduts, isMounted]);
 
     useEffect(() => {
-        setProductsSearch(products);
-    }, [products]);
+        if (isMounted) {
+            setProductsSearch(products);
+        }
+    }, [isMounted, products]);
 
     const handleSearchChange = useCallback(
         async (search: string) => {
@@ -114,7 +124,9 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <Container>
-                    {teamContext.name && <Header title={teamContext.name} />}
+                    {teamContext.name && (
+                        <Header title={teamContext.name} listRef={listRef} />
+                    )}
 
                     {products.length > 0 && (
                         <InputTextContainer>
@@ -135,6 +147,7 @@ const Home: React.FC = () => {
                         products={productsSearch}
                         onRefresh={getProduts}
                         sortProdsByBatchExpDate={false}
+                        listRef={listRef}
                     />
                 </Container>
             )}
@@ -142,4 +155,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default memo(Home);

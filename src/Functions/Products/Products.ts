@@ -91,3 +91,19 @@ export function sortProductsByBatchesExpDate({
 
     return prodsWithSortedBatchs;
 }
+
+interface deleteManyProductsProps {
+    productsIds: Array<string>;
+    team_id: string;
+}
+export async function deleteManyProducts({
+    productsIds,
+    team_id,
+}: deleteManyProductsProps): Promise<void> {
+    await API.delete(`/products`, {
+        data: {
+            productsIds,
+            team_id,
+        },
+    });
+}

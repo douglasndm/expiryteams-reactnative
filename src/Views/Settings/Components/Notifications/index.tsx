@@ -1,20 +1,20 @@
-import React, { useState, useCallback, useContext, useMemo } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
+import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import {
-    NotificationCadency,
-    setNotificationCadency,
-} from '~/Functions/Settings';
-
-import { Picker } from '../../styles';
+import Loading from '~/Components/Loading';
 
 import {
     SettingNotificationContainer,
     SettingNotificationDescription,
+    CheckBox,
 } from './styles';
+
+import {
+    getNotificationsPreferences,
+    updateNotificationsPreferences,
+} from '~/Functions/Settings/Notifications';
 
 interface INotificationCadencyItem {
     label: string;
@@ -23,67 +23,66 @@ interface INotificationCadencyItem {
 }
 
 const Notifications: React.FC = () => {
-    const { preferences } = useContext(PreferencesContext);
-    const [selectedItem, setSelectedItem] = useState<string>(
-        () => preferences.notificationCadency
-    );
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [emailNotification, setEmailNotification] = useState<boolean>(false);
 
-    const data = useMemo(() => {
-        const availableCadency: Array<INotificationCadencyItem> = [];
-        // if (preferences.isUserPremium) {
-        //     availableCadency.push({
-        //         label: strings.View_Settings_Notifications_Cadency_Hour,
-        //         value: NotificationCadency.Hour,
-        //     });
-        // }
+    const loadData = useCallback(async () => {
+        try {
+            setIsLoading(true);
 
-        availableCadency.push({
-            label: strings.View_Settings_Notifications_Cadency_Day,
-            value: NotificationCadency.Day,
-            key: NotificationCadency.Day,
-        });
-        availableCadency.push({
-            label: strings.View_Settings_Notifications_Cadency_Never,
-            value: NotificationCadency.Never,
-            key: NotificationCadency.Never,
-        });
+            const response = await getNotificationsPreferences();
 
-        // if (preferences.isUserPremium) {
-        //     availableCadency.push({
-        //         label: strings.View_Settings_Notifications_Cadency_Week,
-        //         value: NotificationCadency.Week,
-        //     });
-        //     availableCadency.push({
-        //         label: strings.View_Settings_Notifications_Cadency_Month,
-        //         value: NotificationCadency.Month,
-        //     });
-        // }
-
-        return availableCadency;
+            setEmailNotification(response.email_enabled);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
 
-    const onValueChange = useCallback(
-        async value => {
-            if (value !== selectedItem && value !== 'null') {
-                await setNotificationCadency(value);
+    const updateSettings = useCallback(async (value: boolean) => {
+        try {
+            setIsLoading(true);
 
-                setSelectedItem(value);
-            }
-        },
-        [selectedItem]
-    );
+            await updateNotificationsPreferences({
+                email_enabled: value,
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
-    return (
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
+    const onEmailChange = useCallback(() => {
+        updateSettings(!emailNotification);
+        setEmailNotification(!emailNotification);
+    }, [emailNotification, updateSettings]);
+
+    return isLoading ? (
+        <Loading />
+    ) : (
         <SettingNotificationContainer>
             <SettingNotificationDescription>
-                {strings.View_Settings_Notifications_Title}
+                Notificações por e-mail
             </SettingNotificationDescription>
 
-            <Picker
-                items={data}
-                onValueChange={onValueChange}
-                value={selectedItem}
-                placeholder={{ label: 'Selecione um item', value: 'null' }}
+            <CheckBox
+                isChecked={emailNotification}
+                onPress={onEmailChange}
+                disableBuiltInState
+                bounceFriction={10}
+                text="Receber resumo semanal"
             />
         </SettingNotificationContainer>
     );

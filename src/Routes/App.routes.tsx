@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
@@ -9,11 +9,11 @@ import EditBatch from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/Product/Details';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
-import Success from '~/Views/Informations/Success';
 import Error from '~/Views/Informations/Error';
 import PhotoView from '~/Views/PhotoView';
 
 import BatchView from '~/Views/Batch/View';
+import BatchDiscount from '~/Views/Batch/Discount';
 
 import User from '~/Views/User';
 import Logout from '~/Views/Auth/Logout';
@@ -21,6 +21,10 @@ import Logout from '~/Views/Auth/Logout';
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
+
+import BrandList from '~/Views/Brand/List';
+import BrandView from '~/Views/Brand/View';
+import BrandEdit from '~/Views/Brand/Edit';
 
 import Export from '~/Views/Export';
 
@@ -57,15 +61,19 @@ const Routes: React.FC = () => {
             <Stack.Screen name="AddBatch" component={AddBatch} />
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditBatch" component={EditBatch} />
-            <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="Error" component={Error} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
             <Stack.Screen name="BatchView" component={BatchView} />
+            <Stack.Screen name="BatchDiscount" component={BatchDiscount} />
 
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
+
+            <Stack.Screen name="BrandList" component={BrandList} />
+            <Stack.Screen name="BrandView" component={BrandView} />
+            <Stack.Screen name="BrandEdit" component={BrandEdit} />
 
             <Stack.Screen name="User" component={User} />
 

@@ -9,14 +9,8 @@ interface IResponse {
     email: string;
 }
 
-interface getUserProps {
-    user_id: string;
-}
-
-export async function getUser({
-    user_id,
-}: getUserProps): Promise<IResponse | null> {
-    const response = await api.get<IResponse>(`/users/${user_id}`);
+export async function getUser(): Promise<IResponse | null> {
+    const response = await api.get<IResponse>(`/users`);
 
     if (response) {
         return response.data;

@@ -59,10 +59,11 @@ const Export: React.FC = () => {
                 ],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsImporting(false);
         }
@@ -83,10 +84,11 @@ const Export: React.FC = () => {
                 type: 'info',
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsExcelLoading(false);
         }

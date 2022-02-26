@@ -52,11 +52,12 @@ export const TeamMembersLimit = styled.Text<Offer>`
 `;
 
 export const DetailsContainer = styled.View<Offer>`
-    flex: 1;
-    justify-content: center;
     padding: 12px;
 
+    min-height: 75px;
     background-color: ${({ theme }) => theme.colors.productBackground};
+    flex: 1;
+    justify-content: center;
 
     ${props =>
         props.isSelected &&
@@ -69,15 +70,8 @@ export const DetailsContainer = styled.View<Offer>`
 export const SubscriptionDescription = styled.Text.attrs(() => ({
     textBreakStrategy: 'simple',
 }))<Offer>`
-    color: white;
-    text-align: center;
-    align-self: center;
     font-size: 16px;
-    ${props =>
-        props.isSelected &&
-        css`
-            color: ${({ theme }) => theme.colors.text};
-        `};
+    text-align: center;
 `;
 
 export const ButtonSubscription = styled.TouchableOpacity`
@@ -88,9 +82,7 @@ export const ButtonSubscription = styled.TouchableOpacity`
 `;
 
 export const TextSubscription = styled.Text<Offer>`
-    text-align: center;
-    font-size: 17px;
-
+    font-size: 16px;
     color: ${({ theme }) => theme.colors.text};
 `;
 

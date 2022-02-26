@@ -41,6 +41,11 @@
     "API_Error_Code20": "Você não pode adicionar outro gerente ao time",
     "API_Error_Code21": "Esse cargo não é valido",
     "API_Error_Code22": "Você entrou em outro dispositivo, por favor faça login novamente",
+    "API_Error_Code23": "O usuário já está no time",
+    "API_Error_Code24": "Código inválido",
+    "API_Error_Code25": "Usuário não foi convidado para o time",
+    "API_Error_Code26": "Arquivo inválido, por favor gere novamente o arquivo de exportação",
+    "API_Error_Code27": "Não há usuários para enviar a notificação",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
     "BarCodeReader_CloseButton": "Fechar leitor",
@@ -112,6 +117,7 @@
     "View_AddProduct_InputPlacehoder_Amount": "Quantidade",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Preço unitário",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Selecione a categoria",
+    "View_AddProduct_InputPlaceholder_SelectBrand": "Selecione a marca",
     "View_AddProduct_InputAccessibility_Name": "Campo para digitar o nome do produto",
     "View_AddProduct_InputAccessibility_Code": "Campo para digitar o código do produto",
     "View_AddProduct_InputAccessibility_Batch": "Campo para digitar o lote do produto",
@@ -187,10 +193,14 @@
     "View_Settings_Button_SignOut": "Sair",
 
     "View_TeamList_PageTitle": "Selecione um time",
+    "View_TeamList_ListTitle": "Times",
+    "View_TeamList_EmptyTeamList": "Você não está em nenhum time no momento. Crie um time ou peça para seu gerente te convidar para um time atraves do e-mail",
     "View_TeamList_InputText_EnterCode_Placeholder": "Código para entrar no time",
+    "View_TeamList_Error_ManagerShouldActiveTeam": "Seu gerente precisa ativar o time primeiro",
     "View_TeamList_InvalidTeamCode": "Código inválido",
     "View_TeamList_SuccessCode": "Bem vindo ao time",
     "View_TeamList_Button_CreateTeam": "Criar um time",
+    "View_TeamList_Button_Logout": "Sair da conta",
 
     "View_CreateTeam_PageTitle": "Novo time",
     "View_CreateTeam_InputText_Name_Placeholder": "Nome do time",
@@ -222,17 +232,6 @@
     "View_Success_BatchDeleted": "Lote apagado",
     "View_Success_ProductDeleted": "Produto apagado",
 
-    "View_Success_BatchCreatedDescription": "O lote foi criado.",
-    "View_Success_ProductCreatedDescription": "O produto foi criado.",
-    "View_Success_BatchUpdatedDescription": "O lote foi atualizado.",
-    "View_Success_ProductUpdatedDescription": "O produto foi atualizado.",
-    "View_Success_BatchDeletedDescription": "O lote foi deletado.",
-    "View_Success_ProductDeletedDescription": "O produto foi deletado.",
-
-    "View_Success_Button_GoToCategory": "Ir para categoria",
-    "View_Success_Button_GoToHome": "Ir para o início",
-    "View_Success_Button_NavigateToProduct": "Ir para o produto",
-
     "View_PhotoView_PageTitle": "Visualizar foto",
     "View_PhotoView_Button_Back": "Voltar",
 
@@ -250,6 +249,8 @@
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
     "View_Category_List_InputAdd_Error_EmptyText": "Digite o nome da categoria",
     "View_Category_List_AllCategories_Label": "Todas as categorias",
+    "View_Category_List_View_BeforeCategoryName": "Categoria ",
+    "View_Category_View_ExcelExportedSuccess": "Arquivo excel gerado",
 
     "View_Category_Edit_PageTitle": "Editar categoria",
     "View_Category_Edit_InputNamePlaceholder": "Digite o nome da categoria",
@@ -260,6 +261,28 @@
     "View_Category_Edit_DeleteModal_Message": "Continuando você irá apagar a categoria. Todos os produtos referenciados a categoria deixará de exibir a categoria.",
     "View_Category_Edit_DeleteModal_Confirm": "Tenho certeza",
     "View_Category_Edit_DeleteModal_Cancel": "Manter categoria",
+
+    "View_Brand_List_PageTitle": "Marcas",
+    "View_Brand_List_InputAdd_Placeholder": "Nome da nova marca",
+    "View_Brand_List_InputAdd_Error_EmptyTextField": "Digite o nome da nova marca",
+    "View_Brand_List_AllCategories_Label": "Todas as marcas",
+    "View_Brand_List_View_BeforeCategoryName": "Marca ",
+    "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Esta marca já existe",
+
+    "View_Brand_View_PageTitle": "Marca",
+    "View_Brand_View_ActionButton_GenereteExcel": "Gerar Excel",
+    "View_Brand_View_SuccessExportExcel": "Arquivo Excel gerado",
+
+    "View_Brand_Edit_PageTitle": "Editar marca",
+    "View_Brand_Edit_InputNamePlaceholder": "Digite o nome da marca",
+    "View_Brand_Edit_ButtonSave": "Salvar",
+    "View_Brand_Edit_SuccessText": "Atualizado",
+    "View_Brand_Edit_ErrorEmtpyName": "Digite o nome da marca",
+    "View_Brand_Success_OnDelete": "A marca foi apagada",
+    "View_Brand_Edit_DeleteModal_Title": "Você tem certeza?",
+    "View_Brand_Edit_DeleteModal_Message": "Continuando você irá apagar a marca. Todos os produtos referenciados a marca deixará de exibir a marca.",
+    "View_Brand_Edit_DeleteModal_Confirm": "Tenho certeza",
+    "View_Brand_Edit_DeleteModal_Cancel": "Manter marca",
 
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
@@ -291,6 +314,10 @@
     "Function_Excel_ColumnName_BatchExpDate": "Vencimento em",
     "Function_Excel_Workbook_Name": "Controle de validade",
     "Function_Excel_filename": "controledevalidade",
+    "Function_Excel_ColumnName_ProductBrand": "Marca",
+    "Function_Excel_ColumnName_Status": "Status",
+    "Function_Excel_ColumnName_Status_Checked": "Já verificado",
+    "Function_Excel_ColumnName_Status_Unchecked": "Não verificado",
 
     "Function_Team_JoinTeam_InvalidCode": "Código inválido.",
 
@@ -300,6 +327,9 @@
     "Subscription_TeamLimit_5people": "5 pessoas",
     "Subscription_TeamLimit_10people": "10 pessoas",
     "Subscription_TeamLimit_15people": "15 pessoas",
+    "Subscription_TeamLimit_30people": "30 pessoas",
+    "Subscription_TeamLimit_45people": "45 pessoas",
+    "Subscription_TeamLimit_60people": "60 pessoas",
 
     "AskUserReview_Title": "Você está gostando do aplicativo?",
     "AskUserReview_Description": "Estou me esforçando para criar o melhor aplicativo da categoria, você poderia tirar alguns segundos para dizer como está o meu trabalho?",

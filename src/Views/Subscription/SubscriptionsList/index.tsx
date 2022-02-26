@@ -62,10 +62,11 @@ const SubscriptionsList: React.FC = () => {
                 team_id: teamContext.id,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -134,10 +135,11 @@ const SubscriptionsList: React.FC = () => {
                 });
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -172,11 +174,38 @@ const SubscriptionsList: React.FC = () => {
                 case '15 people':
                     limit = strings.Subscription_TeamLimit_15people;
                     break;
+                case '30 people':
+                    limit = strings.Subscription_TeamLimit_30people;
+                    break;
+                case '45 people':
+                    limit = strings.Subscription_TeamLimit_45people;
+                    break;
+                case '60 people':
+                    limit = strings.Subscription_TeamLimit_60people;
+                    break;
                 default:
                     break;
             }
 
             const isSelected = selected === pack.offeringIdentifier;
+
+            let text = ``;
+
+            if (Platform.OS === 'android' && !!introPrice) {
+                const introPriceStr =
+                    introPrice.price > 0 ? introPrice.priceString : 'Teste';
+
+                const periodUnit = pack.product.introPrice?.periodUnit;
+
+                if (!!periodUnit && periodUnit === 'DAY') {
+                    const period = pack.product.introPrice?.periodNumberOfUnits;
+
+                    text = `${introPriceStr} nos primeiros ${period} dias, e depois `;
+                } else {
+                    text = `${introPriceStr} no primeiro mês, depois `;
+                }
+            }
+            text += `${price} mensais`;
 
             return (
                 <SubscriptionContainer
@@ -195,10 +224,7 @@ const SubscriptionsList: React.FC = () => {
                     <DetailsContainer isSelected={isSelected}>
                         <SubscriptionDescription isSelected={isSelected}>
                             <TextSubscription isSelected={isSelected}>
-                                {!!introPrice &&
-                                    Platform.OS === 'android' &&
-                                    `${introPrice.priceString} no primeiro mês, depois `}
-                                {`${price} mensais`}
+                                {text}
                             </TextSubscription>
                         </SubscriptionDescription>
                     </DetailsContainer>

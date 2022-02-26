@@ -42,6 +42,8 @@ const Login: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
+    const [isMounted, setIsMounted] = useState(true);
+
     const handleSelectedTeam = useCallback(async () => {
         try {
             const user = auth().currentUser;
@@ -65,10 +67,12 @@ const Login: React.FC = () => {
                 }
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
         }
     }, []);
 
@@ -102,28 +106,26 @@ const Login: React.FC = () => {
 
             await handleSelectedTeam();
         } catch (err) {
+            if (err instanceof Error) {
+                let error = err.message;
+                if (
+                    err.code === 'auth/wrong-password' ||
+                    err.code === 'auth/user-not-found'
+                ) {
+                    error = strings.View_Login_Error_WrongEmailOrPassword;
+                } else if (err.code === 'auth/network-request-failed') {
+                    error = strings.View_Login_Error_NetworkError;
+                } else if (error === 'request error') {
+                    error = 'Erro de conexão';
+                }
+
+                showMessage({
+                    message: error,
+                    type: 'danger',
+                });
+            }
+        } finally {
             setIsLoging(false);
-            if (
-                err.code === 'auth/wrong-password' ||
-                err.code === 'auth/user-not-found'
-            ) {
-                showMessage({
-                    message: strings.View_Login_Error_WrongEmailOrPassword,
-                    type: 'danger',
-                });
-                return;
-            }
-            if (err.code === 'auth/network-request-failed') {
-                showMessage({
-                    message: strings.View_Login_Error_NetworkError,
-                    type: 'danger',
-                });
-                return;
-            }
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
         }
     }, [email, handleSelectedTeam, password]);
 
@@ -142,14 +144,22 @@ const Login: React.FC = () => {
     }, [navigate]);
 
     useEffect(() => {
-        if (auth().currentUser) {
-            handleSelectedTeam()
-                .then(() => setIsLoading(false))
-                .catch(() => setIsLoading(false));
-        } else {
-            setIsLoading(false);
-        }
-    }, []);
+        if (isMounted)
+            if (auth().currentUser) {
+                try {
+                    setIsLoading(false);
+                    handleSelectedTeam();
+                } finally {
+                    setIsLoading(false);
+                }
+            } else {
+                setIsLoading(false);
+            }
+
+        return () => {
+            setIsMounted(false);
+        };
+    }, [handleSelectedTeam, isMounted]);
 
     return isLoading ? (
         <Loading />
@@ -174,7 +184,7 @@ const Login: React.FC = () => {
                             }
                             autoCorrect={false}
                             autoCapitalize="none"
-                            contentStyle={{ marginBottom: 5 }}
+                            contentStyle={{ marginBottom: 10 }}
                         />
 
                         <Input
@@ -183,6 +193,8 @@ const Login: React.FC = () => {
                             placeholder={
                                 strings.View_Login_InputText_Password_Placeholder
                             }
+                            autoCorrect={false}
+                            autoCapitalize="none"
                             isPassword
                         />
 

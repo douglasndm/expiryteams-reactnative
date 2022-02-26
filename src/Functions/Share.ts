@@ -4,8 +4,6 @@ import Analytics from '@react-native-firebase/analytics';
 
 import strings from '../Locales';
 
-import { getProductImagePath } from './Products/Image';
-
 interface shareFileProps {
     fileAsString: string;
     fileName: string;
@@ -19,24 +17,20 @@ export async function shareFile({
     fileExtesion,
     encoding = 'utf8',
 }: shareFileProps): Promise<void> {
-    try {
-        const path = `${RNFS.DocumentDirectoryPath}/${fileName}.${fileExtesion}`;
+    const path = `${RNFS.DocumentDirectoryPath}/${fileName}.${fileExtesion}`;
 
-        // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
-        // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
-        if (await RNFS.exists(path)) {
-            await RNFS.unlink(path);
-        }
-
-        await RNFS.writeFile(path, fileAsString, encoding);
-
-        await Share.open({
-            title: strings.Function_Share_SaveFileTitle,
-            url: `file://${path}`,
-        });
-    } catch (err) {
-        throw new Error(err);
+    // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
+    // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
+    if (await RNFS.exists(path)) {
+        await RNFS.unlink(path);
     }
+
+    await RNFS.writeFile(path, fileAsString, encoding);
+
+    await Share.open({
+        title: strings.Function_Share_SaveFileTitle,
+        url: `file://${path}`,
+    });
 }
 
 interface ShareProductImageWithTextProps {
@@ -50,30 +44,15 @@ export async function ShareProductImageWithText({
     title,
     text,
 }: ShareProductImageWithTextProps): Promise<void> {
-    try {
-        // const imagePath = await getProductImagePath(productId);
+    const shareOptions = {
+        title,
+        message: text,
+        url: '',
+    };
 
-        const shareOptions = {
-            title,
-            message: text,
-            url: '',
-        };
-
-        // if (imagePath !== null) {
-        //     if (await RNFS.exists(imagePath)) {
-        //         shareOptions = {
-        //             ...shareOptions,
-        //             url: `file://${imagePath}`,
-        //         };
-        //     }
-        // }
-
-        Share.open(shareOptions).then(async () => {
-            if (!__DEV__) {
-                await Analytics().logEvent('user_shared_a_product');
-            }
-        });
-    } catch (err) {
-        throw new Error(err.message);
-    }
+    Share.open(shareOptions).then(async () => {
+        if (!__DEV__) {
+            await Analytics().logEvent('user_shared_a_product');
+        }
+    });
 }

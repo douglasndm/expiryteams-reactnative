@@ -1,10 +1,21 @@
 import styled from 'styled-components/native';
-import { FAB } from 'react-native-paper';
+import { RectButton } from 'react-native-gesture-handler';
+import { FAB, Button } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
     flex: 1;
 `;
+
+export const ActionButtonsContainer = styled.View`
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 5px 10px;
+`;
+
+export const ButtonPaper = styled(Button).attrs(props => ({
+    color: props.theme.colors.textAccent,
+}))``;
 
 export const CategoryDetails = styled.View`
     flex-direction: row;
@@ -41,4 +52,23 @@ export const FloatButton = styled(FAB).attrs(() => ({
     right: 20px;
 `;
 
-export const Icons = styled(Ionicons)``;
+export const ProductContainer = styled.Pressable`
+    flex-direction: row;
+`;
+
+export const Icons = styled(Ionicons).attrs(props => ({
+    size: 22,
+    color: props.theme.colors.text,
+}))``;
+
+export const SelectButtonContainer = styled.View`
+    justify-content: center;
+`;
+
+export const SelectButton = styled(RectButton)`
+    margin-left: 7px;
+`;
+
+export const SelectIcon = styled(Ionicons).attrs(() => ({
+    size: 28,
+}))``;

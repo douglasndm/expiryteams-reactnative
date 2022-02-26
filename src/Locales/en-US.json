@@ -41,6 +41,12 @@
     "API_Error_Code20": "You can't add another manager on team",
     "API_Error_Code21": "This role is not valid",
     "API_Error_Code22": "You've connected from another device, please make login again",
+    "API_Error_Code23": "User is already on team",
+    "API_Error_Code24": "Invalid code",
+    "API_Error_Code25": "User was not invited for team",
+    "API_Error_Code26": "Invalid file",
+    "API_Error_Code27": "There are no users to send the notification",
+
 
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
@@ -113,6 +119,7 @@
     "View_AddProduct_InputPlacehoder_Amount": "Amount",
     "View_AddProduct_InputPlacehoder_UnitPrice": "Unit price",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Select the category",
+    "View_AddProduct_InputPlaceholder_SelectBrand": "Select the brand",
     "View_AddProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_AddProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_AddProduct_InputAccessibility_Batch": "Field to type the Batch",
@@ -189,10 +196,14 @@
     "View_Settings_Button_SignOut": "Sign out",
 
     "View_TeamList_PageTitle": "Select a team",
+    "View_TeamList_ListTitle": "Teams",
+    "View_TeamList_EmptyTeamList": "You don't have any teams now. Create a team or ask your manager to invite you by e-mail",
     "View_TeamList_InputText_EnterCode_Placeholder": "Code to enter the team",
+    "View_TeamList_Error_ManagerShouldActiveTeam": "Your manager should active the team",
     "View_TeamList_InvalidTeamCode": "Invalid code",
     "View_TeamList_SuccessCode": "Welcome to the team",
     "View_TeamList_Button_CreateTeam": "Create team",
+    "View_TeamList_Button_Logout": "Logout",
 
     "View_CreateTeam_PageTitle": "New team",
     "View_CreateTeam_InputText_Name_Placeholder": "Team's name",
@@ -224,21 +235,23 @@
     "View_Success_BatchDeleted": "Batch deleted",
     "View_Success_ProductDeleted": "Product deleted",
 
-    "View_Success_BatchCreatedDescription": "The batch was added",
-    "View_Success_ProductCreatedDescription": "The product was added",
-    "View_Success_BatchUpdatedDescription": "The batch has been updated",
-    "View_Success_ProductUpdatedDescription": "The product has been updated",
-    "View_Success_BatchDeletedDescription": "Batch was deleted",
-    "View_Success_ProductDeletedDescription": "Product was deleted",
-
-    "View_Success_Button_GoToCategory": "Go to category",
-    "View_Success_Button_GoToHome": "Go home",
-    "View_Success_Button_NavigateToProduct": "Go to product",
-
     "View_Category_List_PageTitle": "Categories",
     "View_Category_List_InputAdd_Placeholder": "New category name",
     "View_Category_List_InputAdd_Error_EmptyText": "Enter the category's name",
     "View_Category_List_AllCategories_Label": "All categories",
+    "View_Category_List_View_BeforeCategoryName": "Category ",
+    "View_Category_View_ExcelExportedSuccess": "Excel file created",
+
+    "View_Brand_List_PageTitle": "Brands",
+    "View_Brand_List_InputAdd_Placeholder": "New brand name",
+    "View_Brand_List_InputAdd_Error_EmptyTextField": "Type the brand name",
+    "View_Brand_List_AllCategories_Label": "All brands",
+    "View_Brand_List_View_BeforeCategoryName": "Brand ",
+    "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Brand already exists",
+
+    "View_Brand_View_PageTitle": "Brand",
+    "View_Brand_View_ActionButton_GenereteExcel": "Generate Excel",
+    "View_Brand_View_SuccessExportExcel": "Excel file generated",
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
 
@@ -251,6 +264,17 @@
     "View_Category_Edit_DeleteModal_Message": "Continuing you will delete the category. All products referenced to the category won't show the category anymore.",
     "View_Category_Edit_DeleteModal_Confirm": "I'm sure",
     "View_Category_Edit_DeleteModal_Cancel": "Keep category",
+
+    "View_Brand_Edit_PageTitle": "Edit brand",
+    "View_Brand_Edit_InputNamePlaceholder": "Brand name",
+    "View_Brand_Edit_ButtonSave": "Save",
+    "View_Brand_Edit_SuccessText": "Success",
+    "View_Brand_Edit_ErrorEmtpyName": "Type the brand name",
+    "View_Brand_Success_OnDelete": "Brand deleted",
+    "View_Brand_Edit_DeleteModal_Title": "Are you sure?",
+    "View_Brand_Edit_DeleteModal_Message": "All products in brand will be set as no brand.",
+    "View_Brand_Edit_DeleteModal_Confirm": "I'm sure",
+    "View_Brand_Edit_DeleteModal_Cancel": "Keep brand",
 
     "View_Export_PageTitle": "Export",
     "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",
@@ -293,6 +317,10 @@
     "Function_Excel_ColumnName_BatchExpDate": "Expire in",
     "Function_Excel_Workbook_Name": "Expiration checker",
     "Function_Excel_filename": "expirationcheck",
+    "Function_Excel_ColumnName_ProductBrand": "Brand",
+    "Function_Excel_ColumnName_Status": "Status",
+    "Function_Excel_ColumnName_Status_Checked": "Checked",
+    "Function_Excel_ColumnName_Status_Unchecked": "Unchecked",
 
     "Function_Team_JoinTeam_InvalidCode": "Invalid code.",
 
@@ -302,6 +330,9 @@
     "Subscription_TeamLimit_5people": "5 people",
     "Subscription_TeamLimit_10people": "10 people",
     "Subscription_TeamLimit_15people": "15 people",
+    "Subscription_TeamLimit_30people": "30 people",
+    "Subscription_TeamLimit_45people": "45 people",
+    "Subscription_TeamLimit_60people": "60 people",
 
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",

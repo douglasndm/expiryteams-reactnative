@@ -36,6 +36,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('ListCategory');
     }, [navigation]);
 
+    const navigateToBrands = useCallback(() => {
+        navigation.navigate('BrandList');
+    }, [navigation]);
+
     const navigateToTeamList = useCallback(async () => {
         if (teamContext.clearTeam) {
             await clearSelectedteam();
@@ -93,6 +97,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </MenuContent>
                     </MenuItemContainer>
 
+                    <MenuItemContainer onPress={navigateToBrands}>
+                        <MenuContent>
+                            <Icons name="ribbon-outline" />
+                            <MenuItemText>Marcas</MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+
                     <MenuItemContainer onPress={navigateToExport}>
                         <MenuContent>
                             <Icons name="download-outline" />
@@ -130,15 +141,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <Icons name="settings-outline" />
                         <MenuItemText>
                             {strings.Menu_Button_GoToSettings}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
-
-                <MenuItemContainer onPress={handleNavigateToSite}>
-                    <MenuContent>
-                        <Icons name="globe-outline" />
-                        <MenuItemText>
-                            {strings.Menu_Button_KnowOthersApps}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>

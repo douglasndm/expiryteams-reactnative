@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -70,10 +70,11 @@ const List: React.FC = () => {
 
             setCategories(sorted);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -81,7 +82,7 @@ const List: React.FC = () => {
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+    }, []);
 
     const handleOnTextChange = useCallback(value => {
         setInputHasError(false);
@@ -113,10 +114,11 @@ const List: React.FC = () => {
             setCategories([...categories, newCategory]);
             setNewCategoryName('');
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsAdding(false);
         }
@@ -195,4 +197,4 @@ const List: React.FC = () => {
     );
 };
 
-export default List;
+export default memo(List);
