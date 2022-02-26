@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
 
@@ -26,7 +27,7 @@ const Header: React.FC<RequestProps> = ({
     noDrawer,
     listRef,
 }: RequestProps) => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<DrawerNavigationProp<RoutesParams>>();
 
     const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
 
