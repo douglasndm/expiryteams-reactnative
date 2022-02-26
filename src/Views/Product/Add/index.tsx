@@ -11,6 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { createProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
+
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 import { getAllBrands } from '~/Functions/Brand';
 
@@ -19,6 +20,11 @@ import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Loading from '~/Components/Loading';
+
+import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
 import {
     Container,
@@ -33,8 +39,6 @@ import {
     InputGroup,
     MoreInformationsContainer,
     MoreInformationsTitle,
-    PickerContainer,
-    Picker,
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
@@ -101,6 +105,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [brands, setBrands] = useState<Array<IBrandItem>>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const [isAdding, setIsAdding] = useState<boolean>(false);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
@@ -154,6 +159,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             setIsLoading(false);
         }
     }, [teamContext.id]);
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     const handleSave = useCallback(async () => {
         if (!teamContext.id) {
@@ -228,18 +237,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         price,
         replace,
     ]);
-
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
-
-    const handleCategoryChange = useCallback(value => {
-        setSelectedCategory(value);
-    }, []);
-
-    const handleBrandChange = useCallback(value => {
-        setSelectedBrand(value);
-    }, []);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
@@ -409,37 +406,23 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                         }
                                     />
 
-                                    <PickerContainer
-                                        style={{ marginBottom: 10 }}
-                                    >
-                                        <Picker
-                                            items={categories}
-                                            onValueChange={handleCategoryChange}
-                                            value={selectedCategory}
-                                            placeholder={{
-                                                label:
-                                                    strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                                                value: 'null',
-                                            }}
-                                        />
-                                    </PickerContainer>
-
-                                    <PickerContainer
-                                        style={{
+                                    <CategorySelect
+                                        categories={categories}
+                                        onChange={setSelectedCategory}
+                                        defaultValue={selectedCategory}
+                                        containerStyle={{
                                             marginBottom: 10,
                                         }}
-                                    >
-                                        <Picker
-                                            items={brands}
-                                            onValueChange={handleBrandChange}
-                                            value={selectedBrand}
-                                            placeholder={{
-                                                label:
-                                                    strings.View_AddProduct_InputPlaceholder_SelectBrand,
-                                                value: 'null',
-                                            }}
-                                        />
-                                    </PickerContainer>
+                                    />
+
+                                    <BrandSelect
+                                        brands={brands}
+                                        onChange={setSelectedBrand}
+                                        defaultValue={selectedBrand}
+                                        containerStyle={{
+                                            marginBottom: 10,
+                                        }}
+                                    />
                                 </MoreInformationsContainer>
 
                                 <ExpDateGroup>

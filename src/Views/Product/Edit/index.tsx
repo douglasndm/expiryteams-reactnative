@@ -17,6 +17,11 @@ import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import BarCodeReader from '~/Components/BarCodeReader';
 
+import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
+
 import {
     Container,
     PageTitle,
@@ -32,8 +37,6 @@ import {
     InputTextIconContainer,
     MoreInformationsContainer,
     MoreInformationsTitle,
-    PickerContainer,
-    Picker,
 } from '../Add/styles';
 
 import {
@@ -219,14 +222,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         setIsBarCodeEnabled(false);
     }, []);
 
-    const handleCategoryChange = useCallback(value => {
-        setSelectedCategory(value);
-    }, []);
-
-    const handleBrandChange = useCallback(value => {
-        setSelectedBrand(value);
-    }, []);
-
     const handleSwitchShowDeleteProduct = useCallback(() => {
         setDeleteComponentVisible(!deleteComponentVisible);
     }, [deleteComponentVisible]);
@@ -335,35 +330,23 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     }
                                 </MoreInformationsTitle>
 
-                                <PickerContainer style={{ marginBottom: 10 }}>
-                                    <Picker
-                                        items={categories}
-                                        onValueChange={handleCategoryChange}
-                                        value={selectedCategory}
-                                        placeholder={{
-                                            label:
-                                                strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                                            value: 'null',
-                                        }}
-                                    />
-                                </PickerContainer>
-
-                                <PickerContainer
-                                    style={{
+                                <CategorySelect
+                                    categories={categories}
+                                    onChange={setSelectedCategory}
+                                    defaultValue={selectedCategory}
+                                    containerStyle={{
                                         marginBottom: 10,
                                     }}
-                                >
-                                    <Picker
-                                        items={brands}
-                                        onValueChange={handleBrandChange}
-                                        value={selectedBrand}
-                                        placeholder={{
-                                            label:
-                                                strings.View_AddProduct_InputPlaceholder_SelectBrand,
-                                            value: 'null',
-                                        }}
-                                    />
-                                </PickerContainer>
+                                />
+
+                                <BrandSelect
+                                    brands={brands}
+                                    onChange={setSelectedBrand}
+                                    defaultValue={selectedBrand}
+                                    containerStyle={{
+                                        marginBottom: 10,
+                                    }}
+                                />
                             </MoreInformationsContainer>
                         </InputContainer>
                     </PageContent>
