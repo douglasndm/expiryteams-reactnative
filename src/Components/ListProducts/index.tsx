@@ -40,6 +40,7 @@ interface RequestProps {
     onRefresh?: () => void;
     deactiveFloatButton?: boolean;
     sortProdsByBatchExpDate?: boolean;
+    listRef?: React.RefObject<FlatList<IProduct>>;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
@@ -47,6 +48,7 @@ const ListProducts: React.FC<RequestProps> = ({
     onRefresh,
     deactiveFloatButton,
     sortProdsByBatchExpDate,
+    listRef,
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
@@ -237,6 +239,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 </ActionButtonsContainer>
             )}
             <FlatList
+                ref={listRef}
                 data={prods}
                 keyExtractor={item => String(item.id)}
                 ListHeaderComponent={ListHeader}

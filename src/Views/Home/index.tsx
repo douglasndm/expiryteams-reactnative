@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
+import { FlatList } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -23,6 +24,8 @@ import {
 
 const Home: React.FC = () => {
     const teamContext = useTeam();
+
+    const listRef = useRef<FlatList<IProduct>>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isMounted, setIsMounted] = useState(true);
@@ -121,7 +124,9 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <Container>
-                    {teamContext.name && <Header title={teamContext.name} />}
+                    {teamContext.name && (
+                        <Header title={teamContext.name} listRef={listRef} />
+                    )}
 
                     {products.length > 0 && (
                         <InputTextContainer>
@@ -142,6 +147,7 @@ const Home: React.FC = () => {
                         products={productsSearch}
                         onRefresh={getProduts}
                         sortProdsByBatchExpDate={false}
+                        listRef={listRef}
                     />
                 </Container>
             )}
