@@ -64,6 +64,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     >();
     const teamContext = useTeam();
 
+    const [isMounted, setIsMounted] = useState(true);
+
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
             return 'en-US';
@@ -114,6 +116,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
@@ -158,11 +161,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         } finally {
             setIsLoading(false);
         }
-    }, [teamContext.id]);
+    }, [isMounted, teamContext.id]);
 
     useEffect(() => {
         loadData();
-    }, []);
+    }, [loadData]);
 
     const handleSave = useCallback(async () => {
         if (!teamContext.id) {
@@ -265,6 +268,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             return;
         }
         setPrice(value);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
     }, []);
 
     return isLoading ? (
