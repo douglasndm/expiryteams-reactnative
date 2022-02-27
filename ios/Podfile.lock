@@ -523,7 +523,7 @@ PODS:
     - React-Core
   - RNCMaskedView (0.2.6):
     - React-Core
-  - RNCPicker (2.1.0):
+  - RNCPicker (2.3.0):
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
@@ -564,7 +564,7 @@ PODS:
   - RNPurchases (4.4.1):
     - PurchasesHybridCommon (= 1.10.0)
     - React-Core
-  - RNReanimated (2.3.1):
+  - RNReanimated (2.4.1):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -908,7 +908,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 5337263514dd6f09803962437687240c5dc39aa4
+  glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   GoogleAppMeasurement: a3311dbcf3ea651e5a070fe8559b57c174ada081
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
@@ -925,7 +925,7 @@ SPEC CHECKSUMS:
   Purchases: a545d402454bc9395495cceaf0e893360670e0ad
   PurchasesCoreSwift: e7f7267a6dc526da226baad19c61e8977fa664b4
   PurchasesHybridCommon: a3282e900a2a05eb6c52acc4c72fb4f931160f5a
-  RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
+  RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: cd47794163052d2b8318c891a7a14fcfaccc75ab
   RCTTypeSafety: 393bb40b3e357b224cde53d3fec26813c52428b1
   React: dec6476bc27155b250eeadfc11ea779265f53ebf
@@ -962,7 +962,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 26f25150da507524a7815f2ada06ca0967f65633
   RNCClipboard: 99fc8ad669a376b756fbc8098ae2fd05c0ed0668
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
-  RNCPicker: f7a40b21b915b7a187624d52f52b7bc2f73ea413
+  RNCPicker: c796ddf16cd93e980a5a5642eebcee9eb9da1e76
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
   RNFBAnalytics: c2bc124906b6719c9d3e407f06f9222a15638edc
@@ -976,7 +976,7 @@ SPEC CHECKSUMS:
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 4c8a37b4dde50f1f152bf8cd08c4a43d2355829e
   RNPurchases: 33d9631b1e3f9e15fa1b09697af00ff60f5c77bd
-  RNReanimated: 1326679461fa5d2399d54c18ca1432ba3e816b9e
+  RNReanimated: 32c91e28f5780937b8efc07ddde1bab8d373fe0b
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
   RNShare: 70356a1bb406bc46ae03196a5d3048c702bb71a7
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4

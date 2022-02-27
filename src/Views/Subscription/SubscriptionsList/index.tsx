@@ -35,12 +35,14 @@ const SubscriptionsList: React.FC = () => {
 
     const teamContext = useTeam();
 
+    const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const [offers, setOffers] = useState<Array<CatPackage>>([]);
     const [selected, setSelected] = useState('');
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
@@ -148,6 +150,12 @@ const SubscriptionsList: React.FC = () => {
     useEffect(() => {
         loadData();
     }, [loadData]);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
+    }, []);
 
     const renderItem = useCallback(
         ({ item }) => {

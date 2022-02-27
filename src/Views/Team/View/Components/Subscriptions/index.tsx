@@ -4,6 +4,7 @@ import { format, parseISO, startOfDay, compareAsc } from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
 
 import { getTeamSubscriptions } from '~/Functions/Team/Subscriptions';
+import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
@@ -18,7 +19,6 @@ import {
     SubscriptionHeader,
     SubscriptionText,
 } from './styles';
-import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 const Subscriptions: React.FC = () => {
     const { navigate } = useNavigation();
@@ -27,9 +27,12 @@ const Subscriptions: React.FC = () => {
         subscription,
         setSubscription,
     ] = useState<ITeamSubscription | null>();
+
+    const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         try {
             setIsLoading(true);
             const selectedTeam = await getSelectedTeam();
@@ -64,10 +67,16 @@ const Subscriptions: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [isMounted]);
 
     useEffect(() => {
         loadData();
+    }, [loadData]);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
     }, []);
 
     const handleNavigatePurchase = useCallback(() => {
