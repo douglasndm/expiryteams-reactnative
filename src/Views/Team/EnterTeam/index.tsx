@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -25,6 +25,8 @@ const EnterTeam: React.FC = () => {
     const { goBack, reset } = useNavigation();
     const { params } = useRoute<RouteProp<RoutesParams, 'EnterTeam'>>();
 
+    const [isMounted, setIsMounted] = useState(true);
+
     const userRole = useMemo(() => {
         return params.userRole || null;
     }, [params]);
@@ -39,6 +41,7 @@ const EnterTeam: React.FC = () => {
     }, []);
 
     const handleSubmitCode = useCallback(async () => {
+        if (isMounted) return;
         try {
             setIsAddingCode(true);
 
@@ -72,7 +75,11 @@ const EnterTeam: React.FC = () => {
         } finally {
             setIsAddingCode(false);
         }
-    }, [reset, userCode, userRole.team.id]);
+    }, [isMounted, reset, userCode, userRole.team.id]);
+
+    useEffect(() => {
+        return () => setIsMounted(false);
+    });
 
     return (
         <Container>

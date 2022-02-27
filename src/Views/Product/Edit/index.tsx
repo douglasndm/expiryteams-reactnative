@@ -60,6 +60,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         StackNavigationProp<RoutesParams>
     >();
 
+    const [isMounted, setIsMounted] = useState(true);
+
     const teamContext = useTeam();
 
     const userRole = useMemo(() => {
@@ -92,6 +94,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         if (!teamContext.id) {
             return;
         }
@@ -144,9 +147,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setIsLoading(false);
         }
-    }, [product, teamContext.id]);
+    }, [isMounted, product, teamContext.id]);
 
     const updateProd = useCallback(async () => {
+        if (!isMounted) return;
         if (!name || name.trim() === '') {
             setNameFieldError(true);
             return;
@@ -184,9 +188,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     type: 'danger',
                 });
         }
-    }, [code, name, product.id, replace, selectedBrand, selectedCategory]);
+    }, [
+        code,
+        isMounted,
+        name,
+        product.id,
+        replace,
+        selectedBrand,
+        selectedCategory,
+    ]);
 
     const handleDeleteProduct = useCallback(async () => {
+        if (!isMounted) return;
         try {
             await deleteProduct({ product_id: product.id });
 
@@ -207,7 +220,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setDeleteComponentVisible(false);
         }
-    }, [product, reset]);
+    }, [isMounted, product.id, reset]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
@@ -229,6 +242,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     useEffect(() => {
         loadData();
     }, [loadData]);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
+    }, []);
 
     return isLoading ? (
         <Loading />
