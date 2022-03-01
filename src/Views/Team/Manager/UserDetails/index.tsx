@@ -1,5 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -14,6 +15,11 @@ import { updateUserRole } from '~/Functions/User/Roles';
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
 import Loading from '~/Components/Loading';
+
+import {
+    PickerContainer,
+    Picker,
+} from '~/Components/Product/Inputs/Pickers/styles';
 
 import {
     Container,
@@ -35,6 +41,7 @@ import {
     RadioButtonText,
     RadioButtonContent,
 } from './styles';
+import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 
 interface UserDetailsProps {
     route: {
@@ -47,7 +54,9 @@ interface UserDetailsProps {
 const UserDetails: React.FC<UserDetailsProps> = ({
     route,
 }: UserDetailsProps) => {
-    const { goBack, reset } = useNavigation();
+    const { goBack, reset } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const authContext = useAuth();
     const teamContext = useTeam();
@@ -55,6 +64,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     const user: IUserInTeam = useMemo(() => {
         return JSON.parse(String(route.params.user));
     }, [route.params.user]);
+
+    const [stores, setStores] = useState<IPickerItem[]>([]);
 
     const [selectedRole, setSelectedRole] = useState<
         'repositor' | 'supervisor' | 'manager'
@@ -72,7 +83,48 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         return 'repositor';
     });
 
+    const [selectedStore, setSelectedStore] = useState<string | null>(() => {
+        if (user.stores.length > 0) {
+            return user.stores[0].id;
+        }
+        return null;
+    });
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const loadData = useCallback(async () => {
+        if (!teamContext.id) return;
+        try {
+            setIsLoading(true);
+
+            const allStores = await getAllStoresFromTeam({
+                team_id: teamContext.id,
+            });
+
+            const storesToAdd: IPickerItem[] = [];
+            allStores.forEach(store => {
+                storesToAdd.push({
+                    key: store.id,
+                    value: store.id,
+                    label: store.name,
+                });
+            });
+
+            setStores(storesToAdd);
+        } catch (err) {
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [teamContext.id]);
+
+    const handleOnChange = useCallback(value => {
+        setSelectedStore(value);
+    }, []);
 
     const enableManagerTools = useMemo(() => {
         if (teamContext.id) {
@@ -140,10 +192,11 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 ],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -168,14 +221,19 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 type: 'info',
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
     }, [selectedRole, teamContext.id, user.id]);
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     return isLoading ? (
         <Loading />
@@ -241,48 +299,53 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                     authContext.user &&
                     user.id !== authContext.user.uid &&
                     !userIsPending && (
-                        <RadioButtonContainer>
-                            <RadioButtonContent>
-                                <RadioButton
-                                    value="checked"
-                                    status={
-                                        selectedRole === 'repositor'
-                                            ? 'checked'
-                                            : 'unchecked'
-                                    }
-                                    onPress={() => setSelectedRole('repositor')}
+                        <>
+                            <PickerContainer style={{ marginTop: 10 }}>
+                                <Picker
+                                    items={stores}
+                                    onValueChange={handleOnChange}
+                                    value={selectedStore}
+                                    placeholder={{
+                                        label: 'Atribuir a uma loja',
+                                        value: 'null',
+                                    }}
                                 />
-                                <RadioButtonText>Repositor</RadioButtonText>
-                            </RadioButtonContent>
+                            </PickerContainer>
 
-                            <RadioButtonContent>
-                                <RadioButton
-                                    value="unchecked"
-                                    status={
-                                        selectedRole === 'supervisor'
-                                            ? 'checked'
-                                            : 'unchecked'
-                                    }
-                                    onPress={() =>
-                                        setSelectedRole('supervisor')
-                                    }
-                                />
-                                <RadioButtonText>Supervisor</RadioButtonText>
-                            </RadioButtonContent>
+                            <RadioButtonContainer>
+                                <RadioButtonContent>
+                                    <RadioButton
+                                        value="checked"
+                                        status={
+                                            selectedRole === 'repositor'
+                                                ? 'checked'
+                                                : 'unchecked'
+                                        }
+                                        onPress={() =>
+                                            setSelectedRole('repositor')
+                                        }
+                                    />
+                                    <RadioButtonText>Repositor</RadioButtonText>
+                                </RadioButtonContent>
 
-                            {/* <RadioButtonContent>
-                            <RadioButton
-                                value="unchecked"
-                                status={
-                                    selectedRole === 'manager'
-                                        ? 'checked'
-                                        : 'unchecked'
-                                }
-                                onPress={() => setSelectedRole('supervisor')}
-                            />
-                            <RadioButtonText>Gerente</RadioButtonText>
-                        </RadioButtonContent> */}
-                        </RadioButtonContainer>
+                                <RadioButtonContent>
+                                    <RadioButton
+                                        value="unchecked"
+                                        status={
+                                            selectedRole === 'supervisor'
+                                                ? 'checked'
+                                                : 'unchecked'
+                                        }
+                                        onPress={() =>
+                                            setSelectedRole('supervisor')
+                                        }
+                                    />
+                                    <RadioButtonText>
+                                        Supervisor
+                                    </RadioButtonText>
+                                </RadioButtonContent>
+                            </RadioButtonContainer>
+                        </>
                     )}
             </PageContent>
         </Container>

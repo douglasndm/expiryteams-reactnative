@@ -13,6 +13,7 @@ interface IUserInTeam {
     lastName?: string | null;
     email: string;
     role: string;
+    stores: IStore[];
     code: string;
     status: 'Completed' | 'Pending';
 }

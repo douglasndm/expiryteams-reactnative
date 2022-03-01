@@ -3,6 +3,7 @@ import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -27,7 +28,9 @@ import {
 } from './styles';
 
 const List: React.FC = () => {
-    const { navigate, reset } = useNavigation();
+    const { navigate, reset } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const teamContext = useTeam();
 
@@ -59,10 +62,10 @@ const List: React.FC = () => {
                 });
 
                 const sortedTeams = response.sort((team1, team2) => {
-                    if (team1.team.active && !team2.team.active) {
+                    if (team1.team.isActive && !team2.team.isActive) {
                         return 1;
                     }
-                    if (team1.team.active && team2.team.active) {
+                    if (team1.team.isActive && team2.team.isActive) {
                         return 0;
                     }
                     return -1;
@@ -124,7 +127,7 @@ const List: React.FC = () => {
 
     const handleSelectTeam = useCallback(
         (userRoles: IUserRoles) => {
-            if (userRoles.team.active !== true) {
+            if (userRoles.team.isActive !== true) {
                 if (userRoles.role.toLowerCase() !== 'manager') {
                     showMessage({
                         message:
@@ -180,7 +183,7 @@ const List: React.FC = () => {
 
             return (
                 <TeamItemContainer
-                    isPending={isPending || !item.team.active}
+                    isPending={isPending || !item.team.isActive}
                     onPress={() => handleSelectTeam(item)}
                 >
                     <TeamItemTitle>{item.team.name}</TeamItemTitle>
