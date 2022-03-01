@@ -44,7 +44,7 @@ const TeamProvider: React.FC = ({ children }: any) => {
         if (response) {
             setId(response.team.id);
             setName(response.team.name);
-            setActive(response.team.active);
+            setActive(response.team.isActive);
             setRoleInTeam({
                 role: response.role,
                 status: response.status,

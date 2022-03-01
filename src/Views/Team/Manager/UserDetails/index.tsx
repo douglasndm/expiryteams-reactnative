@@ -11,6 +11,11 @@ import { useAuth } from '~/Contexts/AuthContext';
 
 import { removeUserFromTeam } from '~/Functions/Team/Users';
 import { updateUserRole } from '~/Functions/User/Roles';
+import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
+import {
+    addUserToStore,
+    removeUserFromStore,
+} from '~/Functions/Team/Stores/User';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -41,7 +46,6 @@ import {
     RadioButtonText,
     RadioButtonContent,
 } from './styles';
-import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 
 interface UserDetailsProps {
     route: {
@@ -202,13 +206,28 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         }
     }, [reset, teamContext.id, user.id]);
 
-    const handleUpdateRole = useCallback(async () => {
-        if (!teamContext.id) {
-            return;
-        }
+    const handleUpdate = useCallback(async () => {
+        if (!teamContext.id) return;
 
         try {
             setIsLoading(true);
+            if (user.stores.length > 0) {
+                if (selectedStore === null) {
+                    await removeUserFromStore({
+                        team_id: teamContext.id,
+                        user_id: user.uuid,
+                        store_id: user.stores[0].id,
+                    });
+                }
+            }
+
+            if (selectedStore !== null) {
+                await addUserToStore({
+                    team_id: teamContext.id,
+                    user_id: user.uuid,
+                    store_id: selectedStore,
+                });
+            }
 
             await updateUserRole({
                 user_id: user.id,
@@ -217,7 +236,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             });
 
             showMessage({
-                message: 'Cargo do usuário atualizado',
+                message: 'Usuário atualizado',
                 type: 'info',
             });
         } catch (err) {
@@ -229,7 +248,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, [selectedRole, teamContext.id, user.id]);
+    }, [
+        selectedRole,
+        selectedStore,
+        teamContext.id,
+        user.id,
+        user.stores,
+        user.uuid,
+    ]);
 
     useEffect(() => {
         loadData();
@@ -256,7 +282,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                                     icon={() => (
                                         <Icon name="save-outline" size={22} />
                                     )}
-                                    onPress={handleUpdateRole}
+                                    onPress={handleUpdate}
                                 >
                                     Atualizar
                                 </ActionButton>
@@ -307,7 +333,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                                     value={selectedStore}
                                     placeholder={{
                                         label: 'Atribuir a uma loja',
-                                        value: 'null',
+                                        value: null,
                                     }}
                                 />
                             </PickerContainer>

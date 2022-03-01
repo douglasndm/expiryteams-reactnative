@@ -8,6 +8,7 @@ interface IUser {
 }
 
 interface IUserInTeam {
+    uuid: string;
     id: string;
     name?: string | null;
     lastName?: string | null;
