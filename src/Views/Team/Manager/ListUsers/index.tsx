@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import { getProduct } from 'react-native-device-info';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -32,7 +33,9 @@ import {
 } from './styles';
 
 const ListUsers: React.FC = () => {
-    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+    const { navigate, addListener } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const teamContext = useTeam();
 
@@ -150,6 +153,13 @@ const ListUsers: React.FC = () => {
         [navigate]
     );
 
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            loadData();
+        });
+
+        return unsubscribe;
+    }, [addListener, loadData]);
     interface renderProps {
         item: IUserInTeam;
     }

@@ -58,12 +58,12 @@ interface UserDetailsProps {
 const UserDetails: React.FC<UserDetailsProps> = ({
     route,
 }: UserDetailsProps) => {
-    const { goBack, reset } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { goBack, pop } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const authContext = useAuth();
     const teamContext = useTeam();
+
+    const [isMounted, setIsMounted] = useState(true);
 
     const user: IUserInTeam = useMemo(() => {
         return JSON.parse(String(route.params.user));
@@ -97,7 +97,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const loadData = useCallback(async () => {
-        if (!teamContext.id) return;
+        if (!isMounted || !teamContext.id) return;
         try {
             setIsLoading(true);
 
@@ -124,7 +124,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, [teamContext.id]);
+    }, [isMounted, teamContext.id]);
 
     const handleOnChange = useCallback(value => {
         setSelectedStore(value);
@@ -172,9 +172,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     }, [user.code]);
 
     const handleRemoveUser = useCallback(async () => {
-        if (!teamContext.id) {
-            return;
-        }
+        if (!isMounted || !teamContext.id) return;
 
         try {
             setIsLoading(true);
@@ -188,13 +186,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 type: 'info',
             });
 
-            reset({
-                routes: [
-                    { name: 'Home' },
-                    { name: 'ViewTeam' },
-                    { name: 'ListUsersFromTeam' },
-                ],
-            });
+            pop();
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -204,10 +196,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, [reset, teamContext.id, user.id]);
+    }, [isMounted, pop, teamContext.id, user.id]);
 
     const handleUpdate = useCallback(async () => {
-        if (!teamContext.id) return;
+        if (!isMounted || !teamContext.id) return;
 
         try {
             setIsLoading(true);
@@ -221,11 +213,15 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             }
 
             if (selectedStore !== null) {
-                await addUserToStore({
-                    team_id: teamContext.id,
-                    user_id: user.uuid,
-                    store_id: selectedStore,
-                });
+                if (
+                    user.stores.length <= 0 ||
+                    selectedStore !== user.stores[0].id
+                )
+                    await addUserToStore({
+                        team_id: teamContext.id,
+                        user_id: user.uuid,
+                        store_id: selectedStore,
+                    });
             }
 
             await updateUserRole({
@@ -238,6 +234,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 message: 'Usuário atualizado',
                 type: 'info',
             });
+
+            pop();
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -248,6 +246,8 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             setIsLoading(false);
         }
     }, [
+        isMounted,
+        pop,
         selectedRole,
         selectedStore,
         teamContext.id,
@@ -258,6 +258,12 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
     useEffect(() => {
         loadData();
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
     }, []);
 
     return isLoading ? (
