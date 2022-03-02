@@ -39,6 +39,12 @@ type RoutesParams = {
         brand_id: string;
     };
 
+    StoreList;
+    StoreView: {
+        store_id: string;
+        store_name: string;
+    };
+
     Export;
 
     BatchView: {

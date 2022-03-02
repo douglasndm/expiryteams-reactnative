@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { Linking } from 'react-native';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
@@ -40,6 +39,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('BrandList');
     }, [navigation]);
 
+    const navigateToStores = useCallback(() => {
+        navigation.navigate('StoreList');
+    }, [navigation]);
+
     const navigateToTeamList = useCallback(async () => {
         if (teamContext.clearTeam) {
             await clearSelectedteam();
@@ -57,10 +60,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const handleNavigateToTeam = useCallback(() => {
         navigation.navigate('ViewTeam');
     }, [navigation]);
-
-    const handleNavigateToSite = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev');
-    }, []);
 
     return (
         <Container>
@@ -103,6 +102,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <MenuItemText>Marcas</MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
+
+                    {teamContext.roleInTeam?.role.toLowerCase() ===
+                        'manager' && (
+                        <MenuItemContainer onPress={navigateToStores}>
+                            <MenuContent>
+                                <Icons name="list-outline" />
+                                <MenuItemText>Lojas</MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
+                    )}
 
                     <MenuItemContainer onPress={navigateToExport}>
                         <MenuContent>
