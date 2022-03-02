@@ -216,7 +216,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                     await removeUserFromStore({
                         team_id: teamContext.id,
                         user_id: user.uuid,
-                        store_id: user.stores[0].id,
                     });
                 }
             }
