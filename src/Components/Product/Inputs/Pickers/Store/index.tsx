@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ViewStyle } from 'react-native';
-
-import strings from '~/Locales';
-
-import { getAllStores } from '~/Functions/Stores';
 
 import { PickerContainer, Picker } from '../styles';
 
 interface Props {
+    stores: IPickerItem[];
     onChange: (value: string) => void;
     containerStyle?: ViewStyle;
     defaultValue?: string | null;
 }
 
 const Store: React.FC<Props> = ({
+    stores,
     onChange,
     containerStyle,
     defaultValue,
@@ -25,8 +23,6 @@ const Store: React.FC<Props> = ({
         return null;
     });
 
-    const [stores, setStores] = useState<Array<IStoreItem>>([]);
-
     const handleOnChange = useCallback(
         value => {
             setSelectedStore(value);
@@ -37,27 +33,6 @@ const Store: React.FC<Props> = ({
         [onChange]
     );
 
-    const loadData = useCallback(async () => {
-        const allStores = await getAllStores();
-        const storesArray: Array<IStoreItem> = [];
-
-        allStores.forEach(store => {
-            if (store.id) {
-                storesArray.push({
-                    key: store.id,
-                    label: store.name,
-                    value: store.id,
-                });
-            }
-        });
-
-        setStores(storesArray);
-    }, []);
-
-    useEffect(() => {
-        loadData();
-    }, []);
-
     return (
         <PickerContainer style={containerStyle}>
             <Picker
@@ -65,8 +40,8 @@ const Store: React.FC<Props> = ({
                 onValueChange={handleOnChange}
                 value={selectedStore}
                 placeholder={{
-                    label: strings.View_AddProduct_InputPlacehoder_Store,
-                    value: 'null',
+                    label: 'Atribuir a uma loja',
+                    value: null,
                 }}
             />
         </PickerContainer>

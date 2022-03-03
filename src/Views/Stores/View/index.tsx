@@ -136,7 +136,11 @@ const StoreView: React.FC = () => {
                 </ActionsContainer>
             </TitleContainer>
 
-            <ListProducts products={products} deactiveFloatButton />
+            <ListProducts
+                products={products}
+                onRefresh={loadData}
+                deactiveFloatButton
+            />
 
             <FloatButton
                 icon={() => (
