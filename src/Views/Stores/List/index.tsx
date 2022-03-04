@@ -6,6 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
+import { createStore } from '~/Functions/Team/Stores/Create';
 
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
@@ -81,12 +82,12 @@ const ListView: React.FC = () => {
 
             setIsAdding(true);
 
-            // const newBrand = await createBrand({
-            //    brandName: newStoreName,
-            //    team_id: teamContext.id,
-            // });
+            const store = await createStore({
+                name: newStoreName,
+                team_id: teamContext.id,
+            });
 
-            // setStores([...stores, newBrand]);
+            setStores([...stores, store]);
             setNewStoreName('');
         } catch (err) {
             if (err instanceof Error)
@@ -97,7 +98,7 @@ const ListView: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [newStoreName, teamContext.id]);
+    }, [newStoreName, stores, teamContext.id]);
 
     const handleNavigateToStore = useCallback(
         (store_id: string, store_name: string) => {

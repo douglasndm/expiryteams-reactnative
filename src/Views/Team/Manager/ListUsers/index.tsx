@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import { getProduct } from 'react-native-device-info';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
