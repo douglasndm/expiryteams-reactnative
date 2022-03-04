@@ -10,6 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import strings from '~/Locales';
 
+import PreferencesContext from '~/Contexts/PreferencesContext';
+import { useTeam } from '~/Contexts/TeamContext';
+
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 
@@ -18,8 +21,6 @@ import Notifications from './Components/Notifications';
 import Account from './Components/Account';
 
 import { setHowManyDaysToBeNextExp } from '~/Functions/Settings';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
@@ -37,6 +38,7 @@ const Settings: React.FC = () => {
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
 
     const { preferences, setPreferences } = useContext(PreferencesContext);
+    const teamContext = useTeam();
 
     const { reset } = useNavigation();
 
@@ -129,9 +131,11 @@ const Settings: React.FC = () => {
 
                 <Account />
 
-                <ButtonCancel onPress={handleNavigateCancel}>
-                    <ButtonCancelText>Cancelar assinatura</ButtonCancelText>
-                </ButtonCancel>
+                {teamContext.roleInTeam?.role.toLowerCase() === 'manager' && (
+                    <ButtonCancel onPress={handleNavigateCancel}>
+                        <ButtonCancelText>Cancelar assinatura</ButtonCancelText>
+                    </ButtonCancel>
+                )}
             </SettingsContent>
         </Container>
     );
