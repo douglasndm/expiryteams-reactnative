@@ -48,6 +48,7 @@ export async function updateProduct({
         name: product.name,
         code: product.code,
         brand: product.brand,
+        store_id: product.store,
         categories,
     });
 

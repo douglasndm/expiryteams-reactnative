@@ -11,6 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 import { getAllBrands } from '~/Functions/Brand';
+import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -81,13 +82,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState<string | undefined>('');
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
-    const [brands, setBrands] = useState<Array<IBrandItem>>([]);
+
+    const [categories, setCategories] = useState<Array<IPickerItem>>([]);
+    const [brands, setBrands] = useState<Array<IPickerItem>>([]);
+    const [stores, setStores] = useState<Array<IPickerItem>>([]);
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
     const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+    const [selectedStore, setSelectedStore] = useState<string | null>(null);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
@@ -108,7 +112,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 team_id: teamContext.id,
             });
 
-            const categoriesArray: Array<ICategoryItem> = [];
+            const categoriesArray: Array<IPickerItem> = [];
 
             categoriesResponse.forEach(cat =>
                 categoriesArray.push({
@@ -120,7 +124,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setCategories(categoriesArray);
 
             const allBrands = await getAllBrands({ team_id: teamContext.id });
-            const brandsArray: Array<IBrandItem> = [];
+            const brandsArray: Array<IPickerItem> = [];
 
             allBrands.forEach(brand =>
                 brandsArray.push({
@@ -132,11 +136,29 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
             setBrands(brandsArray);
 
+            const allStores = await getAllStoresFromTeam({
+                team_id: teamContext.id,
+            });
+            const storesArray: Array<IPickerItem> = [];
+
+            allStores.forEach(store =>
+                storesArray.push({
+                    key: store.id,
+                    label: store.name,
+                    value: store.id,
+                })
+            );
+
+            setStores(storesArray);
+
             if (product.categories.length > 0) {
                 setSelectedCategory(product.categories[0].id);
             }
             if (product.brand) {
                 setSelectedBrand(product.brand);
+            }
+            if (product.store) {
+                setSelectedStore(product.store);
             }
         } catch (err) {
             if (err instanceof Error)
@@ -169,6 +191,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     name,
                     code,
                     brand: selectedBrand || undefined,
+                    store: selectedStore || null,
                 },
                 categories: prodCategories,
             });
@@ -196,6 +219,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         replace,
         selectedBrand,
         selectedCategory,
+        selectedStore,
     ]);
 
     const handleDeleteProduct = useCallback(async () => {
@@ -366,6 +390,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         marginBottom: 10,
                                     }}
                                 />
+
+                                {teamContext.roleInTeam?.role.toLowerCase() ===
+                                    'manager' && (
+                                    <StoreSelect
+                                        stores={stores}
+                                        defaultValue={selectedStore}
+                                        onChange={setSelectedStore}
+                                        containerStyle={{
+                                            marginBottom: 10,
+                                        }}
+                                    />
+                                )}
                             </MoreInformationsContainer>
                         </InputContainer>
                     </PageContent>
