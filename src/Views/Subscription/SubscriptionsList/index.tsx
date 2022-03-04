@@ -113,7 +113,7 @@ const SubscriptionsList: React.FC = () => {
                     role: teamContext.roleInTeam.role,
                     status: teamContext.roleInTeam.status,
                     team: {
-                        active: true,
+                        isActive: true,
                         id: teamContext.id,
                         name: teamContext.name || '',
                         subscription: {
