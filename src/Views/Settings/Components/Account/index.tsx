@@ -30,7 +30,7 @@ const Account: React.FC = () => {
             await clearSelectedteam();
             teamContext.clearTeam();
             reset({
-                routesNames: ['TeamList'],
+                routes: [{ name: 'TeamList' }],
             });
         }
     }, [reset, teamContext]);
