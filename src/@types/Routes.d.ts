@@ -46,6 +46,9 @@ type RoutesParams = {
         store_id: string;
         store_name: string;
     };
+    StoreEdit: {
+        store_id: string;
+    };
 
     Export;
 

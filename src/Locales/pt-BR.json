@@ -300,6 +300,17 @@
     "View_Brand_Edit_DeleteModal_Confirm": "Tenho certeza",
     "View_Brand_Edit_DeleteModal_Cancel": "Manter marca",
 
+    "View_Store_Edit_PageTitle": "Editar loja",
+    "View_Store_Edit_InputNamePlaceholder": "Digite o nome da loja",
+    "View_Store_Edit_ButtonSave": "Salvar",
+    "View_Store_Edit_SuccessText": "A loja foi atualizada",
+    "View_Store_Edit_Error_EmtpyName": "Digite o nome da loja",
+    "View_Store_Success_OnDelete": "A loja foi apagada!",
+    "View_Store_Edit_DeleteModal_Title": "Você tem certeza?",
+    "View_Store_Edit_DeleteModal_Message": "Continuando você irá apagar a loja. Todos os produtos referenciados a loja serão marcados como sem loja.",
+    "View_Store_Edit_DeleteModal_Confirm": "Tenho certeza",
+    "View_Store_Edit_DeleteModal_Cancel": "Manter marca",
+
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
     "View_Export_SortTitle": "Escolha como organizar o arquivo",

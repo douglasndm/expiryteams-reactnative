@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -33,6 +34,7 @@ const ListView: React.FC = () => {
     const teamContext = useTeam();
 
     const [stores, setStores] = useState<Array<IStore>>([]);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [newStoreName, setNewStoreName] = useState<string | undefined>();
@@ -162,6 +164,12 @@ const ListView: React.FC = () => {
                 data={stores}
                 keyExtractor={(item, index) => String(index)}
                 renderItem={renderItem}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isLoading}
+                        onRefresh={loadData}
+                    />
+                }
             />
         </Container>
     );

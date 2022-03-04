@@ -292,6 +292,17 @@
     "View_Brand_Edit_DeleteModal_Confirm": "I'm sure",
     "View_Brand_Edit_DeleteModal_Cancel": "Keep brand",
 
+    "View_Store_Edit_PageTitle": "Edit store",
+    "View_Store_Edit_InputNamePlaceholder": "Store name",
+    "View_Store_Edit_ButtonSave": "Save",
+    "View_Store_Edit_SuccessText": "Success",
+    "View_Store_Edit_Error_EmtpyName": "Type the store name",
+    "View_Store_Success_OnDelete": "Store deleted",
+    "View_Store_Edit_DeleteModal_Title": "Are you sure?",
+    "View_Store_Edit_DeleteModal_Message": "All products in store will be set as no store.",
+    "View_Store_Edit_DeleteModal_Confirm": "I'm sure",
+    "View_Store_Edit_DeleteModal_Cancel": "Keep brand",
+
     "View_Export_PageTitle": "Export",
     "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",
     "View_Export_SortTitle": "Sort products by",

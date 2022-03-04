@@ -120,13 +120,13 @@ const StoreView: React.FC = () => {
                 <ItemTitle>{storeName}</ItemTitle>
 
                 <ActionsContainer>
-                    {/*
                     <ActionButtonsContainer onPress={handleEdit}>
                         <ActionText>
                             {strings.View_ProductDetails_Button_UpdateProduct}
                         </ActionText>
                         <Icons name="create-outline" size={22} />
                     </ActionButtonsContainer>
+                    {/*
 
                     <ActionButtonsContainer onPress={handleGenereteExcel}>
                         <ActionText>Gerar Excel</ActionText>

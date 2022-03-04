@@ -28,6 +28,7 @@ import BrandEdit from '~/Views/Brand/Edit';
 
 import StoreList from '~/Views/Stores/List';
 import StoreView from '~/Views/Stores/View';
+import StoreEdit from '~/Views/Stores/Edit';
 
 import Export from '~/Views/Export';
 
@@ -80,6 +81,7 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="StoreList" component={StoreList} />
             <Stack.Screen name="StoreView" component={StoreView} />
+            <Stack.Screen name="StoreEdit" component={StoreEdit} />
 
             <Stack.Screen name="User" component={User} />
 
