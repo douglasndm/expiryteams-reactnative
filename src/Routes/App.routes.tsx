@@ -26,6 +26,10 @@ import BrandList from '~/Views/Brand/List';
 import BrandView from '~/Views/Brand/View';
 import BrandEdit from '~/Views/Brand/Edit';
 
+import StoreList from '~/Views/Stores/List';
+import StoreView from '~/Views/Stores/View';
+import StoreEdit from '~/Views/Stores/Edit';
+
 import Export from '~/Views/Export';
 
 import TeamList from '~/Views/Team/List';
@@ -74,6 +78,10 @@ const Routes: React.FC = () => {
             <Stack.Screen name="BrandList" component={BrandList} />
             <Stack.Screen name="BrandView" component={BrandView} />
             <Stack.Screen name="BrandEdit" component={BrandEdit} />
+
+            <Stack.Screen name="StoreList" component={StoreList} />
+            <Stack.Screen name="StoreView" component={StoreView} />
+            <Stack.Screen name="StoreEdit" component={StoreEdit} />
 
             <Stack.Screen name="User" component={User} />
 

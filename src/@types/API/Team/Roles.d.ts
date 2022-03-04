@@ -2,7 +2,7 @@ interface IUserRoles {
     team: {
         id: string;
         name: string;
-        active: boolean;
+        isActive: boolean;
         subscription?: {
             expireIn: Date;
             membersLimit: number;

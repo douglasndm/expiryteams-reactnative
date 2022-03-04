@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, memo } from 'react';
 import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -27,12 +28,13 @@ import {
 } from './styles';
 
 const List: React.FC = () => {
-    const { navigate, reset } = useNavigation();
+    const { navigate, reset } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const teamContext = useTeam();
 
     const [isLoading, setIsLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState<boolean>(false);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
 
@@ -44,6 +46,36 @@ const List: React.FC = () => {
     // If so, disable creating of new team
     // This is due limition of identify user and teams on revenuecat
     const [isManager, setIsManager] = useState<boolean>(false);
+
+    const handleNavigateToEnterCode = useCallback(
+        (userRole: IUserRoles) => {
+            navigate('EnterTeam', { userRole });
+        },
+        [navigate]
+    );
+
+    const handleSelectTeam = useCallback(
+        (userRoles: IUserRoles) => {
+            if (userRoles.team.isActive !== true) {
+                if (userRoles.role.toLowerCase() !== 'manager') {
+                    showMessage({
+                        message:
+                            strings.View_TeamList_Error_ManagerShouldActiveTeam,
+                        type: 'warning',
+                    });
+                    return;
+                }
+            } else if (userRoles.status) {
+                if (userRoles.status.toLowerCase() === 'pending') {
+                    handleNavigateToEnterCode(userRoles);
+                    return;
+                }
+            }
+
+            if (userRoles.team) setSelectedTeamRole(userRoles);
+        },
+        [handleNavigateToEnterCode]
+    );
 
     const loadData = useCallback(async () => {
         if (!teamContext.isLoading) {
@@ -59,15 +91,17 @@ const List: React.FC = () => {
                 });
 
                 const sortedTeams = response.sort((team1, team2) => {
-                    if (team1.team.active && !team2.team.active) {
+                    if (team1.team.isActive && !team2.team.isActive) {
                         return 1;
                     }
-                    if (team1.team.active && team2.team.active) {
+                    if (team1.team.isActive && team2.team.isActive) {
                         return 0;
                     }
                     return -1;
                 });
                 setTeams(sortedTeams);
+
+                handleSelectTeam(sortedTeams[0]);
             } catch (err) {
                 if (err instanceof Error) {
                     showMessage({
@@ -79,7 +113,7 @@ const List: React.FC = () => {
                 setIsLoading(false);
             }
         }
-    }, [teamContext.isLoading]);
+    }, [handleSelectTeam, teamContext.isLoading]);
 
     const handleSelectedTeamChange = useCallback(async () => {
         if (!selectedTeamRole) {
@@ -114,36 +148,6 @@ const List: React.FC = () => {
             handleSelectedTeamChange();
         }
     }, [handleSelectedTeamChange, selectedTeamRole]);
-
-    const handleNavigateToEnterCode = useCallback(
-        (userRole: IUserRoles) => {
-            navigate('EnterTeam', { userRole });
-        },
-        [navigate]
-    );
-
-    const handleSelectTeam = useCallback(
-        (userRoles: IUserRoles) => {
-            if (userRoles.team.active !== true) {
-                if (userRoles.role.toLowerCase() !== 'manager') {
-                    showMessage({
-                        message:
-                            strings.View_TeamList_Error_ManagerShouldActiveTeam,
-                        type: 'warning',
-                    });
-                    return;
-                }
-            } else if (userRoles.status) {
-                if (userRoles.status.toLowerCase() === 'pending') {
-                    handleNavigateToEnterCode(userRoles);
-                    return;
-                }
-            }
-
-            if (userRoles.team) setSelectedTeamRole(userRoles);
-        },
-        [handleNavigateToEnterCode]
-    );
 
     interface renderProps {
         item: IUserRoles;
@@ -180,7 +184,7 @@ const List: React.FC = () => {
 
             return (
                 <TeamItemContainer
-                    isPending={isPending || !item.team.active}
+                    isPending={isPending || !item.team.isActive}
                     onPress={() => handleSelectTeam(item)}
                 >
                     <TeamItemTitle>{item.team.name}</TeamItemTitle>
@@ -202,15 +206,6 @@ const List: React.FC = () => {
     const handleLogout = useCallback(() => {
         navigate('Logout');
     }, [navigate]);
-
-    const handleRefresh = useCallback(async () => {
-        try {
-            setRefreshing(true);
-            await loadData();
-        } finally {
-            setRefreshing(false);
-        }
-    }, []);
 
     useEffect(() => {
         loadData();
@@ -238,21 +233,22 @@ const List: React.FC = () => {
                     renderItem={renderCategory}
                     refreshControl={
                         <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={handleRefresh}
+                            refreshing={isLoading}
+                            onRefresh={loadData}
                         />
                     }
                 />
             </Content>
 
             <Footer>
-                {!isManager && (
-                    <Button
-                        text={strings.View_TeamList_Button_CreateTeam}
-                        onPress={handleNavigateCreateTeam}
-                        contentStyle={{ width: 150, marginBottom: 0 }}
-                    />
-                )}
+                {!isManager ||
+                    (teams.length > 1 && (
+                        <Button
+                            text={strings.View_TeamList_Button_CreateTeam}
+                            onPress={handleNavigateCreateTeam}
+                            contentStyle={{ width: 150, marginBottom: 0 }}
+                        />
+                    ))}
 
                 <Button
                     text={strings.View_TeamList_Button_Logout}

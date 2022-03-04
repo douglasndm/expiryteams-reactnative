@@ -2,6 +2,8 @@ type RoutesParams = {
     Home;
     AddProduct: {
         category?: string;
+        brand?: string;
+        store?: string;
     };
     Settings;
     About;
@@ -37,6 +39,15 @@ type RoutesParams = {
     };
     BrandEdit: {
         brand_id: string;
+    };
+
+    StoreList;
+    StoreView: {
+        store_id: string;
+        store_name: string;
+    };
+    StoreEdit: {
+        store_id: string;
     };
 
     Export;

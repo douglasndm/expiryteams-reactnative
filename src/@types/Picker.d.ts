@@ -13,3 +13,9 @@ interface IStoreItem {
     value: string;
     key: string;
 }
+
+interface IPickerItem {
+    label: string;
+    value: string;
+    key: string;
+}

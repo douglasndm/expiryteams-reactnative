@@ -4,8 +4,15 @@ import strings from '~/Locales';
 
 import api from '~/Services/API';
 
+interface getUserTeamsResponse {
+    id: string;
+    email: string;
+    fid: string;
+    roles: IUserRoles[];
+}
+
 export async function getUserTeams(): Promise<Array<IUserRoles>> {
-    const response = await api.get(`/users`);
+    const response = await api.get<getUserTeamsResponse>(`/users`);
 
     const userRoles: Array<IUserRoles> = response.data.roles.map(role => ({
         role: role.role,
@@ -13,7 +20,7 @@ export async function getUserTeams(): Promise<Array<IUserRoles>> {
         team: {
             id: role.team.id,
             name: role.team.name,
-            active: role.team.isActive === true,
+            isActive: role.team.isActive === true,
         },
     }));
 

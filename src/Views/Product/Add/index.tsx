@@ -14,6 +14,7 @@ import { createBatch } from '~/Functions/Products/Batches/Batch';
 
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 import { getAllBrands } from '~/Functions/Brand';
+import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -51,9 +52,9 @@ import {
 interface Request {
     route: {
         params: {
-            store?: string;
             category?: string;
             brand?: string;
+            store?: string;
         };
     };
 }
@@ -63,6 +64,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         StackNavigationProp<RoutesParams>
     >();
     const teamContext = useTeam();
+
+    const [isMounted, setIsMounted] = useState(true);
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -101,8 +104,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         return null;
     });
 
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
-    const [brands, setBrands] = useState<Array<IBrandItem>>([]);
+    const [selectedStore, setSelectedStore] = useState<string | null>(() => {
+        if (route.params && route.params.store) {
+            return route.params.store;
+        }
+        return null;
+    });
+
+    const [categories, setCategories] = useState<Array<IPickerItem>>([]);
+    const [brands, setBrands] = useState<Array<IPickerItem>>([]);
+    const [stores, setStores] = useState<Array<IPickerItem>>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -114,6 +125,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
@@ -149,6 +161,21 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             );
 
             setBrands(brandsArray);
+
+            const allStores = await getAllStoresFromTeam({
+                team_id: teamContext.id,
+            });
+            const storesArray: Array<IPickerItem> = [];
+
+            allStores.forEach(store =>
+                storesArray.push({
+                    key: store.id,
+                    label: store.name,
+                    value: store.id,
+                })
+            );
+
+            setStores(storesArray);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -158,11 +185,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         } finally {
             setIsLoading(false);
         }
-    }, [teamContext.id]);
+    }, [isMounted, teamContext.id]);
 
     useEffect(() => {
         loadData();
-    }, []);
+    }, [loadData]);
 
     const handleSave = useCallback(async () => {
         if (!teamContext.id) {
@@ -190,6 +217,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     name,
                     code,
                     brand: selectedBrand || undefined,
+                    store: selectedStore || undefined,
                     batches: [],
                 },
                 categories: prodCategories,
@@ -231,6 +259,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         selectedCategory,
         code,
         selectedBrand,
+        selectedStore,
         batch,
         expDate,
         amount,
@@ -265,6 +294,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             return;
         }
         setPrice(value);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
     }, []);
 
     return isLoading ? (
@@ -423,6 +458,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             marginBottom: 10,
                                         }}
                                     />
+                                    {teamContext.roleInTeam?.role.toLowerCase() ===
+                                        'manager' && (
+                                        <StoreSelect
+                                            stores={stores}
+                                            defaultValue={selectedStore}
+                                            onChange={setSelectedStore}
+                                            containerStyle={{
+                                                marginBottom: 10,
+                                            }}
+                                        />
+                                    )}
                                 </MoreInformationsContainer>
 
                                 <ExpDateGroup>

@@ -1,13 +1,9 @@
 import React, { useCallback } from 'react';
-import { Linking } from 'react-native';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
-
-import { reset } from '~/References/Navigation';
-import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
 import UserInfo from './UserInfo';
 
@@ -40,15 +36,9 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('BrandList');
     }, [navigation]);
 
-    const navigateToTeamList = useCallback(async () => {
-        if (teamContext.clearTeam) {
-            await clearSelectedteam();
-            teamContext.clearTeam();
-            reset({
-                routesNames: ['TeamList'],
-            });
-        }
-    }, [teamContext]);
+    const navigateToStores = useCallback(() => {
+        navigation.navigate('StoreList');
+    }, [navigation]);
 
     const navigateToExport = useCallback(() => {
         navigation.navigate('Export');
@@ -57,10 +47,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const handleNavigateToTeam = useCallback(() => {
         navigation.navigate('ViewTeam');
     }, [navigation]);
-
-    const handleNavigateToSite = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev');
-    }, []);
 
     return (
         <Container>
@@ -104,6 +90,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </MenuContent>
                     </MenuItemContainer>
 
+                    {teamContext.roleInTeam?.role.toLowerCase() ===
+                        'manager' && (
+                        <MenuItemContainer onPress={navigateToStores}>
+                            <MenuContent>
+                                <Icons name="list-outline" />
+                                <MenuItemText>Lojas</MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
+                    )}
+
                     <MenuItemContainer onPress={navigateToExport}>
                         <MenuContent>
                             <Icons name="download-outline" />
@@ -125,15 +121,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             </MainMenuContainer>
 
             <DrawerSection>
-                <MenuItemContainer onPress={navigateToTeamList}>
-                    <MenuContent>
-                        <Icons name="list-outline" />
-                        <MenuItemText>
-                            {strings.Menu_Button_GoToTeamSelect}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
-
                 <MenuItemContainer
                     onPress={() => navigation.navigate('Settings')}
                 >

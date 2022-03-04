@@ -52,10 +52,11 @@ const Header: React.FC<RequestProps> = ({
             // Success double press
 
             if (listRef && listRef.current) {
-                listRef.current.scrollToIndex({
-                    animated: true,
-                    index: 0,
-                });
+                if (listRef.current.props.data?.length)
+                    listRef.current.scrollToIndex({
+                        animated: true,
+                        index: 0,
+                    });
             }
         }
         lastPress = time;

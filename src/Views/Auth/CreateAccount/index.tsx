@@ -47,15 +47,21 @@ const CreateAccount: React.FC = () => {
 
     const handleCreateAccount = useCallback(async () => {
         const schema = Yup.object().shape({
-            name: Yup.string().required('Digite o seu nome'),
-            lastName: Yup.string().required('Digite seu sobrenome'),
+            name: Yup.string().required(
+                strings.View_CreateAccount_Alert_Error_EmptyName
+            ),
+            lastName: Yup.string().required(
+                strings.View_CreateAccount_Alert_Error_EmptyLastName
+            ),
             email: Yup.string()
-                .required('E-mail é obrigátio')
-                .email('E-mail inválido'),
-            password: Yup.string().required('Digite a senha').min(6),
+                .required(strings.View_CreateAccount_Alert_Error_EmptyEmail)
+                .email(strings.View_CreateAccount_Alert_Error_InvalidEmail),
+            password: Yup.string()
+                .required(strings.View_CreateAccount_Alert_Error_EmptyPassword)
+                .min(6),
             passwordConfirm: Yup.string().oneOf(
                 [Yup.ref('password'), null],
-                'Confirmação da senha não corresponde a senha'
+                strings.View_CreateAccount_Alert_Error_InvalidPassConfirm
             ),
         });
 
@@ -68,10 +74,11 @@ const CreateAccount: React.FC = () => {
                 passwordConfirm,
             });
         } catch (err) {
-            showMessage({
-                message: err.errors[0],
-                type: 'warning',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.errors[0],
+                    type: 'warning',
+                });
             return;
         }
 
@@ -86,18 +93,18 @@ const CreateAccount: React.FC = () => {
             });
 
             showMessage({
-                message: 'Conta criada!',
-                description:
-                    'Clique no link enviado ao seu e-mail para começar a usar sua conta.',
+                message: strings.View_CreateAccount_Alert_Success_Title,
+                description: strings.View_CreateAccount_Alert_Success_Message,
                 type: 'info',
             });
 
             reset({ routes: [{ name: 'Login' }] });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'warning',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'warning',
+                });
         } finally {
             setIsCreating(false);
         }
@@ -105,11 +112,13 @@ const CreateAccount: React.FC = () => {
 
     return (
         <Container>
-            <Header title="Criar conta" noDrawer />
+            <Header title={strings.View_CreateAccount_PageTitle} noDrawer />
 
             <FormContainer>
                 <Input
-                    placeholder="Nome"
+                    placeholder={
+                        strings.View_CreateAccount_Input_Name_Placeholder
+                    }
                     autoCorrect={false}
                     autoCapitalize="words"
                     value={name}
@@ -118,7 +127,9 @@ const CreateAccount: React.FC = () => {
                 />
 
                 <Input
-                    placeholder="Sobrenome"
+                    placeholder={
+                        strings.View_CreateAccount_Input_LastName_Placeholder
+                    }
                     autoCorrect={false}
                     autoCapitalize="words"
                     value={lastName}
@@ -127,7 +138,9 @@ const CreateAccount: React.FC = () => {
                 />
 
                 <Input
-                    placeholder={strings.View_Login_InputText_Email_Placeholder}
+                    placeholder={
+                        strings.View_CreateAccount_Input_Email_Placeholder
+                    }
                     autoCorrect={false}
                     autoCapitalize="none"
                     value={email}
@@ -136,7 +149,9 @@ const CreateAccount: React.FC = () => {
                 />
 
                 <Input
-                    placeholder="Senha"
+                    placeholder={
+                        strings.View_CreateAccount_Input_Password_Placeholder
+                    }
                     autoCorrect={false}
                     autoCapitalize="none"
                     isPassword
@@ -146,7 +161,9 @@ const CreateAccount: React.FC = () => {
                 />
 
                 <Input
-                    placeholder="Confirmação da senha"
+                    placeholder={
+                        strings.View_CreateAccount_Input_ConfirmPassword_Placeholder
+                    }
                     autoCorrect={false}
                     autoCapitalize="none"
                     isPassword
@@ -156,7 +173,7 @@ const CreateAccount: React.FC = () => {
                 />
 
                 <Button
-                    text="Cria conta"
+                    text={strings.View_CreateAccount_Button_CreateAccount}
                     onPress={handleCreateAccount}
                     isLoading={isCreating}
                 />

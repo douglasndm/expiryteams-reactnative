@@ -1,26 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
-
 import { showMessage } from 'react-native-flash-message';
-import strings from '~/Locales';
-
-import Loading from '~/Components/Loading';
-
-import {
-    SettingNotificationContainer,
-    SettingNotificationDescription,
-    CheckBox,
-} from './styles';
 
 import {
     getNotificationsPreferences,
     updateNotificationsPreferences,
 } from '~/Functions/Settings/Notifications';
 
-interface INotificationCadencyItem {
-    label: string;
-    value: string;
-    key?: string;
-}
+import {
+    LoadingIndicator,
+    SettingNotificationContainer,
+    SettingNotificationDescription,
+    CheckBox,
+} from './styles';
 
 const Notifications: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,10 +25,11 @@ const Notifications: React.FC = () => {
 
             setEmailNotification(response.email_enabled);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -51,10 +43,11 @@ const Notifications: React.FC = () => {
                 email_enabled: value,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -70,7 +63,7 @@ const Notifications: React.FC = () => {
     }, [emailNotification, updateSettings]);
 
     return isLoading ? (
-        <Loading />
+        <LoadingIndicator />
     ) : (
         <SettingNotificationContainer>
             <SettingNotificationDescription>
