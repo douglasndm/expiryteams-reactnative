@@ -16,6 +16,7 @@ import screens from 'react-native-screens';
 import './Locales';
 
 import './Services/Analytics';
+import './Services/OneSignal';
 import DeepLinking from './Services/DeepLinking';
 
 import '@utils/Team/Subscriptions';

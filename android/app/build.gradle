@@ -134,6 +134,17 @@ def codePushProductionDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_PR
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.10, 0.99.99]'
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
