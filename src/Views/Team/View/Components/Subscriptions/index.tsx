@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { format, parseISO, startOfDay, compareAsc } from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
 
@@ -21,7 +22,7 @@ import {
 } from './styles';
 
 const Subscriptions: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [
         subscription,

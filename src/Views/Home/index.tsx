@@ -8,6 +8,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { getAllProducts } from '~/Functions/Products/Products';
 import { searchProducts } from '~/Functions/Products/Search';
+import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -42,12 +43,14 @@ const Home: React.FC = () => {
         try {
             setIsLoading(true);
 
-            if (!teamContext.id) {
+            const selectedTeam = await getSelectedTeam();
+
+            if (!selectedTeam) {
                 return;
             }
 
             const productsResponse = await getAllProducts({
-                team_id: teamContext.id,
+                team_id: selectedTeam.team.id,
             });
 
             setProducts(productsResponse);
@@ -60,7 +63,7 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [teamContext.id]);
+    }, []);
 
     useEffect(() => {
         if (isMounted) {

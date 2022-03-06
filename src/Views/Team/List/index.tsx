@@ -38,10 +38,6 @@ const List: React.FC = () => {
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
 
-    const [selectedTeamRole, setSelectedTeamRole] = useState<IUserRoles | null>(
-        null
-    );
-
     // This is for check if user is already manager on any team
     // If so, disable creating of new team
     // This is due limition of identify user and teams on revenuecat
@@ -55,7 +51,7 @@ const List: React.FC = () => {
     );
 
     const handleSelectTeam = useCallback(
-        (userRoles: IUserRoles) => {
+        async (userRoles: IUserRoles) => {
             if (userRoles.team.isActive !== true) {
                 if (userRoles.role.toLowerCase() !== 'manager') {
                     showMessage({
@@ -72,9 +68,32 @@ const List: React.FC = () => {
                 }
             }
 
-            if (userRoles.team) setSelectedTeamRole(userRoles);
+            if (userRoles.team) {
+                await setSelectedTeam(userRoles);
+
+                if (teamContext.reload) {
+                    teamContext.reload();
+                } else {
+                    return;
+                }
+
+                reset({
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'Home',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                });
+            }
         },
-        [handleNavigateToEnterCode]
+        [handleNavigateToEnterCode, reset, teamContext]
     );
 
     const loadData = useCallback(async () => {
@@ -101,7 +120,9 @@ const List: React.FC = () => {
                 });
                 setTeams(sortedTeams);
 
-                handleSelectTeam(sortedTeams[0]);
+                if (sortedTeams.length > 0) {
+                    handleSelectTeam(sortedTeams[0]);
+                }
             } catch (err) {
                 if (err instanceof Error) {
                     showMessage({
@@ -114,40 +135,6 @@ const List: React.FC = () => {
             }
         }
     }, [handleSelectTeam, teamContext.isLoading]);
-
-    const handleSelectedTeamChange = useCallback(async () => {
-        if (!selectedTeamRole) {
-            return;
-        }
-        await setSelectedTeam(selectedTeamRole);
-
-        if (teamContext.reload) {
-            teamContext.reload();
-        } else {
-            return;
-        }
-
-        reset({
-            routes: [
-                {
-                    name: 'Routes',
-                    state: {
-                        routes: [
-                            {
-                                name: 'Home',
-                            },
-                        ],
-                    },
-                },
-            ],
-        });
-    }, [reset, selectedTeamRole, teamContext]);
-
-    useEffect(() => {
-        if (selectedTeamRole) {
-            handleSelectedTeamChange();
-        }
-    }, [handleSelectedTeamChange, selectedTeamRole]);
 
     interface renderProps {
         item: IUserRoles;
@@ -241,14 +228,13 @@ const List: React.FC = () => {
             </Content>
 
             <Footer>
-                {!isManager ||
-                    (teams.length > 1 && (
-                        <Button
-                            text={strings.View_TeamList_Button_CreateTeam}
-                            onPress={handleNavigateCreateTeam}
-                            contentStyle={{ width: 150, marginBottom: 0 }}
-                        />
-                    ))}
+                {(!isManager || teams.length > 1) && (
+                    <Button
+                        text={strings.View_TeamList_Button_CreateTeam}
+                        onPress={handleNavigateCreateTeam}
+                        contentStyle={{ width: 150, marginBottom: 0 }}
+                    />
+                )}
 
                 <Button
                     text={strings.View_TeamList_Button_Logout}
