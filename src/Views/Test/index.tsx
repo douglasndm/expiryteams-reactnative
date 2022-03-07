@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 import messaging from '@react-native-firebase/messaging';
 
 import Button from '../../Components/Button';
 
 import { Container, Category } from '../Settings/styles';
+import Sentry from '~/Services/Sentry';
 
 const Test: React.FC = () => {
     const handleMessaingToken = useCallback(async () => {
@@ -23,7 +23,7 @@ const Test: React.FC = () => {
     }, []);
 
     const handleCrash = useCallback(() => {
-        crashlytics().crash();
+        Sentry.nativeCrash();
     }, []);
 
     return (
