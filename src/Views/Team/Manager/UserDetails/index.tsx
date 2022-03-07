@@ -88,7 +88,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     });
 
     const [selectedStore, setSelectedStore] = useState<string | null>(() => {
-        if (user.stores.length > 0) {
+        if (user.stores && user.stores.length > 0) {
             return user.stores[0].id;
         }
         return null;
