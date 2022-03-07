@@ -53,6 +53,10 @@ const ViewTeam: React.FC = () => {
         navigate('TeamList');
     }, [navigate]);
 
+    const handleNavigateToSettings = useCallback(() => {
+        navigate('Settings');
+    }, [navigate]);
+
     return (
         <Container>
             <PageHeader>
@@ -117,6 +121,13 @@ const ViewTeam: React.FC = () => {
                 )}
 
                 {isManager && <Advenced />}
+
+                {!teamContext.active && (
+                    <Button
+                        text="Ir para configurações"
+                        onPress={handleNavigateToSettings}
+                    />
+                )}
             </PageContent>
         </Container>
     );

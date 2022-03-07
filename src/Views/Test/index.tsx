@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import messaging from '@react-native-firebase/messaging';
 
@@ -21,6 +22,10 @@ const Test: React.FC = () => {
         console.log(token?.token);
     }, []);
 
+    const handleCrash = useCallback(() => {
+        crashlytics().crash();
+    }, []);
+
     return (
         <Container>
             <ScrollView>
@@ -30,6 +35,8 @@ const Test: React.FC = () => {
                         onPress={handleMessaingToken}
                     />
                     <Button text="Log user token" onPress={handleToken} />
+
+                    <Button text="Native crash" onPress={handleCrash} />
                 </Category>
             </ScrollView>
         </Container>
