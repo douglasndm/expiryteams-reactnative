@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
-
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
@@ -26,7 +26,9 @@ import {
 } from './styles';
 
 const ViewTeam: React.FC = () => {
-    const { goBack, navigate } = useNavigation();
+    const { goBack, navigate } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const teamContext = useTeam();
 
@@ -49,6 +51,10 @@ const ViewTeam: React.FC = () => {
 
     const handleNavigateTeams = useCallback(() => {
         navigate('TeamList');
+    }, [navigate]);
+
+    const handleNavigateToSettings = useCallback(() => {
+        navigate('Settings');
     }, [navigate]);
 
     return (
@@ -115,6 +121,13 @@ const ViewTeam: React.FC = () => {
                 )}
 
                 {isManager && <Advenced />}
+
+                {!teamContext.active && (
+                    <Button
+                        text="Ir para configurações"
+                        onPress={handleNavigateToSettings}
+                    />
+                )}
             </PageContent>
         </Container>
     );

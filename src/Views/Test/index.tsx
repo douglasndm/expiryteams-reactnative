@@ -7,6 +7,7 @@ import messaging from '@react-native-firebase/messaging';
 import Button from '../../Components/Button';
 
 import { Container, Category } from '../Settings/styles';
+import Sentry from '~/Services/Sentry';
 
 const Test: React.FC = () => {
     const handleMessaingToken = useCallback(async () => {
@@ -21,6 +22,10 @@ const Test: React.FC = () => {
         console.log(token?.token);
     }, []);
 
+    const handleCrash = useCallback(() => {
+        Sentry.nativeCrash();
+    }, []);
+
     return (
         <Container>
             <ScrollView>
@@ -30,6 +35,8 @@ const Test: React.FC = () => {
                         onPress={handleMessaingToken}
                     />
                     <Button text="Log user token" onPress={handleToken} />
+
+                    <Button text="Native crash" onPress={handleCrash} />
                 </Category>
             </ScrollView>
         </Container>

@@ -22,6 +22,10 @@ const DrawerContainer: React.FC = () => {
                 return { swipeEnabled: false };
             case 'TeamList':
                 return { swipeEnabled: false };
+            case 'DeleteTeam':
+                return { swipeEnabled: false };
+            case 'Settings':
+                return { swipeEnabled: false };
             default:
                 return { swipeEnabled: true };
         }

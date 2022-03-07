@@ -9,6 +9,8 @@ import { name as appName } from './app.json';
 import App from './src';
 import './src/Functions/OpenAppTimes';
 
+import Sentry from './src/Services/Sentry';
+
 LogBox.ignoreLogs(['EventEmitter.removeListener', 'new NativeEventEmitter()']);
 
 // Register background handler
@@ -19,4 +21,6 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
     );
 });
 
-AppRegistry.registerComponent(appName, () => App);
+const sentry = Sentry.wrap(App);
+
+AppRegistry.registerComponent(appName, () => sentry);

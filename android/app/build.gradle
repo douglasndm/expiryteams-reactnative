@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 
 import com.android.build.OutputFile
 
@@ -85,6 +84,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
@@ -134,6 +134,17 @@ def codePushProductionDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_PR
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.10, 0.99.99]'
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -144,8 +155,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 50
-        versionName "1.5.0"
+        versionCode 51
+        versionName "1.5.1"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -175,6 +186,9 @@ android {
                 keyPassword project.env.get("ANDROID_UPLOAD_KEY_PASSWORD")
             }
         }
+        lintOptions {
+            checkReleaseBuilds false
+        }
     }
     buildTypes {
         debug {
@@ -198,15 +212,6 @@ android {
         release {
             resValue "string", "CodePushDeploymentKey", codePushProductionDeploymentKey
 
-            /* Add the firebaseCrashlytics extension (by default,
-            * it's disabled to improve build speeds) and set
-            * nativeSymbolUploadEnabled to true. */
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-
-                unstrippedNativeLibsDir "build/intermediates/merged_native_libs/release/out/lib/"
-                strippedNativeLibsDir "build/intermediates/stripped_native_libs/release/out/lib/"
-            }
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             minifyEnabled enableProguardInReleaseBuilds
@@ -231,9 +236,6 @@ android {
         }
     }
 }
-
-// Upload Crashlytics NDK symbols
-tasks.whenTaskAdded { task -> if (task.name.startsWith('assemble') && task.name.endsWith("Release")) task.finalizedBy "uploadCrashlyticsSymbolFile" + task.name.substring('assemble'.length()) }
 
 repositories {
     jcenter()

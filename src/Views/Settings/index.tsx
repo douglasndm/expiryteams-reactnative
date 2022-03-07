@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '~/Locales';
 
@@ -35,12 +36,11 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
-    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { preferences, setPreferences } = useContext(PreferencesContext);
+    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const teamContext = useTeam();
-
-    const { reset } = useNavigation();
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
