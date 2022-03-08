@@ -9,8 +9,6 @@ import strings from '~/Locales';
 import { useAuth } from '~/Contexts/AuthContext';
 
 import { login } from '~/Functions/Auth';
-import { getUserTeams } from '~/Functions/Team/Users';
-import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import { reset } from '~/References/Navigation';
 
@@ -44,38 +42,6 @@ const Login: React.FC = () => {
 
     const [isMounted, setIsMounted] = useState(true);
 
-    const handleSelectedTeam = useCallback(async () => {
-        try {
-            const user = auth().currentUser;
-
-            if (user) {
-                const userTeams = await getUserTeams();
-                const currentSelectedTeam = await getSelectedTeam();
-
-                const team = userTeams.find(
-                    t => t.team.id === currentSelectedTeam?.team.id
-                );
-
-                if (team && team.team.active) {
-                    reset({
-                        routesNames: ['Home'],
-                    });
-                } else {
-                    reset({
-                        routesNames: ['TeamList'],
-                    });
-                }
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-            }
-        }
-    }, []);
-
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({
             email: Yup.string().required().email(),
@@ -103,8 +69,9 @@ const Login: React.FC = () => {
                 });
                 return;
             }
-
-            await handleSelectedTeam();
+            if (user) {
+                reset({ routeHandler: 'Routes', routesNames: ['TeamList'] });
+            }
         } catch (err) {
             if (err instanceof Error) {
                 let error = err.message;
@@ -127,7 +94,7 @@ const Login: React.FC = () => {
         } finally {
             setIsLoging(false);
         }
-    }, [email, handleSelectedTeam, password]);
+    }, [email, password]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value.trim()),
@@ -144,22 +111,20 @@ const Login: React.FC = () => {
     }, [navigate]);
 
     useEffect(() => {
-        if (isMounted)
-            if (auth().currentUser) {
-                try {
-                    setIsLoading(false);
-                    handleSelectedTeam();
-                } finally {
-                    setIsLoading(false);
-                }
-            } else {
-                setIsLoading(false);
-            }
+        try {
+            setIsLoading(true);
 
-        return () => {
-            setIsMounted(false);
-        };
-    }, [handleSelectedTeam, isMounted]);
+            const user = auth().currentUser;
+
+            if (user) {
+                reset({ routeHandler: 'Routes', routesNames: ['TeamList'] });
+            }
+        } finally {
+            setIsLoading(false);
+        }
+
+        return () => setIsMounted(false);
+    }, [isMounted]);
 
     return isLoading ? (
         <Loading />

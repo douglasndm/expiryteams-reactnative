@@ -3,7 +3,7 @@ import EnvConfig from 'react-native-config';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
 import auth from '@react-native-firebase/auth';
 
-import DeviceId from './DeviceID';
+import { getDeviceId } from './DeviceID';
 
 import errorsHandler from './API/Errors';
 
@@ -16,9 +16,9 @@ api.interceptors.request.use(async config => {
         config.headers.appbuildnumber = getBuildNumber();
         config.headers.appversion = getVersion();
 
-        const deviceId = new DeviceId();
+        const device = await getDeviceId();
 
-        config.headers.deviceid = await deviceId.getDeviceId();
+        config.headers.deviceid = device.device_uuid || '';
 
         const userToken = await auth().currentUser?.getIdToken();
         config.headers.Authorization = `Bearer ${userToken}`;
