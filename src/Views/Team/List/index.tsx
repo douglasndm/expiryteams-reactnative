@@ -196,7 +196,7 @@ const List: React.FC = () => {
 
     useEffect(() => {
         loadData();
-    }, []);
+    }, [loadData]);
 
     return isLoading ? (
         <Loading />

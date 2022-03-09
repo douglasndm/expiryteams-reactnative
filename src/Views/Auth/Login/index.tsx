@@ -10,8 +10,6 @@ import { useAuth } from '~/Contexts/AuthContext';
 
 import { login } from '~/Functions/Auth';
 
-import { reset } from '~/References/Navigation';
-
 import Loading from '~/Components/Loading';
 import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
@@ -31,7 +29,7 @@ import {
 } from './styles';
 
 const Login: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate, reset } = useNavigation();
     const { initializing } = useAuth();
 
     const [email, setEmail] = useState<string>('');
@@ -65,12 +63,37 @@ const Login: React.FC = () => {
 
             if (user && !user.emailVerified) {
                 reset({
-                    routesNames: ['VerifyEmail'],
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'VerifyEmail',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
                 });
+
                 return;
             }
             if (user) {
-                reset({ routeHandler: 'Routes', routesNames: ['TeamList'] });
+                reset({
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'TeamList',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                });
             }
         } catch (err) {
             if (err instanceof Error) {
@@ -94,7 +117,7 @@ const Login: React.FC = () => {
         } finally {
             setIsLoging(false);
         }
-    }, [email, password]);
+    }, [email, password, reset]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value.trim()),
@@ -117,14 +140,27 @@ const Login: React.FC = () => {
             const user = auth().currentUser;
 
             if (user) {
-                reset({ routeHandler: 'Routes', routesNames: ['TeamList'] });
+                reset({
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'TeamList',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                });
             }
         } finally {
             setIsLoading(false);
         }
 
         return () => setIsMounted(false);
-    }, [isMounted]);
+    }, [isMounted, reset]);
 
     return isLoading ? (
         <Loading />
