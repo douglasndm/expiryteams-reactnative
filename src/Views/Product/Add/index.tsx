@@ -205,10 +205,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         }
         try {
             setIsAdding(true);
-            const prodCategories: Array<string> = [];
+            let prodCategory: string | undefined;
 
             if (selectedCategory && selectedCategory !== 'null') {
-                prodCategories.push(selectedCategory);
+                prodCategory = selectedCategory;
             }
 
             const createdProduct = await createProduct({
@@ -220,7 +220,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     store: selectedStore || undefined,
                     batches: [],
                 },
-                categories: prodCategories,
+                category: prodCategory,
             });
 
             await createBatch({

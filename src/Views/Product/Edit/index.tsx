@@ -190,8 +190,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     id: product.id,
                     name,
                     code,
-                    brand: selectedBrand || undefined,
-                    store: selectedStore || null,
+                    brand: selectedBrand,
+                    store: selectedStore,
                 },
                 categories: prodCategories,
             });

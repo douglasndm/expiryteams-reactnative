@@ -251,7 +251,7 @@
     "View_PhotoView_Button_Back": "Voltar",
 
     "View_UsersInTeam_PageTitle": "Usuários",
-    "View_UsersInTeam_Input_AddNewUser_Placeholder": "Novo usuário",
+    "View_UsersInTeam_Input_AddNewUser_Placeholder": "Novo usuário por e-mail",
     "View_UsersInTeam_List_Title": "Todos os usuários do time",
     "View_UsersInTeam_List_InputEmail_Error_EmptyText": "Digite o e-mail do usuário",
     "View_UsersInTeam_List_PendingStatus": "Pendente",
