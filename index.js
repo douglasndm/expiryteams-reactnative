@@ -2,8 +2,10 @@
  * @format
  */
 
-import { AppRegistry, LogBox } from 'react-native';
+import { AppRegistry, LogBox, Linking } from 'react-native';
+
 import messaging from '@react-native-firebase/messaging';
+import { showMessage } from 'react-native-flash-message';
 
 import { name as appName } from './app.json';
 import App from './src';
@@ -19,6 +21,26 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
         'Message handled in the background!',
         JSON.stringify(remoteMessage)
     );
+});
+
+messaging().onNotificationOpenedApp(async remoteMessage => {
+    if (remoteMessage.data.deeplinking) {
+        await Linking.openURL(remoteMessage.data.deeplinking);
+    }
+});
+
+messaging().onMessage(async remoteMessage => {
+    async function onOpen() {
+        if (remoteMessage.data.deeplinking) {
+            await Linking.openURL(remoteMessage.data.deeplinking);
+        }
+    }
+
+    showMessage({
+        message: remoteMessage.notification.title,
+        description: remoteMessage.notification.body,
+        onPress: onOpen,
+    });
 });
 
 const sentry = Sentry.wrap(App);
