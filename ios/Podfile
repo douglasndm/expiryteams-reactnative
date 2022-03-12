@@ -16,7 +16,6 @@ target 'expirybusiness' do
     pod 'Firebase/AppCheck'
     pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
     pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-    pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 
   target 'expirybusinessTests' do

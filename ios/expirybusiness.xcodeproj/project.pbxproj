@@ -27,6 +27,7 @@
 		4FEB01AA264F505A007B215D /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FEB01A9264F505A007B215D /* Logo.png */; };
 		6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A5B72E3E27DD3FEA00E6C5F4 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5B72E3D27DD3FEA00E6C5F4 /* Ionicons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		4FEB01A9264F505A007B215D /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		5343F86896497306DC9BBA4C /* Pods-expirybusiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = expirybusiness/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A5B72E3D27DD3FEA00E6C5F4 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		B983B0E933AFDCC0FD300CDD /* Pods-expirybusiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.release.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.release.xcconfig"; sourceTree = "<group>"; };
 		E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-expirybusiness-expirybusinessTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -186,6 +188,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A5B72E3C27DD3F8100E6C5F4 /* Fonts */,
 				4F7816CC264DFA54007165DA /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* expirybusiness */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -207,6 +210,14 @@
 				00E356EE1AD99517003FC87E /* expirybusinessTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A5B72E3C27DD3F8100E6C5F4 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A5B72E3D27DD3FEA00E6C5F4 /* Ionicons.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -316,6 +327,7 @@
 				4FEB01AA264F505A007B215D /* Logo.png in Resources */,
 				4F781702264E046F007165DA /* swiftly-610.m4r in Resources */,
 				4F7816CD264DFA54007165DA /* GoogleService-Info.plist in Resources */,
+				A5B72E3E27DD3FEA00E6C5F4 /* Ionicons.ttf in Resources */,
 				4F781711264E0A61007165DA /* Roboto-Medium.ttf in Resources */,
 				4F781710264E0A61007165DA /* OpenSans-Bold.ttf in Resources */,
 				4F78170F264E0A61007165DA /* OpenSans-Regular.ttf in Resources */,
