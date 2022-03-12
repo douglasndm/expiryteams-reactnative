@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
+import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
@@ -15,9 +15,10 @@ import { createBatch } from '~/Functions/Products/Batches/Batch';
 import { getAllCategoriesFromTeam } from '~/Functions/Categories';
 import { getAllBrands } from '~/Functions/Brand';
 import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
+import { findProductByCode } from '~/Functions/Products/FindByCode';
 
 import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Loading from '~/Components/Loading';
@@ -29,8 +30,6 @@ import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     PageContent,
     InputContainer,
     InputTextContainer,
@@ -44,7 +43,8 @@ import {
     ExpDateLabel,
     CustomDatePicker,
     InputCodeTextContainer,
-    InputCodeTextIcon,
+    Icon,
+    InputTextLoading,
     InputCodeText,
     InputTextIconContainer,
 } from './styles';
@@ -60,9 +60,7 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { goBack, replace } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { replace } = useNavigation<StackNavigationProp<RoutesParams>>();
     const teamContext = useTeam();
 
     const [isMounted, setIsMounted] = useState(true);
@@ -117,7 +115,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const [isFindingProd, setIsFindingProd] = useState<boolean>(false);
     const [isAdding, setIsAdding] = useState<boolean>(false);
+
+    const [productFinded, setProductFinded] = useState<boolean>(false);
+    const [productNameFinded, setProductNameFinded] = useState<null | string>(
+        null
+    );
+    const [showProdFindedModal, setShowProdFindedModal] = useState<boolean>(
+        false
+    );
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
@@ -186,6 +193,46 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             setIsLoading(false);
         }
     }, [isMounted, teamContext.id]);
+
+    const handleSwitchFindModal = useCallback(() => {
+        setShowProdFindedModal(!showProdFindedModal);
+    }, [showProdFindedModal]);
+
+    const completeInfo = useCallback(() => {
+        if (productNameFinded) {
+            setName(productNameFinded);
+
+            setShowProdFindedModal(false);
+        }
+    }, [productNameFinded]);
+
+    const findProductByEAN = useCallback(async () => {
+        if (code !== '') {
+            try {
+                setIsFindingProd(true);
+                const response = await findProductByCode(code);
+
+                if (response !== null) {
+                    setProductFinded(true);
+
+                    setProductNameFinded(response.name);
+                } else {
+                    setProductFinded(false);
+
+                    setProductNameFinded(null);
+                }
+            } catch (err) {
+                if (err instanceof Error) {
+                    showMessage({
+                        message: err.message,
+                        type: 'danger',
+                    });
+                }
+            } finally {
+                setIsFindingProd(false);
+            }
+        }
+    }, [code]);
 
     useEffect(() => {
         loadData();
@@ -313,189 +360,208 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 />
             ) : (
                 <Container>
+                    <Header
+                        title={strings.View_AddProduct_PageTitle}
+                        noDrawer
+                    />
                     <StatusBar />
-                    <ScrollView>
-                        <PageHeader>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {strings.View_AddProduct_PageTitle}
-                            </PageTitle>
-                        </PageHeader>
+                    <PageContent>
+                        <InputContainer>
+                            <InputGroup>
+                                <InputTextContainer hasError={nameFieldError}>
+                                    <InputText
+                                        placeholder={
+                                            strings.View_AddProduct_InputPlacehoder_Name
+                                        }
+                                        accessibilityLabel={
+                                            strings.View_AddProduct_InputAccessibility_Name
+                                        }
+                                        value={name}
+                                        onChangeText={value => {
+                                            setName(value);
+                                            setNameFieldError(false);
+                                        }}
+                                        onFocus={() => {
+                                            setIsBarCodeEnabled(false);
+                                        }}
+                                    />
+                                </InputTextContainer>
+                            </InputGroup>
+                            {nameFieldError && (
+                                <InputTextTip>
+                                    {
+                                        strings.View_AddProduct_AlertTypeProductName
+                                    }
+                                </InputTextTip>
+                            )}
 
-                        <PageContent>
-                            <InputContainer>
+                            <InputCodeTextContainer hasError={codeFieldError}>
+                                <InputCodeText
+                                    placeholder={
+                                        strings.View_AddProduct_InputPlacehoder_Code
+                                    }
+                                    accessibilityLabel={
+                                        strings.View_AddProduct_InputAccessibility_Code
+                                    }
+                                    value={code}
+                                    onBlur={findProductByEAN}
+                                    onChangeText={value => {
+                                        setCode(value);
+                                        setCodeFieldError(false);
+                                    }}
+                                />
+                                <InputTextIconContainer
+                                    onPress={handleEnableBarCodeReader}
+                                >
+                                    <Icon name="barcode-outline" size={34} />
+                                </InputTextIconContainer>
+
+                                {isFindingProd && <InputTextLoading />}
+
+                                {productFinded && (
+                                    <InputTextIconContainer
+                                        style={{ marginTop: -5 }}
+                                        onPress={handleSwitchFindModal}
+                                    >
+                                        <Icon name="download" size={30} />
+                                    </InputTextIconContainer>
+                                )}
+                            </InputCodeTextContainer>
+
+                            <MoreInformationsContainer>
+                                <MoreInformationsTitle>
+                                    {
+                                        strings.View_AddProduct_MoreInformation_Label
+                                    }
+                                </MoreInformationsTitle>
+
                                 <InputGroup>
                                     <InputTextContainer
-                                        hasError={nameFieldError}
+                                        style={{
+                                            flex: 5,
+                                            marginRight: 10,
+                                        }}
                                     >
                                         <InputText
                                             placeholder={
-                                                strings.View_AddProduct_InputPlacehoder_Name
+                                                strings.View_AddProduct_InputPlacehoder_Batch
                                             }
                                             accessibilityLabel={
-                                                strings.View_AddProduct_InputAccessibility_Name
+                                                strings.View_AddProduct_InputAccessibility_Batch
                                             }
-                                            value={name}
-                                            onChangeText={value => {
-                                                setName(value);
-                                                setNameFieldError(false);
+                                            value={batch}
+                                            onChangeText={value =>
+                                                setBatch(value)
+                                            }
+                                            onFocus={() => {
+                                                setIsBarCodeEnabled(false);
                                             }}
+                                        />
+                                    </InputTextContainer>
+                                    <InputTextContainer>
+                                        <InputText
+                                            style={{
+                                                flex: 4,
+                                            }}
+                                            placeholder={
+                                                strings.View_AddProduct_InputPlacehoder_Amount
+                                            }
+                                            accessibilityLabel={
+                                                strings.View_AddProduct_InputAccessibility_Amount
+                                            }
+                                            keyboardType="numeric"
+                                            value={String(amount)}
+                                            onChangeText={handleAmountChange}
                                             onFocus={() => {
                                                 setIsBarCodeEnabled(false);
                                             }}
                                         />
                                     </InputTextContainer>
                                 </InputGroup>
-                                {nameFieldError && (
-                                    <InputTextTip>
-                                        {
-                                            strings.View_AddProduct_AlertTypeProductName
-                                        }
-                                    </InputTextTip>
+
+                                <Currency
+                                    value={price}
+                                    onChangeValue={handlePriceChange}
+                                    delimiter={currency === 'BRL' ? ',' : '.'}
+                                    placeholder={
+                                        strings.View_AddProduct_InputPlacehoder_UnitPrice
+                                    }
+                                />
+
+                                <CategorySelect
+                                    categories={categories}
+                                    onChange={setSelectedCategory}
+                                    defaultValue={selectedCategory}
+                                    containerStyle={{
+                                        marginBottom: 10,
+                                    }}
+                                />
+
+                                <BrandSelect
+                                    brands={brands}
+                                    onChange={setSelectedBrand}
+                                    defaultValue={selectedBrand}
+                                    containerStyle={{
+                                        marginBottom: 10,
+                                    }}
+                                />
+                                {teamContext.roleInTeam?.role.toLowerCase() ===
+                                    'manager' && (
+                                    <StoreSelect
+                                        stores={stores}
+                                        defaultValue={selectedStore}
+                                        onChange={setSelectedStore}
+                                        containerStyle={{
+                                            marginBottom: 10,
+                                        }}
+                                    />
                                 )}
+                            </MoreInformationsContainer>
 
-                                <InputCodeTextContainer
-                                    hasError={codeFieldError}
-                                >
-                                    <InputCodeText
-                                        placeholder={
-                                            strings.View_AddProduct_InputPlacehoder_Code
-                                        }
-                                        accessibilityLabel={
-                                            strings.View_AddProduct_InputAccessibility_Code
-                                        }
-                                        value={code}
-                                        onChangeText={value => {
-                                            setCode(value);
-                                            setCodeFieldError(false);
-                                        }}
-                                    />
-                                    <InputTextIconContainer
-                                        onPress={handleEnableBarCodeReader}
-                                    >
-                                        <InputCodeTextIcon />
-                                    </InputTextIconContainer>
-                                </InputCodeTextContainer>
+                            <ExpDateGroup>
+                                <ExpDateLabel>
+                                    {strings.View_AddProduct_CalendarTitle}
+                                </ExpDateLabel>
 
-                                <MoreInformationsContainer>
-                                    <MoreInformationsTitle>
-                                        {
-                                            strings.View_AddProduct_MoreInformation_Label
-                                        }
-                                    </MoreInformationsTitle>
+                                <CustomDatePicker
+                                    accessibilityLabel={
+                                        strings.View_AddProduct_CalendarAccessibilityDescription
+                                    }
+                                    date={expDate}
+                                    onDateChange={value => {
+                                        setExpDate(value);
+                                    }}
+                                    locale={locale}
+                                />
+                            </ExpDateGroup>
+                        </InputContainer>
 
-                                    <InputGroup>
-                                        <InputTextContainer
-                                            style={{
-                                                flex: 5,
-                                                marginRight: 10,
-                                            }}
-                                        >
-                                            <InputText
-                                                placeholder={
-                                                    strings.View_AddProduct_InputPlacehoder_Batch
-                                                }
-                                                accessibilityLabel={
-                                                    strings.View_AddProduct_InputAccessibility_Batch
-                                                }
-                                                value={batch}
-                                                onChangeText={value =>
-                                                    setBatch(value)
-                                                }
-                                                onFocus={() => {
-                                                    setIsBarCodeEnabled(false);
-                                                }}
-                                            />
-                                        </InputTextContainer>
-                                        <InputTextContainer>
-                                            <InputText
-                                                style={{
-                                                    flex: 4,
-                                                }}
-                                                placeholder={
-                                                    strings.View_AddProduct_InputPlacehoder_Amount
-                                                }
-                                                accessibilityLabel={
-                                                    strings.View_AddProduct_InputAccessibility_Amount
-                                                }
-                                                keyboardType="numeric"
-                                                value={String(amount)}
-                                                onChangeText={
-                                                    handleAmountChange
-                                                }
-                                                onFocus={() => {
-                                                    setIsBarCodeEnabled(false);
-                                                }}
-                                            />
-                                        </InputTextContainer>
-                                    </InputGroup>
+                        <GenericButton
+                            text={strings.View_AddProduct_Button_Save}
+                            isLoading={isAdding}
+                            onPress={handleSave}
+                            contentStyle={{ marginBottom: 30 }}
+                        />
+                    </PageContent>
 
-                                    <Currency
-                                        value={price}
-                                        onChangeValue={handlePriceChange}
-                                        delimiter={
-                                            currency === 'BRL' ? ',' : '.'
-                                        }
-                                        placeholder={
-                                            strings.View_AddProduct_InputPlacehoder_UnitPrice
-                                        }
-                                    />
-
-                                    <CategorySelect
-                                        categories={categories}
-                                        onChange={setSelectedCategory}
-                                        defaultValue={selectedCategory}
-                                        containerStyle={{
-                                            marginBottom: 10,
-                                        }}
-                                    />
-
-                                    <BrandSelect
-                                        brands={brands}
-                                        onChange={setSelectedBrand}
-                                        defaultValue={selectedBrand}
-                                        containerStyle={{
-                                            marginBottom: 10,
-                                        }}
-                                    />
-                                    {teamContext.roleInTeam?.role.toLowerCase() ===
-                                        'manager' && (
-                                        <StoreSelect
-                                            stores={stores}
-                                            defaultValue={selectedStore}
-                                            onChange={setSelectedStore}
-                                            containerStyle={{
-                                                marginBottom: 10,
-                                            }}
-                                        />
-                                    )}
-                                </MoreInformationsContainer>
-
-                                <ExpDateGroup>
-                                    <ExpDateLabel>
-                                        {strings.View_AddProduct_CalendarTitle}
-                                    </ExpDateLabel>
-
-                                    <CustomDatePicker
-                                        accessibilityLabel={
-                                            strings.View_AddProduct_CalendarAccessibilityDescription
-                                        }
-                                        date={expDate}
-                                        onDateChange={value => {
-                                            setExpDate(value);
-                                        }}
-                                        locale={locale}
-                                    />
-                                </ExpDateGroup>
-                            </InputContainer>
-
-                            <GenericButton
-                                text={strings.View_AddProduct_Button_Save}
-                                isLoading={isAdding}
-                                onPress={handleSave}
-                            />
-                        </PageContent>
-                    </ScrollView>
+                    <Dialog.Container
+                        visible={showProdFindedModal}
+                        onBackdropPress={handleSwitchFindModal}
+                    >
+                        <Dialog.Title>Completar infomações</Dialog.Title>
+                        <Dialog.Description>
+                            Este produto pode ser alguns informações completadas
+                            automáticamente, gostaria de completar?
+                        </Dialog.Description>
+                        <Dialog.Button
+                            label="Não completar"
+                            onPress={handleSwitchFindModal}
+                        />
+                        <Dialog.Button
+                            label="Completar informações"
+                            onPress={completeInfo}
+                        />
+                    </Dialog.Container>
                 </Container>
             )}
         </>

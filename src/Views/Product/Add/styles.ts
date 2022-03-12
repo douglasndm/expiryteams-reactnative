@@ -1,29 +1,17 @@
-import { Platform } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import DatePicker from 'react-native-date-picker';
 import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.ScrollView`
     flex: 1;
     flex-direction: column;
     background: ${({ theme }) => theme.colors.background};
 `;
 
-export const PageHeader = styled.View`
-    flex-direction: row;
-    margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
-`;
-
-export const PageTitle = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.text};
-`;
-
 export const PageContent = styled.View`
-    padding: 0 16px 16px 16px;
+    padding: 0 16px 0 16px;
 `;
 
 export const InputContainer = styled.View`
@@ -98,11 +86,17 @@ export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
         `}
 `;
 
+export const InputTextLoading = styled.ActivityIndicator.attrs(props => ({
+    size: 26,
+    color: props.theme.colors.text,
+}))`
+    margin-right: 7px;
+    margin-left: 7px;
+`;
+
 export const InputTextIconContainer = styled(RectButton)``;
 
-export const InputCodeTextIcon = styled(Ionicons).attrs(props => ({
-    name: 'barcode-outline',
-    size: 36,
+export const Icon = styled(Ionicons).attrs(props => ({
     color: props.theme.colors.text,
 }))``;
 
