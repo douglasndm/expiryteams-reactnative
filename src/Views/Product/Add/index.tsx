@@ -416,15 +416,22 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     <Icon name="barcode-outline" size={34} />
                                 </InputTextIconContainer>
 
-                                {isFindingProd && <InputTextLoading />}
+                                {teamContext.shareProducts && (
+                                    <>
+                                        {isFindingProd && <InputTextLoading />}
 
-                                {productFinded && (
-                                    <InputTextIconContainer
-                                        style={{ marginTop: -5 }}
-                                        onPress={handleSwitchFindModal}
-                                    >
-                                        <Icon name="download" size={30} />
-                                    </InputTextIconContainer>
+                                        {productFinded && !isFindingProd && (
+                                            <InputTextIconContainer
+                                                style={{ marginTop: -5 }}
+                                                onPress={handleSwitchFindModal}
+                                            >
+                                                <Icon
+                                                    name="download"
+                                                    size={30}
+                                                />
+                                            </InputTextIconContainer>
+                                        )}
+                                    </>
                                 )}
                             </InputCodeTextContainer>
 
@@ -548,19 +555,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         visible={showProdFindedModal}
                         onBackdropPress={handleSwitchFindModal}
                     >
-                        <Dialog.Title>Completar infomações</Dialog.Title>
+                        <Dialog.Title>Completar infomações?</Dialog.Title>
                         <Dialog.Description>
-                            Este produto pode ser alguns informações completadas
-                            automáticamente, gostaria de completar?
+                            Este produto pode ser algumas informações
+                            completadas automáticamente, gostaria de completar
+                            as informações?
                         </Dialog.Description>
                         <Dialog.Button
-                            label="Não completar"
+                            label="Não"
                             onPress={handleSwitchFindModal}
                         />
-                        <Dialog.Button
-                            label="Completar informações"
-                            onPress={completeInfo}
-                        />
+                        <Dialog.Button label="Sim" onPress={completeInfo} />
                     </Dialog.Container>
                 </Container>
             )}
