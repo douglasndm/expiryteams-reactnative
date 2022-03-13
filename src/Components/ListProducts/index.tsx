@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { View, FlatList, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
@@ -50,7 +51,7 @@ const ListProducts: React.FC<RequestProps> = ({
     sortProdsByBatchExpDate,
     listRef,
 }: RequestProps) => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const teamContext = useTeam();
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '~/Locales';
 
@@ -7,15 +8,15 @@ import { Float, Icons } from './styles';
 
 interface Props {
     navigateTo: 'AddProduct' | 'AddBatch';
-    productId?: number; // if is add batch
+    productId?: string; // if is add batch
 }
 
 const FloatButton: React.FC<Props> = ({ navigateTo, productId }: Props) => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const handleNavigate = useCallback(() => {
         if (navigateTo === 'AddProduct') {
-            navigate('AddProduct');
+            navigate('AddProduct', {});
         } else if (navigateTo === 'AddBatch' && !!productId) {
             navigate('AddBatch', { productId });
         }
