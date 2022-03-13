@@ -15,7 +15,7 @@ import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import BarCodeReader from '~/Components/BarCodeReader';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
@@ -25,7 +25,6 @@ import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
 import {
     Container,
-    PageTitle,
     PageContent,
     InputGroup,
     InputContainer,
@@ -33,7 +32,6 @@ import {
     InputText,
     InputTextTip,
     InputCodeTextContainer,
-    InputCodeTextIcon,
     InputCodeText,
     InputTextIconContainer,
     MoreInformationsContainer,
@@ -41,7 +39,6 @@ import {
 } from '../Add/styles';
 
 import {
-    PageHeader,
     ButtonPaper,
     Icons,
     ActionsButtonContainer,
@@ -57,7 +54,7 @@ interface RequestParams {
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
-    const { reset, goBack, replace } = useNavigation<
+    const { reset, replace } = useNavigation<
         StackNavigationProp<RoutesParams>
     >();
 
@@ -285,13 +282,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             ) : (
                 <Container>
                     <StatusBar />
-                    <PageHeader>
-                        <PageTitleContainer>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {strings.View_EditProduct_PageTitle}
-                            </PageTitle>
-                        </PageTitleContainer>
+                    <PageTitleContainer>
+                        <Header
+                            title={strings.View_EditProduct_PageTitle}
+                            noDrawer
+                        />
 
                         <ActionsButtonContainer>
                             <ButtonPaper
@@ -319,7 +314,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 </ButtonPaper>
                             )}
                         </ActionsButtonContainer>
-                    </PageHeader>
+                    </PageTitleContainer>
 
                     <PageContent>
                         <InputContainer>
@@ -362,7 +357,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 <InputTextIconContainer
                                     onPress={handleEnableBarCodeReader}
                                 >
-                                    <InputCodeTextIcon />
+                                    <Icons name="barcode-outline" size={34} />
                                 </InputTextIconContainer>
                             </InputCodeTextContainer>
 

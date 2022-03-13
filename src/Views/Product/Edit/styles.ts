@@ -8,16 +8,10 @@ interface IProductStatus {
     expiredOrNext?: boolean;
 }
 
-export const PageHeader = styled.View`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 5px 0 5px;
-`;
-
 export const PageTitleContainer = styled.View`
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 `;
 
 export const ButtonPaper = styled(Button).attrs(props => ({
