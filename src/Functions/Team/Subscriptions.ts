@@ -15,7 +15,7 @@ async function setup() {
     const selectedTeam = await getSelectedTeam();
 
     if (selectedTeam) {
-        await Purchases.logIn(selectedTeam.team.id);
+        await Purchases.logIn(selectedTeam.userRole.team.id);
     }
 }
 

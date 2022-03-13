@@ -16,7 +16,7 @@ export async function getCategory({
     }
 
     const response = await api.get<Array<ICategory>>(
-        `/categories/team/${selectedTeam.team.id}`
+        `/categories/team/${selectedTeam.userRole.team.id}`
     );
 
     const cat = response.data.find(c => c.id === category_id);

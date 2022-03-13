@@ -50,7 +50,7 @@ const Home: React.FC = () => {
             }
 
             const productsResponse = await getAllProducts({
-                team_id: selectedTeam.team.id,
+                team_id: selectedTeam.userRole.team.id,
             });
 
             setProducts(productsResponse);

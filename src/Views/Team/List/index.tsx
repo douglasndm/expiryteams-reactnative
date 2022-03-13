@@ -10,6 +10,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
+import { getTeamPreferences } from '~/Functions/Team/Preferences';
 
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
@@ -69,7 +70,14 @@ const List: React.FC = () => {
             }
 
             if (userRoles.team) {
-                await setSelectedTeam(userRoles);
+                const teamPreferences = await getTeamPreferences({
+                    team_id: userRoles.team.id,
+                });
+
+                await setSelectedTeam({
+                    userRole: userRoles,
+                    teamPreferences,
+                });
 
                 if (teamContext.reload) {
                     teamContext.reload();

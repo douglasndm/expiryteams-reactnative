@@ -9,6 +9,10 @@ import {
     getTeamPreferences,
     updateTeamPreferences,
 } from '~/Functions/Team/Preferences';
+import {
+    getSelectedTeam,
+    setSelectedTeam,
+} from '~/Functions/Team/SelectedTeam';
 
 import { Section, SectionTitle, SubscriptionDescription } from '../../styles';
 
@@ -37,8 +41,9 @@ const Advenced: React.FC = () => {
                 team_id: teamContext.id,
             });
 
-            if (prefes.allowCollectProduct)
+            if (prefes.allowCollectProduct) {
                 setAllowProduct(prefes.allowCollectProduct);
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -63,8 +68,23 @@ const Advenced: React.FC = () => {
                     },
                 });
 
-                if (response.allowCollectProduct)
+                if (response.allowCollectProduct !== undefined) {
                     setAllowProduct(response.allowCollectProduct);
+
+                    const selectedTeam = await getSelectedTeam();
+
+                    if (selectedTeam)
+                        await setSelectedTeam({
+                            userRole: selectedTeam.userRole,
+                            teamPreferences: {
+                                ...selectedTeam.teamPreferences,
+                                allowCollectProduct:
+                                    response.allowCollectProduct,
+                            },
+                        });
+
+                    if (teamContext.reload) teamContext.reload();
+                }
             } catch (err) {
                 if (err instanceof Error) {
                     showMessage({
@@ -76,7 +96,7 @@ const Advenced: React.FC = () => {
                 setIsLoading(false);
             }
         },
-        [teamContext.id]
+        [teamContext]
     );
 
     const handleSwitchAllowProd = useCallback(async () => {

@@ -13,7 +13,10 @@ import {
     CatPackage,
     getTeamSubscriptions,
 } from '~/Functions/Team/Subscriptions';
-import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
+import {
+    getSelectedTeam,
+    setSelectedTeam,
+} from '~/Functions/Team/SelectedTeam';
 
 import Loading from '~/Components/Loading';
 
@@ -72,7 +75,7 @@ const SubscriptionsList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [teamContext.id]);
+    }, [isMounted, teamContext.id]);
 
     const handleSelectedChange = useCallback((identifier: string) => {
         setSelected(identifier);
@@ -109,19 +112,23 @@ const SubscriptionsList: React.FC = () => {
                     type: 'info',
                 });
 
-                await setSelectedTeam({
-                    role: teamContext.roleInTeam.role,
-                    status: teamContext.roleInTeam.status,
-                    team: {
-                        isActive: true,
-                        id: teamContext.id,
-                        name: teamContext.name || '',
-                        subscription: {
-                            expireIn: purchase.expireIn,
-                            membersLimit: purchase.membersLimit,
+                const selectedTeam = await getSelectedTeam();
+
+                if (selectedTeam)
+                    await setSelectedTeam({
+                        userRole: {
+                            ...selectedTeam.userRole,
+                            team: {
+                                ...selectedTeam.userRole.team,
+                                isActive: true,
+                                subscription: {
+                                    expireIn: purchase.expireIn,
+                                    membersLimit: purchase.membersLimit,
+                                },
+                            },
                         },
-                    },
-                });
+                        teamPreferences: selectedTeam.teamPreferences,
+                    });
 
                 teamContext.reload();
 
