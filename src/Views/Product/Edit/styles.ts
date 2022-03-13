@@ -1,17 +1,18 @@
 import styled from 'styled-components/native';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import { Button } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-interface IProductStatus {
-    expired?: boolean;
-    nextToExp?: boolean;
-    expiredOrNext?: boolean;
-}
+import { css } from 'styled-components';
 
 export const PageTitleContainer = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    ${isIphoneX() &&
+    css`
+        margin-top: 35px;
+    `}
 `;
 
 export const ButtonPaper = styled(Button).attrs(props => ({
