@@ -51,9 +51,9 @@ const App: React.FC = () => {
 
         setPreferences(prefs);
 
-        SplashScreen.hide();
-
         setIsLoading(false);
+
+        SplashScreen.hide();
     }, []);
 
     const handleOnScreenChange = useCallback(
