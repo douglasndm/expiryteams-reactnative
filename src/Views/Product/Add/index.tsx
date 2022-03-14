@@ -231,6 +231,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             } finally {
                 setIsFindingProd(false);
             }
+        } else {
+            setProductFinded(false);
         }
     }, [code]);
 
