@@ -206,35 +206,41 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         }
     }, [productNameFinded]);
 
-    const findProductByEAN = useCallback(async () => {
-        if (code !== '') {
-            try {
-                setIsFindingProd(true);
-                const response = await findProductByCode(code);
+    const findProductByEAN = useCallback(async (ean_code: string) => {
+        if (ean_code.length < 8) return;
 
-                if (response !== null) {
-                    setProductFinded(true);
+        if (ean_code !== '') {
+            if (getLocales()[0].languageCode === 'pt') {
+                try {
+                    setIsFindingProd(true);
+                    const response = await findProductByCode(ean_code);
 
-                    setProductNameFinded(response.name);
-                } else {
-                    setProductFinded(false);
+                    if (response !== null) {
+                        setProductFinded(true);
 
-                    setProductNameFinded(null);
+                        setProductNameFinded(response.name);
+                    } else {
+                        setProductFinded(false);
+
+                        setProductNameFinded(null);
+                    }
+                } finally {
+                    setIsFindingProd(false);
                 }
-            } catch (err) {
-                if (err instanceof Error) {
-                    showMessage({
-                        message: err.message,
-                        type: 'danger',
-                    });
-                }
-            } finally {
-                setIsFindingProd(false);
             }
         } else {
             setProductFinded(false);
         }
-    }, [code]);
+    }, []);
+
+    const handleCodeBlur = useCallback(
+        (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+            if (code) {
+                findProductByEAN(code);
+            }
+        },
+        [code, findProductByEAN]
+    );
 
     useEffect(() => {
         loadData();
@@ -332,10 +338,14 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         setIsBarCodeEnabled(false);
     }, []);
 
-    const handleOnCodeRead = useCallback(async (codeRead: string) => {
-        setCode(codeRead);
-        setIsBarCodeEnabled(false);
-    }, []);
+    const handleOnCodeRead = useCallback(
+        async (codeRead: string) => {
+            setCode(codeRead);
+            setIsBarCodeEnabled(false);
+            await findProductByEAN(codeRead);
+        },
+        [findProductByEAN]
+    );
 
     const handlePriceChange = useCallback((value: number) => {
         if (value <= 0) {
@@ -406,7 +416,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                         strings.View_AddProduct_InputAccessibility_Code
                                     }
                                     value={code}
-                                    onBlur={findProductByEAN}
+                                    onBlur={handleCodeBlur}
                                     onChangeText={value => {
                                         setCode(value);
                                         setCodeFieldError(false);
