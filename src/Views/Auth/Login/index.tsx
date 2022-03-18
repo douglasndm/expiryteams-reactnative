@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
@@ -29,7 +30,9 @@ import {
 } from './styles';
 
 const Login: React.FC = () => {
-    const { navigate, reset } = useNavigation();
+    const { navigate, reset } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
     const { initializing } = useAuth();
 
     const [email, setEmail] = useState<string>('');
@@ -140,6 +143,14 @@ const Login: React.FC = () => {
             const user = auth().currentUser;
 
             if (user) {
+                if (!user.emailVerified) {
+                    navigate('Routes', {
+                        state: {
+                            routes: [{ name: 'VerifyEmail' }],
+                        },
+                    });
+                    return;
+                }
                 reset({
                     routes: [
                         {
@@ -160,7 +171,7 @@ const Login: React.FC = () => {
         }
 
         return () => setIsMounted(false);
-    }, [isMounted, reset]);
+    }, [isMounted, navigate, reset]);
 
     return isLoading ? (
         <Loading />

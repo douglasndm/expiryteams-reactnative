@@ -218,7 +218,7 @@
     "View_TeamList_InvalidTeamCode": "Invalid code",
     "View_TeamList_SuccessCode": "Welcome to the team",
     "View_TeamList_Button_CreateTeam": "Create team",
-    "View_TeamList_Button_Logout": "Logout",
+    "View_TeamList_Button_Settings": "Settings",
 
     "View_CreateTeam_PageTitle": "New team",
     "View_CreateTeam_InputText_Name_Placeholder": "Team's name",

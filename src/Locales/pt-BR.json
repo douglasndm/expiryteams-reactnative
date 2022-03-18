@@ -215,7 +215,7 @@
     "View_TeamList_InvalidTeamCode": "Código inválido",
     "View_TeamList_SuccessCode": "Bem vindo ao time",
     "View_TeamList_Button_CreateTeam": "Criar um time",
-    "View_TeamList_Button_Logout": "Sair da conta",
+    "View_TeamList_Button_Settings": "Configurações",
 
     "View_CreateTeam_PageTitle": "Novo time",
     "View_CreateTeam_InputText_Name_Placeholder": "Nome do time",

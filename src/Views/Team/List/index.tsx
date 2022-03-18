@@ -198,8 +198,8 @@ const List: React.FC = () => {
         navigate('CreateTeam');
     }, [navigate]);
 
-    const handleLogout = useCallback(() => {
-        navigate('Logout');
+    const handleSettings = useCallback(() => {
+        navigate('Settings');
     }, [navigate]);
 
     useEffect(() => {
@@ -245,8 +245,8 @@ const List: React.FC = () => {
                 )}
 
                 <Button
-                    text={strings.View_TeamList_Button_Logout}
-                    onPress={handleLogout}
+                    text={strings.View_TeamList_Button_Settings}
+                    onPress={handleSettings}
                     contentStyle={{ width: 150 }}
                 />
             </Footer>

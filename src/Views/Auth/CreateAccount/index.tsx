@@ -1,11 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
 import { createAccount } from '~/Functions/Auth/Account';
+import { createSeassion } from '~/Functions/Auth/Session';
 
 import Header from '~/Components/Header';
 import Input from '~/Components/InputText';
@@ -15,7 +17,9 @@ import { FormContainer } from '../Login/styles';
 import { Container } from './styles';
 
 const CreateAccount: React.FC = () => {
-    const { reset } = useNavigation();
+    const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const [isMounted, setIsMounted] = useState(true);
 
     const [name, setName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -46,6 +50,7 @@ const CreateAccount: React.FC = () => {
     );
 
     const handleCreateAccount = useCallback(async () => {
+        if (!isMounted) return;
         const schema = Yup.object().shape({
             name: Yup.string().required(
                 strings.View_CreateAccount_Alert_Error_EmptyName
@@ -92,13 +97,16 @@ const CreateAccount: React.FC = () => {
                 passwordConfirm,
             });
 
+            // Here we register the user device
+            await createSeassion();
+
             showMessage({
                 message: strings.View_CreateAccount_Alert_Success_Title,
                 description: strings.View_CreateAccount_Alert_Success_Message,
                 type: 'info',
             });
 
-            reset({ routes: [{ name: 'Login' }] });
+            pop();
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -108,7 +116,13 @@ const CreateAccount: React.FC = () => {
         } finally {
             setIsCreating(false);
         }
-    }, [email, lastName, name, password, passwordConfirm, reset]);
+    }, [email, isMounted, lastName, name, password, passwordConfirm, pop]);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
+    }, []);
 
     return (
         <Container>
