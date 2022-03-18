@@ -210,24 +210,24 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         if (ean_code.length < 8) return;
 
         if (ean_code !== '') {
-            if (getLocales()[0].languageCode === 'pt') {
-                try {
-                    setIsFindingProd(true);
-                    const response = await findProductByCode(ean_code);
+            // if (getLocales()[0].languageCode === 'pt') {
+            try {
+                setIsFindingProd(true);
+                const response = await findProductByCode(ean_code);
 
-                    if (response !== null) {
-                        setProductFinded(true);
+                if (response !== null) {
+                    setProductFinded(true);
 
-                        setProductNameFinded(response.name);
-                    } else {
-                        setProductFinded(false);
+                    setProductNameFinded(response.name);
+                } else {
+                    setProductFinded(false);
 
-                        setProductNameFinded(null);
-                    }
-                } finally {
-                    setIsFindingProd(false);
+                    setProductNameFinded(null);
                 }
+            } finally {
+                setIsFindingProd(false);
             }
+            // }
         } else {
             setProductFinded(false);
         }
