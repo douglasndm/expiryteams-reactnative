@@ -135,7 +135,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         <Container>
             <StatusBar />
             <ScrollView>
-                <Header title={strings.View_AddBatch_PageTitle} />
+                <Header title={strings.View_AddBatch_PageTitle} noDrawer />
 
                 <PageContent>
                     <InputContainer>

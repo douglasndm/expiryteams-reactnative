@@ -1,18 +1,17 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
 import { enterTeamCode } from '~/Functions/Team/Users';
 
-import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
+import Header from '~/Components/Header';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     InviteText,
     CodeContaider,
     InputContainer,
@@ -22,7 +21,7 @@ import {
 } from './styles';
 
 const EnterTeam: React.FC = () => {
-    const { goBack, reset } = useNavigation();
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
     const { params } = useRoute<RouteProp<RoutesParams, 'EnterTeam'>>();
 
     const [isMounted, setIsMounted] = useState(true);
@@ -68,10 +67,11 @@ const EnterTeam: React.FC = () => {
                 routes: [{ name: 'TeamList' }],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsAddingCode(false);
         }
@@ -83,10 +83,7 @@ const EnterTeam: React.FC = () => {
 
     return (
         <Container>
-            <PageHeader>
-                <BackButton handleOnPress={goBack} />
-                <PageTitle>Entrar no time</PageTitle>
-            </PageHeader>
+            <Header title="Entrar no time" noDrawer />
 
             {!!userRole.team.name && (
                 <InviteText>
