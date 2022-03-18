@@ -128,11 +128,15 @@ const List: React.FC = () => {
                 });
                 setTeams(sortedTeams);
 
-                if (
-                    sortedTeams.length > 0 &&
-                    sortedTeams[0].status.toLowerCase() !== 'pending'
-                ) {
-                    handleSelectTeam(sortedTeams[0]);
+                if (sortedTeams.length > 0) {
+                    if (sortedTeams[0].role.toLowerCase() === 'manager') {
+                        handleSelectTeam(sortedTeams[0]);
+                    } else if (
+                        !!sortedTeams[0].status &&
+                        sortedTeams[0].status.toLowerCase() !== 'pending'
+                    ) {
+                        handleSelectTeam(sortedTeams[0]);
+                    }
                 }
             } catch (err) {
                 if (err instanceof Error) {
