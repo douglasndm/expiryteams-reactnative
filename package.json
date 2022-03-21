@@ -8,7 +8,9 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "codepush:ios": "appcenter CodePush release-react -a DouglasNunesdeMattos/Expiry-Checker-Business-iOS -d Production --plist-file \"./ios/expirybusiness/Base.lproj/Info.plist\"",
+    "codepush:android": "appcenter CodePush release-react -a DouglasNunesdeMattos/Expiry-Checker-Business-Android -d Production"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.8",
