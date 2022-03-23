@@ -1,8 +1,6 @@
 import styled from 'styled-components/native';
 import { DataTable } from 'react-native-paper';
 
-export const Container = styled.View``;
-
 export const SubscriptionDescription = styled.Text`
     margin-top: 10px;
     color: ${props => props.theme.colors.text};

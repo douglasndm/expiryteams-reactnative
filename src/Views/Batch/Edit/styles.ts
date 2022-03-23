@@ -7,8 +7,6 @@ export const Container = styled.SafeAreaView`
     flex: 1;
 `;
 
-export const LoadingText = styled.Text``;
-
 export const PageTitleContainer = styled.View`
     flex-direction: row;
     align-items: center;

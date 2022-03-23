@@ -2,22 +2,6 @@ import auth, { firebase } from '@react-native-firebase/auth';
 
 import api from '~/Services/API';
 
-interface IResponse {
-    id: string;
-    name: string;
-    lastName: string;
-    email: string;
-}
-
-export async function getUser(): Promise<IResponse | null> {
-    const response = await api.get<IResponse>(`/users`);
-
-    if (response) {
-        return response.data;
-    }
-    return null;
-}
-
 interface deleteUserProps {
     password: string;
 }

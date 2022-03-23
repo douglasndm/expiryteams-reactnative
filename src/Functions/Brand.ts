@@ -50,5 +50,3 @@ export async function deleteBrand({
 }: deleteBrandProps): Promise<void> {
     await api.delete(`/brand/${brand_id}`);
 }
-
-export async function saveManyBrands(brands: Array<IBrand>): Promise<void> {}
