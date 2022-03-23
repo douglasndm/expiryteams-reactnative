@@ -441,9 +441,9 @@ PODS:
     - React-Core
   - react-native-camera/RN (3.42.0):
     - React-Core
-  - react-native-config (1.4.2):
-    - react-native-config/App (= 1.4.2)
-  - react-native-config/App (1.4.2):
+  - react-native-config (1.4.5):
+    - react-native-config/App (= 1.4.5)
+  - react-native-config/App (1.4.5):
     - React-Core
   - react-native-date-picker (4.1.1):
     - React-Core
@@ -959,7 +959,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 595f76eba2176ebd8817a1fffd47b84fbdab9383
   React-logger: 23de8ea0f44fa00ee77e96060273225607fd4d78
   react-native-camera: cf8a153d33138dcc457172fc3c33fdf4e5d288d2
-  react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
+  react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-date-picker: 414fe8f73392bae030dc4efec39d743b5c5de283
   react-native-document-picker: bf12b9ca87790f9b723106ffde0eff239928e515
   react-native-in-app-review: 2b0126af72d8c0056a8c6e8d653782817bf4d7ab
