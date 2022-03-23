@@ -107,21 +107,6 @@ export const ListCategories = styled.FlatList`
     margin: 0 10px;
 `;
 
-export const CategoryItemContainer = styled(RectButton)`
-    background-color: ${props => props.theme.colors.inputBackground};
-    padding: 20px;
-    margin-bottom: 10px;
-    border-radius: 12px;
-
-    flex-direction: row;
-    justify-content: space-between;
-`;
-
-export const CategoryItemTitle = styled.Text`
-    color: ${props => props.theme.colors.text};
-    font-size: 18px;
-`;
-
 export const Icons = styled(Ionicons).attrs(() => ({
     size: 22,
     color: '#fff',

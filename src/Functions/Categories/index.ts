@@ -1,6 +1,16 @@
-import api from '../../Services/API';
+import api from '~/Services/API';
 
 import { getSelectedTeam } from '../Team/SelectedTeam';
+
+export async function getAllCategoriesFromTeam({
+    team_id,
+}: getAllCategoriesProps): Promise<Array<ICategory>> {
+    const response = await api.get<Array<ICategory>>(
+        `/team/${team_id}/categories`
+    );
+
+    return response.data;
+}
 
 interface getCategoryProps {
     category_id: string;
@@ -15,11 +25,11 @@ export async function getCategory({
         throw new Error('Team is not selected');
     }
 
-    const response = await api.get<Array<ICategory>>(
-        `/categories/team/${selectedTeam.team.id}`
-    );
+    const categories = await getAllCategoriesFromTeam({
+        team_id: selectedTeam.userRole.team.id,
+    });
 
-    const cat = response.data.find(c => c.id === category_id);
+    const cat = categories.find(c => c.id === category_id);
 
     if (!cat) {
         throw new Error('Category not found');
@@ -32,16 +42,6 @@ interface getAllCategoriesProps {
     team_id: string;
 }
 
-export async function getAllCategoriesFromTeam({
-    team_id,
-}: getAllCategoriesProps): Promise<Array<ICategory>> {
-    const response = await api.get<Array<ICategory>>(
-        `/categories/team/${team_id}`
-    );
-
-    return response.data;
-}
-
 interface createCategoryProps {
     name: string;
     team_id: string;
@@ -51,9 +51,8 @@ export async function createCategory({
     name,
     team_id,
 }: createCategoryProps): Promise<ICategory> {
-    const response = await api.post<ICategory>(`/categories`, {
+    const response = await api.post<ICategory>(`/team/${team_id}/categories`, {
         name,
-        team_id,
     });
 
     return response.data;
@@ -65,9 +64,17 @@ interface updateCategoryProps {
 export async function updateCategory({
     category,
 }: updateCategoryProps): Promise<ICategory> {
-    const response = await api.put<ICategory>(`/categories/${category.id}`, {
-        name: category.name,
-    });
+    const selectedTeam = await getSelectedTeam();
+
+    if (!selectedTeam) {
+        throw new Error('Team is not selected');
+    }
+    const response = await api.put<ICategory>(
+        `/team/${selectedTeam.userRole.team.id}/categories/${category.id}`,
+        {
+            name: category.name,
+        }
+    );
 
     return response.data;
 }
@@ -79,5 +86,12 @@ interface deleteCategoryProps {
 export async function deleteCategory({
     category_id,
 }: deleteCategoryProps): Promise<void> {
-    await api.delete(`/categories/${category_id}`);
+    const selectedTeam = await getSelectedTeam();
+
+    if (!selectedTeam) {
+        throw new Error('Team is not selected');
+    }
+    await api.delete(
+        `/team/${selectedTeam.userRole.team.id}/categories/${category_id}`
+    );
 }

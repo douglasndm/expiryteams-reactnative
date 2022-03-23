@@ -5,6 +5,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { useTeam } from '~/Contexts/TeamContext';
+
 import { exportToExcel } from '~/Functions/Excel';
 
 import { getAllProductsByBrand } from '~/Functions/Brand';
@@ -37,6 +39,8 @@ const View: React.FC = () => {
     const { params } = useRoute();
     const { navigate } = useNavigation();
 
+    const teamContext = useTeam();
+
     const routeParams = params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -46,10 +50,14 @@ const View: React.FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
 
     const loadData = useCallback(async () => {
+        if (!teamContext.id) return;
         try {
             setIsLoading(true);
 
-            const prods = await getAllProductsByBrand(routeParams.brand_id);
+            const prods = await getAllProductsByBrand({
+                team_id: teamContext.id,
+                brand_id: routeParams.brand_id,
+            });
 
             setProducts(prods);
         } catch (err) {
@@ -61,7 +69,7 @@ const View: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [routeParams.brand_id]);
+    }, [routeParams.brand_id, teamContext.id]);
 
     const handleEdit = useCallback(() => {
         navigate('BrandEdit', { brand_id: routeParams.brand_id });
@@ -126,7 +134,11 @@ const View: React.FC = () => {
                 </ActionsContainer>
             </TitleContainer>
 
-            <ListProducts products={products} deactiveFloatButton />
+            <ListProducts
+                products={products}
+                deactiveFloatButton
+                onRefresh={loadData}
+            />
 
             <FloatButton
                 icon={() => (

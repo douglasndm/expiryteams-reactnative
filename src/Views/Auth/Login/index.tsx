@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
@@ -9,10 +10,6 @@ import strings from '~/Locales';
 import { useAuth } from '~/Contexts/AuthContext';
 
 import { login } from '~/Functions/Auth';
-import { getUserTeams } from '~/Functions/Team/Users';
-import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
-
-import { reset } from '~/References/Navigation';
 
 import Loading from '~/Components/Loading';
 import Input from '~/Components/InputText';
@@ -33,7 +30,9 @@ import {
 } from './styles';
 
 const Login: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate, reset } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
     const { initializing } = useAuth();
 
     const [email, setEmail] = useState<string>('');
@@ -43,38 +42,6 @@ const Login: React.FC = () => {
     const [isLoging, setIsLoging] = useState<boolean>(false);
 
     const [isMounted, setIsMounted] = useState(true);
-
-    const handleSelectedTeam = useCallback(async () => {
-        try {
-            const user = auth().currentUser;
-
-            if (user) {
-                const userTeams = await getUserTeams();
-                const currentSelectedTeam = await getSelectedTeam();
-
-                const team = userTeams.find(
-                    t => t.team.id === currentSelectedTeam?.team.id
-                );
-
-                if (team && team.team.active) {
-                    reset({
-                        routesNames: ['Home'],
-                    });
-                } else {
-                    reset({
-                        routesNames: ['TeamList'],
-                    });
-                }
-            }
-        } catch (err) {
-            if (err instanceof Error) {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-            }
-        }
-    }, []);
 
     const handleLogin = useCallback(async () => {
         const schema = Yup.object().shape({
@@ -99,12 +66,38 @@ const Login: React.FC = () => {
 
             if (user && !user.emailVerified) {
                 reset({
-                    routesNames: ['VerifyEmail'],
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'VerifyEmail',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
                 });
+
                 return;
             }
-
-            await handleSelectedTeam();
+            if (user) {
+                reset({
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'TeamList',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                });
+            }
         } catch (err) {
             if (err instanceof Error) {
                 let error = err.message;
@@ -127,7 +120,7 @@ const Login: React.FC = () => {
         } finally {
             setIsLoging(false);
         }
-    }, [email, handleSelectedTeam, password]);
+    }, [email, password, reset]);
 
     const handleEmailChange = useCallback(
         (value: string) => setEmail(value.trim()),
@@ -144,22 +137,41 @@ const Login: React.FC = () => {
     }, [navigate]);
 
     useEffect(() => {
-        if (isMounted)
-            if (auth().currentUser) {
-                try {
-                    setIsLoading(false);
-                    handleSelectedTeam();
-                } finally {
-                    setIsLoading(false);
-                }
-            } else {
-                setIsLoading(false);
-            }
+        try {
+            setIsLoading(true);
 
-        return () => {
-            setIsMounted(false);
-        };
-    }, [handleSelectedTeam, isMounted]);
+            const user = auth().currentUser;
+
+            if (user) {
+                if (!user.emailVerified) {
+                    navigate('Routes', {
+                        state: {
+                            routes: [{ name: 'VerifyEmail' }],
+                        },
+                    });
+                    return;
+                }
+                reset({
+                    routes: [
+                        {
+                            name: 'Routes',
+                            state: {
+                                routes: [
+                                    {
+                                        name: 'TeamList',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                });
+            }
+        } finally {
+            setIsLoading(false);
+        }
+
+        return () => setIsMounted(false);
+    }, [isMounted, navigate, reset]);
 
     return isLoading ? (
         <Loading />

@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
@@ -13,10 +14,9 @@ import {
     deleteCategory,
 } from '~/Functions/Categories';
 
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
 
-import { PageHeader, PageTitle } from '~/Views/Product/Add/styles';
 import {
     ActionsButtonContainer,
     ButtonPaper,
@@ -37,7 +37,7 @@ interface Props {
 }
 const Edit: React.FC = () => {
     const { params } = useRoute();
-    const { reset, goBack } = useNavigation();
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const teamContext = useTeam();
 
@@ -52,6 +52,7 @@ const Edit: React.FC = () => {
     const [errorName, setErrorName] = useState<string>('');
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isMounted, setIsMounted] = useState(true);
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const routeParams = params as Props;
@@ -70,30 +71,33 @@ const Edit: React.FC = () => {
                 ],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
     }, [routeParams.id, reset]);
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         try {
             setIsLoading(true);
             const category = await getCategory({ category_id: routeParams.id });
 
             setName(category.name);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
-    }, [routeParams.id]);
+    }, [isMounted, routeParams.id]);
 
     useEffect(() => {
         loadData();
@@ -105,6 +109,7 @@ const Edit: React.FC = () => {
     }, []);
 
     const handleUpdate = useCallback(async () => {
+        if (!isMounted) return;
         if (!name) {
             setErrorName(strings.View_Category_Edit_ErrorEmtpyName);
             return;
@@ -134,30 +139,30 @@ const Edit: React.FC = () => {
                 ],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
-    }, [routeParams.id, name, reset]);
+    }, [isMounted, name, routeParams.id, reset]);
 
     const handleSwitchShowDeleteCategory = useCallback(() => {
         setDeleteComponentVisible(!deleteComponentVisible);
     }, [deleteComponentVisible]);
 
+    useEffect(() => {
+        return setIsMounted(false);
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
         <Container>
-            <PageHeader>
-                <PageTitleContainer>
-                    <BackButton handleOnPress={goBack} />
-                    <PageTitle>
-                        {strings.View_Category_Edit_PageTitle}
-                    </PageTitle>
-                </PageTitleContainer>
+            <PageTitleContainer>
+                <Header title={strings.View_Category_Edit_PageTitle} noDrawer />
 
                 <ActionsButtonContainer>
                     <ButtonPaper
@@ -180,7 +185,7 @@ const Edit: React.FC = () => {
                         </ButtonPaper>
                     )}
                 </ActionsButtonContainer>
-            </PageHeader>
+            </PageTitleContainer>
 
             <Content>
                 <InputTextContainer hasError={!!errorName}>

@@ -2,13 +2,16 @@
  * @format
  */
 
-import { AppRegistry, LogBox } from 'react-native';
+import { AppRegistry, LogBox, Linking } from 'react-native';
+
 import messaging from '@react-native-firebase/messaging';
 import { showMessage } from 'react-native-flash-message';
 
 import { name as appName } from './app.json';
 import App from './src';
 import './src/Functions/OpenAppTimes';
+
+import Sentry from './src/Services/Sentry';
 
 LogBox.ignoreLogs(['EventEmitter.removeListener', 'new NativeEventEmitter()']);
 
@@ -20,14 +23,26 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
     );
 });
 
+messaging().onNotificationOpenedApp(async remoteMessage => {
+    if (remoteMessage.data.deeplinking) {
+        await Linking.openURL(remoteMessage.data.deeplinking);
+    }
+});
+
 messaging().onMessage(async remoteMessage => {
-    const { title, body } = remoteMessage.notification;
+    async function onOpen() {
+        if (remoteMessage.data.deeplinking) {
+            await Linking.openURL(remoteMessage.data.deeplinking);
+        }
+    }
 
     showMessage({
-        message: title,
-        description: body,
-        type: 'info',
+        message: remoteMessage.notification.title,
+        description: remoteMessage.notification.body,
+        onPress: onOpen,
     });
 });
 
-AppRegistry.registerComponent(appName, () => App);
+const sentry = Sentry.wrap(App);
+
+AppRegistry.registerComponent(appName, () => sentry);

@@ -47,9 +47,12 @@ const Edit: React.FC = () => {
             if (settedTeam) {
                 await setSelectedTeam({
                     ...settedTeam,
-                    team: {
-                        ...settedTeam.team,
-                        name,
+                    userRole: {
+                        ...settedTeam.userRole,
+                        team: {
+                            ...settedTeam.userRole.team,
+                            name,
+                        },
                     },
                 });
 

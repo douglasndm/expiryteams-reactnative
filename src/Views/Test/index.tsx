@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
-
 import messaging from '@react-native-firebase/messaging';
+import OneSignal from 'react-native-onesignal';
+
+import Sentry from '~/Services/Sentry';
 
 import Button from '../../Components/Button';
 
@@ -18,7 +20,15 @@ const Test: React.FC = () => {
     const handleToken = useCallback(async () => {
         const token = await auth().currentUser?.getIdTokenResult();
 
+        const oneSignal = await OneSignal.getDeviceState();
+
+        console.log(oneSignal);
+
         console.log(token?.token);
+    }, []);
+
+    const handleCrash = useCallback(() => {
+        Sentry.nativeCrash();
     }, []);
 
     return (
@@ -30,6 +40,8 @@ const Test: React.FC = () => {
                         onPress={handleMessaingToken}
                     />
                     <Button text="Log user token" onPress={handleToken} />
+
+                    <Button text="Native crash" onPress={handleCrash} />
                 </Category>
             </ScrollView>
         </Container>

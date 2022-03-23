@@ -15,21 +15,20 @@ export async function getProduct({
 interface createProductProps {
     team_id: string;
     product: Omit<IProduct, 'id' | 'categories'>;
-    categories: Array<string>;
+    category: string | undefined;
 }
 
 export async function createProduct({
     team_id,
     product,
-    categories,
+    category,
 }: createProductProps): Promise<IProduct> {
-    const response = await api.post<IProduct>(`/products`, {
-        team_id,
+    const response = await api.post<IProduct>(`/team/${team_id}/products`, {
         name: product.name,
         code: product.code,
-        brand: product.brand,
+        brand_id: product.brand,
         store_id: product.store,
-        categories,
+        category_id: category,
     });
 
     return response.data;

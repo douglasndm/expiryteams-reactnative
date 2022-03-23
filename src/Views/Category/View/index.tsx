@@ -54,10 +54,12 @@ const CategoryView: React.FC = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
 
     const loadData = useCallback(async () => {
+        if (!teamContext.id) return;
         try {
             setIsLoading(true);
 
             const prods = await getAllProductsFromCategory({
+                team_id: teamContext.id,
                 category_id: routeParams.category_id,
             });
 
@@ -70,7 +72,7 @@ const CategoryView: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [routeParams.category_id]);
+    }, [routeParams.category_id, teamContext.id]);
 
     const handleEdit = useCallback(() => {
         navigate('CategoryEdit', { id: routeParams.category_id });
@@ -148,6 +150,7 @@ const CategoryView: React.FC = () => {
                 deactiveFloatButton
                 removeProdsWithoutBatches
                 sortProdsByBatchExpDate
+                onRefresh={loadData}
             />
 
             <FloatButton

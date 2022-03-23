@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -21,7 +22,11 @@ import {
 } from './styles';
 
 const Add: React.FC = () => {
-    const { goBack, reset } = useNavigation();
+    const { goBack, reset } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
+
+    const [isMounted, setIsMounted] = useState(true);
 
     const [name, setName] = useState<string>('');
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
@@ -29,6 +34,7 @@ const Add: React.FC = () => {
     const [isCreating, setIsCreating] = useState<boolean>(false);
 
     const handleCreate = useCallback(async () => {
+        if (!isMounted) return;
         try {
             setIsCreating(true);
 
@@ -50,14 +56,21 @@ const Add: React.FC = () => {
                 routes: [{ name: 'TeamList' }],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsCreating(false);
         }
-    }, [name, reset]);
+    }, [isMounted, name, reset]);
+
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        };
+    }, []);
 
     return (
         <Container>

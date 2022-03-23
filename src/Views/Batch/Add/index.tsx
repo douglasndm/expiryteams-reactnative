@@ -8,7 +8,7 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 
 import { getProduct } from '~/Functions/Products/Product';
@@ -16,8 +16,6 @@ import { createBatch } from '~/Functions/Products/Batches/Batch';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     PageContent,
     InputContainer,
     InputTextContainer,
@@ -41,9 +39,7 @@ interface Props {
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
 
-    const { goBack, replace } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { replace } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -99,10 +95,11 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 id: productId,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsAdding(false);
         }
@@ -120,7 +117,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+    }, []);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
@@ -138,10 +135,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         <Container>
             <StatusBar />
             <ScrollView>
-                <PageHeader>
-                    <BackButton handleOnPress={goBack} />
-                    <PageTitle>{strings.View_AddBatch_PageTitle}</PageTitle>
-                </PageHeader>
+                <Header title={strings.View_AddBatch_PageTitle} noDrawer />
 
                 <PageContent>
                     <InputContainer>

@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 
@@ -61,23 +60,5 @@ PushNotification.createChannel(
         importance: 4, // (optional) default: 4. Int value of the Android notification importance
         vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
     },
-    (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+    created => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
 );
-
-export function sendNotification({
-    title,
-    message,
-    amount,
-}: INotification): void {
-    PushNotification.localNotification({
-        title,
-        message,
-        number: amount,
-        channelId: 'default-notifications',
-        color: 'red',
-        vibrate: true,
-        importance: 'high',
-        playSound: true,
-        soundName: Platform.OS === 'ios' ? 'swiftly-610.m4r' : 'sound.mp3',
-    });
-}

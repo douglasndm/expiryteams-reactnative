@@ -7,17 +7,6 @@ export const Container = styled.SafeAreaView`
     background-color: ${props => props.theme.colors.background};
 `;
 
-export const PageHeader = styled.View`
-    flex-direction: row;
-    margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
-`;
-
-export const PageTitle = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.text};
-`;
-
 export const InviteText = styled.Text`
     font-family: 'Open Sans';
     margin-left: 10px;

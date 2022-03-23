@@ -21,11 +21,7 @@ export async function setSetting({
     type,
     value,
 }: ISetSettingProps): Promise<void> {
-    try {
-        await AsyncStorage.setItem(type, value);
-    } catch (err) {
-        throw new Error(err);
-    }
+    await AsyncStorage.setItem(type, value);
 }
 
 export async function setHowManyDaysToBeNextExp(
@@ -56,17 +52,13 @@ export async function setNotificationCadency(
 async function getSetting({
     type,
 }: Omit<ISetSettingProps, 'value'>): Promise<string | undefined> {
-    try {
-        const setting = await AsyncStorage.getItem(type);
+    const setting = await AsyncStorage.getItem(type);
 
-        if (!setting) {
-            return undefined;
-        }
-
-        return setting;
-    } catch (err) {
-        throw new Error(err);
+    if (!setting) {
+        return undefined;
     }
+
+    return setting;
 }
 
 export async function getHowManyDaysToBeNextExp(): Promise<number> {

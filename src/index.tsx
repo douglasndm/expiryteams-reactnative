@@ -16,6 +16,7 @@ import screens from 'react-native-screens';
 import './Locales';
 
 import './Services/Analytics';
+import './Services/OneSignal';
 import DeepLinking from './Services/DeepLinking';
 
 import '@utils/Team/Subscriptions';
@@ -50,9 +51,9 @@ const App: React.FC = () => {
 
         setPreferences(prefs);
 
-        SplashScreen.hide();
-
         setIsLoading(false);
+
+        SplashScreen.hide();
     }, []);
 
     const handleOnScreenChange = useCallback(

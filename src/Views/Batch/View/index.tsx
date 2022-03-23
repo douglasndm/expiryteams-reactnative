@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import Share from 'react-native-share';
@@ -11,15 +12,12 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import Button from '~/Components/Button';
 
 import { sendBatchNotification } from '~/Functions/Notifications/Batch';
 
-import { PageTitle } from '~/Views/Product/Add/styles';
-
 import {
-    PageHeader,
     ActionsButtonContainer,
     ButtonPaper,
 } from '~/Views/Product/Edit/styles';
@@ -42,7 +40,7 @@ interface Props {
 
 const View: React.FC = () => {
     const { params } = useRoute();
-    const { goBack, navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const teamContext = useTeam();
 
@@ -112,10 +110,11 @@ const View: React.FC = () => {
                 type: 'info',
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsSendingNotification(false);
         }
@@ -148,12 +147,13 @@ const View: React.FC = () => {
                 message: text,
             });
         } catch (err) {
-            if (err.message !== 'User did not share') {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-            }
+            if (err instanceof Error)
+                if (err.message !== 'User did not share') {
+                    showMessage({
+                        message: err.message,
+                        type: 'danger',
+                    });
+                }
         } finally {
             setIsSharing(false);
         }
@@ -167,11 +167,8 @@ const View: React.FC = () => {
 
     return (
         <Container>
-            <PageHeader>
-                <PageTitleContainer>
-                    <BackButton handleOnPress={goBack} />
-                    <PageTitle>Lote</PageTitle>
-                </PageTitleContainer>
+            <PageTitleContainer>
+                <Header title="Lote" noDrawer />
 
                 <ActionsButtonContainer>
                     <ButtonPaper
@@ -181,7 +178,7 @@ const View: React.FC = () => {
                         Editar
                     </ButtonPaper>
                 </ActionsButtonContainer>
-            </PageHeader>
+            </PageTitleContainer>
 
             {!!batch && (
                 <BatchContainer>

@@ -1,8 +1,7 @@
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
-import Analytics from '@react-native-firebase/analytics';
 
-import strings from '../Locales';
+import strings from '~/Locales';
 
 interface shareFileProps {
     fileAsString: string;
@@ -30,29 +29,5 @@ export async function shareFile({
     await Share.open({
         title: strings.Function_Share_SaveFileTitle,
         url: `file://${path}`,
-    });
-}
-
-interface ShareProductImageWithTextProps {
-    productId: string;
-    title: string;
-    text: string;
-}
-
-export async function ShareProductImageWithText({
-    productId,
-    title,
-    text,
-}: ShareProductImageWithTextProps): Promise<void> {
-    const shareOptions = {
-        title,
-        message: text,
-        url: '',
-    };
-
-    Share.open(shareOptions).then(async () => {
-        if (!__DEV__) {
-            await Analytics().logEvent('user_shared_a_product');
-        }
     });
 }

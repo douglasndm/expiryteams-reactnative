@@ -3,12 +3,13 @@ import api from '~/Services/API';
 interface removeUserFromStoreProps {
     user_id: string;
     team_id: string;
+    store_id: string;
 }
 
 interface addUserToStoreProps {
     user_id: string;
-    store_id: string;
     team_id: string;
+    store_id: string;
 }
 
 async function addUserToStore({
@@ -24,8 +25,9 @@ async function addUserToStore({
 async function removeUserFromStore({
     user_id,
     team_id,
+    store_id,
 }: removeUserFromStoreProps): Promise<void> {
-    await api.delete(`/team/${team_id}/stores/users`, {
+    await api.delete(`/team/${team_id}/stores/${store_id}/users`, {
         data: {
             user_id,
         },

@@ -15,6 +15,7 @@ interface TeamContextData {
     id: string | null;
     name: string | null;
     active: boolean | null;
+    shareProducts: boolean;
     roleInTeam: {
         role: 'repositor' | 'supervisor' | 'manager';
         status: 'pending' | 'completed';
@@ -30,6 +31,7 @@ const TeamProvider: React.FC = ({ children }: any) => {
     const [id, setId] = useState<string | null>(null);
     const [name, setName] = useState<string | null>(null);
     const [active, setActive] = useState<boolean | null>(null);
+    const [shareProducts, setShareProducts] = useState<boolean>(false);
 
     const [roleInTeam, setRoleInTeam] = useState<{
         role: 'repositor' | 'supervisor' | 'manager';
@@ -42,13 +44,18 @@ const TeamProvider: React.FC = ({ children }: any) => {
         const response = await getSelectedTeam();
 
         if (response) {
-            setId(response.team.id);
-            setName(response.team.name);
-            setActive(response.team.isActive);
+            const { team, role, status } = response.userRole;
+
+            setId(team.id);
+            setName(team.name);
+            setActive(team.isActive);
             setRoleInTeam({
-                role: response.role,
-                status: response.status,
+                role,
+                status,
             });
+            setShareProducts(
+                response.teamPreferences.allowCollectProduct || false
+            );
         }
 
         setIsLoading(false);
@@ -70,6 +77,7 @@ const TeamProvider: React.FC = ({ children }: any) => {
             setName(null),
             setActive(null),
             setRoleInTeam(null),
+            setShareProducts(false),
         ]);
     }, []);
 
@@ -79,6 +87,7 @@ const TeamProvider: React.FC = ({ children }: any) => {
                 id,
                 name,
                 active,
+                shareProducts,
                 roleInTeam,
                 reload,
                 isLoading,

@@ -1,21 +1,19 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
-import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
-import { getAllCategoriesFromTeam } from '~/Functions/Categories';
-import { getAllBrands } from '~/Functions/Brand';
-import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
+import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import BarCodeReader from '~/Components/BarCodeReader';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
@@ -25,7 +23,6 @@ import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
 import {
     Container,
-    PageTitle,
     PageContent,
     InputGroup,
     InputContainer,
@@ -33,7 +30,6 @@ import {
     InputText,
     InputTextTip,
     InputCodeTextContainer,
-    InputCodeTextIcon,
     InputCodeText,
     InputTextIconContainer,
     MoreInformationsContainer,
@@ -41,7 +37,6 @@ import {
 } from '../Add/styles';
 
 import {
-    PageHeader,
     ButtonPaper,
     Icons,
     ActionsButtonContainer,
@@ -57,7 +52,7 @@ interface RequestParams {
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
-    const { reset, goBack, replace } = useNavigation<
+    const { reset, replace } = useNavigation<
         StackNavigationProp<RoutesParams>
     >();
 
@@ -108,13 +103,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setName(product.name);
             setCode(product.code);
 
-            const categoriesResponse = await getAllCategoriesFromTeam({
+            const response = await getExtraInfoForProducts({
                 team_id: teamContext.id,
             });
 
             const categoriesArray: Array<IPickerItem> = [];
 
-            categoriesResponse.forEach(cat =>
+            response.availableCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -123,10 +118,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             );
             setCategories(categoriesArray);
 
-            const allBrands = await getAllBrands({ team_id: teamContext.id });
             const brandsArray: Array<IPickerItem> = [];
 
-            allBrands.forEach(brand =>
+            response.availableBrands.forEach(brand =>
                 brandsArray.push({
                     key: brand.id,
                     label: brand.name,
@@ -136,12 +130,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
             setBrands(brandsArray);
 
-            const allStores = await getAllStoresFromTeam({
-                team_id: teamContext.id,
-            });
             const storesArray: Array<IPickerItem> = [];
 
-            allStores.forEach(store =>
+            response.availableStores.forEach(store =>
                 storesArray.push({
                     key: store.id,
                     label: store.name,
@@ -190,8 +181,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     id: product.id,
                     name,
                     code,
-                    brand: selectedBrand || undefined,
-                    store: selectedStore || null,
+                    brand: selectedBrand,
+                    store: selectedStore,
                 },
                 categories: prodCategories,
             });
@@ -285,13 +276,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             ) : (
                 <Container>
                     <StatusBar />
-                    <PageHeader>
-                        <PageTitleContainer>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {strings.View_EditProduct_PageTitle}
-                            </PageTitle>
-                        </PageTitleContainer>
+                    <PageTitleContainer>
+                        <Header
+                            title={strings.View_EditProduct_PageTitle}
+                            noDrawer
+                        />
 
                         <ActionsButtonContainer>
                             <ButtonPaper
@@ -319,7 +308,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 </ButtonPaper>
                             )}
                         </ActionsButtonContainer>
-                    </PageHeader>
+                    </PageTitleContainer>
 
                     <PageContent>
                         <InputContainer>
@@ -362,7 +351,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 <InputTextIconContainer
                                     onPress={handleEnableBarCodeReader}
                                 >
-                                    <InputCodeTextIcon />
+                                    <Icons name="barcode-outline" size={34} />
                                 </InputTextIconContainer>
                             </InputCodeTextContainer>
 
