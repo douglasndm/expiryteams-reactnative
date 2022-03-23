@@ -6,7 +6,6 @@ import { reset } from '~/References/Navigation';
 import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
 async function errorsHandler(error: any): Promise<void> {
-    let knownError = false;
     let err = '';
 
     if (error.response) {
@@ -22,10 +21,6 @@ async function errorsHandler(error: any): Promise<void> {
 
             if (message) {
                 err = message;
-            }
-
-            if (errorCode) {
-                knownError = true;
             }
 
             switch (errorCode) {
@@ -140,7 +135,7 @@ async function errorsHandler(error: any): Promise<void> {
 
         throw new Error(err);
     } else if (error.request) {
-        err = error.request._response;
+        err = 'Falha ao tentar se conectar ao servidor';
 
         console.log('The request was made but no response was received');
         console.error(error.request);
