@@ -35,7 +35,7 @@
     "API_Error_Code15": "Product was not found inside category",
     "API_Error_Code16": "Team reach the members limit",
     "API_Error_Code17": "User is not in team",
-    "API_Error_Code18": "A user was not found with this e-mail",
+    "API_Error_Code18": "A user was not found with this e-mail. Does the user already created an account?",
     "API_Error_Code19": "User is still pending to enter the team",
     "API_Error_Code20": "You can't add another manager on team",
     "API_Error_Code21": "This role is not valid",
@@ -218,7 +218,7 @@
     "View_TeamList_InvalidTeamCode": "Invalid code",
     "View_TeamList_SuccessCode": "Welcome to the team",
     "View_TeamList_Button_CreateTeam": "Create team",
-    "View_TeamList_Button_Logout": "Logout",
+    "View_TeamList_Button_Settings": "Settings",
 
     "View_CreateTeam_PageTitle": "New team",
     "View_CreateTeam_InputText_Name_Placeholder": "Team's name",
@@ -313,7 +313,7 @@
     "View_PhotoView_Button_Back": "Go back",
 
     "View_UsersInTeam_PageTitle": "Users",
-    "View_UsersInTeam_Input_AddNewUser_Placeholder": "Add new user",
+    "View_UsersInTeam_Input_AddNewUser_Placeholder": "Add new user by e-mail",
     "View_UsersInTeam_List_Title": "All users from team",
     "View_UsersInTeam_List_InputEmail_Error_EmptyText": "Enter the user email",
     "View_UsersInTeam_List_PendingStatus": "Pending",

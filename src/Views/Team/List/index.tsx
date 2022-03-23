@@ -10,6 +10,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
+import { getTeamPreferences } from '~/Functions/Team/Preferences';
 
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
@@ -69,7 +70,14 @@ const List: React.FC = () => {
             }
 
             if (userRoles.team) {
-                await setSelectedTeam(userRoles);
+                const teamPreferences = await getTeamPreferences({
+                    team_id: userRoles.team.id,
+                });
+
+                await setSelectedTeam({
+                    userRole: userRoles,
+                    teamPreferences,
+                });
 
                 if (teamContext.reload) {
                     teamContext.reload();
@@ -121,7 +129,14 @@ const List: React.FC = () => {
                 setTeams(sortedTeams);
 
                 if (sortedTeams.length > 0) {
-                    handleSelectTeam(sortedTeams[0]);
+                    if (sortedTeams[0].role.toLowerCase() === 'manager') {
+                        handleSelectTeam(sortedTeams[0]);
+                    } else if (
+                        !!sortedTeams[0].status &&
+                        sortedTeams[0].status.toLowerCase() !== 'pending'
+                    ) {
+                        handleSelectTeam(sortedTeams[0]);
+                    }
                 }
             } catch (err) {
                 if (err instanceof Error) {
@@ -190,13 +205,13 @@ const List: React.FC = () => {
         navigate('CreateTeam');
     }, [navigate]);
 
-    const handleLogout = useCallback(() => {
-        navigate('Logout');
+    const handleSettings = useCallback(() => {
+        navigate('Settings');
     }, [navigate]);
 
     useEffect(() => {
         loadData();
-    }, []);
+    }, [loadData]);
 
     return isLoading ? (
         <Loading />
@@ -237,8 +252,8 @@ const List: React.FC = () => {
                 )}
 
                 <Button
-                    text={strings.View_TeamList_Button_Logout}
-                    onPress={handleLogout}
+                    text={strings.View_TeamList_Button_Settings}
+                    onPress={handleSettings}
                     contentStyle={{ width: 150 }}
                 />
             </Footer>

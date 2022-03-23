@@ -29,10 +29,18 @@ export async function updateBrand(brand: IBrand): Promise<IBrand> {
     return response.data;
 }
 
-export async function getAllProductsByBrand(
-    brand_id: string
-): Promise<Array<IProduct>> {
-    const response = await api.get<Array<IProduct>>(`/brand/${brand_id}`);
+interface getAllProductsByBrandProps {
+    team_id: string;
+    brand_id: string;
+}
+
+export async function getAllProductsByBrand({
+    team_id,
+    brand_id,
+}: getAllProductsByBrandProps): Promise<Array<IProduct>> {
+    const response = await api.get<Array<IProduct>>(
+        `/team/${team_id}/brands/${brand_id}/products`
+    );
 
     return response.data;
 }
@@ -42,5 +50,3 @@ export async function deleteBrand({
 }: deleteBrandProps): Promise<void> {
     await api.delete(`/brand/${brand_id}`);
 }
-
-export async function saveManyBrands(brands: Array<IBrand>): Promise<void> {}

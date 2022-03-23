@@ -1,12 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { format, formatDistanceToNow, parseISO } from 'date-fns'; // eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 
 import strings from '~/Locales';
-
-import { getProductImagePath } from '~/Functions/Products/Image';
 
 import {
     Card,
@@ -16,7 +15,6 @@ import {
     ProductName,
     ProductInfoItem,
     ProductExpDate,
-    ProductImage,
 } from './styles';
 
 interface Request {
@@ -27,9 +25,7 @@ interface Request {
     onLongPress: () => void;
 }
 const Product = ({ product, expired, nextToExp, onLongPress }: Request) => {
-    const { navigate } = useNavigation();
-
-    const [imagePath, setImagePath] = useState<string>('');
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -82,8 +78,6 @@ const Product = ({ product, expired, nextToExp, onLongPress }: Request) => {
             onLongPress={onLongPress}
         >
             <Content>
-                {!!imagePath && <ProductImage source={{ uri: imagePath }} />}
-
                 <TextContainer>
                     <ProductName expiredOrNext={expiredOrNext}>
                         {product.name}

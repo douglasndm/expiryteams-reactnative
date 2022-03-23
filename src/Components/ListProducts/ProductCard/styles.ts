@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 
 interface ICard {
     expired?: boolean;
@@ -76,13 +75,6 @@ export const ProductInfoItem = styled.Text<IProductInfo>`
         props.expiredOrNext
             ? props.theme.colors.productNextOrExpiredText
             : props.theme.colors.text};
-`;
-
-export const ProductImage = styled.Image`
-    width: 85px;
-    height: 85px;
-    border-radius: 42px;
-    margin-right: 10px;
 `;
 
 export const ProductExpDate = styled.Text<IProductInfo>`

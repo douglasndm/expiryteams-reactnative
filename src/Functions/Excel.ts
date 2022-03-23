@@ -41,7 +41,7 @@ export async function exportToExcel({
     const workbook = XLSX.utils.book_new();
 
     const allProducts = await getAllProducts({
-        team_id: selectedTeam.team.id,
+        team_id: selectedTeam.userRole.team.id,
     });
 
     allProducts.forEach(p => {
@@ -83,7 +83,9 @@ export async function exportToExcel({
         });
     }
 
-    const allBrands = await getAllBrands({ team_id: selectedTeam.team.id });
+    const allBrands = await getAllBrands({
+        team_id: selectedTeam.userRole.team.id,
+    });
 
     const excelRows: Array<ExcelRowProps> = [];
 

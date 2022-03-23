@@ -45,7 +45,7 @@ export async function createAccount({
     } catch (err) {
         if (err.code === 'auth/email-already-in-use') {
             throw new Error('This e-mail is already in use');
-        } else {
+        } else if (err instanceof Error) {
             throw new Error(err.message);
         }
     }

@@ -17,13 +17,11 @@ import {
     updateBatch,
 } from '~/Functions/Products/Batches/Batch';
 
+import Header from '~/Components/Header';
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
 
 import {
-    Container,
-    PageTitle,
     PageContent,
     InputContainer,
     InputTextContainer,
@@ -35,13 +33,13 @@ import {
     CustomDatePicker,
 } from '~/Views/Product/Add/styles';
 import {
-    PageHeader,
     ActionsButtonContainer,
     ButtonPaper,
 } from '~/Views/Product/Edit/styles';
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
+    Container,
     PageTitleContainer,
     ContentHeader,
     Icons,
@@ -56,9 +54,7 @@ interface Props {
 
 const EditBatch: React.FC = () => {
     const route = useRoute();
-    const { goBack, replace } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { replace } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const teamContext = useTeam();
 
@@ -126,10 +122,11 @@ const EditBatch: React.FC = () => {
             }
             setExpDate(parseISO(response.batch.exp_date));
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -163,10 +160,11 @@ const EditBatch: React.FC = () => {
                 id: productId,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsUpdating(false);
         }
@@ -189,10 +187,11 @@ const EditBatch: React.FC = () => {
                 id: productId,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [batchId, productId, replace]);
 
@@ -226,13 +225,8 @@ const EditBatch: React.FC = () => {
         <Container>
             <StatusBar />
             <ScrollView>
-                <PageHeader>
-                    <PageTitleContainer>
-                        <BackButton handleOnPress={goBack} />
-                        <PageTitle>
-                            {strings.View_EditBatch_PageTitle}
-                        </PageTitle>
-                    </PageTitleContainer>
+                <PageTitleContainer>
+                    <Header title={strings.View_EditBatch_PageTitle} noDrawer />
 
                     <ActionsButtonContainer>
                         <ButtonPaper
@@ -256,7 +250,7 @@ const EditBatch: React.FC = () => {
                             </ButtonPaper>
                         )}
                     </ActionsButtonContainer>
-                </PageHeader>
+                </PageTitleContainer>
 
                 <PageContent>
                     <InputContainer>

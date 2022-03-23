@@ -43,7 +43,7 @@ const Brand: React.FC<Props> = ({
                 value={selectedBrand}
                 placeholder={{
                     label: strings.View_AddProduct_InputPlaceholder_SelectBrand,
-                    value: 'null',
+                    value: null,
                 }}
             />
         </PickerContainer>

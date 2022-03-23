@@ -27,8 +27,8 @@ const Account: React.FC = () => {
 
     const navigateToTeamList = useCallback(async () => {
         if (teamContext.clearTeam) {
-            await clearSelectedteam();
             teamContext.clearTeam();
+            await clearSelectedteam();
             reset({
                 routes: [{ name: 'TeamList' }],
             });

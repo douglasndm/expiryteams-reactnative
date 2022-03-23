@@ -1,6 +1,7 @@
 import api from '~/Services/API';
 
 interface getAllProductsFromCategoryProps {
+    team_id: string;
     category_id: string;
 }
 
@@ -10,20 +11,14 @@ interface getAllProductsFromCategoryResponse {
 }
 
 export async function getAllProductsFromCategory({
+    team_id,
     category_id,
 }: getAllProductsFromCategoryProps): Promise<
     getAllProductsFromCategoryResponse
 > {
-    try {
-        const response = await api.get<getAllProductsFromCategoryResponse>(
-            `/categories/${category_id}/products`
-        );
+    const response = await api.get<getAllProductsFromCategoryResponse>(
+        `/team/${team_id}/categories/${category_id}/products`
+    );
 
-        return response.data;
-    } catch (err) {
-        if (err.response.data.message) {
-            throw new Error(err.response.data.message);
-        }
-        throw new Error(err.message);
-    }
+    return response.data;
 }

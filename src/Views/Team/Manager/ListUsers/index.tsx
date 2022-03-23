@@ -38,6 +38,7 @@ const ListUsers: React.FC = () => {
 
     const teamContext = useTeam();
 
+    const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const role = useMemo(() => {
@@ -92,6 +93,7 @@ const ListUsers: React.FC = () => {
     }, []);
 
     const handleAddUser = useCallback(async () => {
+        if (!isMounted) return;
         if (!teamContext.id) {
             showMessage({
                 message: 'Team is not selected',
@@ -143,7 +145,7 @@ const ListUsers: React.FC = () => {
         } finally {
             setIsAdding(false);
         }
-    }, [teamContext.id, newUserEmail, users, navigate]);
+    }, [isMounted, teamContext.id, newUserEmail, users, navigate]);
 
     const handleNavigateToUser = useCallback(
         (user: IUserInTeam) => {
@@ -159,6 +161,11 @@ const ListUsers: React.FC = () => {
 
         return unsubscribe;
     }, [addListener, loadData]);
+
+    useEffect(() => {
+        return () => setIsMounted(false);
+    }, []);
+
     interface renderProps {
         item: IUserInTeam;
     }

@@ -43,7 +43,7 @@ const Subscriptions: React.FC = () => {
             }
 
             const response = await getTeamSubscriptions({
-                team_id: selectedTeam.team.id,
+                team_id: selectedTeam.userRole.team.id,
             });
 
             if (response) {
