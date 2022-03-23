@@ -117,7 +117,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+    }, []);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;

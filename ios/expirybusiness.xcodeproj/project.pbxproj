@@ -53,6 +53,7 @@
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = expirybusiness/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = expirybusiness/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = expirybusiness/main.m; sourceTree = "<group>"; };
+		1CAB3D6B9FAA868B8CDABE44 /* Pods-expirybusiness-expirybusinessTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.staging.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.staging.xcconfig"; sourceTree = "<group>"; };
 		26154AC4419AC653AD5F55CC /* Pods-expirybusiness-expirybusinessTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4F6BBD5026790C1E00A99EA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		4F6BBD5226790C2200A99EA5 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "pt-BR"; path = "pt-BR.lproj/Info.plist"; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 		A5D7292A27DD7F4600942AEB /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		A5D7292B27DD7F4600942AEB /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		B983B0E933AFDCC0FD300CDD /* Pods-expirybusiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.release.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.release.xcconfig"; sourceTree = "<group>"; };
+		C0BBC9163B52F22772ED4982 /* Pods-expirybusiness.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.staging.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.staging.xcconfig"; sourceTree = "<group>"; };
 		E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-expirybusiness-expirybusinessTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F6ABD5F845207C53F2CDD429 /* Pods-expirybusiness-expirybusinessTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.release.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -180,6 +182,8 @@
 				B983B0E933AFDCC0FD300CDD /* Pods-expirybusiness.release.xcconfig */,
 				26154AC4419AC653AD5F55CC /* Pods-expirybusiness-expirybusinessTests.debug.xcconfig */,
 				F6ABD5F845207C53F2CDD429 /* Pods-expirybusiness-expirybusinessTests.release.xcconfig */,
+				C0BBC9163B52F22772ED4982 /* Pods-expirybusiness.staging.xcconfig */,
+				1CAB3D6B9FAA868B8CDABE44 /* Pods-expirybusiness-expirybusinessTests.staging.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -880,7 +884,7 @@
 		};
 		A5A506B827EA959500010839 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B983B0E933AFDCC0FD300CDD /* Pods-expirybusiness.release.xcconfig */;
+			baseConfigurationReference = C0BBC9163B52F22772ED4982 /* Pods-expirybusiness.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -913,7 +917,7 @@
 		};
 		A5A506B927EA959500010839 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6ABD5F845207C53F2CDD429 /* Pods-expirybusiness-expirybusinessTests.release.xcconfig */;
+			baseConfigurationReference = 1CAB3D6B9FAA868B8CDABE44 /* Pods-expirybusiness-expirybusinessTests.staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
