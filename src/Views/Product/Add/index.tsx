@@ -12,10 +12,8 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { createProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
 
-import { getAllCategoriesFromTeam } from '~/Functions/Categories';
-import { getAllBrands } from '~/Functions/Brand';
-import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 import { findProductByCode } from '~/Functions/Products/FindByCode';
+import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
@@ -142,12 +140,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         }
         try {
             setIsLoading(true);
-            const response = await getAllCategoriesFromTeam({
+            const response = await getExtraInfoForProducts({
                 team_id: teamContext.id,
             });
 
             const categoriesArray: Array<ICategoryItem> = [];
-            response.forEach(cat =>
+            response.availableCategories.forEach(cat =>
                 categoriesArray.push({
                     key: cat.id,
                     label: cat.name,
@@ -156,10 +154,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             );
             setCategories(categoriesArray);
 
-            const allBrands = await getAllBrands({ team_id: teamContext.id });
             const brandsArray: Array<IBrandItem> = [];
 
-            allBrands.forEach(brand =>
+            response.availableBrands.forEach(brand =>
                 brandsArray.push({
                     key: brand.id,
                     label: brand.name,
@@ -169,12 +166,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
             setBrands(brandsArray);
 
-            const allStores = await getAllStoresFromTeam({
-                team_id: teamContext.id,
-            });
             const storesArray: Array<IPickerItem> = [];
 
-            allStores.forEach(store =>
+            response.availableStores.forEach(store =>
                 storesArray.push({
                     key: store.id,
                     label: store.name,
