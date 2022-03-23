@@ -1,7 +1,7 @@
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
-import strings from '../Locales';
+import strings from '~/Locales';
 
 interface shareFileProps {
     fileAsString: string;
@@ -30,10 +30,4 @@ export async function shareFile({
         title: strings.Function_Share_SaveFileTitle,
         url: `file://${path}`,
     });
-}
-
-interface ShareProductImageWithTextProps {
-    productId: string;
-    title: string;
-    text: string;
 }
