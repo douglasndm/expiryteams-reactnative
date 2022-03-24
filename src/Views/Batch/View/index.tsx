@@ -106,7 +106,7 @@ const View: React.FC = () => {
 
             showMessage({
                 message: 'Notificação enviada',
-                description: 'O time foi avisado sobre o lote',
+                description: 'O time será avisado sobre o lote',
                 type: 'info',
             });
         } catch (err) {
@@ -242,11 +242,13 @@ const View: React.FC = () => {
                         contentStyle={{ width: 250 }}
                     />
 
-                    <Button
-                        text="Adicionar desconto"
-                        onPress={handleNavigateToDiscount}
-                        contentStyle={{ marginTop: -5, width: 250 }}
-                    />
+                    {!!batch.price && (
+                        <Button
+                            text="Adicionar desconto"
+                            onPress={handleNavigateToDiscount}
+                            contentStyle={{ marginTop: -5, width: 250 }}
+                        />
+                    )}
                 </BatchContainer>
             )}
         </Container>
