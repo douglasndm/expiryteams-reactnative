@@ -60,6 +60,7 @@ const EditBatch: React.FC = () => {
 
     const routeParams = route.params as Props;
 
+    const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
@@ -103,6 +104,7 @@ const EditBatch: React.FC = () => {
     const [status, setStatus] = useState<'checked' | 'unchecked'>('unchecked');
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         try {
             setIsLoading(true);
 
@@ -130,9 +132,10 @@ const EditBatch: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [batchId]);
+    }, [batchId, isMounted]);
 
     const handleUpdate = useCallback(async () => {
+        if (!isMounted) return;
         if (!batch || batch.trim() === '') {
             Alert.alert(strings.View_EditBatch_Error_BatchWithNoName);
             return;
@@ -168,14 +171,28 @@ const EditBatch: React.FC = () => {
         } finally {
             setIsUpdating(false);
         }
-    }, [amount, batch, batchId, expDate, price, productId, replace, status]);
+    }, [
+        amount,
+        batch,
+        batchId,
+        expDate,
+        isMounted,
+        price,
+        productId,
+        replace,
+        status,
+    ]);
 
     useEffect(() => {
         loadData();
+
+        return () => setIsMounted(false);
     }, [loadData]);
 
     const handleDelete = useCallback(async () => {
+        if (!isMounted) return;
         try {
+            setIsLoading(true);
             await deleteBatch({ batch_id: batchId });
 
             showMessage({
@@ -192,8 +209,10 @@ const EditBatch: React.FC = () => {
                     message: err.message,
                     type: 'danger',
                 });
+        } finally {
+            setIsLoading(false);
         }
-    }, [batchId, productId, replace]);
+    }, [batchId, isMounted, productId, replace]);
 
     const handleBatchChange = useCallback(value => {
         setBatch(value);

@@ -55,17 +55,19 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         return 'BRL';
     }, []);
 
+    const [isMounted, setIsMounted] = useState(true);
     const [isAdding, setIsAdding] = useState<boolean>(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState<string>('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
 
     const handleSave = useCallback(async () => {
+        if (!isMounted) return;
         if (!lote || lote.trim() === '') {
             showMessage({
                 message: strings.View_AddBatch_AlertTypeBatchName,
@@ -81,7 +83,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     name: lote,
                     amount: Number(amount),
                     exp_date: String(expDate),
-                    price,
+                    price: price || undefined,
                     status: 'unchecked',
                 },
             });
@@ -103,9 +105,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         } finally {
             setIsAdding(false);
         }
-    }, [lote, productId, amount, expDate, price, replace]);
+    }, [isMounted, lote, productId, amount, expDate, price, replace]);
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         const prod = await getProduct({ productId });
 
         if (prod) {
@@ -113,10 +116,12 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
             if (prod.code) setCode(prod.code);
         }
-    }, [productId]);
+    }, [isMounted, productId]);
 
     useEffect(() => {
         loadData();
+
+        return () => setIsMounted(false);
     }, []);
 
     const handleAmountChange = useCallback(value => {
