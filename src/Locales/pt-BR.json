@@ -109,6 +109,11 @@
     "View_ConfirmEmail_ResendEmail": "Não recebeu o e-mail? clique aqui para reenviar",
     "View_ConfirmEmail_Error_EmailNotConfirmed": "O E-mail não foi confirmado ainda.",
 
+    "View_RecoveryPassword_PageTitle": "Recuperar senha",
+    "View_RecoveryPassword_InputText_Email_Placeholder": "Seu email registrado",
+    "View_RecoveryPassword_Button_Recovery": "Recuperar",
+    "View_RecoveryPassword_Alert_Success": "Um email foi enviado com um link para recuperar sua senha",
+
     "View_About_PageTitle": "Sobre",
     "View_About_AppVersion": "",
     "View_About_DevelopedBy": "Criado por Douglas Nunes de Mattos",

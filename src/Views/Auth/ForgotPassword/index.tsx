@@ -36,8 +36,7 @@ const ForgotPassword: React.FC = () => {
             await recoveryPassword({ email });
 
             showMessage({
-                message:
-                    'Um e-mail foi enviado com um link para recuperar sua senha',
+                message: strings.View_RecoveryPassword_Alert_Success,
                 type: 'info',
             });
 
@@ -54,18 +53,20 @@ const ForgotPassword: React.FC = () => {
     }, [email, goBack]);
     return (
         <Container>
-            <Header title="Recuperar senha" noDrawer />
+            <Header title={strings.View_RecoveryPassword_PageTitle} noDrawer />
 
             <Content>
                 <Input
-                    placeholder={strings.View_Login_InputText_Email_Placeholder}
+                    placeholder={
+                        strings.View_RecoveryPassword_InputText_Email_Placeholder
+                    }
                     autoCorrect={false}
                     autoCapitalize="none"
                     value={email}
                     onChange={handleEmailChange}
                 />
                 <Button
-                    text="Recuperar"
+                    text={strings.View_RecoveryPassword_Button_Recovery}
                     onPress={handleRecoveryPassword}
                     isLoading={isRecovering}
                 />

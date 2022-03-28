@@ -111,6 +111,11 @@
     "View_ConfirmEmail_ResendEmail": "Resend e-mail",
     "View_ConfirmEmail_Error_EmailNotConfirmed": "E-mail wasn't confirmed yet.",
 
+    "View_RecoveryPassword_PageTitle": "Recovery password",
+    "View_RecoveryPassword_InputText_Email_Placeholder": "Your registed e-mail",
+    "View_RecoveryPassword_Button_Recovery": "Recovery",
+    "View_RecoveryPassword_Alert_Success": "An e-mail was sent to you for recovery your password",
+
     "View_About_PageTitle": "About",
     "View_About_AppVersion": "",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
