@@ -5,9 +5,11 @@ import strings from '~/Locales';
 import { reset } from '~/References/Navigation';
 
 import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
+import AppError from '~/Errors/AppError';
 
 async function errorsHandler(error: any): Promise<void> {
     let err = '';
+    let code: number | undefined;
 
     if (error.response) {
         // Request made and server responded
@@ -24,6 +26,7 @@ async function errorsHandler(error: any): Promise<void> {
                 err = message;
             }
 
+            code = Number(errorCode);
             switch (errorCode) {
                 case 1:
                     err = strings.API_Error_Code1;
@@ -149,7 +152,10 @@ async function errorsHandler(error: any): Promise<void> {
     }
 
     if (!!err && err !== '') {
-        throw new Error(err);
+        throw new AppError({
+            message: err,
+            errorCode: code,
+        });
     } else if (error instanceof Error) {
         throw new Error(error.message);
     } else {

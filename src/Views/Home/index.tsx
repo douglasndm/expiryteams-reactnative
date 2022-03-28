@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
 import { FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -9,6 +11,8 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { getAllProducts } from '~/Functions/Products/Products';
 import { searchProducts } from '~/Functions/Products/Search';
 import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
+
+import AppError from '~/Errors/AppError';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -24,6 +28,7 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
     const teamContext = useTeam();
 
     const listRef = useRef<FlatList<IProduct>>(null);
@@ -56,6 +61,17 @@ const Home: React.FC = () => {
 
             setProducts(productsResponse);
         } catch (err) {
+            if (err instanceof AppError) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+                if (err.errorCode === 5) {
+                    reset({
+                        routes: [{ name: 'ViewTeam' }],
+                    });
+                }
+            }
             if (err instanceof Error)
                 showMessage({
                     message: err.message,
@@ -64,7 +80,7 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [isMounted]);
+    }, [isMounted, reset]);
 
     useEffect(() => {
         loadData();
