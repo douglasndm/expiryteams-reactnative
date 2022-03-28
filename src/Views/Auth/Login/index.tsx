@@ -160,7 +160,7 @@ const Login: React.FC = () => {
         }
 
         return () => setIsMounted(false);
-    }, [isMounted, navigate, reset]);
+    }, [navigate, reset]);
 
     return isLoading ? (
         <Loading />
