@@ -4,11 +4,11 @@ import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import OneSignal from 'react-native-onesignal';
 
-import Sentry from '~/Services/Sentry';
-
 import Button from '../../Components/Button';
 
 import { Container, Category } from '../Settings/styles';
+import { deleteSubscription } from '~/Functions/Team/Subscriptions/Delete';
+import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 const Test: React.FC = () => {
     const handleMessaingToken = useCallback(async () => {
@@ -27,8 +27,11 @@ const Test: React.FC = () => {
         console.log(token?.token);
     }, []);
 
-    const handleCrash = useCallback(() => {
-        Sentry.nativeCrash();
+    const deleteSub = useCallback(async () => {
+        const team = await getSelectedTeam();
+
+        if (!team) return;
+        await deleteSubscription(team.userRole.team.id);
     }, []);
 
     return (
@@ -41,7 +44,7 @@ const Test: React.FC = () => {
                     />
                     <Button text="Log user token" onPress={handleToken} />
 
-                    <Button text="Native crash" onPress={handleCrash} />
+                    <Button text="Delete subscription" onPress={deleteSub} />
                 </Category>
             </ScrollView>
         </Container>

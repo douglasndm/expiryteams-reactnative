@@ -6,7 +6,10 @@ import api from '~/Services/API';
 
 import { getSelectedTeam } from './SelectedTeam';
 
-import { CatPackage } from '~/@types/Functions/Subscriptions';
+import {
+    CatPackage,
+    makePurchaseProps,
+} from '~/@types/Functions/Subscriptions';
 
 async function setup() {
     Purchases.setDebugLogsEnabled(true);
@@ -117,6 +120,9 @@ export async function makePurchase({
 
         await Purchases.purchasePackage(pack, upgrade);
 
+        // Apaga todas as assinaturas antigas
+        await api.delete(`/team/${team_id}/subscriptions`);
+
         // Verificar com o servidor se a compra foi concluida
         // Liberar funções no app
         const response = await api.get<ITeamSubscription>(
@@ -125,9 +131,11 @@ export async function makePurchase({
 
         return response.data;
     } catch (err) {
-        if (!err.userCancelled) {
+        if (err.userCancelled) {
+            console.log('User canceled purchase');
+        } else if (err instanceof Error) {
             throw new Error(err.message);
-        } else throw new Error(err.message);
+        }
     }
 }
 
