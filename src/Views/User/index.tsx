@@ -6,9 +6,8 @@ import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
-import { useAuth } from '~/Contexts/AuthContext';
-
 import { updateUser, updatePassword } from '~/Functions/Auth/Account';
+import { getUser } from '~/Functions/User/List';
 
 import Button from '~/Components/Button';
 import Header from '~/Components/Header';
@@ -25,8 +24,8 @@ import {
 
 const User: React.FC = () => {
     const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
-    const { user } = useAuth();
 
+    const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
@@ -43,11 +42,14 @@ const User: React.FC = () => {
     );
 
     const loadData = useCallback(async () => {
-        if (!user) return;
+        if (!isMounted) return;
         try {
             setIsLoading(true);
 
-            if (user.displayName) setName(user.displayName);
+            const user = await getUser();
+
+            if (user.name) setName(user.name);
+            if (user.last_name) setLastName(user.last_name);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -57,9 +59,10 @@ const User: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [user]);
+    }, [isMounted]);
 
     const handleUpdate = useCallback(async () => {
+        if (!isMounted) return;
         setIsUpdating(true);
 
         try {
@@ -67,9 +70,10 @@ const User: React.FC = () => {
                 name: Yup.string().required(
                     strings.View_Profile_Alert_Error_EmptyName
                 ),
+                lastName: Yup.string().required(),
             });
 
-            await schema.validate({ name });
+            await schema.validate({ name, lastName });
 
             if (password) {
                 const schemaPass = Yup.object().shape({
@@ -120,6 +124,9 @@ const User: React.FC = () => {
         try {
             await updateUser({
                 name,
+                lastName,
+                password: newPassword,
+                passwordConfirm: newPasswordConfi,
             });
 
             showMessage({
@@ -137,7 +144,15 @@ const User: React.FC = () => {
         } finally {
             setIsUpdating(false);
         }
-    }, [name, newPassword, newPasswordConfi, password, pop]);
+    }, [
+        isMounted,
+        lastName,
+        name,
+        newPassword,
+        newPasswordConfi,
+        password,
+        pop,
+    ]);
 
     const handleNameChange = useCallback((value: string) => {
         setName(value);
@@ -165,6 +180,10 @@ const User: React.FC = () => {
 
     useEffect(() => {
         loadData();
+
+        return () => {
+            setIsMounted(false);
+        };
     }, []);
 
     return isLoading ? (
@@ -197,7 +216,6 @@ const User: React.FC = () => {
                         }
                         value={lastName}
                         onChange={handleLastNameChange}
-                        isPassword
                     />
                 </InputGroup>
 

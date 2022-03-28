@@ -3,12 +3,14 @@ interface IAppError {
     errorCode?: number;
 }
 
-class AppError {
+class AppError extends Error {
     public readonly message: string;
 
     public readonly errorCode: number | undefined;
 
     constructor({ message, errorCode }: IAppError) {
+        super();
+
         this.message = message;
         this.errorCode = errorCode;
     }

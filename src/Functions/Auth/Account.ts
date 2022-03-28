@@ -66,15 +66,26 @@ export async function resendConfirmationEmail(): Promise<void> {
 
 interface updateUserProps {
     name: string;
+    lastName: string;
+    password: string | undefined;
+    passwordConfirm: string | undefined;
 }
 
-export async function updateUser({ name }: updateUserProps): Promise<void> {
+export async function updateUser({
+    name,
+    lastName,
+    password,
+    passwordConfirm,
+}: updateUserProps): Promise<void> {
     await auth().currentUser?.updateProfile({
         displayName: name,
     });
 
     await api.put<IUser>(`/users`, {
         name,
+        lastName,
+        password,
+        passwordConfirm,
     });
 }
 
