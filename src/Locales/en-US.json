@@ -314,6 +314,23 @@
     "View_Export_SortByExpireDate": "Expiry date",
     "View_Export_Button_ExportExcel": "Export to Excel",
 
+    "View_Profile_PageTitle": "Profile",
+    "View_Profile_InputText_Placeholder_Name": "Your name",
+    "View_Profile_InputText_Placeholder_LastName": "Last name",
+    "View_Profile_InputText_Placeholder_Password": "Current password",
+    "View_Profile_InputText_Placeholder_NewPassword": "New password",
+    "View_Profile_InputText_Placeholder_ConfirNewPassword": "Re-enter your new password",
+    "View_Profile_Button_Update": "Update",
+    "View_Profile_Label_PasswordGroup": "Update password",
+    "View_Profile_Alert_Success": "Your profile was updated",
+    "View_Profile_Alert_Error_EmptyName": "Name is required",
+    "View_Profile_Alert_Error_EmptyPassword": "Your password",
+    "View_Profile_Alert_Error_WrongCurrentPassword": "Your current password is wrong",
+    "View_Profile_Alert_Error_WrongPasswordConfirmation": "Password confirmation can not be empty and should be the same as new password",
+    "View_Profile_Alert_Tip_EmptyName": "Enter your name",
+    "View_Profile_Alert_Tip_EmptyPassword": "Enter your new password",
+    "View_Profile_Alert_Tip_EmptyPasswordConfirm": "Confirm your new password",
+
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
 
