@@ -93,7 +93,7 @@
     "View_CreateAccount_Input_LastName_Placeholder": "Last name",
     "View_CreateAccount_Input_Email_Placeholder": "E-mail",
     "View_CreateAccount_Input_Password_Placeholder": "Password",
-    "View_CreateAccount_Input_ConfirmPassword_Placeholder": "Password confirmations",
+    "View_CreateAccount_Input_ConfirmPassword_Placeholder": "Password confirmation",
     "View_CreateAccount_Button_CreateAccount": "Create account",
     "View_CreateAccount_Alert_Success_Title": "Account created",
     "View_CreateAccount_Alert_Success_Message": "Click on the link when sent to your e-mail to active your account.",

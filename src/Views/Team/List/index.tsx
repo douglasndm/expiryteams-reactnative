@@ -35,6 +35,7 @@ const List: React.FC = () => {
 
     const teamContext = useTeam();
 
+    const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
@@ -85,7 +86,11 @@ const List: React.FC = () => {
                     return;
                 }
 
-                const { active } = teamContext;
+                let routeName = 'Home';
+
+                if (!userRoles.team.isActive) {
+                    routeName = 'ViewTeam';
+                }
 
                 reset({
                     routes: [
@@ -94,7 +99,7 @@ const List: React.FC = () => {
                             state: {
                                 routes: [
                                     {
-                                        name: active ? 'Home' : 'ViewTeam',
+                                        name: routeName,
                                     },
                                 ],
                             },
@@ -107,6 +112,7 @@ const List: React.FC = () => {
     );
 
     const loadData = useCallback(async () => {
+        if (!isMounted) return;
         if (!teamContext.isLoading) {
             try {
                 setIsLoading(true);
@@ -151,7 +157,7 @@ const List: React.FC = () => {
                 setIsLoading(false);
             }
         }
-    }, [handleSelectTeam, teamContext.isLoading]);
+    }, [handleSelectTeam, isMounted, teamContext.isLoading]);
 
     interface renderProps {
         item: IUserRoles;
@@ -213,6 +219,8 @@ const List: React.FC = () => {
 
     useEffect(() => {
         loadData();
+
+        return () => setIsMounted(false);
     }, [loadData]);
 
     return isLoading ? (

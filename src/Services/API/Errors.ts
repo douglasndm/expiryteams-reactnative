@@ -3,6 +3,7 @@ import { destroySession } from '@utils/Auth/Session';
 import strings from '~/Locales';
 
 import { reset } from '~/References/Navigation';
+
 import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
 async function errorsHandler(error: any): Promise<void> {
@@ -105,6 +106,12 @@ async function errorsHandler(error: any): Promise<void> {
                     err = strings.API_Error_Code21;
                     break;
                 case 22:
+                    // Device not allowed, login anywhere else
+                    await destroySession();
+                    reset({
+                        routeHandler: 'Auth',
+                        routesNames: ['Login'],
+                    });
                     err = strings.API_Error_Code22;
                     break;
                 case 23:

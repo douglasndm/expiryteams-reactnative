@@ -14,7 +14,7 @@ import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 
 import { FormContainer } from '../Login/styles';
-import { Container } from './styles';
+import { Container, PageContent } from './styles';
 
 const CreateAccount: React.FC = () => {
     const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -126,72 +126,74 @@ const CreateAccount: React.FC = () => {
 
     return (
         <Container>
-            <Header title={strings.View_CreateAccount_PageTitle} noDrawer />
+            <PageContent>
+                <Header title={strings.View_CreateAccount_PageTitle} noDrawer />
 
-            <FormContainer>
-                <Input
-                    placeholder={
-                        strings.View_CreateAccount_Input_Name_Placeholder
-                    }
-                    autoCorrect={false}
-                    autoCapitalize="words"
-                    value={name}
-                    onChange={handleNameChange}
-                    contentStyle={{ marginBottom: 7 }}
-                />
+                <FormContainer>
+                    <Input
+                        placeholder={
+                            strings.View_CreateAccount_Input_Name_Placeholder
+                        }
+                        autoCorrect={false}
+                        autoCapitalize="words"
+                        value={name}
+                        onChange={handleNameChange}
+                        contentStyle={{ marginBottom: 7 }}
+                    />
 
-                <Input
-                    placeholder={
-                        strings.View_CreateAccount_Input_LastName_Placeholder
-                    }
-                    autoCorrect={false}
-                    autoCapitalize="words"
-                    value={lastName}
-                    onChange={handleLastNameChange}
-                    contentStyle={{ marginBottom: 7 }}
-                />
+                    <Input
+                        placeholder={
+                            strings.View_CreateAccount_Input_LastName_Placeholder
+                        }
+                        autoCorrect={false}
+                        autoCapitalize="words"
+                        value={lastName}
+                        onChange={handleLastNameChange}
+                        contentStyle={{ marginBottom: 7 }}
+                    />
 
-                <Input
-                    placeholder={
-                        strings.View_CreateAccount_Input_Email_Placeholder
-                    }
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    value={email}
-                    onChange={handleEmailChange}
-                    contentStyle={{ marginBottom: 7 }}
-                />
+                    <Input
+                        placeholder={
+                            strings.View_CreateAccount_Input_Email_Placeholder
+                        }
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        value={email}
+                        onChange={handleEmailChange}
+                        contentStyle={{ marginBottom: 7 }}
+                    />
 
-                <Input
-                    placeholder={
-                        strings.View_CreateAccount_Input_Password_Placeholder
-                    }
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    isPassword
-                    value={password}
-                    onChange={handlePasswordChange}
-                    contentStyle={{ marginBottom: 7 }}
-                />
+                    <Input
+                        placeholder={
+                            strings.View_CreateAccount_Input_Password_Placeholder
+                        }
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        isPassword
+                        value={password}
+                        onChange={handlePasswordChange}
+                        contentStyle={{ marginBottom: 7 }}
+                    />
 
-                <Input
-                    placeholder={
-                        strings.View_CreateAccount_Input_ConfirmPassword_Placeholder
-                    }
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    isPassword
-                    value={passwordConfirm}
-                    onChange={handlePasswordConfirmChange}
-                    contentStyle={{ marginBottom: 7 }}
-                />
+                    <Input
+                        placeholder={
+                            strings.View_CreateAccount_Input_ConfirmPassword_Placeholder
+                        }
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        isPassword
+                        value={passwordConfirm}
+                        onChange={handlePasswordConfirmChange}
+                        contentStyle={{ marginBottom: 7 }}
+                    />
 
-                <Button
-                    text={strings.View_CreateAccount_Button_CreateAccount}
-                    onPress={handleCreateAccount}
-                    isLoading={isCreating}
-                />
-            </FormContainer>
+                    <Button
+                        text={strings.View_CreateAccount_Button_CreateAccount}
+                        onPress={handleCreateAccount}
+                        isLoading={isCreating}
+                    />
+                </FormContainer>
+            </PageContent>
         </Container>
     );
 };
