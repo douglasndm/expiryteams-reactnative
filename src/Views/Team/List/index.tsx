@@ -85,6 +85,8 @@ const List: React.FC = () => {
                     return;
                 }
 
+                const { active } = teamContext;
+
                 reset({
                     routes: [
                         {
@@ -92,7 +94,7 @@ const List: React.FC = () => {
                             state: {
                                 routes: [
                                     {
-                                        name: 'Home',
+                                        name: active ? 'Home' : 'ViewTeam',
                                     },
                                 ],
                             },

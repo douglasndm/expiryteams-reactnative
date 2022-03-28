@@ -15,11 +15,7 @@ export async function getAllProducts({
         `/team/${team_id}/products?removeCheckedBatches=true&sortByBatches=true`
     );
 
-    if (response) {
-        return response.data.products;
-    }
-
-    return [];
+    return response.data.products;
 }
 
 interface sortProductsByBatchesExpDateProps {

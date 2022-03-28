@@ -39,10 +39,12 @@ async function errorsHandler(error: any): Promise<void> {
                 case 5:
                     // Subscription is not active
                     err = strings.API_Error_Code5;
+                    /*
                     reset({
                         routeHandler: 'Routes',
                         routesNames: ['ViewTeam'],
                     });
+                    */
                     break;
                 case 6:
                     err = strings.API_Error_Code6;
@@ -132,16 +134,17 @@ async function errorsHandler(error: any): Promise<void> {
         if (error.response.status && error.response.status === 403) {
             await destroySession();
         }
-
-        throw new Error(err);
     } else if (error.request) {
         err = 'Falha ao tentar se conectar ao servidor';
 
         console.log('The request was made but no response was received');
         console.error(error.request);
     }
-    if (error instanceof Error) {
+
+    if (!!err && err !== '') {
         throw new Error(err);
+    } else if (error instanceof Error) {
+        throw new Error(error.message);
     } else {
         Promise.reject(error);
     }

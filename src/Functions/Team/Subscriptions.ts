@@ -131,26 +131,16 @@ export async function makePurchase({
     }
 }
 
-export async function getTeamSubscriptions({
-    team_id,
-}: getTeamSubscriptionsProps): Promise<ITeamSubscription | null> {
+async function getTeamSubscription(
+    team_id: string
+): Promise<ITeamSubscription> {
     const response = await api.get<ITeamSubscription>(
         `/team/${team_id}/subscriptions`
-    );
-
-    if (response.data) return response.data;
-
-    return null;
-}
-
-export async function getAllSubscriptionsFromRevenue({
-    team_id,
-}: getTeamSubscriptionsProps): Promise<Subscription[]> {
-    const response = await api.get<Subscription[]>(
-        `/team/${team_id}/subscriptions/recheck`
     );
 
     return response.data;
 }
 
 setup();
+
+export { getTeamSubscription };

@@ -39,7 +39,8 @@ const Home: React.FC = () => {
         false
     );
 
-    const getProduts = useCallback(async () => {
+    const loadData = useCallback(async () => {
+        if (!isMounted) return;
         try {
             setIsLoading(true);
 
@@ -63,17 +64,15 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [isMounted]);
 
     useEffect(() => {
-        if (isMounted) {
-            getProduts();
-        }
+        loadData();
 
         return () => {
             setIsMounted(false);
         };
-    }, [getProduts, isMounted]);
+    }, []);
 
     useEffect(() => {
         if (isMounted) {
@@ -148,7 +147,7 @@ const Home: React.FC = () => {
 
                     <ListProducts
                         products={productsSearch}
-                        onRefresh={getProduts}
+                        onRefresh={loadData}
                         sortProdsByBatchExpDate={false}
                         listRef={listRef}
                     />

@@ -146,4 +146,4 @@ const Advenced: React.FC = () => {
     );
 };
 
-export default Advenced;
+export default React.memo(Advenced);
