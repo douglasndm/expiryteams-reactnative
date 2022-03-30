@@ -108,6 +108,7 @@
     "View_ConfirmEmail_Button_Logout": "Sair",
     "View_ConfirmEmail_ResendEmail": "Não recebeu o e-mail? clique aqui para reenviar",
     "View_ConfirmEmail_Error_EmailNotConfirmed": "O E-mail não foi confirmado ainda.",
+    "View_ConfirmEmail_Alert_Success": "O email de confirmação foi reenviado",
 
     "View_RecoveryPassword_PageTitle": "Recuperar senha",
     "View_RecoveryPassword_InputText_Email_Placeholder": "Seu email registrado",

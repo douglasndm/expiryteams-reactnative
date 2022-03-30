@@ -48,10 +48,11 @@ const VerifyEmail: React.FC = () => {
                 });
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsCheckLoading(false);
         }
@@ -62,12 +63,23 @@ const VerifyEmail: React.FC = () => {
     }, [navigate]);
 
     const handleResendConfirmEmail = useCallback(async () => {
-        await resendConfirmationEmail();
-        setResendedEmail(true);
-        showMessage({
-            message: 'O e-mail de confirmação foi reenviado.',
-            type: 'info',
-        });
+        try {
+            setResendedEmail(true);
+            await resendConfirmationEmail();
+            showMessage({
+                message: strings.View_ConfirmEmail_Alert_Success,
+                type: 'info',
+            });
+        } catch (err) {
+            if (err.code !== 'auth/too-many-requests') {
+                setResendedEmail(false);
+            }
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+        }
     }, []);
 
     return (

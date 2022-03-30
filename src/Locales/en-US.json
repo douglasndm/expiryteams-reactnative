@@ -110,6 +110,7 @@
     "View_ConfirmEmail_Button_Logout": "Logout",
     "View_ConfirmEmail_ResendEmail": "Resend e-mail",
     "View_ConfirmEmail_Error_EmailNotConfirmed": "E-mail wasn't confirmed yet.",
+    "View_ConfirmEmail_Alert_Success": "Confirmation e-mail was resended",
 
     "View_RecoveryPassword_PageTitle": "Recovery password",
     "View_RecoveryPassword_InputText_Email_Placeholder": "Your registed e-mail",
