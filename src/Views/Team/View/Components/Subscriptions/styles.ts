@@ -19,4 +19,6 @@ export const SubscriptionTableTitle = styled.Text`
     margin-top: 20px;
 `;
 
-export const SubscriptionInformations = styled.Text``;
+export const SubscriptionInformations = styled.Text`
+    color: ${props => props.theme.colors.text};
+`;

@@ -149,6 +149,10 @@ async function getTeamSubscription(
     return response.data;
 }
 
+async function deleteTeamSubscription(team_id: string): Promise<void> {
+    await api.delete(`/team/${team_id}/subscriptions`);
+}
+
 setup();
 
-export { getTeamSubscription };
+export { getTeamSubscription, deleteTeamSubscription };

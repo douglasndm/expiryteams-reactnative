@@ -13,6 +13,7 @@ import {
     getOfferings,
     makePurchase,
     getTeamSubscription,
+    deleteTeamSubscription,
 } from '~/Functions/Team/Subscriptions';
 import {
     getSelectedTeam,
@@ -63,6 +64,8 @@ const SubscriptionsList: React.FC = () => {
             if (response.length > 0) {
                 setSelected(response[0].package.offeringIdentifier);
             }
+
+            await deleteTeamSubscription(teamContext.id);
 
             await getTeamSubscription(teamContext.id);
         } catch (err) {
