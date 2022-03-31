@@ -1,6 +1,7 @@
 type RoutesParams = {
     Home;
     AddProduct: {
+        code?: string;
         category?: string;
         brand?: string;
         store?: string;

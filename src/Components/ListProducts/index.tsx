@@ -92,7 +92,7 @@ const ListProducts: React.FC<RequestProps> = ({
     }, [products, sortProducts]);
 
     const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct');
+        navigate('AddProduct', {});
     }, [navigate]);
 
     const ListHeader = useCallback(() => {

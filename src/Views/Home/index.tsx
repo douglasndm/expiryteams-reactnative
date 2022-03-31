@@ -19,6 +19,8 @@ import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
+import { FloatButton, Icons } from '~/Components/ListProducts/styles';
+
 import {
     Container,
     InputSearch,
@@ -28,7 +30,9 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
+    const { reset, navigate } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
     const teamContext = useTeam();
 
     const listRef = useRef<FlatList<IProduct>>(null);
@@ -131,6 +135,19 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
+    const handleNavigateAddProduct = useCallback(() => {
+        if (searchString && searchString !== '') {
+            const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
+            const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+            navigate('AddProduct', {
+                code: query,
+            });
+        } else {
+            navigate('AddProduct', {});
+        }
+    }, [navigate, searchString]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -165,7 +182,17 @@ const Home: React.FC = () => {
                         products={productsSearch}
                         onRefresh={loadData}
                         sortProdsByBatchExpDate={false}
+                        deactiveFloatButton
                         listRef={listRef}
+                    />
+
+                    <FloatButton
+                        icon={() => (
+                            <Icons name="add-outline" color="white" size={22} />
+                        )}
+                        small
+                        label={strings.View_FloatMenu_AddProduct}
+                        onPress={handleNavigateAddProduct}
                     />
                 </Container>
             )}

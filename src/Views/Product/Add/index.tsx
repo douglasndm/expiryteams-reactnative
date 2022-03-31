@@ -50,6 +50,7 @@ import {
 interface Request {
     route: {
         params: {
+            code?: string;
             category?: string;
             brand?: string;
             store?: string;
@@ -78,11 +79,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     }, []);
 
     const [name, setName] = useState('');
-    const [code, setCode] = useState('');
     const [batch, setBatch] = useState('');
     const [amount, setAmount] = useState('');
     const [price, setPrice] = useState<number | null>(null);
     const [expDate, setExpDate] = useState(new Date());
+
+    const [code, setCode] = useState(() => {
+        if (route.params.code) {
+            return route.params.code;
+        }
+        return '';
+    });
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         () => {
