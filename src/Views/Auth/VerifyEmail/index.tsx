@@ -91,7 +91,7 @@ const VerifyEmail: React.FC = () => {
         return () => {
             setIsMounted(false);
         };
-    });
+    }, []);
 
     return (
         <Container>
