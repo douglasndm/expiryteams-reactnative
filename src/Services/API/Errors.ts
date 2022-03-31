@@ -36,6 +36,9 @@ async function errorsHandler(error: any): Promise<void> {
                     break;
                 case 3:
                     err = strings.API_Error_Code3;
+                    reset({
+                        routesNames: ['Logout'],
+                    });
                     break;
                 case 4:
                     err = strings.API_Error_Code4;
