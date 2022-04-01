@@ -25,7 +25,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const teamContext = useTeam();
 
     const navigateToAddProduct = useCallback(() => {
-        navigation.navigate('AddProduct');
+        navigation.navigate('AddProduct', {});
     }, [navigation]);
 
     const navigateToCategories = useCallback(() => {
