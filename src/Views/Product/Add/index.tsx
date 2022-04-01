@@ -210,11 +210,14 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const findProductByEAN = useCallback(async (ean_code: string) => {
         if (ean_code.length < 8) return;
 
-        if (ean_code !== '') {
+        if (ean_code.trim() !== '') {
             // if (getLocales()[0].languageCode === 'pt') {
             try {
                 setIsFindingProd(true);
-                const response = await findProductByCode(ean_code);
+                const queryWithoutLetters = ean_code.replace(/\D/g, '').trim();
+                const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+                const response = await findProductByCode(query);
 
                 if (response !== null) {
                     setProductFinded(true);
