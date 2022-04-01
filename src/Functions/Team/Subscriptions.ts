@@ -153,6 +153,18 @@ async function deleteTeamSubscription(team_id: string): Promise<void> {
     await api.delete(`/team/${team_id}/subscriptions`);
 }
 
+async function isSubscriptionActive(team_id: string): Promise<boolean> {
+    const response = await api.get<Subscription[]>(
+        `/team/${team_id}/subscriptions/store`
+    );
+
+    const anyActive = response.data.find(
+        sub => sub.subscription.unsubscribe_detected_at === null
+    );
+
+    return !!anyActive;
+}
+
 setup();
 
-export { getTeamSubscription, deleteTeamSubscription };
+export { getTeamSubscription, deleteTeamSubscription, isSubscriptionActive };

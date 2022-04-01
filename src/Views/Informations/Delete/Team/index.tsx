@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import { getAllSubscriptionsFromRevenue } from '~/Functions/Team/Subscriptions';
+import { isSubscriptionActive } from '~/Functions/Team/Subscriptions';
 import { deleteTeam } from '~/Functions/Team';
 
 import Header from '~/Components/Header';
@@ -26,10 +27,12 @@ import {
 } from './styles';
 
 const Team: React.FC = () => {
-    const { navigate, reset } = useNavigation();
+    const { navigate, reset } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
     const teamContext = useTeam();
 
-    const [activesSubs, setActivesSubs] = useState<Subscription[]>([]);
+    const [activesSubs, setActivesSubs] = useState<boolean>(false);
 
     const [agreeConsequence, setAgreeConsequence] = useState<boolean>(false);
     const [enableExcel, setEnableExcel] = useState<boolean>(false);
@@ -43,18 +46,9 @@ const Team: React.FC = () => {
             return;
         }
 
-        const response = await getAllSubscriptionsFromRevenue({
-            team_id: teamContext.id,
-        });
+        const isActive = await isSubscriptionActive(teamContext.id);
 
-        const actives = response.filter(sub => {
-            if (sub.subscription.unsubscribe_detected_at !== null) {
-                return false;
-            }
-            return true;
-        });
-
-        setActivesSubs(actives);
+        setActivesSubs(isActive);
     }, [teamContext.id]);
 
     const handleChangeAgree = useCallback(() => {
@@ -77,10 +71,11 @@ const Team: React.FC = () => {
 
             setAllSubsCanceled(true);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsCheckingSub(false);
         }
@@ -104,19 +99,20 @@ const Team: React.FC = () => {
                 routes: [{ name: 'TeamList' }],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsDeleting(false);
         }
     }, [reset, teamContext.id]);
 
     const handleGoToStore = useCallback(async () => {
-        if (activesSubs.length > 0) {
+        if (activesSubs) {
             const storeLink =
-                activesSubs[0].subscription.store === 'app_store'
+                Platform.OS === 'ios'
                     ? 'https://apps.apple.com/account/subscriptions'
                     : 'https://play.google.com/store/account/subscriptions';
 
@@ -126,7 +122,7 @@ const Team: React.FC = () => {
 
     useEffect(() => {
         loadSubscriptions();
-    }, [loadSubscriptions]);
+    }, []);
 
     return (
         <Container>
@@ -185,7 +181,7 @@ const Team: React.FC = () => {
                         antes de apagar o time
                     </BlockDescription>
 
-                    {activesSubs.length > 0 && (
+                    {activesSubs && (
                         <Link onPress={handleGoToStore}>Ir para a loja</Link>
                     )}
 
@@ -201,7 +197,7 @@ const Team: React.FC = () => {
                         allSubsCanceled &&
                         agreeConsequence &&
                         enableExcel &&
-                        activesSubs.length <= 0
+                        !activesSubs
                     }
                 >
                     <BlockTitle>Concluir</BlockTitle>
