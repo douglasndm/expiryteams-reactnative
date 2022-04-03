@@ -2,12 +2,16 @@ import api from '~/Services/API';
 
 interface getProductProps {
     productId: string;
+    team_id: string;
 }
 
 export async function getProduct({
     productId,
+    team_id,
 }: getProductProps): Promise<IProduct> {
-    const response = await api.get<IProduct>(`/products/${productId}`);
+    const response = await api.get<IProduct>(
+        `/team/${team_id}/products/${productId}`
+    );
 
     return response.data;
 }
@@ -35,31 +39,38 @@ export async function createProduct({
 }
 
 interface updateProductProps {
+    team_id: string;
     product: Omit<IProduct, 'batches' | 'categories'>;
     categories: Array<string>;
 }
 
 export async function updateProduct({
+    team_id,
     product,
     categories,
 }: updateProductProps): Promise<IProduct> {
-    const response = await api.put<IProduct>(`/products/${product.id}`, {
-        name: product.name,
-        code: product.code,
-        brand: product.brand,
-        store_id: product.store,
-        categories,
-    });
+    const response = await api.put<IProduct>(
+        `/team/${team_id}/products/${product.id}`,
+        {
+            name: product.name,
+            code: product.code,
+            brand: product.brand,
+            store_id: product.store,
+            categories,
+        }
+    );
 
     return response.data;
 }
 
 interface deleteProductProps {
+    team_id: string;
     product_id: string;
 }
 
 export async function deleteProduct({
+    team_id,
     product_id,
 }: deleteProductProps): Promise<void> {
-    await api.delete<IProduct>(`/products/${product_id}`);
+    await api.delete<IProduct>(`/team/${team_id}/products/${product_id}`);
 }

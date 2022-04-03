@@ -3,7 +3,7 @@ import api from '~/Services/API';
 export async function getAllBrands({
     team_id,
 }: getAllBrandsProps): Promise<Array<IBrand>> {
-    const response = await api.get<IBrand[]>(`/brands/team/${team_id}`);
+    const response = await api.get<IBrand[]>(`/team/${team_id}/brands`);
 
     return response.data;
 }
@@ -12,7 +12,7 @@ export async function createBrand({
     brandName,
     team_id,
 }: createBrandProps): Promise<IBrand> {
-    const response = await api.post<IBrand>(`/brand`, {
+    const response = await api.post<IBrand>(`/team/${team_id}/brands`, {
         name: brandName,
         team_id,
     });
@@ -20,8 +20,11 @@ export async function createBrand({
     return response.data;
 }
 
-export async function updateBrand(brand: IBrand): Promise<IBrand> {
-    const response = await api.put<IBrand>(`/brand`, {
+export async function updateBrand({
+    brand,
+    team_id,
+}: updateBrandProps): Promise<IBrand> {
+    const response = await api.put<IBrand>(`/team/${team_id}/brands`, {
         brand_id: brand.id,
         name: brand.name,
     });
@@ -47,6 +50,7 @@ export async function getAllProductsByBrand({
 
 export async function deleteBrand({
     brand_id,
+    team_id,
 }: deleteBrandProps): Promise<void> {
-    await api.delete(`/brand/${brand_id}`);
+    await api.delete(`/team/${team_id}/brands/${brand_id}`);
 }

@@ -12,6 +12,12 @@ interface createBrandProps {
     team_id: string;
 }
 
+interface updateBrandProps {
+    brand: IBrand;
+    team_id: string;
+}
+
 interface deleteBrandProps {
     brand_id: string;
+    team_id: string;
 }

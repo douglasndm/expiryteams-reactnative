@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
+
+import { useTeam } from '~/Contexts/TeamContext';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -40,7 +43,9 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-    const { navigate } = useNavigation();
+    const teamContext = useTeam();
+
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const productId = useMemo(() => {
         return route.params.id;
@@ -54,9 +59,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
 
     const loadData = useCallback(async () => {
-        setIsLoading(true);
+        if (!teamContext.id) return;
         try {
-            const response = await getProduct({ productId });
+            setIsLoading(true);
+            const response = await getProduct({
+                productId,
+                team_id: teamContext.id,
+            });
 
             setProduct(response);
         } catch (err) {
@@ -68,7 +77,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         } finally {
             setIsLoading(false);
         }
-    }, [productId]);
+    }, [productId, teamContext.id]);
 
     const addNewLote = useCallback(() => {
         navigate('AddBatch', { productId });
