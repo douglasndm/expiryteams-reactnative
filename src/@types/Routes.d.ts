@@ -63,7 +63,7 @@ type RoutesParams = {
 
     User;
     UserDetails: {
-        user: IUserInTeam;
+        user: string;
     };
     Logout;
 

@@ -1,5 +1,5 @@
 interface IUser {
-    id?: string;
+    id: string;
     name?: string | null;
     lastName?: string | null;
     email: string;
@@ -8,8 +8,8 @@ interface IUser {
 }
 
 interface IUserInTeam {
-    uuid: string;
     id: string;
+    fid: string;
     name?: string | null;
     lastName?: string | null;
     email: string;
