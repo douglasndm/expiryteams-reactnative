@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '~/Locales';
 
@@ -25,10 +26,10 @@ import {
 } from './styles';
 
 const Subscription: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const handleNavigateHome = useCallback(() => {
-        navigate('Routes', { screen: 'Home' });
+        navigate('Home');
     }, [navigate]);
 
     const navigateToTerms = useCallback(async () => {

@@ -32,10 +32,10 @@ const List: React.FC = () => {
     const { navigate, reset } = useNavigation<
         StackNavigationProp<RoutesParams>
     >();
-
     const teamContext = useTeam();
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isMounted, setIsMounted] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [teams, setTeams] = useState<Array<IUserRoles>>([]);
 
@@ -85,6 +85,12 @@ const List: React.FC = () => {
                     return;
                 }
 
+                let routeName = 'Home';
+
+                if (!userRoles.team.isActive) {
+                    routeName = 'ViewTeam';
+                }
+
                 reset({
                     routes: [
                         {
@@ -92,7 +98,7 @@ const List: React.FC = () => {
                             state: {
                                 routes: [
                                     {
-                                        name: 'Home',
+                                        name: routeName,
                                     },
                                 ],
                             },
@@ -105,51 +111,50 @@ const List: React.FC = () => {
     );
 
     const loadData = useCallback(async () => {
-        if (!teamContext.isLoading) {
-            try {
-                setIsLoading(true);
+        if (!isMounted) return;
+        try {
+            setIsLoading(true);
 
-                const response = await getUserTeams();
+            const response = await getUserTeams();
 
-                response.forEach(item => {
-                    if (item.role.toLowerCase() === 'manager') {
-                        setIsManager(true);
-                    }
-                });
-
-                const sortedTeams = response.sort((team1, team2) => {
-                    if (team1.team.isActive && !team2.team.isActive) {
-                        return 1;
-                    }
-                    if (team1.team.isActive && team2.team.isActive) {
-                        return 0;
-                    }
-                    return -1;
-                });
-                setTeams(sortedTeams);
-
-                if (sortedTeams.length > 0) {
-                    if (sortedTeams[0].role.toLowerCase() === 'manager') {
-                        handleSelectTeam(sortedTeams[0]);
-                    } else if (
-                        !!sortedTeams[0].status &&
-                        sortedTeams[0].status.toLowerCase() !== 'pending'
-                    ) {
-                        handleSelectTeam(sortedTeams[0]);
-                    }
+            response.forEach(item => {
+                if (item.role.toLowerCase() === 'manager') {
+                    setIsManager(true);
                 }
-            } catch (err) {
-                if (err instanceof Error) {
-                    showMessage({
-                        message: err.message,
-                        type: 'danger',
-                    });
+            });
+
+            const sortedTeams = response.sort((team1, team2) => {
+                if (team1.team.isActive && !team2.team.isActive) {
+                    return 1;
                 }
-            } finally {
-                setIsLoading(false);
+                if (team1.team.isActive && team2.team.isActive) {
+                    return 0;
+                }
+                return -1;
+            });
+            setTeams(sortedTeams);
+
+            if (sortedTeams.length > 0) {
+                if (sortedTeams[0].role.toLowerCase() === 'manager') {
+                    handleSelectTeam(sortedTeams[0]);
+                } else if (
+                    !!sortedTeams[0].status &&
+                    sortedTeams[0].status.toLowerCase() !== 'pending'
+                ) {
+                    handleSelectTeam(sortedTeams[0]);
+                }
             }
+        } catch (err) {
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
+        } finally {
+            setIsLoading(false);
         }
-    }, [handleSelectTeam, teamContext.isLoading]);
+    }, [handleSelectTeam, isMounted]);
 
     interface renderProps {
         item: IUserRoles;
@@ -211,7 +216,9 @@ const List: React.FC = () => {
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+
+        return () => setIsMounted(false);
+    }, []);
 
     return isLoading ? (
         <Loading />

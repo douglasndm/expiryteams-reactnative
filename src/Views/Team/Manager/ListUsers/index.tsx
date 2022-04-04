@@ -66,11 +66,24 @@ const ListUsers: React.FC = () => {
 
         try {
             setIsLoading(true);
-            const response = await getAllUsersFromTeam({
+            const roles = await getAllUsersFromTeam({
                 team_id: teamContext.id,
             });
 
-            setUsers(response);
+            const sorted = roles.sort((role1, role2) => {
+                const r1 = role1.role.toLowerCase();
+                const r2 = role2.role.toLowerCase();
+
+                if (r1 === 'manager' && r2 !== 'manager') {
+                    return -1;
+                }
+                if (r2 !== 'manager' && r2 === 'manager') {
+                    return 1;
+                }
+                return 0;
+            });
+
+            setUsers(sorted);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -84,7 +97,7 @@ const ListUsers: React.FC = () => {
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+    }, []);
 
     const handleOnTextChange = useCallback((value: string) => {
         setInputHasError(false);
@@ -93,14 +106,7 @@ const ListUsers: React.FC = () => {
     }, []);
 
     const handleAddUser = useCallback(async () => {
-        if (!isMounted) return;
-        if (!teamContext.id) {
-            showMessage({
-                message: 'Team is not selected',
-                type: 'danger',
-            });
-            return;
-        }
+        if (!isMounted || !teamContext.id) return;
 
         try {
             if (!newUserEmail) {
@@ -118,12 +124,14 @@ const ListUsers: React.FC = () => {
             });
 
             const newUser: IUserInTeam = {
-                id: userInTeam.user.firebaseUid,
+                id: userInTeam.user.id,
+                fid: userInTeam.user.firebaseUid,
                 name: userInTeam.user.name,
                 lastName: userInTeam.user.lastName,
                 email: userInTeam.user.email,
                 role: userInTeam.role,
                 code: userInTeam.code,
+                stores: [],
                 status: 'Pending',
             };
 
@@ -181,16 +189,18 @@ const ListUsers: React.FC = () => {
                     isPending={isPending}
                 >
                     <UserInfoContainer>
+                        {!!item.name && (
+                            <TeamItemTitle>
+                                {item.name} {!!item.lastName && item.lastName}
+                            </TeamItemTitle>
+                        )}
+
+                        <UserEmail>{item.email}</UserEmail>
                         <TeamItemRole>
                             {isPending
                                 ? strings.View_UsersInTeam_List_PendingStatus
                                 : item.role.toUpperCase()}
                         </TeamItemRole>
-                        {!!item.name && (
-                            <TeamItemTitle>{item.name}</TeamItemTitle>
-                        )}
-
-                        <UserEmail>{item.email}</UserEmail>
                     </UserInfoContainer>
                 </TeamItemContainer>
             );

@@ -7,6 +7,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { useTeam } from '~/Contexts/TeamContext';
+
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
@@ -37,6 +39,8 @@ interface Props {
 }
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
+    const teamContext = useTeam();
+
     const { productId } = route.params;
 
     const { replace } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -55,17 +59,19 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         return 'BRL';
     }, []);
 
+    const [isMounted, setIsMounted] = useState(true);
     const [isAdding, setIsAdding] = useState<boolean>(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState<string>('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
 
     const handleSave = useCallback(async () => {
+        if (!isMounted) return;
         if (!lote || lote.trim() === '') {
             showMessage({
                 message: strings.View_AddBatch_AlertTypeBatchName,
@@ -81,7 +87,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     name: lote,
                     amount: Number(amount),
                     exp_date: String(expDate),
-                    price,
+                    price: price || undefined,
                     status: 'unchecked',
                 },
             });
@@ -103,20 +109,23 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         } finally {
             setIsAdding(false);
         }
-    }, [lote, productId, amount, expDate, price, replace]);
+    }, [isMounted, lote, productId, amount, expDate, price, replace]);
 
     const loadData = useCallback(async () => {
-        const prod = await getProduct({ productId });
+        if (!isMounted || !teamContext.id) return;
+        const prod = await getProduct({ productId, team_id: teamContext.id });
 
         if (prod) {
             setName(prod.name);
 
             if (prod.code) setCode(prod.code);
         }
-    }, [productId]);
+    }, [isMounted, productId, teamContext.id]);
 
     useEffect(() => {
         loadData();
+
+        return () => setIsMounted(false);
     }, []);
 
     const handleAmountChange = useCallback(value => {

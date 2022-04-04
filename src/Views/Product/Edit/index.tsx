@@ -163,7 +163,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     }, [isMounted, product, teamContext.id]);
 
     const updateProd = useCallback(async () => {
-        if (!isMounted) return;
+        if (!isMounted || !teamContext.id) return;
         if (!name || name.trim() === '') {
             setNameFieldError(true);
             return;
@@ -177,6 +177,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             }
 
             await updateProduct({
+                team_id: teamContext.id,
                 product: {
                     id: product.id,
                     name,
@@ -211,12 +212,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         selectedBrand,
         selectedCategory,
         selectedStore,
+        teamContext.id,
     ]);
 
     const handleDeleteProduct = useCallback(async () => {
-        if (!isMounted) return;
+        if (!isMounted || !teamContext.id) return;
         try {
-            await deleteProduct({ product_id: product.id });
+            await deleteProduct({
+                team_id: teamContext.id,
+                product_id: product.id,
+            });
 
             showMessage({
                 message: strings.View_Success_ProductDeleted,
@@ -235,7 +240,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         } finally {
             setDeleteComponentVisible(false);
         }
-    }, [isMounted, product.id, reset]);
+    }, [isMounted, product.id, reset, teamContext.id]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);

@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { format, parseISO, startOfDay, compareAsc } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
 
-import { getTeamSubscriptions } from '~/Functions/Team/Subscriptions';
-import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
+import { useTeam } from '~/Contexts/TeamContext';
+
+import { getTeamSubscription } from '~/Functions/Team/Subscriptions';
 
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
@@ -16,9 +17,7 @@ import {
     SubscriptionDescription,
     SubscriptionTableTitle,
     SubscriptionContainer,
-    SubscriptionsTable,
-    SubscriptionHeader,
-    SubscriptionText,
+    SubscriptionInformations,
 } from './styles';
 
 const Subscriptions: React.FC = () => {
@@ -29,36 +28,19 @@ const Subscriptions: React.FC = () => {
         setSubscription,
     ] = useState<ITeamSubscription | null>();
 
+    const teamContext = useTeam();
+
     const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const loadData = useCallback(async () => {
-        if (!isMounted) return;
+        if (!isMounted || !teamContext.id) return;
         try {
             setIsLoading(true);
-            const selectedTeam = await getSelectedTeam();
 
-            if (!selectedTeam) {
-                return;
-            }
+            const sub = await getTeamSubscription(teamContext.id);
 
-            const response = await getTeamSubscriptions({
-                team_id: selectedTeam.userRole.team.id,
-            });
-
-            if (response) {
-                if (
-                    compareAsc(
-                        startOfDay(new Date()),
-                        startOfDay(parseISO(String(response.expireIn)))
-                    ) >= 0
-                ) {
-                    setSubscription(response);
-                    return;
-                }
-            }
-
-            setSubscription(null);
+            setSubscription(sub);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -68,11 +50,11 @@ const Subscriptions: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [isMounted]);
+    }, [isMounted, teamContext.id]);
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+    }, []);
 
     useEffect(() => {
         return () => {
@@ -108,42 +90,12 @@ const Subscriptions: React.FC = () => {
                     </SubscriptionTableTitle>
 
                     <SubscriptionContainer>
-                        <SubscriptionsTable>
-                            <SubscriptionsTable.Header>
-                                <SubscriptionHeader>#</SubscriptionHeader>
-                                <SubscriptionHeader>Membros</SubscriptionHeader>
-                                <SubscriptionHeader>
-                                    Expira em
-                                </SubscriptionHeader>
-                            </SubscriptionsTable.Header>
-
-                            {!!subscription && (
-                                <SubscriptionsTable.Row>
-                                    <SubscriptionsTable.Cell>
-                                        <SubscriptionText>
-                                            Plano
-                                        </SubscriptionText>
-                                    </SubscriptionsTable.Cell>
-                                    <SubscriptionsTable.Cell>
-                                        <SubscriptionText>
-                                            {subscription.membersLimit}
-                                        </SubscriptionText>
-                                    </SubscriptionsTable.Cell>
-                                    <SubscriptionsTable.Cell>
-                                        <SubscriptionText>
-                                            {format(
-                                                parseISO(
-                                                    String(
-                                                        subscription.expireIn
-                                                    )
-                                                ),
-                                                'dd/MM/yyyy'
-                                            )}
-                                        </SubscriptionText>
-                                    </SubscriptionsTable.Cell>
-                                </SubscriptionsTable.Row>
-                            )}
-                        </SubscriptionsTable>
+                        <SubscriptionInformations>{`Sua assinatura possui ${
+                            subscription.membersLimit
+                        } membros e está ativa até ${format(
+                            parseISO(String(subscription.expireIn)),
+                            'dd/MM/yyyy'
+                        )}`}</SubscriptionInformations>
                     </SubscriptionContainer>
                 </>
             )}

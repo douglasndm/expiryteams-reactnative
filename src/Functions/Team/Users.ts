@@ -47,8 +47,8 @@ interface putUserInTeamProps {
 }
 
 interface putUserInTeamResponse {
-    id: string;
     user: IUser;
+    team: ITeam;
     role: string;
     code: string;
     status: string;

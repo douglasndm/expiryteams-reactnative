@@ -3,10 +3,13 @@ import { destroySession } from '@utils/Auth/Session';
 import strings from '~/Locales';
 
 import { reset } from '~/References/Navigation';
+
 import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
+import AppError from '~/Errors/AppError';
 
 async function errorsHandler(error: any): Promise<void> {
     let err = '';
+    let code: number | undefined;
 
     if (error.response) {
         // Request made and server responded
@@ -23,6 +26,7 @@ async function errorsHandler(error: any): Promise<void> {
                 err = message;
             }
 
+            code = Number(errorCode);
             switch (errorCode) {
                 case 1:
                     err = strings.API_Error_Code1;
@@ -32,6 +36,9 @@ async function errorsHandler(error: any): Promise<void> {
                     break;
                 case 3:
                     err = strings.API_Error_Code3;
+                    reset({
+                        routesNames: ['Logout'],
+                    });
                     break;
                 case 4:
                     err = strings.API_Error_Code4;
@@ -39,10 +46,12 @@ async function errorsHandler(error: any): Promise<void> {
                 case 5:
                     // Subscription is not active
                     err = strings.API_Error_Code5;
+                    /*
                     reset({
                         routeHandler: 'Routes',
                         routesNames: ['ViewTeam'],
                     });
+                    */
                     break;
                 case 6:
                     err = strings.API_Error_Code6;
@@ -103,6 +112,12 @@ async function errorsHandler(error: any): Promise<void> {
                     err = strings.API_Error_Code21;
                     break;
                 case 22:
+                    // Device not allowed, login anywhere else
+                    await destroySession();
+                    reset({
+                        routeHandler: 'Auth',
+                        routesNames: ['Login'],
+                    });
                     err = strings.API_Error_Code22;
                     break;
                 case 23:
@@ -127,21 +142,27 @@ async function errorsHandler(error: any): Promise<void> {
                     }
                     break;
             }
+        } else if (error.response.message) {
+            err = error.response.message;
         }
 
         if (error.response.status && error.response.status === 403) {
             await destroySession();
         }
-
-        throw new Error(err);
     } else if (error.request) {
         err = 'Falha ao tentar se conectar ao servidor';
 
         console.log('The request was made but no response was received');
         console.error(error.request);
     }
-    if (error instanceof Error) {
-        throw new Error(err);
+
+    if (!!err && err !== '') {
+        throw new AppError({
+            message: err,
+            errorCode: code,
+        });
+    } else if (error instanceof Error) {
+        throw new Error(error.message);
     } else {
         Promise.reject(error);
     }

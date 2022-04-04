@@ -1,6 +1,7 @@
 type RoutesParams = {
     Home;
     AddProduct: {
+        code?: string;
         category?: string;
         brand?: string;
         store?: string;
@@ -62,7 +63,7 @@ type RoutesParams = {
 
     User;
     UserDetails: {
-        user: IUserInTeam;
+        user: string;
     };
     Logout;
 

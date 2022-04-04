@@ -53,10 +53,6 @@ const About: React.FC = () => {
         await Linking.openURL('https://www.twitter.com/douglasndmdev/');
     }, []);
 
-    const handleNaviFB = useCallback(async () => {
-        await Linking.openURL('https://www.facebook.com/douglasndmdev/');
-    }, []);
-
     const handleNaviMail = useCallback(async () => {
         await Linking.openURL('mailto:suporte@douglasndm.dev');
     }, []);
@@ -141,7 +137,6 @@ const About: React.FC = () => {
                     onPress={handleLinkedinPress}
                 />
                 <SocialIcon name="logo-twitter" onPress={handleNaviTwitter} />
-                <SocialIcon name="logo-facebook" onPress={handleNaviFB} />
                 <SocialIcon name="mail-outline" onPress={handleNaviMail} />
             </SocialContainer>
         </Container>

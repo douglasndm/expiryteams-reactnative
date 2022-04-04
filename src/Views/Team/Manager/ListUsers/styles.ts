@@ -40,6 +40,7 @@ export const UserInfoContainer = styled.View`
 export const TeamItemTitle = styled.Text`
     color: ${props => props.theme.colors.text};
     font-size: 18px;
+    font-weight: bold;
 `;
 
 export const UserEmail = styled.Text`
@@ -50,8 +51,7 @@ export const UserEmail = styled.Text`
 
 export const TeamItemRole = styled.Text`
     color: ${props => props.theme.colors.text};
-    font-size: 15px;
-    margin-bottom: 2px;
+    font-size: 14px;
 `;
 
 export const AddCategoryContent = styled.View`

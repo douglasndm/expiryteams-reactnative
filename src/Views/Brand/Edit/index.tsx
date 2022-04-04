@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
@@ -28,7 +29,7 @@ interface Props {
 }
 const Edit: React.FC = () => {
     const { params } = useRoute();
-    const { reset } = useNavigation();
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const teamContext = useTeam();
 
@@ -74,14 +75,18 @@ const Edit: React.FC = () => {
     }, []);
 
     const handleUpdate = useCallback(async () => {
+        if (!teamContext.id) return;
         if (!name) {
             setErrorName('Digite o nome da marca');
             return;
         }
 
         await updateBrand({
-            id: routeParams.brand_id,
-            name,
+            brand: {
+                id: routeParams.brand_id,
+                name,
+            },
+            team_id: teamContext.id,
         });
 
         showMessage({
@@ -97,12 +102,14 @@ const Edit: React.FC = () => {
                 },
             ],
         });
-    }, [name, routeParams.brand_id, reset]);
+    }, [teamContext.id, name, routeParams.brand_id, reset]);
 
     const handleDeleteBrand = useCallback(async () => {
+        if (!teamContext.id) return;
         try {
             await deleteBrand({
                 brand_id: routeParams.brand_id,
+                team_id: teamContext.id,
             });
 
             showMessage({
@@ -125,7 +132,7 @@ const Edit: React.FC = () => {
                     type: 'danger',
                 });
         }
-    }, [reset, routeParams.brand_id]);
+    }, [reset, routeParams.brand_id, teamContext.id]);
 
     const handleSwitchDeleteVisible = useCallback(() => {
         setDeleteComponentVisible(!deleteComponentVisible);

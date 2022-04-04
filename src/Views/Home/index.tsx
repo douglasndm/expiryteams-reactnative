@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
 import { FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -10,10 +12,14 @@ import { getAllProducts } from '~/Functions/Products/Products';
 import { searchProducts } from '~/Functions/Products/Search';
 import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
+import AppError from '~/Errors/AppError';
+
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
+
+import { FloatButton, Icons } from '~/Components/ListProducts/styles';
 
 import {
     Container,
@@ -24,6 +30,9 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+    const { reset, navigate } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
     const teamContext = useTeam();
 
     const listRef = useRef<FlatList<IProduct>>(null);
@@ -39,7 +48,8 @@ const Home: React.FC = () => {
         false
     );
 
-    const getProduts = useCallback(async () => {
+    const loadData = useCallback(async () => {
+        if (!isMounted) return;
         try {
             setIsLoading(true);
 
@@ -55,6 +65,17 @@ const Home: React.FC = () => {
 
             setProducts(productsResponse);
         } catch (err) {
+            if (err instanceof AppError) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+                if (err.errorCode === 5) {
+                    reset({
+                        routes: [{ name: 'ViewTeam' }],
+                    });
+                }
+            }
             if (err instanceof Error)
                 showMessage({
                     message: err.message,
@@ -63,17 +84,15 @@ const Home: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [isMounted, reset]);
 
     useEffect(() => {
-        if (isMounted) {
-            getProduts();
-        }
+        loadData();
 
         return () => {
             setIsMounted(false);
         };
-    }, [getProduts, isMounted]);
+    }, []);
 
     useEffect(() => {
         if (isMounted) {
@@ -116,6 +135,19 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
+    const handleNavigateAddProduct = useCallback(() => {
+        if (searchString && searchString !== '') {
+            const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
+            const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+            navigate('AddProduct', {
+                code: query,
+            });
+        } else {
+            navigate('AddProduct', {});
+        }
+    }, [navigate, searchString]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -148,9 +180,19 @@ const Home: React.FC = () => {
 
                     <ListProducts
                         products={productsSearch}
-                        onRefresh={getProduts}
+                        onRefresh={loadData}
                         sortProdsByBatchExpDate={false}
+                        deactiveFloatButton
                         listRef={listRef}
+                    />
+
+                    <FloatButton
+                        icon={() => (
+                            <Icons name="add-outline" color="white" size={22} />
+                        )}
+                        small
+                        label={strings.View_FloatMenu_AddProduct}
+                        onPress={handleNavigateAddProduct}
                     />
                 </Container>
             )}

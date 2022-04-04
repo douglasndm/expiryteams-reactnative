@@ -6,7 +6,10 @@ import api from '~/Services/API';
 
 import { getSelectedTeam } from './SelectedTeam';
 
-import { CatPackage } from '~/@types/Functions/Subscriptions';
+import {
+    CatPackage,
+    makePurchaseProps,
+} from '~/@types/Functions/Subscriptions';
 
 async function setup() {
     Purchases.setDebugLogsEnabled(true);
@@ -117,6 +120,9 @@ export async function makePurchase({
 
         await Purchases.purchasePackage(pack, upgrade);
 
+        // Apaga todas as assinaturas antigas
+        await api.delete(`/team/${team_id}/subscriptions`);
+
         // Verificar com o servidor se a compra foi concluida
         // Liberar funções no app
         const response = await api.get<ITeamSubscription>(
@@ -125,32 +131,40 @@ export async function makePurchase({
 
         return response.data;
     } catch (err) {
-        if (!err.userCancelled) {
+        if (err.userCancelled) {
+            console.log('User canceled purchase');
+        } else if (err instanceof Error) {
             throw new Error(err.message);
-        } else throw new Error(err.message);
+        }
     }
 }
 
-export async function getTeamSubscriptions({
-    team_id,
-}: getTeamSubscriptionsProps): Promise<ITeamSubscription | null> {
+async function getTeamSubscription(
+    team_id: string
+): Promise<ITeamSubscription> {
     const response = await api.get<ITeamSubscription>(
         `/team/${team_id}/subscriptions`
-    );
-
-    if (response.data) return response.data;
-
-    return null;
-}
-
-export async function getAllSubscriptionsFromRevenue({
-    team_id,
-}: getTeamSubscriptionsProps): Promise<Subscription[]> {
-    const response = await api.get<Subscription[]>(
-        `/team/${team_id}/subscriptions/recheck`
     );
 
     return response.data;
 }
 
+async function deleteTeamSubscription(team_id: string): Promise<void> {
+    await api.delete(`/team/${team_id}/subscriptions`);
+}
+
+async function isSubscriptionActive(team_id: string): Promise<boolean> {
+    const response = await api.get<Subscription[]>(
+        `/team/${team_id}/subscriptions/store`
+    );
+
+    const anyActive = response.data.find(
+        sub => sub.subscription.unsubscribe_detected_at === null
+    );
+
+    return !!anyActive;
+}
+
 setup();
+
+export { getTeamSubscription, deleteTeamSubscription, isSubscriptionActive };

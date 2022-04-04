@@ -7,11 +7,13 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
+import { CatPackage } from '~/@types/Functions/Subscriptions';
+
 import {
     getOfferings,
     makePurchase,
-    CatPackage,
-    getTeamSubscriptions,
+    getTeamSubscription,
+    deleteTeamSubscription,
 } from '~/Functions/Team/Subscriptions';
 import {
     getSelectedTeam,
@@ -63,9 +65,9 @@ const SubscriptionsList: React.FC = () => {
                 setSelected(response[0].package.offeringIdentifier);
             }
 
-            await getTeamSubscriptions({
-                team_id: teamContext.id,
-            });
+            await deleteTeamSubscription(teamContext.id);
+
+            await getTeamSubscription(teamContext.id);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -156,7 +158,7 @@ const SubscriptionsList: React.FC = () => {
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+    }, []);
 
     useEffect(() => {
         return () => {
