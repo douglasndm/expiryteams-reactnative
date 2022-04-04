@@ -7,6 +7,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { useTeam } from '~/Contexts/TeamContext';
+
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
@@ -37,6 +39,8 @@ interface Props {
 }
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
+    const teamContext = useTeam();
+
     const { productId } = route.params;
 
     const { replace } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -108,15 +112,15 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     }, [isMounted, lote, productId, amount, expDate, price, replace]);
 
     const loadData = useCallback(async () => {
-        if (!isMounted) return;
-        const prod = await getProduct({ productId });
+        if (!isMounted || !teamContext.id) return;
+        const prod = await getProduct({ productId, team_id: teamContext.id });
 
         if (prod) {
             setName(prod.name);
 
             if (prod.code) setCode(prod.code);
         }
-    }, [isMounted, productId]);
+    }, [isMounted, productId, teamContext.id]);
 
     useEffect(() => {
         loadData();

@@ -19,17 +19,6 @@ export const PageHeader = styled.View`
     align-items: center;
 `;
 
-export const PageTitleContainer = styled.View`
-    flex-direction: row;
-    align-items: center;
-`;
-
-export const PageTitle = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.text};
-`;
-
 export const PageContent = styled.View`
     padding: 15px 20px 0;
     flex: 1;

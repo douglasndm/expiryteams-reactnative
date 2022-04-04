@@ -18,7 +18,7 @@ import {
 } from '~/Functions/Team/Stores/User';
 
 import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {
@@ -29,8 +29,6 @@ import {
 import {
     Container,
     PageHeader,
-    PageTitleContainer,
-    PageTitle,
     PageContent,
     UserName,
     UserInfo,
@@ -50,7 +48,7 @@ import {
 interface UserDetailsProps {
     route: {
         params: {
-            user: IUserInTeam;
+            user: string;
         };
     };
 }
@@ -58,7 +56,7 @@ interface UserDetailsProps {
 const UserDetails: React.FC<UserDetailsProps> = ({
     route,
 }: UserDetailsProps) => {
-    const { goBack, pop } = useNavigation<StackNavigationProp<RoutesParams>>();
+    const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const authContext = useAuth();
     const teamContext = useTeam();
@@ -208,7 +206,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                     await removeUserFromStore({
                         team_id: teamContext.id,
                         store_id: user.stores[0].id,
-                        user_id: user.uuid,
+                        user_id: user.id,
                     });
                 }
             }
@@ -220,7 +218,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 )
                     await addUserToStore({
                         team_id: teamContext.id,
-                        user_id: user.uuid,
+                        user_id: user.id,
                         store_id: selectedStore,
                     });
             }
@@ -246,16 +244,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         } finally {
             setIsLoading(false);
         }
-    }, [
-        isMounted,
-        pop,
-        selectedRole,
-        selectedStore,
-        teamContext.id,
-        user.id,
-        user.stores,
-        user.uuid,
-    ]);
+    }, [isMounted, pop, selectedRole, selectedStore, teamContext.id, user]);
 
     useEffect(() => {
         loadData();
@@ -274,10 +263,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             <StatusBar />
 
             <PageHeader>
-                <PageTitleContainer>
-                    <BackButton handleOnPress={goBack} />
-                    <PageTitle>{strings.View_UserDetails_PageTitle}</PageTitle>
-                </PageTitleContainer>
+                <Header title={strings.View_UserDetails_PageTitle} noDrawer />
 
                 {enableManagerTools &&
                     authContext.user &&
