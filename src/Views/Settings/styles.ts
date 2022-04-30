@@ -14,6 +14,13 @@ export const SettingsContent = styled.View`
     padding: 0 16px 16px 16px;
 `;
 
+export const SettingContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+`;
+
 export const Category = styled.View`
     margin-top: 20px;
     padding: 15px 15px 25px;

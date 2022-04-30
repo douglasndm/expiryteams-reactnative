@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    useContext,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
@@ -7,6 +13,7 @@ import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
+import PreferencesContext from '~/Contexts/PreferencesContext';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { createProduct } from '~/Functions/Products/Product';
@@ -60,6 +67,8 @@ interface Request {
 
 const Add: React.FC<Request> = ({ route }: Request) => {
     const { replace } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const { preferences } = useContext(PreferencesContext);
     const teamContext = useTeam();
 
     const [isMounted, setIsMounted] = useState(true);
@@ -199,43 +208,58 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         setShowProdFindedModal(!showProdFindedModal);
     }, [showProdFindedModal]);
 
-    const completeInfo = useCallback(() => {
-        if (productNameFinded) {
-            setName(productNameFinded);
+    const completeInfo = useCallback(
+        (prodName?: string) => {
+            if (prodName) {
+                setName(prodName.trim() || '');
 
-            setShowProdFindedModal(false);
-        }
-    }, [productNameFinded]);
+                setShowProdFindedModal(false);
+            } else if (productNameFinded) {
+                setName(productNameFinded.trim());
 
-    const findProductByEAN = useCallback(async (ean_code: string) => {
-        if (ean_code.length < 8) return;
-
-        if (ean_code.trim() !== '') {
-            // if (getLocales()[0].languageCode === 'pt') {
-            try {
-                setIsFindingProd(true);
-                const queryWithoutLetters = ean_code.replace(/\D/g, '').trim();
-                const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
-
-                const response = await findProductByCode(query);
-
-                if (response !== null) {
-                    setProductFinded(true);
-
-                    setProductNameFinded(response.name);
-                } else {
-                    setProductFinded(false);
-
-                    setProductNameFinded(null);
-                }
-            } finally {
-                setIsFindingProd(false);
+                setShowProdFindedModal(false);
             }
-            // }
-        } else {
-            setProductFinded(false);
-        }
-    }, []);
+        },
+        [productNameFinded]
+    );
+
+    const findProductByEAN = useCallback(
+        async (ean_code: string) => {
+            if (ean_code.length < 8) return;
+
+            if (ean_code.trim() !== '') {
+                // if (getLocales()[0].languageCode === 'pt') {
+                try {
+                    setIsFindingProd(true);
+                    const queryWithoutLetters = ean_code
+                        .replace(/\D/g, '')
+                        .trim();
+                    const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+                    const response = await findProductByCode(query);
+
+                    if (response !== null) {
+                        setProductFinded(true);
+                        setProductNameFinded(response.name);
+
+                        if (preferences.autoComplete) {
+                            completeInfo(response.name);
+                        }
+                    } else {
+                        setProductFinded(false);
+
+                        setProductNameFinded(null);
+                    }
+                } finally {
+                    setIsFindingProd(false);
+                }
+                // }
+            } else {
+                setProductFinded(false);
+            }
+        },
+        [completeInfo, preferences.autoComplete]
+    );
 
     const handleCodeBlur = useCallback(
         (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -581,7 +605,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                             label="Não"
                             onPress={handleSwitchFindModal}
                         />
-                        <Dialog.Button label="Sim" onPress={completeInfo} />
+                        <Dialog.Button
+                            label="Sim"
+                            onPress={() => completeInfo()}
+                        />
                     </Dialog.Container>
                 </Container>
             )}
