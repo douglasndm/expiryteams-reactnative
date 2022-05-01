@@ -1,5 +1,7 @@
 import { createContext } from 'react';
 
+import { IUserPreferences } from '~/@types/userPreference';
+
 import DefaultPrefs from './DefaultPreferences';
 
 const Preferences = createContext({
@@ -7,9 +9,10 @@ const Preferences = createContext({
     setPreferences: ({
         howManyDaysToBeNextToExpire,
         appTheme,
+        autoComplete,
         enableNotifications,
         notificationCadency,
-    }: IPreferences) => {},
+    }: IUserPreferences) => {},
 });
 
 export default Preferences;

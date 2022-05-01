@@ -8,6 +8,8 @@ import React, {
 import { Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Switch } from 'react-native-paper';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
@@ -21,7 +23,10 @@ import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
 import Account from './Components/Account';
 
-import { setHowManyDaysToBeNextExp } from '~/Functions/Settings';
+import {
+    setHowManyDaysToBeNextExp,
+    setAutoComplete,
+} from '~/Functions/Settings';
 
 import {
     Container,
@@ -33,14 +38,19 @@ import {
     InputSetting,
     ButtonCancel,
     ButtonCancelText,
+    SettingContainer,
 } from './styles';
 
 const Settings: React.FC = () => {
     const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { preferences, setPreferences } = useContext(PreferencesContext);
-    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const teamContext = useTeam();
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
+    const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
@@ -57,6 +67,55 @@ const Settings: React.FC = () => {
     useEffect(() => {
         setDaysToBeNext(String(preferences.howManyDaysToBeNextToExpire));
     }, [preferences]);
+
+    const loadData = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            const previousDaysToBeNext = String(
+                preferences.howManyDaysToBeNextToExpire
+            );
+
+            if (!daysToBeNext || daysToBeNext === '') {
+                return;
+            }
+
+            if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
+                await setSettingDaysToBeNext(Number(daysToBeNext));
+            }
+
+            setAutoCompleteState(preferences.autoComplete);
+        } catch (err) {
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [
+        daysToBeNext,
+        preferences.autoComplete,
+        preferences.howManyDaysToBeNextToExpire,
+        setSettingDaysToBeNext,
+    ]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
+    const handleUpdateAutoComplete = useCallback(async () => {
+        const newValue = !autoCompleteState;
+        setAutoCompleteState(newValue);
+
+        await setAutoComplete(newValue);
+
+        setPreferences({
+            ...preferences,
+            autoComplete: newValue,
+        });
+    }, [autoCompleteState, preferences, setPreferences]);
 
     useEffect(() => {
         async function SetNewDays() {
@@ -123,6 +182,17 @@ const Settings: React.FC = () => {
                                 }
                             }}
                         />
+
+                        <SettingContainer>
+                            <SettingDescription>
+                                Autocompletar automacatimente
+                            </SettingDescription>
+                            <Switch
+                                value={autoCompleteState}
+                                onValueChange={handleUpdateAutoComplete}
+                            />
+                        </SettingContainer>
+
                         <Notifications />
                     </CategoryOptions>
                 </Category>
