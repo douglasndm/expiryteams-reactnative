@@ -79,10 +79,10 @@ const StoreView: React.FC = () => {
         try {
             setIsLoading(true);
 
-            // await exportToExcel({
-            //    sortBy: 'expire_date',
-            //    brand: routeParams.brand_id,
-            // });
+            await exportToExcel({
+                sortBy: 'expire_date',
+                store: routeParams.store_id,
+            });
 
             if (!__DEV__)
                 Analytics().logEvent('Exported_To_Excel_From_StoreView');
@@ -126,13 +126,11 @@ const StoreView: React.FC = () => {
                         </ActionText>
                         <Icons name="create-outline" size={22} />
                     </ActionButtonsContainer>
-                    {/*
 
                     <ActionButtonsContainer onPress={handleGenereteExcel}>
                         <ActionText>Gerar Excel</ActionText>
                         <Icons name="stats-chart-outline" size={22} />
                     </ActionButtonsContainer>
-                    */}
                 </ActionsContainer>
             </TitleContainer>
 

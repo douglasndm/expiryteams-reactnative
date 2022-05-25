@@ -15,7 +15,12 @@ export async function getAllProducts({
         `/team/${team_id}/products?removeCheckedBatches=true&sortByBatches=true`
     );
 
-    return response.data.products;
+    const products = response.data.products.map(prod => ({
+        ...prod,
+        store: prod.store?.id,
+    }));
+
+    return products;
 }
 
 interface sortProductsByBatchesExpDateProps {

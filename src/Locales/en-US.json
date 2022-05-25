@@ -379,6 +379,7 @@
     "Function_Excel_Workbook_Name": "Expiration checker",
     "Function_Excel_filename": "expirationcheck",
     "Function_Excel_ColumnName_ProductBrand": "Brand",
+    "Function_Excel_ColumnName_ProductStore": "Store",
     "Function_Excel_ColumnName_Status": "Status",
     "Function_Excel_ColumnName_Status_Checked": "Checked",
     "Function_Excel_ColumnName_Status_Unchecked": "Unchecked",

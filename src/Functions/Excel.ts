@@ -6,8 +6,9 @@ import strings from '../Locales';
 
 import { getAllProducts } from './Products/Products';
 import { getSelectedTeam } from './Team/SelectedTeam';
-import { shareFile } from './Share';
 import { getAllBrands } from './Brand';
+import { getAllStoresFromTeam } from './Team/Stores/AllStores';
+import { shareFile } from './Share';
 
 function sortProducts(products: Array<exportModel>): Array<exportModel> {
     const lotesSorted = products.sort((p1, p2) => {
@@ -23,6 +24,7 @@ export async function exportToExcel({
     sortBy,
     category,
     brand,
+    store,
 }: exportProps): Promise<void> {
     let dateFormat = 'dd/MM/yyyy';
 
@@ -83,7 +85,20 @@ export async function exportToExcel({
         });
     }
 
+    if (store && store !== 'null') {
+        sortedProducts = sortedProducts.filter(prod => {
+            if (prod.product.store === store) {
+                return true;
+            }
+            return false;
+        });
+    }
+
     const allBrands = await getAllBrands({
+        team_id: selectedTeam.userRole.team.id,
+    });
+
+    const allStores = await getAllStoresFromTeam({
         team_id: selectedTeam.userRole.team.id,
     });
 
@@ -93,7 +108,10 @@ export async function exportToExcel({
         const row: any = {};
 
         const findedBrand = allBrands.find(b => b.id === item.product.brand);
+        const findedStore = allStores.find(s => s.id === item.product.store);
 
+        row[strings.Function_Excel_ColumnName_ProductStore] =
+            findedStore?.name || '';
         row[strings.Function_Excel_ColumnName_ProductName] = item.product.name;
         row[strings.Function_Excel_ColumnName_ProductCode] =
             item.product.code || '';

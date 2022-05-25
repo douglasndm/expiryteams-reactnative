@@ -377,6 +377,7 @@
     "Function_Excel_Workbook_Name": "Controle de validade",
     "Function_Excel_filename": "controledevalidade",
     "Function_Excel_ColumnName_ProductBrand": "Marca",
+    "Function_Excel_ColumnName_ProductStore": "Loja",
     "Function_Excel_ColumnName_Status": "Status",
     "Function_Excel_ColumnName_Status_Checked": "Já verificado",
     "Function_Excel_ColumnName_Status_Unchecked": "Não verificado",
