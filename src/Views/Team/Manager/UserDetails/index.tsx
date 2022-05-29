@@ -67,6 +67,11 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         return JSON.parse(String(route.params.user));
     }, [route.params.user]);
 
+    const isMyself = useMemo(() => user.fid === authContext.user?.uid, [
+        authContext.user,
+        user.fid,
+    ]);
+
     const [stores, setStores] = useState<IPickerItem[]>([]);
 
     const [selectedRole, setSelectedRole] = useState<
@@ -265,33 +270,28 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             <PageHeader>
                 <Header title={strings.View_UserDetails_PageTitle} noDrawer />
 
-                {enableManagerTools &&
-                    authContext.user &&
-                    user.id !== authContext.user.uid && (
-                        <ActionsButtonsContainer>
-                            {!userIsPending && (
-                                <ActionButton
-                                    icon={() => (
-                                        <Icon name="save-outline" size={22} />
-                                    )}
-                                    onPress={handleUpdate}
-                                >
-                                    Atualizar
-                                </ActionButton>
-                            )}
+                {enableManagerTools && authContext.user && !isMyself && (
+                    <ActionsButtonsContainer>
+                        {!userIsPending && (
                             <ActionButton
                                 icon={() => (
-                                    <Icon
-                                        name="person-remove-outline"
-                                        size={22}
-                                    />
+                                    <Icon name="save-outline" size={22} />
                                 )}
-                                onPress={handleRemoveUser}
+                                onPress={handleUpdate}
                             >
-                                Remover
+                                Atualizar
                             </ActionButton>
-                        </ActionsButtonsContainer>
-                    )}
+                        )}
+                        <ActionButton
+                            icon={() => (
+                                <Icon name="person-remove-outline" size={22} />
+                            )}
+                            onPress={handleRemoveUser}
+                        >
+                            Remover
+                        </ActionButton>
+                    </ActionsButtonsContainer>
+                )}
             </PageHeader>
 
             <PageContent>
@@ -315,7 +315,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
                 {enableManagerTools &&
                     authContext.user &&
-                    user.id !== authContext.user.uid &&
+                    !isMyself &&
                     !userIsPending && (
                         <>
                             <PickerContainer style={{ marginTop: 10 }}>
