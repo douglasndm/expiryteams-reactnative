@@ -82,10 +82,9 @@ export async function deleteManyProducts({
     productsIds,
     team_id,
 }: deleteManyProductsProps): Promise<void> {
-    await API.delete(`/products`, {
+    await API.delete(`/team/${team_id}/products`, {
         data: {
             productsIds,
-            team_id,
         },
     });
 }
