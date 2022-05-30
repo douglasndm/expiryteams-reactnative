@@ -74,11 +74,37 @@ const ListUsers: React.FC = () => {
                 const r1 = role1.role.toLowerCase();
                 const r2 = role2.role.toLowerCase();
 
+                const name1 = role1.name?.toLowerCase().trim();
+                const name2 = role2.name?.toLowerCase().trim();
+
+                if (!name1 && name2) {
+                    return 1;
+                }
+                if (name1 && !name2) {
+                    return -1;
+                }
+
                 if (r1 === 'manager' && r2 !== 'manager') {
                     return -1;
                 }
-                if (r2 !== 'manager' && r2 === 'manager') {
+                if (r1 !== 'manager' && r2 === 'manager') {
                     return 1;
+                }
+
+                if (r1 === 'supervisor' && r2 !== 'supervisor') {
+                    return -1;
+                }
+                if (r1 !== 'supervisor' && r2 === 'supervisor') {
+                    return 1;
+                }
+
+                if (name1 && name2) {
+                    if (name1 > name2) {
+                        return 1;
+                    }
+                    if (name1 < name2) {
+                        return -1;
+                    }
                 }
                 return 0;
             });
@@ -191,11 +217,12 @@ const ListUsers: React.FC = () => {
                     <UserInfoContainer>
                         {!!item.name && (
                             <TeamItemTitle>
-                                {item.name} {!!item.lastName && item.lastName}
+                                {item.name.trim()}{' '}
+                                {!!item.lastName && item.lastName.trim()}
                             </TeamItemTitle>
                         )}
 
-                        <UserEmail>{item.email}</UserEmail>
+                        {!item.name && <UserEmail>{item.email}</UserEmail>}
                         <TeamItemRole>
                             {isPending
                                 ? strings.View_UsersInTeam_List_PendingStatus
@@ -214,10 +241,7 @@ const ListUsers: React.FC = () => {
                 <Loading />
             ) : (
                 <Container>
-                    <Header
-                        title={strings.View_UsersInTeam_PageTitle}
-                        noDrawer
-                    />
+                    <Header title={strings.View_UsersInTeam_PageTitle} />
 
                     {role === 'manager' && (
                         <AddCategoryContent>
