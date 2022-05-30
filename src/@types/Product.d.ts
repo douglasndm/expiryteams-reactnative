@@ -6,4 +6,6 @@ interface IProduct {
     store?: string | null;
     categories: Array<ICategory>;
     batches: Array<IBatch>;
+    created_at: string;
+    updated_at: string;
 }

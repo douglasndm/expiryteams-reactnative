@@ -3,7 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { showMessage } from 'react-native-flash-message';
+import { format, parseISO } from 'date-fns';
 
+import { getLocales } from 'react-native-localize';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -57,6 +59,24 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
     const [lotesTratados, setLotesTratados] = useState<Array<IBatch>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
+
+    const dateFormat = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    }, []);
+
+    const created_at = useMemo(() => {
+        if (product)
+            return format(parseISO(product.created_at), dateFormat, {});
+        return null;
+    }, [dateFormat, product]);
+    const updated_at = useMemo(() => {
+        if (product)
+            return format(parseISO(product.updated_at), dateFormat, {});
+        return null;
+    }, [dateFormat, product]);
 
     const loadData = useCallback(async () => {
         if (!teamContext.id) return;
@@ -130,6 +150,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     {product.categories.length > 0 &&
                                         `${strings.View_ProductDetails_Categories}: ${product.categories[0].name}`}
                                 </ProductInfo>
+                                {created_at && (
+                                    <ProductInfo>{`Adicionado em ${created_at}`}</ProductInfo>
+                                )}
 
                                 <ActionsButtonContainer>
                                     <ActionButton

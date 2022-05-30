@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import { Button, FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.ScrollView`
     flex: 1;
@@ -19,7 +18,6 @@ export const PageHeader = styled.View`
 export const ProductContainer = styled.View`
     flex-direction: row;
     align-items: center;
-    margin: 15px 10px 10px;
 `;
 
 export const ProductInformationContent = styled.View`
