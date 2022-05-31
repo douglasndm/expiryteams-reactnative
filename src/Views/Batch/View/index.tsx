@@ -31,6 +31,8 @@ import {
     BatchExpDate,
     BatchAmount,
     BatchPrice,
+    BatchInfo,
+    ExtraInfoContainer,
 } from './styles';
 
 interface Props {
@@ -84,6 +86,15 @@ const View: React.FC = () => {
     const batch = useMemo(() => {
         return JSON.parse(routeParams.batch) as IBatch;
     }, [routeParams.batch]);
+
+    const created_at = useMemo(() => {
+        if (batch) return format(parseISO(batch.created_at), dateFormat, {});
+        return null;
+    }, [dateFormat, batch]);
+    const updated_at = useMemo(() => {
+        if (batch) return format(parseISO(batch.updated_at), dateFormat, {});
+        return null;
+    }, [dateFormat, batch]);
 
     const handleNaviEdit = useCallback(() => {
         if (batch) {
@@ -239,7 +250,7 @@ const View: React.FC = () => {
                         text="Compartilhar com outros apps"
                         onPress={handleShare}
                         isLoading={isSharing}
-                        contentStyle={{ width: 250 }}
+                        contentStyle={{ marginTop: -5, width: 250 }}
                     />
 
                     {!!batch.price && (
@@ -251,6 +262,15 @@ const View: React.FC = () => {
                     )}
                 </BatchContainer>
             )}
+
+            <ExtraInfoContainer>
+                {created_at && (
+                    <BatchInfo>{`Adicionado em ${created_at}`}</BatchInfo>
+                )}
+                {updated_at && (
+                    <BatchInfo>{`Última vez atualizado em ${updated_at}`}</BatchInfo>
+                )}
+            </ExtraInfoContainer>
         </Container>
     );
 };

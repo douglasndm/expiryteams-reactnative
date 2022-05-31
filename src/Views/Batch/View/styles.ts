@@ -3,15 +3,26 @@ import styled from 'styled-components/native';
 export const Container = styled.SafeAreaView`
     flex: 1;
     background-color: ${props => props.theme.colors.background};
+    justify-content: space-between;
 `;
 
 export const BatchContainer = styled.View`
     margin: 10px;
+    flex: 1;
 `;
 
 export const BatchTitle = styled.Text`
     font-weight: bold;
     font-size: 22px;
+    font-family: 'Open Sans';
+    color: ${props => props.theme.colors.text};
+`;
+
+export const ExtraInfoContainer = styled.View`
+    margin: 0px 15px;
+`;
+
+export const BatchInfo = styled.Text`
     font-family: 'Open Sans';
     color: ${props => props.theme.colors.text};
 `;
