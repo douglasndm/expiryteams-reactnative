@@ -60,3 +60,5 @@
 
 -dontwarn com.amazon.**
 -keep public class com.onesignal.ADMMessageHandler {*;}
+
+-keep class com.revenuecat.** { *; }

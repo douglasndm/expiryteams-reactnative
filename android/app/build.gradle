@@ -155,7 +155,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 67
+        versionCode 69
         versionName "1.6.6"
 
         // FOR REACT NATIVE CAMERA
@@ -214,6 +214,7 @@ android {
 
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
+            shrinkResources enableProguardInReleaseBuilds
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release

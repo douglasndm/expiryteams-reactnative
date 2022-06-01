@@ -13,6 +13,7 @@
     "codepush:android": "appcenter CodePush release-react -a DouglasNunesdeMattos/Expiry-Checker-Business-Android -d Production"
   },
   "dependencies": {
+    "@logrocket/react-native": "^1.4.0",
     "@react-native-async-storage/async-storage": "^1.15.8",
     "@react-native-clipboard/clipboard": "^1.8.4",
     "@react-native-community/push-notification-ios": "^1.8.0",
