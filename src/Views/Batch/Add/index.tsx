@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
@@ -9,7 +8,6 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 
@@ -17,8 +15,6 @@ import { getProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';
 
 import {
-    Container,
-    PageContent,
     InputContainer,
     InputTextContainer,
     InputText,
@@ -28,7 +24,13 @@ import {
     ExpDateLabel,
     CustomDatePicker,
 } from '~/Views/Product/Add/styles';
-import { ProductHeader, ProductName, ProductCode } from './styles';
+import {
+    PageContainer,
+    PageContent,
+    ProductHeader,
+    ProductName,
+    ProductCode,
+} from './styles';
 
 interface Props {
     route: {
@@ -141,80 +143,76 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     }, []);
 
     return (
-        <Container>
-            <StatusBar />
-            <ScrollView>
-                <Header title={strings.View_AddBatch_PageTitle} noDrawer />
+        <PageContainer>
+            <Header title={strings.View_AddBatch_PageTitle} noDrawer />
+            <PageContent>
+                <InputContainer>
+                    <ProductHeader>
+                        <ProductName>{name}</ProductName>
+                        <ProductCode>{code}</ProductCode>
+                    </ProductHeader>
 
-                <PageContent>
-                    <InputContainer>
-                        <ProductHeader>
-                            <ProductName>{name}</ProductName>
-                            <ProductCode>{code}</ProductCode>
-                        </ProductHeader>
-
-                        <InputGroup>
-                            <InputTextContainer
-                                style={{
-                                    flex: 5,
-                                    marginRight: 5,
-                                }}
-                            >
-                                <InputText
-                                    placeholder={
-                                        strings.View_AddBatch_InputPlacehoder_Batch
-                                    }
-                                    value={lote}
-                                    onChangeText={value => setLote(value)}
-                                />
-                            </InputTextContainer>
-                            <InputTextContainer
-                                style={{
-                                    flex: 4,
-                                }}
-                            >
-                                <InputText
-                                    placeholder={
-                                        strings.View_AddBatch_InputPlacehoder_Amount
-                                    }
-                                    keyboardType="numeric"
-                                    value={amount}
-                                    onChangeText={handleAmountChange}
-                                />
-                            </InputTextContainer>
-                        </InputGroup>
-
-                        <Currency
-                            value={price}
-                            onChangeValue={handlePriceChange}
-                            delimiter={currency === 'BRL' ? ',' : '.'}
-                            placeholder={
-                                strings.View_AddBatch_InputPlacehoder_UnitPrice
-                            }
-                        />
-
-                        <ExpDateGroup>
-                            <ExpDateLabel>
-                                {strings.View_AddBatch_CalendarTitle}
-                            </ExpDateLabel>
-                            <CustomDatePicker
-                                date={expDate}
-                                onDateChange={value => {
-                                    setExpDate(value);
-                                }}
-                                locale={locale}
+                    <InputGroup>
+                        <InputTextContainer
+                            style={{
+                                flex: 5,
+                                marginRight: 5,
+                            }}
+                        >
+                            <InputText
+                                placeholder={
+                                    strings.View_AddBatch_InputPlacehoder_Batch
+                                }
+                                value={lote}
+                                onChangeText={value => setLote(value)}
                             />
-                        </ExpDateGroup>
-                    </InputContainer>
+                        </InputTextContainer>
+                        <InputTextContainer
+                            style={{
+                                flex: 4,
+                            }}
+                        >
+                            <InputText
+                                placeholder={
+                                    strings.View_AddBatch_InputPlacehoder_Amount
+                                }
+                                keyboardType="numeric"
+                                value={amount}
+                                onChangeText={handleAmountChange}
+                            />
+                        </InputTextContainer>
+                    </InputGroup>
 
-                    <GenericButton
-                        text={strings.View_AddBatch_Button_Save}
-                        onPress={handleSave}
-                        isLoading={isAdding}
+                    <Currency
+                        value={price}
+                        onChangeValue={handlePriceChange}
+                        delimiter={currency === 'BRL' ? ',' : '.'}
+                        placeholder={
+                            strings.View_AddBatch_InputPlacehoder_UnitPrice
+                        }
                     />
-                </PageContent>
-            </ScrollView>
-        </Container>
+
+                    <ExpDateGroup>
+                        <ExpDateLabel>
+                            {strings.View_AddBatch_CalendarTitle}
+                        </ExpDateLabel>
+                        <CustomDatePicker
+                            date={expDate}
+                            onDateChange={value => {
+                                setExpDate(value);
+                            }}
+                            locale={locale}
+                        />
+                    </ExpDateGroup>
+                </InputContainer>
+
+                <GenericButton
+                    text={strings.View_AddBatch_Button_Save}
+                    onPress={handleSave}
+                    isLoading={isAdding}
+                />
+            </PageContent>
+        </PageContainer>
     );
 };
 
