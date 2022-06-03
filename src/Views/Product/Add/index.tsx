@@ -21,6 +21,7 @@ import { createBatch } from '~/Functions/Products/Batches/Batch';
 
 import { findProductByCode } from '~/Functions/Products/FindByCode';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
+import { findDuplicate } from '~/Functions/Products/FindDuplicate';
 
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
@@ -66,7 +67,9 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { replace } = useNavigation<StackNavigationProp<RoutesParams>>();
+    const { replace, navigate } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const { preferences } = useContext(PreferencesContext);
     const teamContext = useTeam();
@@ -142,6 +145,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
+    const [duplicateId, setDuplicateId] = useState('');
 
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
@@ -223,6 +227,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         [productNameFinded]
     );
 
+    const handleNavigateToAddBatch = useCallback(() => {
+        if (!!duplicateId && duplicateId.trim() !== '')
+            navigate('AddBatch', { productId: duplicateId });
+    }, [duplicateId, navigate]);
+
     const findProductByEAN = useCallback(
         async (ean_code: string) => {
             if (ean_code.length < 8) return;
@@ -261,13 +270,33 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         [completeInfo, preferences.autoComplete]
     );
 
+    const findDuplicateProducts = useCallback(async () => {
+        if (!teamContext.id) return;
+        try {
+            const isDuplicate = await findDuplicate({
+                name,
+                code,
+                team_id: teamContext.id,
+                store_id: selectedStore || undefined,
+            });
+
+            if (isDuplicate.product_id) setDuplicateId(isDuplicate.product_id);
+            setCodeFieldError(isDuplicate.isDuplicate);
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err.message);
+            }
+        }
+    }, [code, name, selectedStore, teamContext.id]);
+
     const handleCodeBlur = useCallback(
         (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
             if (code) {
                 findProductByEAN(code);
+                findDuplicateProducts();
             }
         },
-        [code, findProductByEAN]
+        [code, findDuplicateProducts, findProductByEAN]
     );
 
     useEffect(() => {
@@ -474,6 +503,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     </>
                                 )}
                             </InputCodeTextContainer>
+                            {codeFieldError && (
+                                <InputTextTip
+                                    onPress={handleNavigateToAddBatch}
+                                >
+                                    O produto já está cadastrado
+                                </InputTextTip>
+                            )}
 
                             <MoreInformationsContainer>
                                 <MoreInformationsTitle>
