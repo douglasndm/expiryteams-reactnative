@@ -245,6 +245,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         .trim();
                     const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
 
+                    if (query === '') return;
+
                     const response = await findProductByCode(query);
 
                     if (response !== null) {
