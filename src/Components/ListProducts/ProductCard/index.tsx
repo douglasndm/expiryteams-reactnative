@@ -5,7 +5,10 @@ import { getLocales } from 'react-native-localize';
 import { format, formatDistanceToNow, parseISO } from 'date-fns'; // eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 
+
 import strings from '~/Locales';
+
+import { useTeam } from '~/Contexts/TeamContext';
 
 import {
     Card,
@@ -26,6 +29,13 @@ interface Request {
 }
 const Product = ({ product, expired, nextToExp, onLongPress }: Request) => {
     const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const team = useTeam();
+
+    const isManager = useMemo(
+        () => team.roleInTeam?.role.toLowerCase() === 'manager',
+        [team.roleInTeam]
+    );
 
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -86,6 +96,12 @@ const Product = ({ product, expired, nextToExp, onLongPress }: Request) => {
                         {!!product.code && (
                             <ProductInfoItem expiredOrNext={expiredOrNext}>
                                 {`${strings.ProductCardComponent_ProductCode}: ${product.code}`}
+                            </ProductInfoItem>
+                        )}
+
+                        {isManager && !!product.store_name && (
+                            <ProductInfoItem expiredOrNext={expiredOrNext}>
+                                {`Loja: ${product.store_name}`}
                             </ProductInfoItem>
                         )}
 

@@ -8,17 +8,24 @@ interface getAllProductsProps {
     team_id: string;
 }
 
+interface getAllProductsResponse extends IProduct {
+    store_name: string;
+}
+
 export async function getAllProducts({
     team_id,
-}: getAllProductsProps): Promise<Array<IProduct>> {
+}: getAllProductsProps): Promise<Array<getAllProductsResponse>> {
     const response = await API.get<IAllTeamProducts>(
         `/team/${team_id}/products?removeCheckedBatches=true&sortByBatches=true`
     );
 
-    const products = response.data.products.map(prod => ({
-        ...prod,
-        store: prod.store?.id,
-    }));
+    const products: getAllProductsResponse[] = response.data.products.map(
+        prod => ({
+            ...prod,
+            store: prod.store?.id,
+            store_name: prod.store?.name,
+        })
+    );
 
     return products;
 }
