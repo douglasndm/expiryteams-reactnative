@@ -191,6 +191,9 @@ const SubscriptionsList: React.FC = () => {
                 case '15 people':
                     limit = strings.Subscription_TeamLimit_15people;
                     break;
+                case '20 people':
+                    limit = strings.Subscription_TeamLimit_20people;
+                    break;
                 case '30 people':
                     limit = strings.Subscription_TeamLimit_30people;
                     break;

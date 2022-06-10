@@ -32,14 +32,6 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
     }
 
     if (offerings.current.availablePackages.length !== 0) {
-        /*
-        if (!!offerings.all.TeamWith1 && offerings.all.TeamWith1.monthly) {
-            packages.push({
-                type: '1 person',
-                package: offerings.all.TeamWith1.monthly,
-            });
-        }
-        */
         if (!!offerings.all.TeamWith2 && offerings.all.TeamWith2.monthly) {
             packages.push({
                 type: '2 people',
@@ -68,6 +60,12 @@ export async function getOfferings(): Promise<Array<CatPackage>> {
             packages.push({
                 type: '15 people',
                 package: offerings.all.TeamWith15.monthly,
+            });
+        }
+        if (!!offerings.all.TeamWith20 && offerings.all.TeamWith20.monthly) {
+            packages.push({
+                type: '20 people',
+                package: offerings.all.TeamWith20.monthly,
             });
         }
         if (!!offerings.all.TeamWith30 && offerings.all.TeamWith30.monthly) {
