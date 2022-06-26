@@ -15,6 +15,8 @@ interface IBatchResponse {
     price_tmp: number;
     status: 'checked' | 'unchecked';
     product: IProduct;
+    created_at: string;
+    updated_at: string;
 }
 
 interface createBatchProps {

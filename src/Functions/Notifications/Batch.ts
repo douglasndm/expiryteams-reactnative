@@ -1,5 +1,9 @@
 import api from '~/Services/API';
 
+import { getSelectedTeam } from '../Team/SelectedTeam';
+
+import AppError from '~/Errors/AppError';
+
 interface sendBatchNotification {
     batch_id: string;
 }
@@ -7,5 +11,15 @@ interface sendBatchNotification {
 export async function sendBatchNotification({
     batch_id,
 }: sendBatchNotification): Promise<void> {
-    await api.post(`/batches/notifications/${batch_id}`);
+    const selectedTeam = await getSelectedTeam();
+
+    if (!selectedTeam) {
+        throw new AppError({
+            message: 'Team is not selected',
+        });
+    }
+
+    const team_id = selectedTeam.userRole.team.id;
+
+    await api.post(`/team/${team_id}/batches/notifications/${batch_id}`);
 }

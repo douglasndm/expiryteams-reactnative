@@ -1,13 +1,29 @@
 import api from '~/Services/API';
 
+import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
+
+import AppError from '~/Errors/AppError';
+
 export async function getBatch({
     batch_id,
 }: getBatchProps): Promise<getBatchResponse> {
-    const response = await api.get<IBatchResponse>(`/batches/${batch_id}`);
+    const selectedTeam = await getSelectedTeam();
+
+    if (!selectedTeam) {
+        throw new AppError({
+            message: 'Team is not selected',
+        });
+    }
+
+    const team_id = selectedTeam.userRole.team.id;
+
+    const response = await api.get<IBatchResponse>(
+        `/team/${team_id}/batches/${batch_id}`
+    );
 
     const responseData: getBatchResponse = {
         product: response.data.product,
-        batch: response.data,
+        batch: response.data as IBatch,
     };
     return responseData;
 }
@@ -30,8 +46,17 @@ export async function createBatch({
             price: batch.price,
         };
     }
+    const selectedTeam = await getSelectedTeam();
 
-    const response = await api.post<IBatch>(`/batches`, body);
+    if (!selectedTeam) {
+        throw new AppError({
+            message: 'Team is not selected',
+        });
+    }
+
+    const team_id = selectedTeam.userRole.team.id;
+
+    const response = await api.post<IBatch>(`/team/${team_id}/batches`, body);
 
     return response.data;
 }
@@ -39,13 +64,25 @@ export async function createBatch({
 export async function updateBatch({
     batch,
 }: updatebatchProps): Promise<IBatch> {
-    const response = await api.put<IBatch>(`/batches/${batch.id}`, {
-        name: batch.name,
-        exp_date: batch.exp_date,
-        amount: batch.amount,
-        price: batch.price,
-        status: batch.status,
-    });
+    const selectedTeam = await getSelectedTeam();
+
+    if (!selectedTeam) {
+        throw new AppError({
+            message: 'Team is not selected',
+        });
+    }
+
+    const team_id = selectedTeam.userRole.team.id;
+    const response = await api.put<IBatch>(
+        `/team/${team_id}/batches/${batch.id}`,
+        {
+            name: batch.name,
+            exp_date: batch.exp_date,
+            amount: batch.amount,
+            price: batch.price,
+            status: batch.status,
+        }
+    );
 
     return response.data;
 }
@@ -53,5 +90,15 @@ export async function updateBatch({
 export async function deleteBatch({
     batch_id,
 }: deleteBatchProps): Promise<void> {
-    await api.delete<IBatch>(`/batches/${batch_id}`);
+    const selectedTeam = await getSelectedTeam();
+
+    if (!selectedTeam) {
+        throw new AppError({
+            message: 'Team is not selected',
+        });
+    }
+
+    const team_id = selectedTeam.userRole.team.id;
+
+    await api.delete<IBatch>(`/team/${team_id}/batches/${batch_id}`);
 }
