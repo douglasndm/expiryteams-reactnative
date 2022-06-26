@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
@@ -48,6 +48,18 @@ const View: React.FC = () => {
     const [brandName] = useState<string>(() => routeParams.brand_name);
 
     const [products, setProducts] = useState<IProduct[]>([]);
+
+    const canEdit = useMemo(() => {
+        if (teamContext.roleInTeam) {
+            const { role } = teamContext.roleInTeam;
+
+            if (role.toLowerCase() === 'manager') return true;
+
+            if (role.toLowerCase() === 'supervisor') return true;
+        }
+
+        return false;
+    }, [teamContext.roleInTeam]);
 
     const loadData = useCallback(async () => {
         if (!teamContext.id) return;
@@ -120,12 +132,16 @@ const View: React.FC = () => {
                 <ItemTitle>{brandName}</ItemTitle>
 
                 <ActionsContainer>
-                    <ActionButtonsContainer onPress={handleEdit}>
-                        <ActionText>
-                            {strings.View_ProductDetails_Button_UpdateProduct}
-                        </ActionText>
-                        <Icons name="create-outline" size={22} />
-                    </ActionButtonsContainer>
+                    {canEdit && (
+                        <ActionButtonsContainer onPress={handleEdit}>
+                            <ActionText>
+                                {
+                                    strings.View_ProductDetails_Button_UpdateProduct
+                                }
+                            </ActionText>
+                            <Icons name="create-outline" size={22} />
+                        </ActionButtonsContainer>
+                    )}
 
                     <ActionButtonsContainer onPress={handleGenereteExcel}>
                         <ActionText>Gerar Excel</ActionText>
