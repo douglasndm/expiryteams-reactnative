@@ -96,13 +96,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [price, setPrice] = useState<number | null>(null);
     const [expDate, setExpDate] = useState(new Date());
 
-    const [code, setCode] = useState(() => {
-        if (route.params.code) {
-            return route.params.code;
-        }
-        return '';
-    });
-
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         () => {
             if (route.params && route.params.category) {
@@ -148,6 +141,69 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [duplicateId, setDuplicateId] = useState('');
 
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
+
+    const completeInfo = useCallback(
+        (prodName?: string) => {
+            if (prodName) {
+                setName(prodName.trim() || '');
+
+                setShowProdFindedModal(false);
+            } else if (productNameFinded) {
+                setName(productNameFinded.trim());
+
+                setShowProdFindedModal(false);
+            }
+        },
+        [productNameFinded]
+    );
+
+    const findProductByEAN = useCallback(
+        async (ean_code: string) => {
+            if (ean_code.length < 8) return;
+
+            if (ean_code.trim() !== '') {
+                // if (getLocales()[0].languageCode === 'pt') {
+                try {
+                    setIsFindingProd(true);
+                    const queryWithoutLetters = ean_code
+                        .replace(/\D/g, '')
+                        .trim();
+                    const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+                    if (query === '') return;
+
+                    const response = await findProductByCode(query);
+
+                    if (response !== null) {
+                        setProductFinded(true);
+                        setProductNameFinded(response.name);
+
+                        if (preferences.autoComplete) {
+                            completeInfo(response.name);
+                        }
+                    } else {
+                        setProductFinded(false);
+
+                        setProductNameFinded(null);
+                    }
+                } finally {
+                    setIsFindingProd(false);
+                }
+                // }
+            } else {
+                setProductFinded(false);
+            }
+        },
+        [completeInfo, preferences.autoComplete]
+    );
+
+    const [code, setCode] = useState(() => {
+        if (route.params.code) {
+            findProductByEAN(route.params.code);
+            return route.params.code;
+        }
+        return '';
+    });
 
     const loadData = useCallback(async () => {
         if (!isMounted) return;
@@ -212,65 +268,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         setShowProdFindedModal(!showProdFindedModal);
     }, [showProdFindedModal]);
 
-    const completeInfo = useCallback(
-        (prodName?: string) => {
-            if (prodName) {
-                setName(prodName.trim() || '');
-
-                setShowProdFindedModal(false);
-            } else if (productNameFinded) {
-                setName(productNameFinded.trim());
-
-                setShowProdFindedModal(false);
-            }
-        },
-        [productNameFinded]
-    );
-
     const handleNavigateToAddBatch = useCallback(() => {
         if (!!duplicateId && duplicateId.trim() !== '')
             navigate('AddBatch', { productId: duplicateId });
     }, [duplicateId, navigate]);
-
-    const findProductByEAN = useCallback(
-        async (ean_code: string) => {
-            if (ean_code.length < 8) return;
-
-            if (ean_code.trim() !== '') {
-                // if (getLocales()[0].languageCode === 'pt') {
-                try {
-                    setIsFindingProd(true);
-                    const queryWithoutLetters = ean_code
-                        .replace(/\D/g, '')
-                        .trim();
-                    const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
-
-                    if (query === '') return;
-
-                    const response = await findProductByCode(query);
-
-                    if (response !== null) {
-                        setProductFinded(true);
-                        setProductNameFinded(response.name);
-
-                        if (preferences.autoComplete) {
-                            completeInfo(response.name);
-                        }
-                    } else {
-                        setProductFinded(false);
-
-                        setProductNameFinded(null);
-                    }
-                } finally {
-                    setIsFindingProd(false);
-                }
-                // }
-            } else {
-                setProductFinded(false);
-            }
-        },
-        [completeInfo, preferences.autoComplete]
-    );
 
     const findDuplicateProducts = useCallback(async () => {
         if (!teamContext.id) return;

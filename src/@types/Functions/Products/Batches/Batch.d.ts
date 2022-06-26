@@ -21,7 +21,7 @@ interface IBatchResponse {
 
 interface createBatchProps {
     productId: string;
-    batch: Omit<IBatch, 'id'>;
+    batch: Omit<IBatch, 'id', 'created_at', 'updated_at'>;
 }
 
 interface updatebatchProps {
