@@ -41,3 +41,7 @@ export const BatchPrice = styled.Text`
     font-family: 'Open Sans';
     color: ${props => props.theme.colors.text};
 `;
+
+export const ButtonsCointaner = styled.View`
+    margin-top: 15px;
+`;

@@ -33,6 +33,7 @@ import {
     BatchPrice,
     BatchInfo,
     ExtraInfoContainer,
+    ButtonsCointaner,
 } from './styles';
 
 interface Props {
@@ -237,29 +238,32 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
-                    {(userRole === 'manager' || userRole === 'supervisor') && (
-                        <Button
-                            text="Enviar notificação para o time"
-                            onPress={handleSendNotification}
-                            isLoading={isSendingNotification}
-                            contentStyle={{ width: 250 }}
-                        />
-                    )}
+                    <ButtonsCointaner>
+                        {(userRole === 'manager' ||
+                            userRole === 'supervisor') && (
+                            <Button
+                                text="Enviar notificação para o time"
+                                onPress={handleSendNotification}
+                                isLoading={isSendingNotification}
+                                contentStyle={{ width: 250 }}
+                            />
+                        )}
 
-                    <Button
-                        text="Compartilhar com outros apps"
-                        onPress={handleShare}
-                        isLoading={isSharing}
-                        contentStyle={{ marginTop: -5, width: 250 }}
-                    />
-
-                    {!!batch.price && (
                         <Button
-                            text="Adicionar desconto"
-                            onPress={handleNavigateToDiscount}
+                            text="Compartilhar com outros apps"
+                            onPress={handleShare}
+                            isLoading={isSharing}
                             contentStyle={{ marginTop: -5, width: 250 }}
                         />
-                    )}
+
+                        {!!batch.price && (
+                            <Button
+                                text="Adicionar desconto"
+                                onPress={handleNavigateToDiscount}
+                                contentStyle={{ marginTop: -5, width: 250 }}
+                            />
+                        )}
+                    </ButtonsCointaner>
                 </BatchContainer>
             )}
 
