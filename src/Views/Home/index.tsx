@@ -8,7 +8,10 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import { getAllProducts } from '~/Functions/Products/Products';
+import {
+    getAllProducts,
+    sortProductsByBatchesExpDate,
+} from '~/Functions/Products/Products';
 import { searchProducts } from '~/Functions/Products/Search';
 import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
@@ -104,16 +107,21 @@ const Home: React.FC = () => {
         async (search: string) => {
             setSearchString(search);
 
+            let prods = sortProductsByBatchesExpDate({
+                products,
+            });
+
             if (search && search !== '') {
                 const findProducts = await searchProducts({
                     products,
                     query: search,
                 });
 
-                setProductsSearch(findProducts);
-            } else {
-                setProductsSearch(products);
+                prods = sortProductsByBatchesExpDate({
+                    products: findProducts,
+                });
             }
+            setProductsSearch(prods);
         },
         [products]
     );
