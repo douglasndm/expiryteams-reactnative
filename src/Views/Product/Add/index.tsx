@@ -276,6 +276,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const findDuplicateProducts = useCallback(async () => {
         if (!teamContext.id) return;
         try {
+            if (!name) return;
             const isDuplicate = await findDuplicate({
                 name,
                 code,
