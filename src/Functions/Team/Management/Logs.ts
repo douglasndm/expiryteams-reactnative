@@ -6,9 +6,7 @@ import api from '~/Services/API';
 
 function getFormattedLogText(log: ILog): string {
     const dateFormat =
-        getLocales()[0].languageCode === 'en'
-            ? 'MM/dd/yyyy hh:mm aa'
-            : 'dd/MM/yyyy HH:mm';
+        getLocales()[0].languageCode === 'en' ? 'MM/dd/yyyy' : 'dd/MM/yyyy';
 
     let text = '';
     const who = log.user.name || log.user.email;
