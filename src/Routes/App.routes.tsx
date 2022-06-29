@@ -34,13 +34,15 @@ import Export from '~/Views/Export';
 
 import TeamList from '~/Views/Team/List';
 
-// Team managerment
+// Team management
 import EnterTeam from '~/Views/Team/EnterTeam';
 import CreateTeam from '~/Views/Team/Add';
 import EditTeam from '~/Views/Team/Edit';
 import ViewTeam from '~/Views/Team/View';
 import ListUsers from '~/Views/Team/Manager/ListUsers';
 import UserDetails from '~/Views/Team/Manager/UserDetails';
+
+import Logs from '~/Views/Team/Management/Logs';
 
 import VerifyEmail from '~/Views/Auth/VerifyEmail';
 
@@ -98,6 +100,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="EditTeam" component={EditTeam} />
             <Stack.Screen name="ListUsersFromTeam" component={ListUsers} />
             <Stack.Screen name="UserDetails" component={UserDetails} />
+
+            <Stack.Screen name="TeamLogs" component={Logs} />
 
             <Stack.Screen name="Subscription" component={Subscription} />
 

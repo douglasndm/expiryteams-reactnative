@@ -48,6 +48,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('ViewTeam');
     }, [navigation]);
 
+    const handleNavigateToTeamLogs = useCallback(() => {
+        navigation.navigate('TeamLogs');
+    }, [navigation]);
+
     return (
         <Container>
             <MainMenuContainer>
@@ -114,6 +118,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <MenuContent>
                                 <Icons name="briefcase-outline" />
                                 <MenuItemText>{teamContext.name}</MenuItemText>
+                            </MenuContent>
+                        </MenuItemContainer>
+                    )}
+
+                    {teamContext.roleInTeam?.role.toLowerCase() ===
+                        'manager' && (
+                        <MenuItemContainer onPress={handleNavigateToTeamLogs}>
+                            <MenuContent>
+                                <Icons name="book-outline" />
+                                <MenuItemText>Logs</MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
                     )}

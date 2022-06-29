@@ -65,6 +65,7 @@ type RoutesParams = {
     UserDetails: {
         user: string;
     };
+    TeamLogs;
     Logout;
 
     EnterTeam: {

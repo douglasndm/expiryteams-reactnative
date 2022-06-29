@@ -1,0 +1,77 @@
+import { parseISO, format } from 'date-fns';
+
+import { getLocales } from 'react-native-localize';
+
+import api from '~/Services/API';
+
+function getFormattedLogText(log: ILog): string {
+    const dateFormat =
+        getLocales()[0].languageCode === 'en'
+            ? 'MM/dd/yyyy hh:mm aa'
+            : 'dd/MM/yyyy HH:mm';
+
+    let text = '';
+    const who = log.user.name || log.user.email;
+    const when = format(parseISO(log.created_at), dateFormat);
+
+    let action = '';
+
+    switch (log.action) {
+        case 'Create_Product':
+            action = `criou o produto ${log.product?.name}`;
+            break;
+        case 'Update_Product':
+            action = `atualizou o produto ${log.product?.name}`;
+            break;
+        case 'Delete_Product':
+            action = `apagou o produto ${log.product?.name}`;
+            break;
+        case 'Create_Batch':
+            action = `criou o lote ${log.batch?.name} do produto ${log.product?.name}`;
+            break;
+        case 'Update_Batch':
+            action = `atualizou o lote ${log.batch?.name} do produto ${log.product?.name}`;
+            break;
+        case 'Delete_Batch':
+            action = `apagou o lote ${log.batch?.name} do produto ${log.product?.name}`;
+            break;
+
+        case 'Create_Category':
+            action = `criou a categoria ${log.category?.name}`;
+            break;
+
+        case 'Update_Category':
+            action = `atualizou a categoria ${log.category?.name}`;
+            break;
+        case 'Delete_Category':
+            action = `apagou a categoria ${log.category?.name}`;
+            break;
+        case 'Set_Batch_Checked':
+            action = `marcou o lote ${log.batch?.name} do produto ${log.product?.name}`;
+            break;
+
+        default:
+            break;
+    }
+
+    if (log.action === 'Set_Batch_Checked') {
+        const checked = log.new_value ? 'tratado' : 'não tratado';
+        text = `${who} ${action} como ${checked} em ${when}`;
+    } else {
+        text = `${who} ${action} em ${when}`;
+    }
+
+    return text;
+}
+
+interface getTeamLogsProps {
+    team_id: string;
+}
+
+async function getTeamLogs({ team_id }: getTeamLogsProps): Promise<ILog[]> {
+    const response = await api.get<ILog[]>(`/team/${team_id}/management/logs`);
+
+    return response.data;
+}
+
+export { getTeamLogs, getFormattedLogText };
