@@ -226,7 +226,6 @@
     "View_Settings_AccountDescription": "Gerencie sua conta associada ao aplicativo.",
     "View_Settings_Button_SignOut": "Sair",
 
-
     "View_TeamView_PageTitle": "Detalhes do time",
     "View_TeamView_ActionButton_Edit": "Editar",
     "View_TeamView_ActionButton_Change": "Trocar time",
@@ -244,6 +243,12 @@
     "View_TeamView_Advanced_Button_DeleteTeam": "Apagar time",
     "View_TeamView_Button_GoToMembers": "Ver membros",
     "View_TeamView_Button_GoToSettings": "Ir para configurações",
+
+    "View_TeamEdit_PageTitle": "Editar time",
+    "View_TeamEdit_Input_Placeholder_TeamName": "Nome do time",
+    "View_TeamEdit_Alert_Error_EmptyTeamName": "Nome do time não pode está em branco",
+    "View_TeamEdit_Alert_Success_TeamUpdated": "Time atualizado",
+    "View_TeamEdit_Button_Update": "Atualizar",
 
     "View_TeamList_PageTitle": "Selecione um time",
     "View_TeamList_ListTitle": "Times",

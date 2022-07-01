@@ -246,6 +246,12 @@
     "View_TeamView_Button_GoToMembers": "See members",
     "View_TeamView_Button_GoToSettings": "Go to settings",
 
+    "View_TeamEdit_PageTitle": "Edit team",
+    "View_TeamEdit_Input_Placeholder_TeamName": "Team's name",
+    "View_TeamEdit_Alert_Error_EmptyTeamName": "Enter the team name",
+    "View_TeamEdit_Alert_Success_TeamUpdated": "Team has been updated",
+    "View_TeamEdit_Button_Update": "Update",
+
     "View_TeamList_PageTitle": "Select a team",
     "View_TeamList_ListTitle": "Teams",
     "View_TeamList_EmptyTeamList": "You don't have any teams now. Create a team or ask your manager to invite you by e-mail",

@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import { StackNavigationProp } from '@react-navigation/stack';
+import strings from '~/Locales';
+
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { editTeam } from '~/Functions/Team';
@@ -36,7 +38,7 @@ const Edit: React.FC = () => {
             setIsUpdating(true);
 
             if (!name) {
-                setNameError('Nome do time não pode está em branco');
+                setNameError(strings.View_TeamEdit_Alert_Error_EmptyTeamName);
                 return;
             }
 
@@ -62,7 +64,7 @@ const Edit: React.FC = () => {
             }
 
             showMessage({
-                message: 'Time editado',
+                message: strings.View_TeamEdit_Alert_Success_TeamUpdated,
                 type: 'info',
             });
 
@@ -93,14 +95,16 @@ const Edit: React.FC = () => {
     }, []);
     return (
         <Container>
-            <Header title="Editar time" noDrawer />
+            <Header title={strings.View_TeamEdit_PageTitle} noDrawer />
 
             <Content>
                 <InputGroup>
                     <Input
                         value={name}
                         onChange={handleNameChange}
-                        placeholder="Nome do time"
+                        placeholder={
+                            strings.View_TeamEdit_Input_Placeholder_TeamName
+                        }
                         hasError={!!nameError}
                         contentStyle={{ flex: 1 }}
                     />
@@ -108,7 +112,7 @@ const Edit: React.FC = () => {
                 {!!nameError && <InputTextTip>{nameError}</InputTextTip>}
 
                 <Button
-                    text="Atualizar"
+                    text={strings.View_TeamEdit_Button_Update}
                     onPress={handleUpdate}
                     isLoading={isUpdating}
                 />
