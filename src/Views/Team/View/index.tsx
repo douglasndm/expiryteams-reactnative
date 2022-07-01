@@ -2,6 +2,8 @@ import React, { useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import strings from '~/Locales';
+
 import { useTeam } from '~/Contexts/TeamContext';
 
 import BackButton from '~/Components/BackButton';
@@ -67,7 +69,7 @@ const ViewTeam: React.FC = () => {
                     />
                 )}
 
-                <PageTitle>Detalhes do time</PageTitle>
+                <PageTitle>{strings.View_TeamView_PageTitle}</PageTitle>
             </PageHeader>
 
             <PageContent>
@@ -84,7 +86,7 @@ const ViewTeam: React.FC = () => {
                                 )}
                                 onPress={handleNavigateEditTeam}
                             >
-                                Editar
+                                {strings.View_TeamView_ActionButton_Edit}
                             </ButtonPaper>
                         </ActionsButtonContainer>
                     )}
@@ -97,7 +99,7 @@ const ViewTeam: React.FC = () => {
                                 )}
                                 onPress={handleNavigateTeams}
                             >
-                                Trocar time
+                                {strings.View_TeamView_ActionButton_Change}
                             </ButtonPaper>
                         </ActionsButtonContainer>
                     )}
@@ -107,14 +109,16 @@ const ViewTeam: React.FC = () => {
 
                 {teamContext.active && (
                     <Section>
-                        <SectionTitle>Membros</SectionTitle>
+                        <SectionTitle>
+                            {strings.View_TeamView_Members_Title}
+                        </SectionTitle>
 
                         <SubscriptionDescription>
-                            Membros atuais do time
+                            {strings.View_TeamView_Members_Description}
                         </SubscriptionDescription>
 
                         <Button
-                            text="Ver membros"
+                            text={strings.View_TeamView_Button_GoToMembers}
                             onPress={handleNavigateToMembers}
                         />
                     </Section>
@@ -124,7 +128,7 @@ const ViewTeam: React.FC = () => {
 
                 {!teamContext.active && (
                     <Button
-                        text="Ir para configurações"
+                        text={strings.View_TeamView_Button_GoToSettings}
                         onPress={handleNavigateToSettings}
                     />
                 )}

@@ -3,6 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '~/Locales';
+
 import { useTeam } from '~/Contexts/TeamContext';
 
 import {
@@ -115,10 +117,10 @@ const Advenced: React.FC = () => {
     }, []);
     return (
         <Section>
-            <SectionTitle>Avançado</SectionTitle>
+            <SectionTitle>{strings.View_TeamView_Advanced_Title}</SectionTitle>
 
             <SubscriptionDescription>
-                Configurações avançadas do time
+                {strings.View_TeamView_Advanced_Description}
             </SubscriptionDescription>
 
             {isLoading ? (
@@ -130,7 +132,9 @@ const Advenced: React.FC = () => {
                     disableBuiltInState
                     bounceFriction={10}
                     style={{ marginTop: 15 }}
-                    text="Permitir uso de produtos para melhorar o aplicativo a sugerir produtos"
+                    text={
+                        strings.View_TeamView_Advanced_AllowProductsDataCollect
+                    }
                 />
             )}
 
@@ -139,7 +143,7 @@ const Advenced: React.FC = () => {
                     icon={() => <Icons name="trash-outline" size={22} />}
                     onPress={handleDeleteTeam}
                 >
-                    Apagar time
+                    {strings.View_TeamView_Advanced_Button_DeleteTeam}
                 </ButtonPaper>
             </OptionContainer>
         </Section>

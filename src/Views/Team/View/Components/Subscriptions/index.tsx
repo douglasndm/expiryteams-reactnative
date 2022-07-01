@@ -1,8 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { format, parseISO } from 'date-fns';
+import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
+
+import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
@@ -32,6 +35,20 @@ const Subscriptions: React.FC = () => {
 
     const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const dateFormat = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    }, []);
+
+    const subExpDate = useMemo(() => {
+        if (subscription) {
+            return format(parseISO(String(subscription.expireIn)), dateFormat);
+        }
+        return null;
+    }, [dateFormat, subscription]);
 
     const loadData = useCallback(async () => {
         if (!isMounted || !teamContext.id) return;
@@ -70,32 +87,38 @@ const Subscriptions: React.FC = () => {
         <Loading />
     ) : (
         <Section>
-            <SectionTitle>Assinaturas</SectionTitle>
+            <SectionTitle>
+                {strings.View_TeamView_Subscription_Title}
+            </SectionTitle>
 
             <SubscriptionDescription>
-                Com uma assinatura você pode manter um time e adicionar pessoas
-                a ele. Todas as mudanças feitas serão refletidas em todos os
-                dispositivos
+                {strings.View_TeamView_Subscription_Description}
             </SubscriptionDescription>
 
             <Button
-                text={!subscription ? 'Ver planos' : 'Mudar plano'}
+                text={
+                    !subscription
+                        ? strings.View_TeamView_Subscription_Button_SeePlans
+                        : strings.View_TeamView_Subscription_Button_ChangePlans
+                }
                 onPress={handleNavigatePurchase}
             />
 
-            {subscription && (
+            {subscription && !!subExpDate && (
                 <>
                     <SubscriptionTableTitle>
-                        Sua assinatura
+                        {
+                            strings.View_TeamView_Subscription_CurrentSubscription_Title
+                        }
                     </SubscriptionTableTitle>
 
                     <SubscriptionContainer>
-                        <SubscriptionInformations>{`Sua assinatura possui ${
-                            subscription.membersLimit
-                        } membros e está ativa até ${format(
-                            parseISO(String(subscription.expireIn)),
-                            'dd/MM/yyyy'
-                        )}`}</SubscriptionInformations>
+                        <SubscriptionInformations>
+                            {strings.View_TeamView_Subscription_CurrentSubscription_Description.replace(
+                                '{MEMBERS}',
+                                String(subscription.membersLimit)
+                            ).replace('{DATE}', subExpDate)}
+                        </SubscriptionInformations>
                     </SubscriptionContainer>
                 </>
             )}
