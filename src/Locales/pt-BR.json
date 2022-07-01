@@ -274,6 +274,8 @@
     "View_UsersInTeam_List_Title": "Todos os usuários do time",
     "View_UsersInTeam_List_InputEmail_Error_EmptyText": "Digite o e-mail do usuário",
     "View_UsersInTeam_List_PendingStatus": "Pendente",
+    "View_UsersInTeam_List_Alert_Title_Success_UserInvited": "Usuário convidado!",
+    "View_UsersInTeam_List_Alert_Description_Success_UserInvited": "Informe o código {CODE} para o usuário entrar no time",
 
     "View_UserDetails_PageTitle": "Usuário",
     "View_UserDetails_Code_Title": "Código para entrar no time",

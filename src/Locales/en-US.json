@@ -352,6 +352,8 @@
     "View_UsersInTeam_List_Title": "All users from team",
     "View_UsersInTeam_List_InputEmail_Error_EmptyText": "Enter the user email",
     "View_UsersInTeam_List_PendingStatus": "Pending",
+    "View_UsersInTeam_List_Alert_Title_Success_UserInvited": "The user has been invited",
+    "View_UsersInTeam_List_Alert_Description_Success_UserInvited": "Send the code {CODE} to the user to make him able to get into the team",
 
     "View_UserDetails_PageTitle": "User",
     "View_UserDetails_Code_Title": "Code to enter the team",

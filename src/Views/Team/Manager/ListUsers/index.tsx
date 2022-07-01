@@ -165,8 +165,12 @@ const ListUsers: React.FC = () => {
             setNewUserEmail('');
 
             showMessage({
-                message: `Usuário convidado!`,
-                description: `Informe o código ${newUser.code} para o usuário entrar no time`,
+                message:
+                    strings.View_UsersInTeam_List_Alert_Title_Success_UserInvited,
+                description: strings.View_UsersInTeam_List_Alert_Description_Success_UserInvited.replace(
+                    '{CODE}',
+                    newUser.code
+                ),
                 type: 'info',
             });
             navigate('UserDetails', { user: JSON.stringify(newUser) });
@@ -202,10 +206,14 @@ const ListUsers: React.FC = () => {
 
     interface renderProps {
         item: IUserInTeam;
+        index: string;
     }
 
     const renderCategory = useCallback(
-        ({ item }: renderProps) => {
+        props => {
+            const params = props as renderProps;
+            const { item } = params;
+
             const isPending =
                 !!item.status && item.status.toLowerCase() === 'pending';
 
