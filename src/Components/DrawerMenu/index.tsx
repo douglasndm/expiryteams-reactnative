@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
@@ -23,6 +23,18 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const { navigation } = props;
 
     const teamContext = useTeam();
+
+    const isManager = useMemo(() => {
+        if (teamContext.roleInTeam)
+            if (teamContext.roleInTeam.role.toLowerCase() === 'manager') {
+                return true;
+            }
+        return false;
+    }, [teamContext]);
+
+    const navigateToHome = useCallback(() => {
+        navigation.navigate('Home', {});
+    }, [navigation]);
 
     const navigateToAddProduct = useCallback(() => {
         navigation.navigate('AddProduct', {});
@@ -52,15 +64,20 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('TeamLogs');
     }, [navigation]);
 
+    const handleNavigateToSettings = useCallback(() => {
+        navigation.navigate('Settings');
+    }, [navigation]);
+    const handleNavigateToAbout = useCallback(() => {
+        navigation.navigate('About');
+    }, [navigation]);
+
     return (
         <Container>
             <MainMenuContainer>
                 <UserInfo navigate={navigation.navigate} />
 
                 <DrawerSection>
-                    <MenuItemContainer
-                        onPress={() => navigation.navigate('Home')}
-                    >
+                    <MenuItemContainer onPress={navigateToHome}>
                         <MenuContent>
                             <Icons name="home-outline" />
                             <MenuItemText>
@@ -90,16 +107,19 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <MenuItemContainer onPress={navigateToBrands}>
                         <MenuContent>
                             <Icons name="ribbon-outline" />
-                            <MenuItemText>Marcas</MenuItemText>
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToBrands}
+                            </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
 
-                    {teamContext.roleInTeam?.role.toLowerCase() ===
-                        'manager' && (
+                    {isManager && (
                         <MenuItemContainer onPress={navigateToStores}>
                             <MenuContent>
                                 <Icons name="list-outline" />
-                                <MenuItemText>Lojas</MenuItemText>
+                                <MenuItemText>
+                                    {strings.Menu_Button_GoToStores}
+                                </MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
                     )}
@@ -122,12 +142,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </MenuItemContainer>
                     )}
 
-                    {teamContext.roleInTeam?.role.toLowerCase() ===
-                        'manager' && (
+                    {isManager && (
                         <MenuItemContainer onPress={handleNavigateToTeamLogs}>
                             <MenuContent>
                                 <Icons name="book-outline" />
-                                <MenuItemText>Logs</MenuItemText>
+                                <MenuItemText>
+                                    {strings.Menu_Button_GoToLogs}
+                                </MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
                     )}
@@ -135,9 +156,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             </MainMenuContainer>
 
             <DrawerSection>
-                <MenuItemContainer
-                    onPress={() => navigation.navigate('Settings')}
-                >
+                <MenuItemContainer onPress={handleNavigateToSettings}>
                     <MenuContent>
                         <Icons name="settings-outline" />
                         <MenuItemText>
@@ -146,7 +165,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     </MenuContent>
                 </MenuItemContainer>
 
-                <MenuItemContainer onPress={() => navigation.navigate('About')}>
+                <MenuItemContainer onPress={handleNavigateToAbout}>
                     <MenuContent>
                         <Icons name="help-circle-outline" />
                         <MenuItemText>
