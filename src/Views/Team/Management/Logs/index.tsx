@@ -11,6 +11,7 @@ import {
     getTeamLogs,
 } from '~/Functions/Team/Management/Logs';
 
+import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 
 import { Container, List, LogCard, LogText } from './styles';
@@ -73,7 +74,9 @@ const Logs: React.FC = () => {
             </LogCard>
         );
     }, []);
-    return (
+    return refreshing ? (
+        <Loading />
+    ) : (
         <Container>
             <Header title="Logs" noDrawer />
 

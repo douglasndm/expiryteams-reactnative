@@ -25,7 +25,13 @@ function getFormattedLogText(log: ILog): string {
             action = `apagou o produto ${log.product?.name}`;
             break;
         case 'Create_Batch':
-            action = `criou o lote ${log.batch?.name} do produto ${log.product?.name}`;
+            if (log.batch && log.product) {
+                action = `criou o lote ${log.batch.name} do produto ${log.product.name}`;
+            } else if (log.batch && !log.product) {
+                action = `criou o lote ${log.batch.name}`;
+            } else {
+                action = `criou o lote ${log.new_value}`; // get the value of batch creation if it doesn't exists anymore
+            }
             break;
         case 'Update_Batch':
             action = `atualizou o lote ${log.batch?.name} do produto ${log.product?.name}`;
@@ -45,7 +51,13 @@ function getFormattedLogText(log: ILog): string {
             action = `apagou a categoria ${log.category?.name}`;
             break;
         case 'Set_Batch_Checked':
-            action = `marcou o lote ${log.batch?.name} do produto ${log.product?.name}`;
+            if (log.batch && log.product) {
+                action = `marcou o lote ${log.batch.name} do produto ${log.product.name}`;
+            } else if (log.batch && !log.product) {
+                action = `marcou o lote ${log.batch.name}`;
+            } else {
+                action = `marcou um lote (apagado)`;
+            }
             break;
 
         default:
