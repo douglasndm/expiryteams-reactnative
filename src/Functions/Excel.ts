@@ -9,6 +9,7 @@ import { getSelectedTeam } from './Team/SelectedTeam';
 import { getAllBrands } from './Brand';
 import { getAllStoresFromTeam } from './Team/Stores/AllStores';
 import { shareFile } from './Share';
+import { getAllCategoriesFromTeam } from './Categories';
 
 function sortProducts(products: Array<exportModel>): Array<exportModel> {
     const lotesSorted = products.sort((p1, p2) => {
@@ -102,6 +103,10 @@ export async function exportToExcel({
         team_id: selectedTeam.userRole.team.id,
     });
 
+    const allCategories = await getAllCategoriesFromTeam({
+        team_id: selectedTeam.userRole.team.id,
+    });
+
     const excelRows: Array<ExcelRowProps> = [];
 
     sortedProducts.forEach(item => {
@@ -109,6 +114,18 @@ export async function exportToExcel({
 
         const findedBrand = allBrands.find(b => b.id === item.product.brand);
         const findedStore = allStores.find(s => s.id === item.product.store);
+        const findedCategory = allCategories.find(cat => {
+            const { categories } = item.product;
+            if (categories.length <= 0) {
+                return false;
+            }
+
+            if (categories[0].id === cat.id) {
+                return true;
+            }
+
+            return false;
+        });
 
         row[strings.Function_Excel_ColumnName_ProductStore] =
             findedStore?.name || '';
@@ -117,6 +134,7 @@ export async function exportToExcel({
             item.product.code || '';
         row[strings.Function_Excel_ColumnName_ProductBrand] =
             findedBrand?.name || '';
+        row.Categoria = findedCategory?.name || '';
         row[strings.Function_Excel_ColumnName_BatchName] = item.batch.name;
         row[strings.Function_Excel_ColumnName_BatchPrice] =
             item.batch.price || 0;
