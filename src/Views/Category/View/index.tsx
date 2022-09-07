@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Analytics from '@react-native-firebase/analytics';
 
@@ -36,7 +37,7 @@ interface Props {
 
 const CategoryView: React.FC = () => {
     const { params } = useRoute();
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const teamContext = useTeam();
 
@@ -65,10 +66,11 @@ const CategoryView: React.FC = () => {
 
             setProducts(prods.products);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -99,10 +101,11 @@ const CategoryView: React.FC = () => {
                 type: 'info',
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -116,13 +119,13 @@ const CategoryView: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header title={categoryName} noDrawer />
+            <Header
+                title={strings.View_Category_List_View_BeforeCategoryName}
+                noDrawer
+            />
 
             <TitleContainer>
-                <ItemTitle>
-                    {strings.View_Category_List_View_BeforeCategoryName}
-                    {categoryName}
-                </ItemTitle>
+                <ItemTitle>{categoryName}</ItemTitle>
 
                 <ActionsContainer>
                     {!!teamContext.roleInTeam &&
