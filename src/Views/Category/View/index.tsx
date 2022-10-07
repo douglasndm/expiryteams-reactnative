@@ -151,8 +151,6 @@ const CategoryView: React.FC = () => {
             <ListProducts
                 products={products}
                 deactiveFloatButton
-                removeProdsWithoutBatches
-                sortProdsByBatchExpDate
                 onRefresh={loadData}
             />
 

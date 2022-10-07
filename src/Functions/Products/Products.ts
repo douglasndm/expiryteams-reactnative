@@ -6,6 +6,8 @@ import { sortBatches } from './Batches';
 
 interface getAllProductsProps {
     team_id: string;
+    removeCheckedBatches?: boolean;
+    sortByBatches?: boolean;
 }
 
 interface getAllProductsResponse extends IProduct {
@@ -14,9 +16,11 @@ interface getAllProductsResponse extends IProduct {
 
 export async function getAllProducts({
     team_id,
+    removeCheckedBatches = true,
+    sortByBatches = true,
 }: getAllProductsProps): Promise<Array<getAllProductsResponse>> {
     const response = await API.get<IAllTeamProducts>(
-        `/team/${team_id}/products?removeCheckedBatches=true&sortByBatches=true`
+        `/team/${team_id}/products?removeCheckedBatches=${removeCheckedBatches}&sortByBatches=${sortByBatches}`
     );
 
     const products: getAllProductsResponse[] = response.data.products.map(

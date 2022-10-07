@@ -45,6 +45,8 @@ export async function exportToExcel({
 
     const allProducts = await getAllProducts({
         team_id: selectedTeam.userRole.team.id,
+        removeCheckedBatches: false,
+        sortByBatches: false,
     });
 
     allProducts.forEach(p => {
