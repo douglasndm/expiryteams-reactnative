@@ -4,38 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dev.douglasndm.expirychecker.business">
 
-    <permission android:name="dev.douglasndm.expirychecker.business.permission.RECEIVE_ADM_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="com.amazon.device.messaging.permission.RECEIVE" />
-    <uses-permission android:name="dev.douglasndm.expirychecker.business.permission.RECEIVE_ADM_MESSAGE" />
-
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-  <uses-permission android:name="com.android.vending.BILLING"/>
-  <uses-permission android:name="android.permission.VIBRATE"/>
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@drawable/icon" android:roundIcon="@mipmap/icon_circle" android:theme="@style/AppTheme" android:allowBackup="false">
-
-    <amazon:enable-feature android:name="com.amazon.device.messaging"
-                         android:required="false"/>
-    <service android:name="com.onesignal.ADMMessageHandler"
-            android:exported="false" />
-    <service android:name="com.onesignal.ADMMessageHandlerJob"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="false" />
-    <receiver android:name="com.onesignal.ADMMessageHandler$Receiver"
-                android:permission="com.amazon.device.messaging.permission.SEND" >
-        <intent-filter>
-        <action android:name="com.amazon.device.messaging.intent.REGISTRATION" />
-        <action android:name="com.amazon.device.messaging.intent.RECEIVE" />
-        <category android:name="dev.douglasndm.expirychecker.business" />
-        </intent-filter>
-    </receiver>
-
-    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustPan">
+    <activity
+        android:name=".MainActivity"
+        android:label="@string/app_name"
+        android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+        android:launchMode="singleTask"
+        android:windowSoftInputMode="adjustPan"
+        android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
@@ -51,7 +36,7 @@
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/primary"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"/>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
+    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver" android:exported="false">
       <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED"/>
         <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
