@@ -142,8 +142,8 @@ async function errorsHandler(error: any): Promise<void> {
                     }
                     break;
             }
-        } else if (error.response.message) {
-            err = error.response.message;
+        } else if (error.response.data.message) {
+            err = error.response.data.message;
         }
 
         if (error.response.status && error.response.status === 403) {
