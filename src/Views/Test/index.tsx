@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
-import OneSignal from 'react-native-onesignal';
 
 import Button from '../../Components/Button';
 
@@ -19,10 +18,6 @@ const Test: React.FC = () => {
 
     const handleToken = useCallback(async () => {
         const token = await auth().currentUser?.getIdTokenResult();
-
-        const oneSignal = await OneSignal.getDeviceState();
-
-        console.log(oneSignal);
 
         console.log(token?.token);
     }, []);

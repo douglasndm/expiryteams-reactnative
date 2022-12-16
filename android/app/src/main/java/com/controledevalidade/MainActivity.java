@@ -50,7 +50,7 @@ public class MainActivity extends ReactActivity {
   // https://github.com/software-mansion/react-native-screens/issues/114
   @Override
   protected void onCreate(Bundle savedInstance){
-        SplashScreen.show(this, R.style.SplashScreenTheme);
+        SplashScreen.show(this, R.style.SplashScreenTheme, true);
         // super.onCreate(savedInstance);
         super.onCreate(null);
   }
