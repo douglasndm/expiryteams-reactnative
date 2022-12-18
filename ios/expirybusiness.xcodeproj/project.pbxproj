@@ -27,10 +27,10 @@
 		4FEB01AA264F505A007B215D /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FEB01A9264F505A007B215D /* Logo.png */; };
 		6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C27294F6C75002F0161 /* Ionicons.ttf */; };
+		A5855C2B294F6C75002F0161 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */; };
+		A5855C2C294F6C75002F0161 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C29294F6C75002F0161 /* MaterialIcons.ttf */; };
 		A5A506B627EA8B7200010839 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5A506B527EA8B7200010839 /* Config.xcconfig */; };
-		A5B72E3E27DD3FEA00E6C5F4 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5B72E3D27DD3FEA00E6C5F4 /* Ionicons.ttf */; };
-		A5D7292C27DD7F4600942AEB /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5D7292A27DD7F4600942AEB /* MaterialCommunityIcons.ttf */; };
-		A5D7292D27DD7F4600942AEB /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5D7292B27DD7F4600942AEB /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,10 +74,10 @@
 		4FEB01A9264F505A007B215D /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		5343F86896497306DC9BBA4C /* Pods-expirybusiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = expirybusiness/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A5855C27294F6C75002F0161 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		A5855C29294F6C75002F0161 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		A5A506B527EA8B7200010839 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		A5B72E3D27DD3FEA00E6C5F4 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		A5D7292A27DD7F4600942AEB /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		A5D7292B27DD7F4600942AEB /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		B983B0E933AFDCC0FD300CDD /* Pods-expirybusiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.release.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.release.xcconfig"; sourceTree = "<group>"; };
 		C0BBC9163B52F22772ED4982 /* Pods-expirybusiness.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.staging.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.staging.xcconfig"; sourceTree = "<group>"; };
 		E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-expirybusiness-expirybusinessTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +154,9 @@
 			isa = PBXGroup;
 			children = (
 				4FEB01A9264F505A007B215D /* Logo.png */,
+				A5855C27294F6C75002F0161 /* Ionicons.ttf */,
+				A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */,
+				A5855C29294F6C75002F0161 /* MaterialIcons.ttf */,
 				4F781708264E0A61007165DA /* OpenSans-Bold.ttf */,
 				4F781703264E0A60007165DA /* OpenSans-Light.ttf */,
 				4F781707264E0A61007165DA /* OpenSans-Regular.ttf */,
@@ -199,7 +202,6 @@
 			isa = PBXGroup;
 			children = (
 				A5A506B527EA8B7200010839 /* Config.xcconfig */,
-				A5B72E3C27DD3F8100E6C5F4 /* Fonts */,
 				4F7816CC264DFA54007165DA /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* expirybusiness */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -221,16 +223,6 @@
 				00E356EE1AD99517003FC87E /* expirybusinessTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A5B72E3C27DD3F8100E6C5F4 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				A5D7292A27DD7F4600942AEB /* MaterialCommunityIcons.ttf */,
-				A5D7292B27DD7F4600942AEB /* MaterialIcons.ttf */,
-				A5B72E3D27DD3FEA00E6C5F4 /* Ionicons.ttf */,
-			);
-			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,19 +323,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F78170B264E0A61007165DA /* OpenSans-Light.ttf in Resources */,
-				A5D7292C27DD7F4600942AEB /* MaterialCommunityIcons.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				4F781712264E0A61007165DA /* Roboto-Bold.ttf in Resources */,
 				4F78170E264E0A61007165DA /* Roboto-Regular.ttf in Resources */,
 				A5A506B627EA8B7200010839 /* Config.xcconfig in Resources */,
+				A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */,
+				A5855C2B294F6C75002F0161 /* MaterialCommunityIcons.ttf in Resources */,
 				4F78170D264E0A61007165DA /* Roboto-Light.ttf in Resources */,
 				4F78170C264E0A61007165DA /* OpenSans-SemiBold.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				A5D7292D27DD7F4600942AEB /* MaterialIcons.ttf in Resources */,
 				4FEB01AA264F505A007B215D /* Logo.png in Resources */,
+				A5855C2C294F6C75002F0161 /* MaterialIcons.ttf in Resources */,
 				4F781702264E046F007165DA /* swiftly-610.m4r in Resources */,
 				4F7816CD264DFA54007165DA /* GoogleService-Info.plist in Resources */,
-				A5B72E3E27DD3FEA00E6C5F4 /* Ionicons.ttf in Resources */,
 				4F781711264E0A61007165DA /* Roboto-Medium.ttf in Resources */,
 				4F781710264E0A61007165DA /* OpenSans-Bold.ttf in Resources */,
 				4F78170F264E0A61007165DA /* OpenSans-Regular.ttf in Resources */,
@@ -365,7 +357,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n\nexport NODE_BINARY=node\n../../../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../../../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		3007E349206D7E9D474EA5FB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -435,7 +427,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../../../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
 		63FEBD3DA0DA10437BA8B087 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -522,7 +514,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../../../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../../../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -754,7 +746,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -817,7 +809,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -879,7 +871,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

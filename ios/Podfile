@@ -1,5 +1,5 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../../../node_modules/react-native/scripts/react_native_pods'
+require_relative '../../../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
@@ -27,7 +27,7 @@ target 'expirybusiness' do
         :app_path => "#{Pod::Config.instance.installation_root}/.."
     )
 
-    permissions_path = '../node_modules/react-native-permissions/ios'
+    permissions_path = '../../../node_modules/react-native-permissions/ios'
     pod 'Firebase/AppCheck'
     pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
     pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
