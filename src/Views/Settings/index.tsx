@@ -16,7 +16,7 @@ import strings from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 import { useTeam } from '~/Contexts/TeamContext';
 
-import StatusBar from '~/Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 import Header from '~/Components/Header';
 
 import Appearance from './Components/Appearance';

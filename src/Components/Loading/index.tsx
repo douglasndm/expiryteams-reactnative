@@ -2,7 +2,7 @@ import React from 'react';
 
 import strings from '../../Locales';
 
-import StatusBar from '../StatusBar';
+import StatusBar from '@components/StatusBar';
 
 import { Container, LoadingIndicator, LoadingText } from './styles';
 

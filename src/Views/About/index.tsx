@@ -12,8 +12,7 @@ import Purchases from 'react-native-purchases';
 
 import strings from '~/Locales';
 
-import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import Header from '@components/Header';
 
 import {
     Container,
@@ -80,11 +79,7 @@ const About: React.FC = () => {
 
     return (
         <Container>
-            <StatusBar />
-            <Content>
-                <BackButton handleOnPress={goBack} />
-                <PageTitle>{strings.View_About_PageTitle}</PageTitle>
-            </Content>
+            <Header title={strings.View_About_PageTitle} noDrawer />
 
             <AboutSection>
                 <ApplicationName>{strings.AppName}</ApplicationName>

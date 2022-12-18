@@ -17,7 +17,7 @@ import {
     removeUserFromStore,
 } from '~/Functions/Team/Stores/User';
 
-import StatusBar from '~/Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
 

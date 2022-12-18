@@ -10,7 +10,7 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import StatusBar from '~/Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 

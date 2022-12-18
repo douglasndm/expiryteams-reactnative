@@ -11,7 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 
-import StatusBar from '~/Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import BarCodeReader from '~/Components/BarCodeReader';

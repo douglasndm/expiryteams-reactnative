@@ -7,9 +7,8 @@ import strings from '~/Locales';
 
 import { createTeam } from '~/Functions/Team';
 
-import BackButton from '~/Components/BackButton';
-import Button from '~/Components/Button';
-import StatusBar from '~/Components/StatusBar';
+import Header from '@components/Header';
+import Button from '@components/Button';
 
 import {
     Container,
@@ -74,12 +73,7 @@ const Add: React.FC = () => {
 
     return (
         <Container>
-            <StatusBar />
-
-            <PageHeader>
-                <BackButton handleOnPress={goBack} />
-                <PageTitle>{strings.View_CreateTeam_PageTitle}</PageTitle>
-            </PageHeader>
+            <Header title={strings.View_CreateTeam_PageTitle} noDrawer />
 
             <Content>
                 <InputTextContainer hasError={nameFieldError}>

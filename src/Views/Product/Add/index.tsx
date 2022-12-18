@@ -23,7 +23,7 @@ import { findProductByCode } from '~/Functions/Products/FindByCode';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 import { findDuplicate } from '~/Functions/Products/FindDuplicate';
 
-import StatusBar from '~/Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 import BarCodeReader from '~/Components/BarCodeReader';

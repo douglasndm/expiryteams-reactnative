@@ -4,8 +4,9 @@ import { exists } from 'react-native-fs';
 
 import strings from '../../Locales';
 
+import BackButton from '@components/BackButton';
+
 import Loading from '~/Components/Loading';
-import BackButton from '../../Components/BackButton';
 import Button from '../../Components/Button';
 
 import { Container, PageHeader, PageTitle, Image } from './styles';

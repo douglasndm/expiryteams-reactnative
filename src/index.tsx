@@ -33,7 +33,7 @@ import { TeamProvider } from '~/Contexts/TeamContext';
 import { navigationRef } from '~/References/Navigation';
 
 import AskReview from '~/Components/AskReview';
-import StatusBar from './Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 
 LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
 
