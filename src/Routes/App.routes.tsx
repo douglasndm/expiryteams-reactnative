@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useCallback, useContext, useState } from 'react';
+import remoteConfig from '@react-native-firebase/remote-config';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import TabMenu from '@components/TabMenu';
 
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
@@ -56,8 +60,26 @@ import Test from '~/Views/Test';
 const Stack = createNativeStackNavigator<RoutesParams>();
 
 const Routes: React.FC = () => {
+    const [currentRoute, setCurrentRoute] = useState('Home');
+
+    const enableTabBar = remoteConfig().getValue('enable_app_bar');
+
+    console.log(enableTabBar)
+
+    const handleRouteChange = useCallback(navRoutes => {
+        if (navRoutes) {
+            const { routes } = navRoutes.data.state;
+
+            setCurrentRoute(routes[routes.length - 1].name);
+        }
+    }, []);
+
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <>
+        <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            screenListeners={{ state: handleRouteChange }}
+        >
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
 
@@ -112,6 +134,11 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>
+
+        {enableTabBar.asBoolean() === true && (
+            <TabMenu currentRoute={currentRoute} enableMultiplesStores={false} />
+        )}
+        </>
     );
 };
 

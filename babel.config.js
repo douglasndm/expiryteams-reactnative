@@ -15,6 +15,7 @@ module.exports = {
 					'~': './src',
                     "@components": "../shared/src/Components",
 					'@shared': '../shared/src',
+					'@themes': '../shared/src/Themes',
 					'@utils': './src/Functions',
 				},
 			},

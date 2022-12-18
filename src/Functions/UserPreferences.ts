@@ -1,4 +1,4 @@
-import { getThemeByName } from '../Themes';
+import { getThemeByName } from '@themes/index';
 
 import { IUserPreferences } from '~/@types/userPreference';
 
