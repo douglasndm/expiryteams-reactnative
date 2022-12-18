@@ -11,9 +11,5 @@ export async function getAppTheme(): Promise<string> {
 }
 
 export async function setAppTheme(themeName: string): Promise<void> {
-    try {
-        await AsyncStorage.setItem('AppTheme', themeName);
-    } catch (err) {
-        throw new Error(err.message);
-    }
+    await AsyncStorage.setItem('AppTheme', themeName);
 }

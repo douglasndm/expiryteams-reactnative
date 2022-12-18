@@ -8,7 +8,7 @@ import React, {
 
 import strings from '~/Locales';
 
-import { getActualAppTheme } from '@themes/index';
+import { getActualAppTheme, Themes } from '@themes/index';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -36,41 +36,13 @@ const Appearance: React.FC = () => {
             value: 'system',
             key: 'system',
         });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_Light,
-            value: 'light',
-            key: 'light',
-        });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_Dark,
-            value: 'dark',
-            key: 'dark',
-        });
 
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_UltraViolet,
-            value: 'ultraviolet',
-            key: 'ultraviolet',
-        });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_DarkGreen,
-            value: 'darkgreen',
-            key: 'darkgreen',
-        });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_HappyPink,
-            value: 'happypink',
-            key: 'happypink',
-        });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_OceanBlue,
-            value: 'oceanblue',
-            key: 'oceanblue',
-        });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_Relax,
-            value: 'relax',
-            key: 'relax',
+        Themes.forEach(theme => {
+            availableThemes.push({
+                label: theme.name,
+                key: theme.key,
+                value: theme.key,
+            });
         });
 
         return availableThemes;
@@ -89,6 +61,7 @@ const Appearance: React.FC = () => {
             await setAppTheme(themeName);
 
             const changeToTheme = await getActualAppTheme();
+
 
             setPreferences({
                 ...preferences,
