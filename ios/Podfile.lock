@@ -211,6 +211,15 @@ PODS:
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - libevent (2.1.12)
+  - libwebp (1.2.4):
+    - libwebp/demux (= 1.2.4)
+    - libwebp/mux (= 1.2.4)
+    - libwebp/webp (= 1.2.4)
+  - libwebp/demux (1.2.4):
+    - libwebp/webp
+  - libwebp/mux (1.2.4):
+    - libwebp/demux
+  - libwebp/webp (1.2.4)
   - LogRocket (1.9.0)
   - logrocket-react-native (1.9.0):
     - LogRocket (= 1.9.0)
@@ -571,6 +580,10 @@ PODS:
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
+  - RNFastImage (8.6.3):
+    - React-Core
+    - SDWebImage (~> 5.11.1)
+    - SDWebImageWebPCoder (~> 0.8.4)
   - RNFBAnalytics (14.12.0):
     - Firebase/Analytics (= 8.15.0)
     - React-Core
@@ -640,9 +653,9 @@ PODS:
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.4.3):
+  - RNSentry (4.12.0):
     - React-Core
-    - Sentry (= 7.11.0)
+    - Sentry/HybridSDK (= 7.31.3)
   - RNShare (7.9.1):
     - React-Core
   - RNZipArchive (6.0.9):
@@ -652,9 +665,13 @@ PODS:
   - RNZipArchive/Core (6.0.9):
     - React-Core
     - SSZipArchive (~> 2.2)
-  - Sentry (7.11.0):
-    - Sentry/Core (= 7.11.0)
-  - Sentry/Core (7.11.0)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SDWebImageWebPCoder (0.8.5):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.10)
+  - Sentry/HybridSDK (7.31.3)
   - SocketRocket (0.6.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
@@ -744,6 +761,7 @@ DEPENDENCIES:
   - "RNCPicker (from `../../../node_modules/@react-native-picker/picker`)"
   - "RNCPushNotificationIOS (from `../../../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../../../node_modules/react-native-device-info`)
+  - RNFastImage (from `../../../node_modules/react-native-fast-image`)
   - "RNFBAnalytics (from `../../../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../../../node_modules/@react-native-firebase/app`)"
   - "RNFBAppCheck (from `../../../node_modules/@react-native-firebase/app-check`)"
@@ -794,6 +812,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - JWT
     - libevent
+    - libwebp
     - LogRocket
     - lottie-ios
     - nanopb
@@ -801,6 +820,8 @@ SPEC REPOS:
     - PromisesObjC
     - PurchasesHybridCommon
     - RevenueCat
+    - SDWebImage
+    - SDWebImageWebPCoder
     - Sentry
     - SocketRocket
     - SSZipArchive
@@ -919,6 +940,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
     :path: "../../../node_modules/react-native-device-info"
+  RNFastImage:
+    :path: "../../../node_modules/react-native-fast-image"
   RNFBAnalytics:
     :path: "../../../node_modules/@react-native-firebase/analytics"
   RNFBApp:
@@ -994,6 +1017,7 @@ SPEC CHECKSUMS:
   hermes-engine: 2af7b7a59128f250adfd86f15aa1d5a2ecd39995
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
   LogRocket: aa14f45fc1328d8593b7b642edc68bac3bed4f10
   logrocket-react-native: 26eb694c62d5320b102d2fced40ebc4bd2e2ad2e
   lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
@@ -1049,6 +1073,7 @@ SPEC CHECKSUMS:
   RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBAnalytics: ea1421b49a0bf5e5bb7274df4a330713d0e85d2e
   RNFBApp: e4439717c23252458da2b41b81b4b475c86f90c4
   RNFBAppCheck: 57ce74e629e882822847649aa1eae03e34895f6a
@@ -1063,10 +1088,12 @@ SPEC CHECKSUMS:
   RNPurchases: d78ef3233f611a2f78b49150b498854e03c49c07
   RNReanimated: da952bc23adfa611663a0be9bab43d9c7891e355
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
-  RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
+  RNSentry: 4c09f4dd9740cb9b33e94303de5b6d0dbeb0737d
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNZipArchive: 68a0c6db4b1c103f846f1559622050df254a3ade
-  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  Sentry: 08884c523575ec0f6690d94ed3ccb0246a1600bf
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc

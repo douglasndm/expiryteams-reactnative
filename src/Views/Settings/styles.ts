@@ -6,11 +6,11 @@ interface Request {
     notPremium?: boolean;
 }
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
     flex: 1;
     background: ${props => props.theme.colors.background};
 `;
-export const SettingsContent = styled.View`
+export const SettingsContent = styled.ScrollView`
     padding: 0 16px 16px 16px;
 `;
 
