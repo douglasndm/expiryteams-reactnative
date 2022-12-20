@@ -9,8 +9,8 @@ import strings from '~/Locales';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import {
-    getAllProducts,
-    sortProductsByBatchesExpDate,
+	getAllProducts,
+	sortProductsByBatchesExpDate,
 } from '~/Functions/Products/Products';
 import { searchProducts } from '~/Functions/Products/Search';
 import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
@@ -22,190 +22,163 @@ import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
-import { FloatButton, Icons } from '~/Components/ListProducts/styles';
-
 import {
-    Container,
-    InputSearch,
-    InputTextContainer,
-    InputTextIcon,
-    InputTextIconContainer,
+	Container,
+	InputSearch,
+	InputTextContainer,
+	InputTextIcon,
+	InputTextIconContainer,
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset, navigate } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
-    const teamContext = useTeam();
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const teamContext = useTeam();
 
-    const listRef = useRef<FlatList<IProduct>>(null);
+	const listRef = useRef<FlatList<IProduct>>(null);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [isMounted, setIsMounted] = useState(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isMounted, setIsMounted] = useState(true);
 
-    const [products, setProducts] = useState<Array<IProduct>>([]);
+	const [products, setProducts] = useState<Array<IProduct>>([]);
 
-    const [searchString, setSearchString] = useState<string>();
-    const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
-    const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
-        false
-    );
+	const [searchString, setSearchString] = useState<string>();
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [enableBarCodeReader, setEnableBarCodeReader] =
+		useState<boolean>(false);
 
-    const loadData = useCallback(async () => {
-        if (!isMounted) return;
-        try {
-            setIsLoading(true);
+	const loadData = useCallback(async () => {
+		if (!isMounted) return;
+		try {
+			setIsLoading(true);
 
-            const selectedTeam = await getSelectedTeam();
+			const selectedTeam = await getSelectedTeam();
 
-            if (!selectedTeam) {
-                return;
-            }
+			if (!selectedTeam) {
+				return;
+			}
 
-            const productsResponse = await getAllProducts({
-                team_id: selectedTeam.userRole.team.id,
-            });
+			const productsResponse = await getAllProducts({
+				team_id: selectedTeam.userRole.team.id,
+			});
 
-            setProducts(productsResponse);
-        } catch (err) {
-            if (err instanceof AppError) {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-                if (err.errorCode === 5) {
-                    reset({
-                        routes: [{ name: 'ViewTeam' }],
-                    });
-                }
-            }
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [isMounted, reset]);
+			setProducts(productsResponse);
+		} catch (err) {
+			if (err instanceof AppError) {
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+				if (err.errorCode === 5) {
+					reset({
+						routes: [{ name: 'ViewTeam' }],
+					});
+				}
+			}
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [isMounted, reset]);
 
-    useEffect(() => {
-        loadData();
+	useEffect(() => {
+		loadData();
 
-        return () => {
-            setIsMounted(false);
-        };
-    }, []);
+		return () => {
+			setIsMounted(false);
+		};
+	}, []);
 
-    useEffect(() => {
-        if (isMounted) {
-            setProductsSearch(products);
-        }
-    }, [isMounted, products]);
+	useEffect(() => {
+		if (isMounted) {
+			setProductsSearch(products);
+		}
+	}, [isMounted, products]);
 
-    const handleSearchChange = useCallback(
-        async (search: string) => {
-            setSearchString(search);
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchString(search);
 
-            let prods = sortProductsByBatchesExpDate({
-                products,
-            });
+			let prods = sortProductsByBatchesExpDate({
+				products,
+			});
 
-            if (search && search !== '') {
-                const findProducts = await searchProducts({
-                    products,
-                    query: search,
-                });
+			if (search && search !== '') {
+				const findProducts = await searchProducts({
+					products,
+					query: search,
+				});
 
-                prods = sortProductsByBatchesExpDate({
-                    products: findProducts,
-                });
-            }
-            setProductsSearch(prods);
-        },
-        [products]
-    );
+				prods = sortProductsByBatchesExpDate({
+					products: findProducts,
+				});
+			}
+			setProductsSearch(prods);
+		},
+		[products]
+	);
 
-    const handleOnBarCodeReaderOpen = useCallback(() => {
-        setEnableBarCodeReader(true);
-    }, []);
+	const handleOnBarCodeReaderOpen = useCallback(() => {
+		setEnableBarCodeReader(true);
+	}, []);
 
-    const handleOnBarCodeReaderClose = useCallback(() => {
-        setEnableBarCodeReader(false);
-    }, []);
+	const handleOnBarCodeReaderClose = useCallback(() => {
+		setEnableBarCodeReader(false);
+	}, []);
 
-    const handleOnCodeRead = useCallback(
-        code => {
-            setSearchString(code);
-            handleSearchChange(code);
-            setEnableBarCodeReader(false);
-        },
-        [handleSearchChange]
-    );
+	const handleOnCodeRead = useCallback(
+		code => {
+			setSearchString(code);
+			handleSearchChange(code);
+			setEnableBarCodeReader(false);
+		},
+		[handleSearchChange]
+	);
 
-    const handleNavigateAddProduct = useCallback(() => {
-        if (searchString && searchString !== '') {
-            const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
-            const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+	return isLoading ? (
+		<Loading />
+	) : (
+		<>
+			{enableBarCodeReader ? (
+				<BarCodeReader
+					onCodeRead={handleOnCodeRead}
+					onClose={handleOnBarCodeReaderClose}
+				/>
+			) : (
+				<Container>
+					{teamContext.name && (
+						<Header title={teamContext.name} listRef={listRef} />
+					)}
 
-            navigate('AddProduct', {
-                code: query,
-            });
-        } else {
-            navigate('AddProduct', {});
-        }
-    }, [navigate, searchString]);
+					{products.length > 0 && (
+						<InputTextContainer>
+							<InputSearch
+								placeholder={strings.View_Home_SearchText}
+								value={searchString}
+								onChangeText={handleSearchChange}
+							/>
+							<InputTextIconContainer
+								onPress={handleOnBarCodeReaderOpen}
+							>
+								<InputTextIcon name="barcode-outline" />
+							</InputTextIconContainer>
+						</InputTextContainer>
+					)}
 
-    return isLoading ? (
-        <Loading />
-    ) : (
-        <>
-            {enableBarCodeReader ? (
-                <BarCodeReader
-                    onCodeRead={handleOnCodeRead}
-                    onClose={handleOnBarCodeReaderClose}
-                />
-            ) : (
-                <Container>
-                    {teamContext.name && (
-                        <Header title={teamContext.name} listRef={listRef} />
-                    )}
-
-                    {products.length > 0 && (
-                        <InputTextContainer>
-                            <InputSearch
-                                placeholder={strings.View_Home_SearchText}
-                                value={searchString}
-                                onChangeText={handleSearchChange}
-                            />
-                            <InputTextIconContainer
-                                onPress={handleOnBarCodeReaderOpen}
-                            >
-                                <InputTextIcon name="barcode-outline" />
-                            </InputTextIconContainer>
-                        </InputTextContainer>
-                    )}
-
-                    <ListProducts
-                        products={productsSearch}
-                        onRefresh={loadData}
-                        sortProdsByBatchExpDate={false}
-                        deactiveFloatButton
-                        listRef={listRef}
-                    />
-
-                    <FloatButton
-                        icon={() => (
-                            <Icons name="add-outline" color="white" size={22} />
-                        )}
-                        small
-                        label={strings.View_FloatMenu_AddProduct}
-                        onPress={handleNavigateAddProduct}
-                    />
-                </Container>
-            )}
-        </>
-    );
+					<ListProducts
+						products={productsSearch}
+						onRefresh={loadData}
+						sortProdsByBatchExpDate={false}
+						deactiveFloatButton
+						listRef={listRef}
+					/>
+				</Container>
+			)}
+		</>
+	);
 };
 
 export default memo(Home);
