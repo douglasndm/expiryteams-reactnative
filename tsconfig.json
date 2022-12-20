@@ -80,5 +80,8 @@
     "metro.config.js",
     "jest.config.js"
   ],
+  "include": [
+    "../shared/@types"
+  ],
   "references": [{ "path": "../shared" }]
 }

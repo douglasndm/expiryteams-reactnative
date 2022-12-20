@@ -27,6 +27,7 @@
 		4FEB01AA264F505A007B215D /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FEB01A9264F505A007B215D /* Logo.png */; };
 		6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A50A796A29514F9400946350 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A50A796929514F9400946350 /* main.jsbundle */; };
 		A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C27294F6C75002F0161 /* Ionicons.ttf */; };
 		A5855C2B294F6C75002F0161 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */; };
 		A5855C2C294F6C75002F0161 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C29294F6C75002F0161 /* MaterialIcons.ttf */; };
@@ -74,6 +75,7 @@
 		4FEB01A9264F505A007B215D /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		5343F86896497306DC9BBA4C /* Pods-expirybusiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = expirybusiness/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A50A796929514F9400946350 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = expirybusiness/main.jsbundle; sourceTree = "<group>"; };
 		A5855C27294F6C75002F0161 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		A5855C29294F6C75002F0161 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A50A796929514F9400946350 /* main.jsbundle */,
 				A5A506B527EA8B7200010839 /* Config.xcconfig */,
 				4F7816CC264DFA54007165DA /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* expirybusiness */,
@@ -325,6 +328,7 @@
 				4F78170B264E0A61007165DA /* OpenSans-Light.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				4F781712264E0A61007165DA /* Roboto-Bold.ttf in Resources */,
+				A50A796A29514F9400946350 /* main.jsbundle in Resources */,
 				4F78170E264E0A61007165DA /* Roboto-Regular.ttf in Resources */,
 				A5A506B627EA8B7200010839 /* Config.xcconfig in Resources */,
 				A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */,
@@ -625,7 +629,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 77;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
@@ -660,7 +664,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 77;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -887,7 +891,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 77;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
