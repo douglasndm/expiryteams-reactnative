@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import BarCodeReader from '@components/BarCodeReader';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -20,7 +21,6 @@ import AppError from '~/Errors/AppError';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
-import BarCodeReader from '~/Components/BarCodeReader';
 
 import {
 	Container,
