@@ -48,6 +48,7 @@
       "paths": {
           "@shared/*": ["../shared/src/*"],
           "@components/*": ["../shared/src/Components/*"],
+          "@views/*": ["../shared/src/Views/*"],
           "@themes/*": ["../shared/src/Themes/*"],
           "~/*": ["src/*"]
       },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
