@@ -5,8 +5,8 @@ import { LogBox, ActivityIndicator } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import {
-    NavigationContainer,
-    getFocusedRouteNameFromRoute,
+	NavigationContainer,
+	getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
@@ -20,9 +20,9 @@ import './Services/Analytics';
 import './Services/RemoteConfig';
 import DeepLinking from './Services/DeepLinking';
 
-import '@utils/Team/Subscriptions';
-import '@utils/PushNotifications';
-import { getAllUserPreferences } from '@utils/UserPreferences';
+import './Functions/Team/Subscriptions';
+import './Functions/PushNotifications';
+import { getAllUserPreferences } from './Functions/UserPreferences';
 
 import Routes from './Routes/DrawerContainer';
 
@@ -41,82 +41,82 @@ LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); //
 screens.enableScreens(true);
 
 const App: React.FC = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [previousRoute, setPreviousRoute] = useState('Home');
+	const [previousRoute, setPreviousRoute] = useState('Home');
 
-    const [preferences, setPreferences] = useState<IPreferences>(DefaultPrefs);
+	const [preferences, setPreferences] = useState<IPreferences>(DefaultPrefs);
 
-    const loadInitialData = useCallback(async () => {
-        const prefs = await getAllUserPreferences();
+	const loadInitialData = useCallback(async () => {
+		const prefs = await getAllUserPreferences();
 
-        setPreferences(prefs);
+		setPreferences(prefs);
 
-        setIsLoading(false);
+		setIsLoading(false);
 
-        SplashScreen.hide();
-    }, []);
+		SplashScreen.hide();
+	}, []);
 
-    const handleOnScreenChange = useCallback(
-        async state => {
-            const route = state.routes[0] || 'undefined';
-            const focusedRouteName = getFocusedRouteNameFromRoute(route);
+	const handleOnScreenChange = useCallback(
+		async state => {
+			const route = state.routes[0] || 'undefined';
+			const focusedRouteName = getFocusedRouteNameFromRoute(route);
 
-            if (focusedRouteName) {
-                if (previousRoute !== focusedRouteName) {
-                    setPreviousRoute(focusedRouteName);
+			if (focusedRouteName) {
+				if (previousRoute !== focusedRouteName) {
+					setPreviousRoute(focusedRouteName);
 
-                    if (!__DEV__) {
-                        await Analyticts().logScreenView({
-                            screen_name: focusedRouteName,
-                            screen_class: focusedRouteName,
-                        });
-                    }
-                }
-            }
-        },
-        [previousRoute]
-    );
+					if (!__DEV__) {
+						await Analyticts().logScreenView({
+							screen_name: focusedRouteName,
+							screen_class: focusedRouteName,
+						});
+					}
+				}
+			}
+		},
+		[previousRoute]
+	);
 
-    useEffect(() => {
-        loadInitialData();
-    }, []);
+	useEffect(() => {
+		loadInitialData();
+	}, []);
 
-    return isLoading ? (
-        <ActivityIndicator size="large" />
-    ) : (
-        <PreferencesContext.Provider
-            value={{
-                preferences,
-                setPreferences,
-            }}
-        >
-            <ThemeProvider theme={preferences.appTheme}>
-                <PaperProvider>
-                    <NavigationContainer
-                        ref={navigationRef}
-                        linking={DeepLinking}
-                        onStateChange={handleOnScreenChange}
-                    >
-                        <AuthProvider>
-                            <TeamProvider>
-                                <StatusBar />
-                                <Routes />
+	return isLoading ? (
+		<ActivityIndicator size="large" />
+	) : (
+		<PreferencesContext.Provider
+			value={{
+				preferences,
+				setPreferences,
+			}}
+		>
+			<ThemeProvider theme={preferences.appTheme}>
+				<PaperProvider>
+					<NavigationContainer
+						ref={navigationRef}
+						linking={DeepLinking}
+						onStateChange={handleOnScreenChange}
+					>
+						<AuthProvider>
+							<TeamProvider>
+								<StatusBar />
+								<Routes />
 
-                                <AskReview />
-                            </TeamProvider>
-                        </AuthProvider>
-                    </NavigationContainer>
-                    <FlashMessage duration={7000} />
-                </PaperProvider>
-            </ThemeProvider>
-        </PreferencesContext.Provider>
-    );
+								<AskReview />
+							</TeamProvider>
+						</AuthProvider>
+					</NavigationContainer>
+					<FlashMessage duration={7000} />
+				</PaperProvider>
+			</ThemeProvider>
+		</PreferencesContext.Provider>
+	);
 };
 
 const codePushOptions: CodePushOptions = {
-    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
-    mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+	checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
 };
 
 export default CodePush(codePushOptions)(App);
