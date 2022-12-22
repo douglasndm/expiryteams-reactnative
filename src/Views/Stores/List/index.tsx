@@ -9,7 +9,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 import { createStore } from '~/Functions/Team/Stores/Create';
 
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import Loading from '~/Components/Loading';
 
 import {

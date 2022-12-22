@@ -11,7 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { getTeamSubscription } from '~/Functions/Team/Subscriptions';
 
-import Button from '~/Components/Button';
+import Button from '@components/Button';
 import Loading from '~/Components/Loading';
 
 import { Section, SectionTitle } from '../../styles';

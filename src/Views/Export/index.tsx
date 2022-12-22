@@ -9,8 +9,8 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { importExportFileFromApp } from '~/Functions/ImportExport';
 import { exportToExcel } from '~/Functions/Excel';
 
-import Header from '~/Components/Header';
-import Button from '~/Components/Button';
+import Header from '@components/Header';
+import Button from '@components/Button';
 
 import {
     Container,

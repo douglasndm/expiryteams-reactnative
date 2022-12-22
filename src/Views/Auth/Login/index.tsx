@@ -12,8 +12,8 @@ import { useAuth } from '~/Contexts/AuthContext';
 import { login } from '~/Functions/Auth';
 
 import Loading from '~/Components/Loading';
-import Input from '~/Components/InputText';
-import Button from '~/Components/Button';
+import Input from '@components/InputText';
+import Button from '@components/Button';
 
 import Footer from './Footer';
 

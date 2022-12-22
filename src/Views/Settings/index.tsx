@@ -17,7 +17,7 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import StatusBar from '@components/StatusBar';
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';

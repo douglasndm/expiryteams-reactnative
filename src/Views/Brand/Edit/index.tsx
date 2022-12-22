@@ -11,7 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { deleteBrand, getAllBrands, updateBrand } from '~/Functions/Brand';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 
 import {
     Container,

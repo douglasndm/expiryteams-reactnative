@@ -4,6 +4,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
+import StatusBar from '@components/StatusBar';
+import Header from '@components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -13,361 +15,359 @@ import { removeUserFromTeam } from '~/Functions/Team/Users';
 import { updateUserRole } from '~/Functions/User/Roles';
 import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 import {
-    addUserToStore,
-    removeUserFromStore,
+	addUserToStore,
+	removeUserFromStore,
 } from '~/Functions/Team/Stores/User';
 
-import StatusBar from '@components/StatusBar';
-import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {
-    PickerContainer,
-    Picker,
+	PickerContainer,
+	Picker,
 } from '~/Components/Product/Inputs/Pickers/styles';
 
 import {
-    Container,
-    PageHeader,
-    PageContent,
-    UserName,
-    UserInfo,
-    CodeDetails,
-    CodeTitle,
-    CodeContainer,
-    Code,
-    ActionsButtonsContainer,
-    ActionButton,
-    Icon,
-    RadioButtonContainer,
-    RadioButton,
-    RadioButtonText,
-    RadioButtonContent,
+	Container,
+	PageHeader,
+	PageContent,
+	UserName,
+	UserInfo,
+	CodeDetails,
+	CodeTitle,
+	CodeContainer,
+	Code,
+	ActionsButtonsContainer,
+	ActionButton,
+	Icon,
+	RadioButtonContainer,
+	RadioButton,
+	RadioButtonText,
+	RadioButtonContent,
 } from './styles';
 
 interface UserDetailsProps {
-    route: {
-        params: {
-            user: string;
-        };
-    };
+	route: {
+		params: {
+			user: string;
+		};
+	};
 }
 
 const UserDetails: React.FC<UserDetailsProps> = ({
-    route,
+	route,
 }: UserDetailsProps) => {
-    const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const authContext = useAuth();
-    const teamContext = useTeam();
+	const authContext = useAuth();
+	const teamContext = useTeam();
 
-    const [isMounted, setIsMounted] = useState(true);
+	const [isMounted, setIsMounted] = useState(true);
 
-    const user: IUserInTeam = useMemo(() => {
-        return JSON.parse(String(route.params.user));
-    }, [route.params.user]);
+	const user: IUserInTeam = useMemo(() => {
+		return JSON.parse(String(route.params.user));
+	}, [route.params.user]);
 
-    const isMyself = useMemo(() => user.fid === authContext.user?.uid, [
-        authContext.user,
-        user.fid,
-    ]);
+	const isMyself = useMemo(
+		() => user.fid === authContext.user?.uid,
+		[authContext.user, user.fid]
+	);
 
-    const [stores, setStores] = useState<IPickerItem[]>([]);
+	const [stores, setStores] = useState<IPickerItem[]>([]);
 
-    const [selectedRole, setSelectedRole] = useState<
-        'repositor' | 'supervisor' | 'manager'
-    >(() => {
-        if (user.role) {
-            const role = user.role.toLowerCase();
+	const [selectedRole, setSelectedRole] = useState<
+		'repositor' | 'supervisor' | 'manager'
+	>(() => {
+		if (user.role) {
+			const role = user.role.toLowerCase();
 
-            if (role === 'manager') {
-                return 'manager';
-            }
-            if (role === 'supervisor') {
-                return 'supervisor';
-            }
-        }
-        return 'repositor';
-    });
+			if (role === 'manager') {
+				return 'manager';
+			}
+			if (role === 'supervisor') {
+				return 'supervisor';
+			}
+		}
+		return 'repositor';
+	});
 
-    const [selectedStore, setSelectedStore] = useState<string | null>(() => {
-        if (user.stores && user.stores.length > 0) {
-            return user.stores[0].id;
-        }
-        return null;
-    });
+	const [selectedStore, setSelectedStore] = useState<string | null>(() => {
+		if (user.stores && user.stores.length > 0) {
+			return user.stores[0].id;
+		}
+		return null;
+	});
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const loadData = useCallback(async () => {
-        if (!isMounted || !teamContext.id) return;
-        try {
-            setIsLoading(true);
+	const loadData = useCallback(async () => {
+		if (!isMounted || !teamContext.id) return;
+		try {
+			setIsLoading(true);
 
-            const allStores = await getAllStoresFromTeam({
-                team_id: teamContext.id,
-            });
+			const allStores = await getAllStoresFromTeam({
+				team_id: teamContext.id,
+			});
 
-            const storesToAdd: IPickerItem[] = [];
-            allStores.forEach(store => {
-                storesToAdd.push({
-                    key: store.id,
-                    value: store.id,
-                    label: store.name,
-                });
-            });
+			const storesToAdd: IPickerItem[] = [];
+			allStores.forEach(store => {
+				storesToAdd.push({
+					key: store.id,
+					value: store.id,
+					label: store.name,
+				});
+			});
 
-            setStores(storesToAdd);
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [isMounted, teamContext.id]);
+			setStores(storesToAdd);
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [isMounted, teamContext.id]);
 
-    const handleOnChange = useCallback(value => {
-        setSelectedStore(value);
-    }, []);
+	const handleOnChange = useCallback(value => {
+		setSelectedStore(value);
+	}, []);
 
-    const enableManagerTools = useMemo(() => {
-        if (teamContext.id) {
-            if (teamContext.roleInTeam?.role.toLowerCase() === 'manager') {
-                return true;
-            }
-        }
-        return false;
-    }, [teamContext.id, teamContext.roleInTeam]);
+	const enableManagerTools = useMemo(() => {
+		if (teamContext.id) {
+			if (teamContext.roleInTeam?.role.toLowerCase() === 'manager') {
+				return true;
+			}
+		}
+		return false;
+	}, [teamContext.id, teamContext.roleInTeam]);
 
-    const userIsPending = useMemo(() => {
-        if (user.status) {
-            if (user.status.toLowerCase() === 'pending') {
-                return true;
-            }
-        }
-        return false;
-    }, [user.status]);
+	const userIsPending = useMemo(() => {
+		if (user.status) {
+			if (user.status.toLowerCase() === 'pending') {
+				return true;
+			}
+		}
+		return false;
+	}, [user.status]);
 
-    const userRole = useMemo(() => {
-        if (user.role) {
-            const { role } = user;
+	const userRole = useMemo(() => {
+		if (user.role) {
+			const { role } = user;
 
-            if (role?.toLowerCase() === 'manager')
-                return strings.UserInfo_Role_Manager;
-            if (role?.toLowerCase() === 'supervisor') {
-                return strings.UserInfo_Role_Supervisor;
-            }
-        }
+			if (role?.toLowerCase() === 'manager')
+				return strings.UserInfo_Role_Manager;
+			if (role?.toLowerCase() === 'supervisor') {
+				return strings.UserInfo_Role_Supervisor;
+			}
+		}
 
-        return strings.UserInfo_Role_Repositor;
-    }, [user]);
+		return strings.UserInfo_Role_Repositor;
+	}, [user]);
 
-    const handleCopyCode = useCallback(() => {
-        Clipboard.setString(user.code);
+	const handleCopyCode = useCallback(() => {
+		Clipboard.setString(user.code);
 
-        showMessage({
-            message: 'Código copiado para área de transferencia',
-            type: 'info',
-        });
-    }, [user.code]);
+		showMessage({
+			message: 'Código copiado para área de transferencia',
+			type: 'info',
+		});
+	}, [user.code]);
 
-    const handleRemoveUser = useCallback(async () => {
-        if (!isMounted || !teamContext.id) return;
+	const handleRemoveUser = useCallback(async () => {
+		if (!isMounted || !teamContext.id) return;
 
-        try {
-            setIsLoading(true);
-            await removeUserFromTeam({
-                team_id: teamContext.id,
-                user_id: user.id,
-            });
+		try {
+			setIsLoading(true);
+			await removeUserFromTeam({
+				team_id: teamContext.id,
+				user_id: user.id,
+			});
 
-            showMessage({
-                message: 'Usuário removido do time',
-                type: 'info',
-            });
+			showMessage({
+				message: 'Usuário removido do time',
+				type: 'info',
+			});
 
-            pop();
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [isMounted, pop, teamContext.id, user.id]);
+			pop();
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [isMounted, pop, teamContext.id, user.id]);
 
-    const handleUpdate = useCallback(async () => {
-        if (!isMounted || !teamContext.id) return;
+	const handleUpdate = useCallback(async () => {
+		if (!isMounted || !teamContext.id) return;
 
-        try {
-            setIsLoading(true);
-            if (user.stores.length > 0) {
-                if (selectedStore === null) {
-                    await removeUserFromStore({
-                        team_id: teamContext.id,
-                        store_id: user.stores[0].id,
-                        user_id: user.id,
-                    });
-                }
-            }
+		try {
+			setIsLoading(true);
+			if (user.stores.length > 0) {
+				if (selectedStore === null) {
+					await removeUserFromStore({
+						team_id: teamContext.id,
+						store_id: user.stores[0].id,
+						user_id: user.id,
+					});
+				}
+			}
 
-            if (selectedStore !== null) {
-                if (
-                    user.stores.length <= 0 ||
-                    selectedStore !== user.stores[0].id
-                )
-                    await addUserToStore({
-                        team_id: teamContext.id,
-                        user_id: user.id,
-                        store_id: selectedStore,
-                    });
-            }
+			if (selectedStore !== null) {
+				if (
+					user.stores.length <= 0 ||
+					selectedStore !== user.stores[0].id
+				)
+					await addUserToStore({
+						team_id: teamContext.id,
+						user_id: user.id,
+						store_id: selectedStore,
+					});
+			}
 
-            await updateUserRole({
-                user_id: user.id,
-                team_id: teamContext.id,
-                newRole: selectedRole,
-            });
+			await updateUserRole({
+				user_id: user.id,
+				team_id: teamContext.id,
+				newRole: selectedRole,
+			});
 
-            showMessage({
-                message: 'Usuário atualizado',
-                type: 'info',
-            });
+			showMessage({
+				message: 'Usuário atualizado',
+				type: 'info',
+			});
 
-            pop();
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [isMounted, pop, selectedRole, selectedStore, teamContext.id, user]);
+			pop();
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [isMounted, pop, selectedRole, selectedStore, teamContext.id, user]);
 
-    useEffect(() => {
-        loadData();
-    }, []);
+	useEffect(() => {
+		loadData();
+	}, []);
 
-    useEffect(() => {
-        return () => {
-            setIsMounted(false);
-        };
-    }, []);
+	useEffect(() => {
+		return () => {
+			setIsMounted(false);
+		};
+	}, []);
 
-    return isLoading ? (
-        <Loading />
-    ) : (
-        <Container>
-            <StatusBar />
+	return isLoading ? (
+		<Loading />
+	) : (
+		<Container>
+			<StatusBar />
 
-            <PageHeader>
-                <Header title={strings.View_UserDetails_PageTitle} noDrawer />
+			<PageHeader>
+				<Header title={strings.View_UserDetails_PageTitle} noDrawer />
 
-                {enableManagerTools && authContext.user && !isMyself && (
-                    <ActionsButtonsContainer>
-                        {!userIsPending && (
-                            <ActionButton
-                                icon={() => (
-                                    <Icon name="save-outline" size={22} />
-                                )}
-                                onPress={handleUpdate}
-                            >
-                                Atualizar
-                            </ActionButton>
-                        )}
-                        <ActionButton
-                            icon={() => (
-                                <Icon name="person-remove-outline" size={22} />
-                            )}
-                            onPress={handleRemoveUser}
-                        >
-                            Remover
-                        </ActionButton>
-                    </ActionsButtonsContainer>
-                )}
-            </PageHeader>
+				{enableManagerTools && authContext.user && !isMyself && (
+					<ActionsButtonsContainer>
+						{!userIsPending && (
+							<ActionButton
+								icon={() => (
+									<Icon name="save-outline" size={22} />
+								)}
+								onPress={handleUpdate}
+							>
+								Atualizar
+							</ActionButton>
+						)}
+						<ActionButton
+							icon={() => (
+								<Icon name="person-remove-outline" size={22} />
+							)}
+							onPress={handleRemoveUser}
+						>
+							Remover
+						</ActionButton>
+					</ActionsButtonsContainer>
+				)}
+			</PageHeader>
 
-            <PageContent>
-                {!!user.name && !!user.lastName && (
-                    <UserName>{`${user.name} ${user.lastName}`}</UserName>
-                )}
+			<PageContent>
+				{!!user.name && !!user.lastName && (
+					<UserName>{`${user.name} ${user.lastName}`}</UserName>
+				)}
 
-                <UserInfo>{user.email}</UserInfo>
-                <UserInfo>{userRole}</UserInfo>
+				<UserInfo>{user.email}</UserInfo>
+				<UserInfo>{userRole}</UserInfo>
 
-                {userIsPending && enableManagerTools && (
-                    <CodeDetails>
-                        <CodeTitle>
-                            {strings.View_UserDetails_Code_Title}
-                        </CodeTitle>
-                        <CodeContainer onPress={handleCopyCode}>
-                            <Code>{user.code}</Code>
-                        </CodeContainer>
-                    </CodeDetails>
-                )}
+				{userIsPending && enableManagerTools && (
+					<CodeDetails>
+						<CodeTitle>
+							{strings.View_UserDetails_Code_Title}
+						</CodeTitle>
+						<CodeContainer onPress={handleCopyCode}>
+							<Code>{user.code}</Code>
+						</CodeContainer>
+					</CodeDetails>
+				)}
 
-                {enableManagerTools &&
-                    authContext.user &&
-                    !isMyself &&
-                    !userIsPending && (
-                        <>
-                            <PickerContainer style={{ marginTop: 10 }}>
-                                <Picker
-                                    items={stores}
-                                    onValueChange={handleOnChange}
-                                    value={selectedStore}
-                                    placeholder={{
-                                        label: 'Atribuir a uma loja',
-                                        value: null,
-                                    }}
-                                />
-                            </PickerContainer>
+				{enableManagerTools &&
+					authContext.user &&
+					!isMyself &&
+					!userIsPending && (
+						<>
+							<PickerContainer style={{ marginTop: 10 }}>
+								<Picker
+									items={stores}
+									onValueChange={handleOnChange}
+									value={selectedStore}
+									placeholder={{
+										label: 'Atribuir a uma loja',
+										value: null,
+									}}
+								/>
+							</PickerContainer>
 
-                            <RadioButtonContainer>
-                                <RadioButtonContent>
-                                    <RadioButton
-                                        value="checked"
-                                        status={
-                                            selectedRole === 'repositor'
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() =>
-                                            setSelectedRole('repositor')
-                                        }
-                                    />
-                                    <RadioButtonText>Repositor</RadioButtonText>
-                                </RadioButtonContent>
+							<RadioButtonContainer>
+								<RadioButtonContent>
+									<RadioButton
+										value="checked"
+										status={
+											selectedRole === 'repositor'
+												? 'checked'
+												: 'unchecked'
+										}
+										onPress={() =>
+											setSelectedRole('repositor')
+										}
+									/>
+									<RadioButtonText>Repositor</RadioButtonText>
+								</RadioButtonContent>
 
-                                <RadioButtonContent>
-                                    <RadioButton
-                                        value="unchecked"
-                                        status={
-                                            selectedRole === 'supervisor'
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() =>
-                                            setSelectedRole('supervisor')
-                                        }
-                                    />
-                                    <RadioButtonText>
-                                        Supervisor
-                                    </RadioButtonText>
-                                </RadioButtonContent>
-                            </RadioButtonContainer>
-                        </>
-                    )}
-            </PageContent>
-        </Container>
-    );
+								<RadioButtonContent>
+									<RadioButton
+										value="unchecked"
+										status={
+											selectedRole === 'supervisor'
+												? 'checked'
+												: 'unchecked'
+										}
+										onPress={() =>
+											setSelectedRole('supervisor')
+										}
+									/>
+									<RadioButtonText>
+										Supervisor
+									</RadioButtonText>
+								</RadioButtonContent>
+							</RadioButtonContainer>
+						</>
+					)}
+			</PageContent>
+		</Container>
+	);
 };
 
 export default UserDetails;

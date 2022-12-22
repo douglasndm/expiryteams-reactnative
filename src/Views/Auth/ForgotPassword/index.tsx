@@ -7,9 +7,9 @@ import strings from '~/Locales';
 
 import { recoveryPassword } from '~/Functions/Auth/Firebase/password';
 
-import Header from '~/Components/Header';
-import Input from '~/Components/InputText';
-import Button from '~/Components/Button';
+import Header from '@components/Header';
+import Input from '@components/InputText';
+import Button from '@components/Button';
 
 import { Container, Content } from './styles';
 

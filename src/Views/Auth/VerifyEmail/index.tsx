@@ -13,7 +13,7 @@ import {
     resendConfirmationEmail,
 } from '~/Functions/Auth/Account';
 
-import Button from '~/Components/Button';
+import Button from '@components/Button';
 
 import {
     Container,

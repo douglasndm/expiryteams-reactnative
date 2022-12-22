@@ -9,9 +9,9 @@ import { createSeassion } from '~/Functions/Auth/Session';
 
 import { reset } from '~/References/Navigation';
 
-import Header from '~/Components/Header';
-import Input from '~/Components/InputText';
-import Button from '~/Components/Button';
+import Header from '@components/Header';
+import Input from '@components/InputText';
+import Button from '@components/Button';
 
 import { FormContainer } from '../Login/styles';
 import { Container, PageContent } from './styles';

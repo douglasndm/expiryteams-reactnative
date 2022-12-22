@@ -7,7 +7,7 @@ import strings from '~/Locales';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import BackButton from '@components/BackButton';
-import Button from '~/Components/Button';
+import Button from '@components/Button';
 
 import Subscriptions from './Components/Subscriptions';
 import Advenced from './Components/Advenced';

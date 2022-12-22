@@ -6,9 +6,9 @@ import { showMessage } from 'react-native-flash-message';
 import { deleteUser } from '~/Functions/User';
 import { UserTeamsResponse, getUserTeams } from '~/Functions/User/Teams';
 
-import Header from '~/Components/Header';
-import InputText from '~/Components/InputText';
-import Button from '~/Components/Button';
+import Header from '@components/Header';
+import InputText from '@components/InputText';
+import Button from '@components/Button';
 
 import {
     Content,

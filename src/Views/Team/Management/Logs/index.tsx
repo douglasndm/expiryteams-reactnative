@@ -4,95 +4,95 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@components/Header';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import {
-    getFormattedLogText,
-    getTeamLogs,
+	getFormattedLogText,
+	getTeamLogs,
 } from '~/Functions/Team/Management/Logs';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
 
 import { Container, List, LogCard, LogText } from './styles';
 
 const Logs: React.FC = () => {
-    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
-    const teamContext = useTeam();
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const teamContext = useTeam();
 
-    const [refreshing, setRefreshing] = useState<boolean>(false);
-    const [logs, setLogs] = useState<ILog[]>([]);
+	const [refreshing, setRefreshing] = useState<boolean>(false);
+	const [logs, setLogs] = useState<ILog[]>([]);
 
-    const loadData = useCallback(async () => {
-        if (!teamContext.id) return;
+	const loadData = useCallback(async () => {
+		if (!teamContext.id) return;
 
-        try {
-            setRefreshing(true);
-            const response = await getTeamLogs({ team_id: teamContext.id });
+		try {
+			setRefreshing(true);
+			const response = await getTeamLogs({ team_id: teamContext.id });
 
-            setLogs(response);
-        } catch (err) {
-            if (err instanceof Error) {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-            }
-        } finally {
-            setRefreshing(false);
-        }
-    }, [teamContext.id]);
+			setLogs(response);
+		} catch (err) {
+			if (err instanceof Error) {
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+			}
+		} finally {
+			setRefreshing(false);
+		}
+	}, [teamContext.id]);
 
-    useEffect(() => {
-        loadData();
-    }, []);
+	useEffect(() => {
+		loadData();
+	}, []);
 
-    const handleNavigateToDetails = useCallback(
-        item => {
-            const log: ILog = item as ILog;
+	const handleNavigateToDetails = useCallback(
+		item => {
+			const log: ILog = item as ILog;
 
-            if (log.batch && log.product) {
-                navigate('BatchView', {
-                    batch: JSON.stringify(log.batch),
-                    product: JSON.stringify(log.product),
-                });
-            } else if (!log.batch && log.product) {
-                navigate('ProductDetails', {
-                    id: log.product.id,
-                });
-            }
-        },
-        [navigate]
-    );
+			if (log.batch && log.product) {
+				navigate('BatchView', {
+					batch: JSON.stringify(log.batch),
+					product: JSON.stringify(log.product),
+				});
+			} else if (!log.batch && log.product) {
+				navigate('ProductDetails', {
+					id: log.product.id,
+				});
+			}
+		},
+		[navigate]
+	);
 
-    const renderItem = useCallback(({ item }) => {
-        const log: ILog = item as ILog;
+	const renderItem = useCallback(({ item }) => {
+		const log: ILog = item as ILog;
 
-        return (
-            <LogCard onPress={() => handleNavigateToDetails(item)}>
-                <LogText>{`${getFormattedLogText(log)}`}</LogText>
-            </LogCard>
-        );
-    }, []);
-    return refreshing ? (
-        <Loading />
-    ) : (
-        <Container>
-            <Header title="Logs" noDrawer />
+		return (
+			<LogCard onPress={() => handleNavigateToDetails(item)}>
+				<LogText>{`${getFormattedLogText(log)}`}</LogText>
+			</LogCard>
+		);
+	}, []);
+	return refreshing ? (
+		<Loading />
+	) : (
+		<Container>
+			<Header title="Logs" noDrawer />
 
-            <List
-                data={logs}
-                keyExtractor={(_, index) => String(index)}
-                renderItem={renderItem}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={loadData}
-                    />
-                }
-            />
-        </Container>
-    );
+			<List
+				data={logs}
+				keyExtractor={(_, index) => String(index)}
+				renderItem={renderItem}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={loadData}
+					/>
+				}
+			/>
+		</Container>
+	);
 };
 
 export default Logs;

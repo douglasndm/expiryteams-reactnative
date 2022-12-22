@@ -7,6 +7,7 @@ import Dialog from 'react-native-dialog';
 import StatusBar from '@components/StatusBar';
 import BarCodeReader from '@components/BarCodeReader';
 
+import Header from '@components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -15,7 +16,6 @@ import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';

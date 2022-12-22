@@ -6,7 +6,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
 
-import Button from '~/Components/Button';
+import Button from '@components/Button';
 
 import { Category, CategoryOptions, CategoryTitle } from '../../styles';
 

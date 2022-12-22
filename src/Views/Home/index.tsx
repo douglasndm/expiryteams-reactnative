@@ -4,7 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
+import NotificationsDenny from '@components/NotificationsDenny';
+import OutdateApp from '@components/OutdateApp';
+
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -19,7 +23,6 @@ import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 import AppError from '~/Errors/AppError';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 
 import {
@@ -152,6 +155,10 @@ const Home: React.FC = () => {
 					{teamContext.name && (
 						<Header title={teamContext.name} listRef={listRef} />
 					)}
+
+					<NotificationsDenny />
+
+					<OutdateApp />
 
 					{products.length > 0 && (
 						<InputTextContainer>

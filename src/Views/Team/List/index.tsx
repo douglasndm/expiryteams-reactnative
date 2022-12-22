@@ -12,7 +12,7 @@ import { getUserTeams } from '~/Functions/Team/Users';
 import { setSelectedTeam } from '~/Functions/Team/SelectedTeam';
 import { getTeamPreferences } from '~/Functions/Team/Preferences';
 
-import Button from '~/Components/Button';
+import Button from '@components/Button';
 import Loading from '~/Components/Loading';
 
 import {

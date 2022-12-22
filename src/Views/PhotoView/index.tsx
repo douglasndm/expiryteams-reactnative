@@ -7,7 +7,7 @@ import strings from '../../Locales';
 import BackButton from '@components/BackButton';
 
 import Loading from '~/Components/Loading';
-import Button from '../../Components/Button';
+import Button from '@components/Button';
 
 import { Container, PageHeader, PageTitle, Image } from './styles';
 

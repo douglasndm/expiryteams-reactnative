@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 
-import Button from '../../Components/Button';
+import Button from '@components/Button';
 
 import { Container, Category } from '../Settings/styles';
 import { deleteSubscription } from '~/Functions/Team/Subscriptions/Delete';

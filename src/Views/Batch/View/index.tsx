@@ -12,8 +12,8 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import Header from '~/Components/Header';
-import Button from '~/Components/Button';
+import Header from '@components/Header';
+import Button from '@components/Button';
 
 import { sendBatchNotification } from '~/Functions/Notifications/Batch';
 

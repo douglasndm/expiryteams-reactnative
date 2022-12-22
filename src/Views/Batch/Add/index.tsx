@@ -8,8 +8,8 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import Header from '~/Components/Header';
-import GenericButton from '~/Components/Button';
+import Header from '@components/Header';
+import GenericButton from '@components/Button';
 
 import { getProduct } from '~/Functions/Products/Product';
 import { createBatch } from '~/Functions/Products/Batches/Batch';

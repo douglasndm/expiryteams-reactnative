@@ -11,8 +11,10 @@ import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
-import StatusBar from '@components/StatusBar';
 import BarCodeReader from '@components/BarCodeReader';
+import InputText from '@components/InputText';
+
+import Header from '@components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -25,8 +27,7 @@ import { findProductByCode } from '~/Functions/Products/FindByCode';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 import { findDuplicate } from '~/Functions/Products/FindDuplicate';
 
-import Header from '~/Components/Header';
-import GenericButton from '~/Components/Button';
+import GenericButton from '@components/Button';
 import Loading from '~/Components/Loading';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
@@ -39,7 +40,6 @@ import {
 	PageContent,
 	InputContainer,
 	InputTextContainer,
-	InputText,
 	InputTextTip,
 	Currency,
 	InputGroup,
@@ -435,7 +435,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 						title={strings.View_AddProduct_PageTitle}
 						noDrawer
 					/>
-					<StatusBar />
 					<PageContent>
 						<InputContainer>
 							<InputGroup>

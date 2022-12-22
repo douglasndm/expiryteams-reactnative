@@ -17,7 +17,7 @@ import {
     updateBatch,
 } from '~/Functions/Products/Batches/Batch';
 
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import StatusBar from '@components/StatusBar';
 import Loading from '~/Components/Loading';
 
