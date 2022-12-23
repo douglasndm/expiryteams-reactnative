@@ -1,54 +1,30 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useCallback, useEffect } from 'react';
 import { showMessage } from 'react-native-flash-message';
 
-import Header from '@components/Header';
-import InputText from '@components/InputText';
-import Loading from '@components/Loading';
-
-import {
-	Container,
-	InputContainer,
-	InputTextContainer,
-	List,
-	ListTitle,
-	Icons,
-	LoadingIcon,
-	InputTextTip,
-	ListItemContainer,
-	ListItemTitle,
-	AddButtonContainer,
-	AddNewItemContent,
-} from '@styles/Views/GenericListPage';
+import ListView from '@views/Brand/List';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { createBrand, getAllBrands } from '~/Functions/Brand';
 
-const ListView: React.FC = () => {
-	const { navigate } = useNavigation();
-
+const BrandList: React.FC = () => {
 	const teamContext = useTeam();
 
-	const [brands, setBrands] = useState<Array<IBrand>>([]);
+	const [isAdding, setIsAdding] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const [newBrandName, setNewBrandName] = useState<string | undefined>();
-	const [isAdding, setIsAdding] = useState<boolean>(false);
-	const [inputHasError, setInputHasError] = useState<boolean>(false);
-	const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
+	const [brands, setBrands] = useState<IBrand[]>([]);
 
 	const loadData = useCallback(async () => {
+		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 
-			if (teamContext.id) {
-				const response = await getAllBrands({
-					team_id: teamContext.id,
-				});
+			const response = await getAllBrands({
+				team_id: teamContext.id,
+			});
 
-				setBrands(response);
-			}
+			setBrands(response);
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -58,112 +34,39 @@ const ListView: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [teamContext.id]);
+	}, []);
+
+	const createBrandProgress = useCallback(
+		async (name: string) => {
+			if (!teamContext.id) return;
+			try {
+				setIsAdding(true);
+
+				const newBrand = await createBrand({
+					brandName: name,
+					team_id: teamContext.id,
+				});
+
+				setBrands([...brands, newBrand]);
+			} finally {
+				setIsAdding(false);
+			}
+		},
+		[brands]
+	);
 
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
 
-	const handleOnTextChange = useCallback(value => {
-		setInputHasError(false);
-		setInputErrorMessage('');
-		setNewBrandName(value);
-	}, []);
-
-	const handleSaveBrand = useCallback(async () => {
-		if (!teamContext.id) return;
-		try {
-			if (!newBrandName) {
-				setInputHasError(true);
-				setInputErrorMessage('Digite o nome da marca');
-				return;
-			}
-
-			setIsAdding(true);
-
-			const newBrand = await createBrand({
-				brandName: newBrandName,
-				team_id: teamContext.id,
-			});
-
-			setBrands([...brands, newBrand]);
-			setNewBrandName('');
-		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-		} finally {
-			setIsAdding(false);
-		}
-	}, [brands, newBrandName, teamContext.id]);
-
-	const handleNavigateToCategory = useCallback(
-		(brand_id: string, brand_name: string) => {
-			navigate('BrandView', {
-				brand_id,
-				brand_name,
-			});
-		},
-		[navigate]
-	);
-
-	const renderItem = useCallback(
-		({ item }) => {
-			return (
-				<ListItemContainer
-					onPress={() => handleNavigateToCategory(item.id, item.name)}
-				>
-					<ListItemTitle>{item.name}</ListItemTitle>
-				</ListItemContainer>
-			);
-		},
-		[handleNavigateToCategory]
-	);
-
-	return isLoading ? (
-		<Loading />
-	) : (
-		<Container>
-			<Header title="Marcas" />
-
-			<AddNewItemContent>
-				<InputContainer>
-					<InputTextContainer hasError={inputHasError}>
-						<InputText
-							value={newBrandName}
-							onChangeText={handleOnTextChange}
-							placeholder="Adicionar nova marca"
-						/>
-					</InputTextContainer>
-
-					<AddButtonContainer
-						onPress={handleSaveBrand}
-						enabled={!isAdding}
-					>
-						{isAdding ? (
-							<LoadingIcon />
-						) : (
-							<Icons name="add-circle-outline" />
-						)}
-					</AddButtonContainer>
-				</InputContainer>
-
-				{!!inputErrorMessage && (
-					<InputTextTip>{inputErrorMessage}</InputTextTip>
-				)}
-			</AddNewItemContent>
-
-			<ListTitle>Todas as marcas</ListTitle>
-
-			<List
-				data={brands}
-				keyExtractor={(item, index) => String(index)}
-				renderItem={renderItem}
-			/>
-		</Container>
+	return (
+		<ListView
+			brands={brands}
+			isLoading={isLoading}
+			isAdding={isAdding}
+			createBrand={createBrandProgress}
+		/>
 	);
 };
 
-export default ListView;
+export default BrandList;
