@@ -4,6 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
 import Header from '@components/Header';
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -11,8 +12,6 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 import { updateStore } from '~/Functions/Team/Stores/Update';
 import { deleteStore } from '~/Functions/Team/Stores/Delete';
-
-import Loading from '~/Components/Loading';
 
 import {
 	Container,

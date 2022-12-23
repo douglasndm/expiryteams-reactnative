@@ -5,6 +5,7 @@ import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import Header from '@components/Header';
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -12,7 +13,6 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { exportToExcel } from '~/Functions/Excel';
 import { getAllProductsFromStore } from '~/Functions/Team/Stores/Products';
 
-import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 
 import {
@@ -28,7 +28,7 @@ import {
 	Icons,
 	TitleContainer,
 	ActionText,
-} from '~/Styles/Views/GenericViewPage';
+} from '@styles/Views/GenericViewPage';
 
 interface Props {
 	store_id: string;

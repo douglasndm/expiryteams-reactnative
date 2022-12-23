@@ -6,6 +6,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 
 import StatusBar from '@components/StatusBar';
 import Header from '@components/Header';
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -18,8 +19,6 @@ import {
 	addUserToStore,
 	removeUserFromStore,
 } from '~/Functions/Team/Stores/User';
-
-import Loading from '~/Components/Loading';
 
 import {
 	PickerContainer,

@@ -6,7 +6,7 @@ import strings from '../../Locales';
 
 import BackButton from '@components/BackButton';
 
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 import Button from '@components/Button';
 
 import { Container, PageHeader, PageTitle, Image } from './styles';

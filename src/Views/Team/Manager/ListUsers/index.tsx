@@ -4,13 +4,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import Header from '@components/Header';
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { getAllUsersFromTeam, putUserInTeam } from '~/Functions/Team/Users';
-
-import Loading from '~/Components/Loading';
 
 import {
 	Container,

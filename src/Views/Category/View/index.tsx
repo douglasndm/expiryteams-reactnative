@@ -11,7 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
 
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 import ListProducts from '~/Components/ListProducts';
 
 import {
@@ -27,7 +27,7 @@ import {
 	Icons,
 	TitleContainer,
 	ActionText,
-} from '~/Styles/Views/GenericViewPage';
+} from '@styles/Views/GenericViewPage';
 import { exportToExcel } from '~/Functions/Excel';
 
 interface Props {

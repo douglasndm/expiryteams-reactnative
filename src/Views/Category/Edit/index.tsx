@@ -15,7 +15,7 @@ import {
 	deleteCategory,
 } from '~/Functions/Categories';
 
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 
 import {
 	ActionsButtonContainer,

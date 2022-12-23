@@ -5,14 +5,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import Header from '@components/Header';
+import Loading from '@components/Loading';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import {
 	getFormattedLogText,
 	getTeamLogs,
 } from '~/Functions/Team/Management/Logs';
-
-import Loading from '~/Components/Loading';
 
 import { Container, List, LogCard, LogText } from './styles';
 

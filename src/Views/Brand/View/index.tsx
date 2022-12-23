@@ -12,7 +12,7 @@ import { exportToExcel } from '~/Functions/Excel';
 import { getAllProductsByBrand } from '~/Functions/Brand';
 
 import Header from '@components/Header';
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 import ListProducts from '~/Components/ListProducts';
 
 import {
@@ -28,7 +28,7 @@ import {
     Icons,
     TitleContainer,
     ActionText,
-} from '~/Styles/Views/GenericViewPage';
+} from '@styles/Views/GenericViewPage';
 
 interface Props {
     brand_id: string;

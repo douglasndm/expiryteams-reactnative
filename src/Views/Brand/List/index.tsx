@@ -4,11 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import Header from '@components/Header';
 import InputText from '@components/InputText';
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { createBrand, getAllBrands } from '~/Functions/Brand';
-
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 
 import {
 	Container,
@@ -23,7 +19,11 @@ import {
 	ListItemTitle,
 	AddButtonContainer,
 	AddNewItemContent,
-} from '~/Styles/Views/GenericListPage';
+} from '@styles/Views/GenericListPage';
+
+import { useTeam } from '~/Contexts/TeamContext';
+
+import { createBrand, getAllBrands } from '~/Functions/Brand';
 
 const ListView: React.FC = () => {
 	const { navigate } = useNavigation();

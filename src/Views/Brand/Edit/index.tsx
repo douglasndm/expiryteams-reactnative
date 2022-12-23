@@ -10,7 +10,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { deleteBrand, getAllBrands, updateBrand } from '~/Functions/Brand';
 
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 import Header from '@components/Header';
 
 import {

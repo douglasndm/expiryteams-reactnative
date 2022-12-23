@@ -35,7 +35,7 @@ import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import AppError from '~/Errors/AppError';
 
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 import ListProducts from '~/Components/ListProducts';
 
 const Home: React.FC = () => {

@@ -15,7 +15,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';

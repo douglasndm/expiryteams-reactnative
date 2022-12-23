@@ -6,13 +6,12 @@ import * as Yup from 'yup';
 
 import Header from '@components/Header';
 import Input from '@components/InputText';
+import Button from '@components/Button';
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import { updateUser, updatePassword } from '~/Functions/Auth/Account';
 import { getUser } from '~/Functions/User/List';
-
-import Button from '@components/Button';
-import Loading from '~/Components/Loading';
 
 import {
 	Container,

@@ -8,11 +8,10 @@ import { format, parseISO } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 import StatusBar from '@components/StatusBar';
 import Header from '@components/Header';
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
-
-import Loading from '~/Components/Loading';
 
 import { getProduct } from '~/Functions/Products/Product';
 

@@ -28,7 +28,7 @@ import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 import { findDuplicate } from '~/Functions/Products/FindDuplicate';
 
 import GenericButton from '@components/Button';
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';

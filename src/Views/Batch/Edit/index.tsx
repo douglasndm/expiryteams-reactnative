@@ -19,7 +19,7 @@ import {
 
 import Header from '@components/Header';
 import StatusBar from '@components/StatusBar';
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 
 import {
     PageContent,

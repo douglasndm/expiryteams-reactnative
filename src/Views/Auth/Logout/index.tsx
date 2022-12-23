@@ -8,7 +8,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { reset } from '~/References/Navigation';
 
-import Loading from '~/Components/Loading';
+import Loading from '@components/Loading';
 
 const Logout: React.FC = () => {
     const teamContext = useTeam();
