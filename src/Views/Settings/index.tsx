@@ -1,9 +1,9 @@
 import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    useMemo,
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useMemo,
 } from 'react';
 import { Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -11,204 +11,151 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
-import { useTeam } from '~/Contexts/TeamContext';
+import PreferencesContext from '@teams/Contexts/PreferencesContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import StatusBar from '@components/StatusBar';
 import Header from '@components/Header';
+
+import DaysNext from '@views/Settings/Components/DaysNext';
+
+import { setAutoComplete } from '@teams/Functions/Settings';
+
+import {
+	Container,
+	Content,
+	SettingsContent,
+	Category,
+	CategoryTitle,
+	CategoryOptions,
+	SettingDescription,
+	ButtonCancel,
+	ButtonCancelText,
+	SettingContainer,
+} from '@views/Settings/styles';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
 import Account from './Components/Account';
 
-import {
-    setHowManyDaysToBeNextExp,
-    setAutoComplete,
-} from '~/Functions/Settings';
-
-import {
-    Container,
-    SettingsContent,
-    Category,
-    CategoryTitle,
-    CategoryOptions,
-    SettingDescription,
-    InputSetting,
-    ButtonCancel,
-    ButtonCancelText,
-    SettingContainer,
-} from './styles';
-
 const Settings: React.FC = () => {
-    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const { preferences, setPreferences } = useContext(PreferencesContext);
-    const teamContext = useTeam();
+	const { preferences, setPreferences } = useContext(PreferencesContext);
+	const teamContext = useTeam();
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
-    const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
+	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
 
-    const setSettingDaysToBeNext = useCallback(
-        async (days: number) => {
-            await setHowManyDaysToBeNextExp(days);
+	const setSettingDaysToBeNext = useCallback(
+		async (days: number) => {
+			setPreferences({
+				...preferences,
+				howManyDaysToBeNextToExpire: days,
+			});
+		},
+		[setPreferences, preferences]
+	);
 
-            setPreferences({
-                ...preferences,
-                howManyDaysToBeNextToExpire: days,
-            });
-        },
-        [setPreferences, preferences]
-    );
+	const loadData = useCallback(async () => {
+		try {
+			setIsLoading(true);
 
-    useEffect(() => {
-        setDaysToBeNext(String(preferences.howManyDaysToBeNextToExpire));
-    }, [preferences]);
+			setAutoCompleteState(preferences.autoComplete);
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [preferences.autoComplete]);
 
-    const loadData = useCallback(async () => {
-        try {
-            setIsLoading(true);
+	useEffect(() => {
+		loadData();
+	}, [loadData]);
 
-            const previousDaysToBeNext = String(
-                preferences.howManyDaysToBeNextToExpire
-            );
+	const handleUpdateAutoComplete = useCallback(async () => {
+		const newValue = !autoCompleteState;
+		setAutoCompleteState(newValue);
 
-            if (!daysToBeNext || daysToBeNext === '') {
-                return;
-            }
+		await setAutoComplete(newValue);
 
-            if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
-                await setSettingDaysToBeNext(Number(daysToBeNext));
-            }
+		setPreferences({
+			...preferences,
+			autoComplete: newValue,
+		});
+	}, [autoCompleteState, preferences, setPreferences]);
 
-            setAutoCompleteState(preferences.autoComplete);
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [
-        daysToBeNext,
-        preferences.autoComplete,
-        preferences.howManyDaysToBeNextToExpire,
-        setSettingDaysToBeNext,
-    ]);
+	const previousDaysToBeNext = String(
+		preferences.howManyDaysToBeNextToExpire
+	);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+	const cancelSubscriptionLink = useMemo(() => {
+		return Platform.OS === 'ios'
+			? 'https://apps.apple.com/account/subscriptions'
+			: 'https://play.google.com/store/account/subscriptions?sku=expirybusiness_monthly_default_1person&package=dev.douglasndm.expirychecker.business';
+	}, []);
 
-    const handleUpdateAutoComplete = useCallback(async () => {
-        const newValue = !autoCompleteState;
-        setAutoCompleteState(newValue);
+	const handleNavigateCancel = useCallback(async () => {
+		await Linking.openURL(cancelSubscriptionLink);
 
-        await setAutoComplete(newValue);
+		reset({
+			routes: [{ name: 'Home' }],
+		});
+	}, [cancelSubscriptionLink, reset]);
 
-        setPreferences({
-            ...preferences,
-            autoComplete: newValue,
-        });
-    }, [autoCompleteState, preferences, setPreferences]);
+	return (
+		<Container>
+			<Content>
+				<Header title={strings.View_Settings_PageTitle} noDrawer />
 
-    useEffect(() => {
-        async function SetNewDays() {
-            const previousDaysToBeNext = String(
-                preferences.howManyDaysToBeNextToExpire
-            );
+				<SettingsContent>
+					<Category>
+						<CategoryTitle>
+							{strings.View_Settings_CategoryName_General}
+						</CategoryTitle>
 
-            if (!daysToBeNext || daysToBeNext === '') {
-                return;
-            }
+						<CategoryOptions>
+							<DaysNext
+								defaultValue={previousDaysToBeNext}
+								onUpdate={setSettingDaysToBeNext}
+							/>
 
-            if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
-                await setSettingDaysToBeNext(Number(daysToBeNext));
-            }
-        }
+							<SettingContainer>
+								<SettingDescription>
+									Autocompletar automacatimente
+								</SettingDescription>
+								<Switch
+									value={autoCompleteState}
+									onValueChange={handleUpdateAutoComplete}
+								/>
+							</SettingContainer>
 
-        SetNewDays();
-    }, [
-        daysToBeNext,
-        setSettingDaysToBeNext,
-        preferences.howManyDaysToBeNextToExpire,
-    ]);
+							<Notifications />
+						</CategoryOptions>
+					</Category>
 
-    const cancelSubscriptionLink = useMemo(() => {
-        return Platform.OS === 'ios'
-            ? 'https://apps.apple.com/account/subscriptions'
-            : 'https://play.google.com/store/account/subscriptions?sku=expirybusiness_monthly_default_1person&package=dev.douglasndm.expirychecker.business';
-    }, []);
+					<Appearance />
 
-    const handleNavigateCancel = useCallback(async () => {
-        await Linking.openURL(cancelSubscriptionLink);
+					<Account />
 
-        reset({
-            routes: [{ name: 'Home' }],
-        });
-    }, [cancelSubscriptionLink, reset]);
-
-    return (
-        <Container>
-            <StatusBar />
-            <Header title={strings.View_Settings_PageTitle} noDrawer />
-
-            <SettingsContent>
-                <Category>
-                    <CategoryTitle>
-                        {strings.View_Settings_CategoryName_General}
-                    </CategoryTitle>
-
-                    <CategoryOptions>
-                        <SettingDescription>
-                            {
-                                strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
-                            }
-                        </SettingDescription>
-                        <InputSetting
-                            keyboardType="numeric"
-                            placeholder="Quantidade de dias"
-                            value={daysToBeNext}
-                            onChangeText={v => {
-                                const regex = /^[0-9\b]+$/;
-
-                                if (v === '' || regex.test(v)) {
-                                    setDaysToBeNext(v);
-                                }
-                            }}
-                        />
-
-                        <SettingContainer>
-                            <SettingDescription>
-                                Autocompletar automacatimente
-                            </SettingDescription>
-                            <Switch
-                                value={autoCompleteState}
-                                onValueChange={handleUpdateAutoComplete}
-                            />
-                        </SettingContainer>
-
-                        <Notifications />
-                    </CategoryOptions>
-                </Category>
-
-                <Appearance />
-
-                <Account />
-
-                {teamContext.roleInTeam?.role.toLowerCase() === 'manager' && (
-                    <ButtonCancel onPress={handleNavigateCancel}>
-                        <ButtonCancelText>Cancelar assinatura</ButtonCancelText>
-                    </ButtonCancel>
-                )}
-            </SettingsContent>
-        </Container>
-    );
+					{/* {teamContext.roleInTeam?.role.toLowerCase() ===
+						'manager' && (
+						<ButtonCancel onPress={handleNavigateCancel}>
+							<ButtonCancelText>
+								Cancelar assinatura
+							</ButtonCancelText>
+						</ButtonCancel>
+					)} */}
+				</SettingsContent>
+			</Content>
+		</Container>
+	);
 };
 
 export default Settings;

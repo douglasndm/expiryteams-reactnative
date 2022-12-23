@@ -9,7 +9,6 @@ const obj: IUserPreferences = {
     appTheme: Themes.Light,
     autoComplete: false,
     enableNotifications: true,
-    notificationCadency: NotificationCadency.Day,
     selectedTeam: null,
 };
 
