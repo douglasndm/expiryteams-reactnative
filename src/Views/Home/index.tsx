@@ -23,6 +23,7 @@ import {
 	ActionButtonsContainer,
 } from '@views/Home/styles';
 
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -35,7 +36,6 @@ import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 import AppError from '~/Errors/AppError';
 
-import Loading from '@components/Loading';
 import ListProducts from '~/Components/ListProducts';
 
 const Home: React.FC = () => {

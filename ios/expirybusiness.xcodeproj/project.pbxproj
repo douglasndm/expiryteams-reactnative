@@ -27,7 +27,6 @@
 		4FEB01AA264F505A007B215D /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FEB01A9264F505A007B215D /* Logo.png */; };
 		6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A50A796A29514F9400946350 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A50A796929514F9400946350 /* main.jsbundle */; };
 		A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C27294F6C75002F0161 /* Ionicons.ttf */; };
 		A5855C2B294F6C75002F0161 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */; };
 		A5855C2C294F6C75002F0161 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C29294F6C75002F0161 /* MaterialIcons.ttf */; };
@@ -79,6 +78,7 @@
 		A5855C27294F6C75002F0161 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		A5855C29294F6C75002F0161 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		A594003429567BBA0067E150 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
 		A5A506B527EA8B7200010839 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B983B0E933AFDCC0FD300CDD /* Pods-expirybusiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.release.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.release.xcconfig"; sourceTree = "<group>"; };
 		C0BBC9163B52F22772ED4982 /* Pods-expirybusiness.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.staging.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.staging.xcconfig"; sourceTree = "<group>"; };
@@ -128,6 +128,7 @@
 		13B07FAE1A68108700A75B9A /* expirybusiness */ = {
 			isa = PBXGroup;
 			children = (
+				A50A796929514F9400946350 /* main.jsbundle */,
 				4F9CEDAF265AAFF8006A5B9D /* expirybusiness.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -144,6 +145,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A594003429567BBA0067E150 /* hermes.xcframework */,
 				4F9CEDAD265AAFD3006A5B9D /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				07B6BEE9FC5758D24F57FE65 /* libPods-expirybusiness.a */,
@@ -203,7 +205,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				A50A796929514F9400946350 /* main.jsbundle */,
 				A5A506B527EA8B7200010839 /* Config.xcconfig */,
 				4F7816CC264DFA54007165DA /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* expirybusiness */,
@@ -328,7 +329,6 @@
 				4F78170B264E0A61007165DA /* OpenSans-Light.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				4F781712264E0A61007165DA /* Roboto-Bold.ttf in Resources */,
-				A50A796A29514F9400946350 /* main.jsbundle in Resources */,
 				4F78170E264E0A61007165DA /* Roboto-Regular.ttf in Resources */,
 				A5A506B627EA8B7200010839 /* Config.xcconfig in Resources */,
 				A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */,
@@ -361,7 +361,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $PROJECT_DIR/..\nexport SENTRY_PROPERTIES=ios/sentry.properties\nexport NODE_BINARY=$(which node)\n./../../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ./../../node_modules/react-native/scripts/react-native-xcode.sh\n\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n";
+			shellScript = "export NODE_BINARY=node\nexport PROJECT_ROOT=$PWD/..\n../../../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		3007E349206D7E9D474EA5FB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -629,7 +629,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 77;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
@@ -664,7 +664,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 77;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -891,7 +891,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 77;
+				CURRENT_PROJECT_VERSION = 78;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

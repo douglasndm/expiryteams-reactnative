@@ -4,29 +4,32 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 export const LoadingIndicator = styled.ActivityIndicator.attrs(props => ({
-    size: 32,
-    color: props.theme.colors.accent,
+	size: 32,
+	color: props.theme.colors.accent,
 }))`
-    margin-top: 15px;
+	margin-top: 15px;
 `;
 
 export const OptionContainer = styled.View`
-    margin-top: 25px;
+	margin-top: 25px;
 `;
 
 export const ButtonPaper = styled(Button).attrs(() => ({
-    color: 'red',
+	color: 'red',
 }))``;
 
 export const Icons = styled(Ionicons)`
-    color: ${({ theme }) => theme.colors.text};
+	color: ${({ theme }) => theme.colors.text};
 `;
 
 export const CheckBox = styled(BouncyCheckbox).attrs(props => ({
-    fillColor: props.theme.colors.accent,
-    iconStyle: { borderColor: props.theme.colors.subText },
-    textStyle: {
-        textDecorationLine: 'none',
-        color: props.theme.colors.subText,
-    },
+	fillColor: props.theme.colors.accent,
+	iconStyle: { borderColor: props.theme.colors.productCardText },
+	textStyle: {
+		textDecorationLine: 'none',
+		color: props.theme.colors.productCardText,
+	},
+	textContainerStyle: {
+		flex: 1,
+	},
 }))``;

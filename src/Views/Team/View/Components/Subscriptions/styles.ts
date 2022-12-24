@@ -1,24 +1,23 @@
 import styled from 'styled-components/native';
 
 export const SubscriptionDescription = styled.Text`
-    margin-top: 10px;
-    color: ${props => props.theme.colors.text};
-    font-family: 'Open Sans';
+	margin-top: 10px;
+	color: ${props => props.theme.colors.productCardText};
+	font-family: 'Open Sans';
 `;
 
 export const SubscriptionContainer = styled.View`
-    margin: 10px 0 0 0;
+	margin: 10px 0 0 0;
 `;
 
 export const SubscriptionTableTitle = styled.Text`
-    color: ${props => props.theme.colors.text};
-    font-family: 'Open Sans';
-    font-weight: bold;
-    font-size: 21px;
+	font-family: 'Open Sans';
+	font-weight: bold;
+	font-size: 21px;
 
-    margin-top: 20px;
+	margin-top: 20px;
 `;
 
 export const SubscriptionInformations = styled.Text`
-    color: ${props => props.theme.colors.text};
+	color: ${props => props.theme.colors.productCardText};
 `;
