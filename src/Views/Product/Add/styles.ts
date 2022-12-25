@@ -4,11 +4,12 @@ import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.ScrollView`
+export const Container = styled.SafeAreaView`
 	flex: 1;
-	flex-direction: column;
 	background: ${({ theme }) => theme.colors.background};
 `;
+
+export const Content = styled.ScrollView``;
 
 export const PageContent = styled.View`
 	padding: 0 16px 0 16px;
@@ -50,7 +51,7 @@ export const InputTextTip = styled.Text`
 `;
 
 export const Currency = styled(CurrencyInput).attrs(props => ({
-	placeholderTextColor: props.theme.colors.subText,
+	placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	margin-bottom: 10px;
@@ -93,12 +94,12 @@ export const Icon = styled(Ionicons).attrs(props => ({
 }))``;
 
 export const InputCodeText = styled.TextInput.attrs(props => ({
-	placeholderTextColor: props.theme.colors.subText,
+	placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
 	flex: 1;
 	padding: 15px 5px 15px 15px;
 	font-size: 18px;
-	color: ${props => props.theme.colors.text};
+	color: ${props => props.theme.colors.inputText};
 `;
 
 export const MoreInformationsContainer = styled.View``;

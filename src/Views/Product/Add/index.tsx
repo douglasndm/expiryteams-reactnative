@@ -15,25 +15,25 @@ import BarCodeReader from '@components/BarCodeReader';
 import InputText from '@components/InputText';
 
 import Header from '@components/Header';
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
-import { useTeam } from '~/Contexts/TeamContext';
+import PreferencesContext from '@teams/Contexts/PreferencesContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { createProduct } from '~/Functions/Products/Product';
-import { createBatch } from '~/Functions/Products/Batches/Batch';
+import { createProduct } from '@teams/Functions/Products/Product';
+import { createBatch } from '@teams/Functions/Products/Batches/Batch';
 
-import { findProductByCode } from '~/Functions/Products/FindByCode';
-import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
-import { findDuplicate } from '~/Functions/Products/FindDuplicate';
+import { findProductByCode } from '@teams/Functions/Products/FindByCode';
+import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
+import { findDuplicate } from '@teams/Functions/Products/FindDuplicate';
 
 import GenericButton from '@components/Button';
 import Loading from '@components/Loading';
 
-import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
-import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
-import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
-import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
+import DaysToBeNext from '@teams/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
 
 import {
 	Container,
@@ -53,6 +53,7 @@ import {
 	InputTextLoading,
 	InputCodeText,
 	InputTextIconContainer,
+	Content,
 } from './styles';
 
 interface Request {
@@ -431,222 +432,220 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				/>
 			) : (
 				<Container>
-					<Header
-						title={strings.View_AddProduct_PageTitle}
-						noDrawer
-					/>
-					<PageContent>
-						<InputContainer>
-							<InputGroup>
-								<InputTextContainer hasError={nameFieldError}>
-									<InputText
-										placeholder={
-											strings.View_AddProduct_InputPlacehoder_Name
-										}
-										accessibilityLabel={
-											strings.View_AddProduct_InputAccessibility_Name
-										}
-										value={name}
-										onChangeText={value => {
-											setName(value);
-											setNameFieldError(false);
-										}}
-										onFocus={() => {
-											setIsBarCodeEnabled(false);
-										}}
-									/>
-								</InputTextContainer>
-							</InputGroup>
-							{nameFieldError && (
-								<InputTextTip>
-									{
-										strings.View_AddProduct_AlertTypeProductName
-									}
-								</InputTextTip>
-							)}
-
-							<InputCodeTextContainer hasError={codeFieldError}>
-								<InputCodeText
-									placeholder={
-										strings.View_AddProduct_InputPlacehoder_Code
-									}
-									accessibilityLabel={
-										strings.View_AddProduct_InputAccessibility_Code
-									}
-									value={code}
-									onBlur={handleCodeBlur}
-									onChangeText={value => {
-										setCode(value);
-										setCodeFieldError(false);
-									}}
-								/>
-								<InputTextIconContainer
-									onPress={handleEnableBarCodeReader}
-								>
-									<Icon name="barcode-outline" size={34} />
-								</InputTextIconContainer>
-
-								{teamContext.shareProducts && (
-									<>
-										{isFindingProd && <InputTextLoading />}
-
-										{productFinded && !isFindingProd && (
-											<InputTextIconContainer
-												style={{ marginTop: -5 }}
-												onPress={handleSwitchFindModal}
-											>
-												<Icon
-													name="download"
-													size={30}
-												/>
-											</InputTextIconContainer>
-										)}
-									</>
-								)}
-							</InputCodeTextContainer>
-							{codeFieldError && (
-								<InputTextTip
-									onPress={handleNavigateToAddBatch}
-								>
-									O produto já está cadastrado
-								</InputTextTip>
-							)}
-
-							<MoreInformationsContainer>
-								<MoreInformationsTitle>
-									{
-										strings.View_AddProduct_MoreInformation_Label
-									}
-								</MoreInformationsTitle>
-
+					<Content>
+						<Header
+							title={strings.View_AddProduct_PageTitle}
+							noDrawer
+						/>
+						<PageContent>
+							<InputContainer>
 								<InputGroup>
 									<InputTextContainer
-										style={{
-											flex: 5,
-											marginRight: 10,
-										}}
+										hasError={nameFieldError}
 									>
 										<InputText
 											placeholder={
-												strings.View_AddProduct_InputPlacehoder_Batch
+												strings.View_AddProduct_InputPlacehoder_Name
 											}
-											accessibilityLabel={
-												strings.View_AddProduct_InputAccessibility_Batch
-											}
-											value={batch}
-											onChangeText={value =>
-												setBatch(value)
-											}
-											onFocus={() => {
-												setIsBarCodeEnabled(false);
-											}}
-										/>
-									</InputTextContainer>
-									<InputTextContainer>
-										<InputText
-											style={{
-												flex: 4,
-											}}
-											placeholder={
-												strings.View_AddProduct_InputPlacehoder_Amount
-											}
-											accessibilityLabel={
-												strings.View_AddProduct_InputAccessibility_Amount
-											}
-											keyboardType="numeric"
-											value={String(amount)}
-											onChangeText={handleAmountChange}
-											onFocus={() => {
-												setIsBarCodeEnabled(false);
+											value={name}
+											onChange={(value: string) => {
+												setName(value);
+												setNameFieldError(false);
 											}}
 										/>
 									</InputTextContainer>
 								</InputGroup>
+								{nameFieldError && (
+									<InputTextTip>
+										{
+											strings.View_AddProduct_AlertTypeProductName
+										}
+									</InputTextTip>
+								)}
 
-								<Currency
-									value={price}
-									onChangeValue={handlePriceChange}
-									delimiter={currency === 'BRL' ? ',' : '.'}
-									placeholder={
-										strings.View_AddProduct_InputPlacehoder_UnitPrice
-									}
-								/>
+								<InputCodeTextContainer
+									hasError={codeFieldError}
+								>
+									<InputCodeText
+										placeholder={
+											strings.View_AddProduct_InputPlacehoder_Code
+										}
+										accessibilityLabel={
+											strings.View_AddProduct_InputAccessibility_Code
+										}
+										value={code}
+										onBlur={handleCodeBlur}
+										onChangeText={value => {
+											setCode(value);
+											setCodeFieldError(false);
+										}}
+									/>
+									<InputTextIconContainer
+										onPress={handleEnableBarCodeReader}
+									>
+										<Icon
+											name="barcode-outline"
+											size={34}
+										/>
+									</InputTextIconContainer>
 
-								<CategorySelect
-									categories={categories}
-									onChange={setSelectedCategory}
-									defaultValue={selectedCategory}
-									containerStyle={{
-										marginBottom: 10,
-									}}
-								/>
+									{teamContext.shareProducts && (
+										<>
+											{isFindingProd && (
+												<InputTextLoading />
+											)}
 
-								<BrandSelect
-									brands={brands}
-									onChange={setSelectedBrand}
-									defaultValue={selectedBrand}
-									containerStyle={{
-										marginBottom: 10,
-									}}
-								/>
-								{teamContext.roleInTeam?.role.toLowerCase() ===
-									'manager' && (
-									<StoreSelect
-										stores={stores}
-										defaultValue={selectedStore}
-										onChange={setSelectedStore}
+											{productFinded &&
+												!isFindingProd && (
+													<InputTextIconContainer
+														style={{
+															marginTop: -5,
+														}}
+														onPress={
+															handleSwitchFindModal
+														}
+													>
+														<Icon
+															name="download"
+															size={30}
+														/>
+													</InputTextIconContainer>
+												)}
+										</>
+									)}
+								</InputCodeTextContainer>
+								{codeFieldError && (
+									<InputTextTip
+										onPress={handleNavigateToAddBatch}
+									>
+										O produto já está cadastrado
+									</InputTextTip>
+								)}
+
+								<MoreInformationsContainer>
+									<MoreInformationsTitle>
+										{
+											strings.View_AddProduct_MoreInformation_Label
+										}
+									</MoreInformationsTitle>
+
+									<InputGroup>
+										<InputTextContainer
+											style={{
+												flex: 5,
+												marginRight: 10,
+											}}
+										>
+											<InputText
+												placeholder={
+													strings.View_AddProduct_InputPlacehoder_Batch
+												}
+												value={batch}
+												onChange={value =>
+													setBatch(value)
+												}
+											/>
+										</InputTextContainer>
+										<InputTextContainer>
+											<InputText
+												contentStyle={{ flex: 4 }}
+												placeholder={
+													strings.View_AddProduct_InputPlacehoder_Amount
+												}
+												keyboardType="numeric"
+												value={String(amount)}
+												onChange={handleAmountChange}
+											/>
+										</InputTextContainer>
+									</InputGroup>
+
+									<Currency
+										value={price}
+										onChangeValue={handlePriceChange}
+										delimiter={
+											currency === 'BRL' ? ',' : '.'
+										}
+										placeholder={
+											strings.View_AddProduct_InputPlacehoder_UnitPrice
+										}
+									/>
+
+									<CategorySelect
+										categories={categories}
+										onChange={setSelectedCategory}
+										defaultValue={selectedCategory}
 										containerStyle={{
 											marginBottom: 10,
 										}}
 									/>
-								)}
-							</MoreInformationsContainer>
 
-							<ExpDateGroup>
-								<ExpDateLabel>
-									{strings.View_AddProduct_CalendarTitle}
-								</ExpDateLabel>
+									<BrandSelect
+										brands={brands}
+										onChange={setSelectedBrand}
+										defaultValue={selectedBrand}
+										containerStyle={{
+											marginBottom: 10,
+										}}
+									/>
+									{teamContext.roleInTeam?.role.toLowerCase() ===
+										'manager' && (
+										<StoreSelect
+											stores={stores}
+											defaultValue={selectedStore}
+											onChange={setSelectedStore}
+											containerStyle={{
+												marginBottom: 10,
+											}}
+										/>
+									)}
+								</MoreInformationsContainer>
 
-								<CustomDatePicker
-									accessibilityLabel={
-										strings.View_AddProduct_CalendarAccessibilityDescription
-									}
-									date={expDate}
-									onDateChange={value => {
-										setExpDate(value);
-									}}
-									locale={locale}
-								/>
-							</ExpDateGroup>
-						</InputContainer>
+								<ExpDateGroup>
+									<ExpDateLabel>
+										{strings.View_AddProduct_CalendarTitle}
+									</ExpDateLabel>
 
-						<GenericButton
-							text={strings.View_AddProduct_Button_Save}
-							isLoading={isAdding}
-							onPress={handleSave}
-							contentStyle={{ marginBottom: 30 }}
-						/>
-					</PageContent>
+									<CustomDatePicker
+										accessibilityLabel={
+											strings.View_AddProduct_CalendarAccessibilityDescription
+										}
+										date={expDate}
+										onDateChange={value => {
+											setExpDate(value);
+										}}
+										locale={locale}
+									/>
+								</ExpDateGroup>
+							</InputContainer>
 
-					<Dialog.Container
-						visible={showProdFindedModal}
-						onBackdropPress={handleSwitchFindModal}
-					>
-						<Dialog.Title>Completar infomações?</Dialog.Title>
-						<Dialog.Description>
-							Este produto pode ser algumas informações
-							completadas automáticamente, gostaria de completar
-							as informações?
-						</Dialog.Description>
-						<Dialog.Button
-							label="Não"
-							onPress={handleSwitchFindModal}
-						/>
-						<Dialog.Button
-							label="Sim"
-							onPress={() => completeInfo()}
-						/>
-					</Dialog.Container>
+							<GenericButton
+								text={strings.View_AddProduct_Button_Save}
+								isLoading={isAdding}
+								onPress={handleSave}
+								contentStyle={{ marginBottom: 30 }}
+							/>
+						</PageContent>
+
+						<Dialog.Container
+							visible={showProdFindedModal}
+							onBackdropPress={handleSwitchFindModal}
+						>
+							<Dialog.Title>Completar infomações?</Dialog.Title>
+							<Dialog.Description>
+								Este produto pode ser algumas informações
+								completadas automáticamente, gostaria de
+								completar as informações?
+							</Dialog.Description>
+							<Dialog.Button
+								label="Não"
+								onPress={handleSwitchFindModal}
+							/>
+							<Dialog.Button
+								label="Sim"
+								onPress={() => completeInfo()}
+							/>
+						</Dialog.Container>
+					</Content>
 				</Container>
 			)}
 		</>

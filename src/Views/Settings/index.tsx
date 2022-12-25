@@ -138,7 +138,7 @@ const Settings: React.FC = () => {
 
 							<SettingContainer>
 								<SettingDescription>
-									Autocompletar automacatimente
+									Autocompletar automaticamente
 								</SettingDescription>
 								<Switch
 									value={autoCompleteState}
