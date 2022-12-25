@@ -3,19 +3,23 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@teams/Locales';
+
 import Header from '@components/Header';
 import Loading from '@components/Loading';
-import strings from '~/Locales';
+import InputText from '@components/InputText';
 
-import { useTeam } from '~/Contexts/TeamContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { getAllUsersFromTeam, putUserInTeam } from '~/Functions/Team/Users';
+import {
+	getAllUsersFromTeam,
+	putUserInTeam,
+} from '@teams/Functions/Team/Users';
 
 import {
 	Container,
 	InputContainer,
 	InputTextContainer,
-	InputText,
 	ListCategories,
 	ListTitle,
 	TeamItemContainer,
@@ -255,8 +259,8 @@ const ListUsers: React.FC = () => {
 							<InputContainer>
 								<InputTextContainer hasError={inputHasError}>
 									<InputText
-										value={newUserEmail}
-										onChangeText={handleOnTextChange}
+										value={newUserEmail || ''}
+										onChange={handleOnTextChange}
 										keyboardType="email-address"
 										autoCapitalize="none"
 										placeholder={

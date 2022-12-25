@@ -19,6 +19,7 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 import Header from '@components/Header';
 
 import DaysNext from '@views/Settings/Components/DaysNext';
+import Appearance from '@views/Settings/Components/Appearance';
 
 import { setAutoComplete } from '@teams/Functions/Settings';
 
@@ -35,7 +36,6 @@ import {
 	SettingContainer,
 } from '@views/Settings/styles';
 
-import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
 import Account from './Components/Account';
 
@@ -109,6 +109,16 @@ const Settings: React.FC = () => {
 		});
 	}, [cancelSubscriptionLink, reset]);
 
+	const onThemeChoosen = useCallback(
+		(theme: DefaultTheme) => {
+			setPreferences({
+				...preferences,
+				appTheme: theme,
+			});
+		},
+		[setPreferences, preferences]
+	);
+
 	return (
 		<Container>
 			<Content>
@@ -140,7 +150,7 @@ const Settings: React.FC = () => {
 						</CategoryOptions>
 					</Category>
 
-					<Appearance />
+					<Appearance teamsThemes onThemeChoosen={onThemeChoosen} />
 
 					<Account />
 
