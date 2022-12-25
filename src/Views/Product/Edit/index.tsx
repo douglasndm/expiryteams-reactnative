@@ -4,23 +4,25 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
-import StatusBar from '@components/StatusBar';
-import BarCodeReader from '@components/BarCodeReader';
+import strings from '@teams/Locales';
 
-import Header from '@components/Header';
-import strings from '~/Locales';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
-import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
+import {
+	deleteProduct,
+	updateProduct,
+} from '@teams/Functions/Products/Product';
+import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
 
 import Loading from '@components/Loading';
+import Header from '@components/Header';
+import BarCodeReader from '@components/BarCodeReader';
+import InputText from '@components/InputText';
 
-import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
-import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
-import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
-import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
+import DaysToBeNext from '@teams/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
 
 import {
 	Container,
@@ -28,7 +30,6 @@ import {
 	InputGroup,
 	InputContainer,
 	InputTextContainer,
-	InputText,
 	InputTextTip,
 	InputCodeTextContainer,
 	InputCodeText,
@@ -280,7 +281,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				/>
 			) : (
 				<Container>
-					<StatusBar />
 					<PageTitleContainer>
 						<Header
 							title={strings.View_EditProduct_PageTitle}

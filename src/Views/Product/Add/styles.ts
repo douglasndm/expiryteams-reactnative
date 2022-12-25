@@ -90,7 +90,7 @@ export const InputTextLoading = styled.ActivityIndicator.attrs(props => ({
 export const InputTextIconContainer = styled(RectButton)``;
 
 export const Icon = styled(Ionicons).attrs(props => ({
-	color: props.theme.colors.text,
+	color: props.theme.colors.inputText,
 }))``;
 
 export const InputCodeText = styled.TextInput.attrs(props => ({
