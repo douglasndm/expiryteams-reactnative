@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import PreferencesContext from '@teams/Contexts/PreferencesContext';
+
 import Card from '@components/Product/List/Card';
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 interface Request {
 	product: IProduct;
@@ -20,7 +21,7 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 	}, [product.thumbnail]);
 
 	return (
-    <Card
+		<Card
 			product={product}
 			imagePath={imagePath}
 			daysToBeNext={preferences.howManyDaysToBeNextToExpire}

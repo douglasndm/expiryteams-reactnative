@@ -7,12 +7,22 @@ import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 
-import { searchProducts } from '@utils/Product/Search';
+import strings from '@teams/Locales';
 
+import { useTeam } from '@teams/Contexts/TeamContext';
+
+import AppError from '@teams/Errors/AppError';
+
+import { searchProducts } from '@utils/Product/Search';
+import { getSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
+
+import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
+
+import ListProducts from '@teams/Components/ListProducts';
 
 import {
 	Container,
@@ -23,20 +33,10 @@ import {
 	ActionButtonsContainer,
 } from '@views/Home/styles';
 
-import Loading from '@components/Loading';
-import strings from '~/Locales';
-
-import { useTeam } from '~/Contexts/TeamContext';
-
 import {
 	getAllProducts,
 	sortProductsByBatchesExpDate,
-} from '~/Functions/Products/Products';
-import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
-
-import AppError from '~/Errors/AppError';
-
-import ListProducts from '~/Components/ListProducts';
+} from '@teams/Functions/Products/Products';
 
 const Home: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -71,7 +71,17 @@ const Home: React.FC = () => {
 				team_id: selectedTeam.userRole.team.id,
 			});
 
-			setProducts(productsResponse);
+			const prods = productsResponse.map(p => ({
+				...p,
+				name: p.name.toLowerCase(),
+				code: p.code?.toLowerCase(),
+				batches: p.batches.map(b => ({
+					...b,
+					name: b.name.toLowerCase(),
+				})),
+			}));
+
+			setProducts(prods);
 		} catch (err) {
 			if (err instanceof AppError) {
 				showMessage({
@@ -100,7 +110,7 @@ const Home: React.FC = () => {
 		return () => {
 			setIsMounted(false);
 		};
-	}, []);
+	}, [loadData]);
 
 	useEffect(() => {
 		if (isMounted) {
@@ -109,29 +119,32 @@ const Home: React.FC = () => {
 	}, [isMounted, products]);
 
 	const handleSearchChange = useCallback(
-		async (search: string) => {
-			setSearchString(search);
+		(value: string) => {
+			setSearchString(value);
 
-			let prods = sortProductsByBatchesExpDate({
-				products,
-			});
-
-			if (search && search !== '') {
-				const findProducts = searchProducts({
-					products,
-					query: search,
-				});
-
-				console.log(findProducts);
-
-				prods = sortProductsByBatchesExpDate({
-					products: findProducts,
-				});
+			if (value.trim() === '') {
+				setProductsSearch(products);
 			}
-			setProductsSearch(prods);
 		},
 		[products]
 	);
+
+	const handleSearch = useCallback(() => {
+		let prods: IProduct[] = [];
+
+		if (searchString && searchString !== '') {
+			prods = searchProducts({
+				products,
+				query: searchString,
+			});
+		}
+
+		prods = sortProductsByBatchesExpDate({
+			products: prods,
+		});
+
+		setProductsSearch(prods);
+	}, [products, searchString]);
 
 	const handleOnBarCodeReaderOpen = useCallback(() => {
 		setEnableBarCodeReader(true);
@@ -191,6 +204,7 @@ const Home: React.FC = () => {
 								placeholder={strings.View_Home_SearchText}
 								value={searchString}
 								onChangeText={handleSearchChange}
+								onSubmitEditing={handleSearch}
 							/>
 
 							<ActionButtonsContainer>
