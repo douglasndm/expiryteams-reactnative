@@ -3,9 +3,9 @@ import { showMessage } from 'react-native-flash-message';
 
 import ListView from '@views/Brand/List';
 
-import { useTeam } from '~/Contexts/TeamContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { createBrand, getAllBrands } from '~/Functions/Brand';
+import { createBrand, getAllBrands } from '@teams/Functions/Brand';
 
 const BrandList: React.FC = () => {
 	const teamContext = useTeam();
@@ -34,7 +34,7 @@ const BrandList: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, []);
+	}, [teamContext.id]);
 
 	const createBrandProgress = useCallback(
 		async (name: string) => {
@@ -52,7 +52,7 @@ const BrandList: React.FC = () => {
 				setIsAdding(false);
 			}
 		},
-		[brands]
+		[brands, teamContext.id]
 	);
 
 	useEffect(() => {

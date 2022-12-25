@@ -4,20 +4,21 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Analytics from '@react-native-firebase/analytics';
 
+import strings from '@teams/Locales';
+
+import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { getAllProductsFromCategory } from '@teams/Functions/Categories/Products';
+import { exportToExcel } from '@teams/Functions/Excel';
+
 import Header from '@components/Header';
-import strings from '~/Locales';
-
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
-
 import Loading from '@components/Loading';
-import ListProducts from '~/Components/ListProducts';
 
+import ListProducts from '@teams/Components/ListProducts';
 import {
 	FloatButton,
 	Icons as FloatIcon,
-} from '~/Components/ListProducts/styles';
+} from '@teams/Components/ListProducts/styles';
 
 import {
 	Container,
@@ -28,10 +29,9 @@ import {
 	TitleContainer,
 	ActionText,
 } from '@styles/Views/GenericViewPage';
-import { exportToExcel } from '~/Functions/Excel';
 
 interface Props {
-	category_id: string;
+	id: string;
 	category_name?: string;
 }
 
@@ -61,7 +61,7 @@ const CategoryView: React.FC = () => {
 
 			const prods = await getAllProductsFromCategory({
 				team_id: teamContext.id,
-				category_id: routeParams.category_id,
+				category_id: routeParams.id,
 			});
 
 			setProducts(prods.products);
@@ -74,15 +74,15 @@ const CategoryView: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.category_id, teamContext.id]);
+	}, [routeParams.id, teamContext.id]);
 
 	const handleEdit = useCallback(() => {
-		navigate('CategoryEdit', { id: routeParams.category_id });
-	}, [navigate, routeParams.category_id]);
+		navigate('CategoryEdit', { id: routeParams.id });
+	}, [navigate, routeParams.id]);
 
 	const handleNavigateAddProduct = useCallback(() => {
-		navigate('AddProduct', { category: routeParams.category_id });
-	}, [navigate, routeParams.category_id]);
+		navigate('AddProduct', { category: routeParams.id });
+	}, [navigate, routeParams.id]);
 
 	const handleExportExcel = useCallback(async () => {
 		try {
@@ -90,7 +90,7 @@ const CategoryView: React.FC = () => {
 
 			await exportToExcel({
 				sortBy: 'expire_date',
-				category: routeParams.category_id,
+				category: routeParams.id,
 			});
 
 			if (!__DEV__)
@@ -109,7 +109,7 @@ const CategoryView: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.category_id]);
+	}, [routeParams.id]);
 
 	useEffect(() => {
 		loadData();

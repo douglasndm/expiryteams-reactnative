@@ -3,12 +3,12 @@ import { showMessage } from 'react-native-flash-message';
 
 import List from '@views/Category/List';
 
-import { useTeam } from '~/Contexts/TeamContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
 import {
 	getAllCategoriesFromTeam,
 	createCategory,
-} from '~/Functions/Categories';
+} from '@teams/Functions/Categories';
 
 const CategoryList: React.FC = () => {
 	const teamContext = useTeam();
@@ -47,7 +47,7 @@ const CategoryList: React.FC = () => {
 			try {
 				setIsAdding(true);
 
-				const newCategory = await await createCategory({
+				const newCategory = await createCategory({
 					name,
 					team_id: teamContext.id,
 				});
@@ -70,7 +70,7 @@ const CategoryList: React.FC = () => {
 
 	useEffect(() => {
 		loadData();
-	}, []);
+	}, [loadData]);
 
 	return (
 		<List
