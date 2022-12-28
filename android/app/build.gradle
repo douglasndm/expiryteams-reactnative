@@ -82,12 +82,14 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
-    cliPath: "../../../../node_modules/react-native/cli.js"
+    cliPath: "../../../../node_modules/react-native/cli.js",
+    composeSourceMapsPath: "../../node_modules/react-native/scripts/compose-source-maps.js",
+    hermesCommand: '../../../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc',
 ]
 
 apply from: "../../../../node_modules/react-native/react.gradle"
-apply from: "../../../../node_modules/@sentry/react-native/sentry.gradle"
-apply from: "../../../../node_modules/react-native-code-push/android/codepush.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -154,8 +156,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 75
-        versionName "1.6.9"
+        versionCode 76
+        versionName "1.7.0"
 
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         if (isNewArchitectureEnabled()) {
