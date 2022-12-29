@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import RNPickerSelect from 'react-native-picker-select';
 
 interface Request {

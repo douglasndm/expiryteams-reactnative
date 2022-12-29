@@ -8,7 +8,6 @@ import React, {
 import { Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
@@ -31,6 +30,7 @@ import {
 	CategoryTitle,
 	CategoryOptions,
 	SettingDescription,
+	Switch,
 	ButtonCancel,
 	ButtonCancelText,
 	SettingContainer,
