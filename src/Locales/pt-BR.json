@@ -228,6 +228,7 @@
     "View_Settings_Button_ImportFile": "Importar aquivo de backup",
     "View_Settings_AccountDescription": "Gerencie sua conta associada ao aplicativo.",
     "View_Settings_Button_SignOut": "Sair",
+    "View_Settings_Button_DeleteAccount": "Apagar conta",
 
     "View_TeamView_PageTitle": "Detalhes do time",
     "View_TeamView_ActionButton_Edit": "Editar",
@@ -245,6 +246,7 @@
     "View_TeamView_Advanced_AllowProductsDataCollect": "Permitir uso dos produtos cadastrados para ajudar a melhorar o aplicativo e trazer melhorias no futuro (Habilitando esta função, o time começara a receber recomendações de nomes de produtos)",
     "View_TeamView_Advanced_Button_DeleteTeam": "Apagar time",
     "View_TeamView_Button_GoToMembers": "Ver membros",
+    "View_TeamView_Button_QuitTeam": "Sair do time",
     "View_TeamView_Button_GoToSettings": "Ir para configurações",
 
     "View_TeamEdit_PageTitle": "Editar time",

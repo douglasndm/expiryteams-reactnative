@@ -123,7 +123,7 @@ const ViewTeam: React.FC = () => {
 					</Section>
 				)}
 
-				{isManager && <Advenced />}
+				<Advenced />
 
 				{!teamContext.active && (
 					<Button

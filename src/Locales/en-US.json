@@ -230,6 +230,7 @@
     "View_Settings_Button_ImportFile": "Import backup file",
     "View_Settings_AccountDescription": "Manage your account linked to the app",
     "View_Settings_Button_SignOut": "Sign out",
+    "View_Settings_Button_DeleteAccount": "Delete account",
 
     "View_TeamView_PageTitle": "Team's details",
     "View_TeamView_ActionButton_Edit": "Edit",
@@ -247,6 +248,7 @@
     "View_TeamView_Advanced_AllowProductsDataCollect": "Allow product's data usage to help to improve the app (Enabling it will also unlock name suggestions for products for all in the team)",
     "View_TeamView_Advanced_Button_DeleteTeam": "Delete team",
     "View_TeamView_Button_GoToMembers": "See members",
+    "View_TeamView_Button_QuitTeam": "Quit team",
     "View_TeamView_Button_GoToSettings": "Go to settings",
 
     "View_TeamEdit_PageTitle": "Edit team",
