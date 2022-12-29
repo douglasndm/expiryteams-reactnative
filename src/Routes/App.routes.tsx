@@ -5,57 +5,59 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TabMenu from '@components/TabMenu';
 
-import Home from '~/Views/Home';
-import AddProduct from '~/Views/Product/Add';
-import AddBatch from '~/Views/Batch/Add';
-import EditProduct from '~/Views/Product/Edit';
-import EditBatch from '~/Views/Batch/Edit';
-import ProductDetails from '~/Views/Product/Details';
-import Settings from '~/Views/Settings';
-import About from '~/Views/About';
-import Error from '~/Views/Informations/Error';
-import PhotoView from '~/Views/PhotoView';
+import Home from '@teams/Views/Home';
+import AddProduct from '@teams/Views/Product/Add';
+import AddBatch from '@teams/Views/Batch/Add';
+import EditProduct from '@teams/Views/Product/Edit';
+import EditBatch from '@teams/Views/Batch/Edit';
+import ProductDetails from '@teams/Views/Product/Details';
+import Settings from '@teams/Views/Settings';
+import About from '@teams/Views/About';
+import Error from '@teams/Views/Informations/Error';
+import PhotoView from '@teams/Views/PhotoView';
 
-import BatchView from '~/Views/Batch/View';
-import BatchDiscount from '~/Views/Batch/Discount';
+import WeekView from '@teams/Views/Product/WeekView';
 
-import User from '~/Views/User';
-import Logout from '~/Views/Auth/Logout';
+import BatchView from '@teams/Views/Batch/View';
+import BatchDiscount from '@teams/Views/Batch/Discount';
 
-import ListCategory from '~/Views/Category/List';
-import CategoryView from '~/Views/Category/View';
-import CategoryEdit from '~/Views/Category/Edit';
+import User from '@teams/Views/User';
+import Logout from '@teams/Views/Auth/Logout';
 
-import BrandList from '~/Views/Brand/List';
-import BrandView from '~/Views/Brand/View';
-import BrandEdit from '~/Views/Brand/Edit';
+import ListCategory from '@teams/Views/Category/List';
+import CategoryView from '@teams/Views/Category/View';
+import CategoryEdit from '@teams/Views/Category/Edit';
 
-import StoreList from '~/Views/Stores/List';
-import StoreView from '~/Views/Stores/View';
-import StoreEdit from '~/Views/Stores/Edit';
+import BrandList from '@teams/Views/Brand/List';
+import BrandView from '@teams/Views/Brand/View';
+import BrandEdit from '@teams/Views/Brand/Edit';
 
-import Export from '~/Views/Export';
+import StoreList from '@teams/Views/Stores/List';
+import StoreView from '@teams/Views/Stores/View';
+import StoreEdit from '@teams/Views/Stores/Edit';
 
-import TeamList from '~/Views/Team/List';
+import Export from '@teams/Views/Export';
+
+import TeamList from '@teams/Views/Team/List';
 
 // Team management
-import EnterTeam from '~/Views/Team/EnterTeam';
-import CreateTeam from '~/Views/Team/Add';
-import EditTeam from '~/Views/Team/Edit';
-import ViewTeam from '~/Views/Team/View';
-import ListUsers from '~/Views/Team/Manager/ListUsers';
-import UserDetails from '~/Views/Team/Manager/UserDetails';
+import EnterTeam from '@teams/Views/Team/EnterTeam';
+import CreateTeam from '@teams/Views/Team/Add';
+import EditTeam from '@teams/Views/Team/Edit';
+import ViewTeam from '@teams/Views/Team/View';
+import ListUsers from '@teams/Views/Team/Manager/ListUsers';
+import UserDetails from '@teams/Views/Team/Manager/UserDetails';
 
-import Logs from '~/Views/Team/Management/Logs';
+import Logs from '@teams/Views/Team/Management/Logs';
 
-import VerifyEmail from '~/Views/Auth/VerifyEmail';
+import VerifyEmail from '@teams/Views/Auth/VerifyEmail';
 
-import DeleteTeam from '~/Views/Informations/Delete/Team';
-import DeleteUser from '~/Views/Informations/Delete/User';
+import DeleteTeam from '@teams/Views/Informations/Delete/Team';
+import DeleteUser from '@teams/Views/Informations/Delete/User';
 
-import Subscription from '~/Views/Subscription';
+import Subscription from '@teams/Views/Subscription';
 
-import Test from '~/Views/Test';
+import Test from '@teams/Views/Test';
 
 const Stack = createNativeStackNavigator<RoutesParams>();
 
@@ -80,6 +82,7 @@ const Routes: React.FC = () => {
 			>
 				<Stack.Screen name="Home" component={Home} />
 				<Stack.Screen name="AddProduct" component={AddProduct} />
+				<Stack.Screen name="WeekView" component={WeekView} />
 
 				<Stack.Screen name="Settings" component={Settings} />
 				<Stack.Screen name="About" component={About} />
