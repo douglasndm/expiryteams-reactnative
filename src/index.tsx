@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { LogBox, ActivityIndicator } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
@@ -12,6 +12,8 @@ import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import screens from 'react-native-screens';
+
+import StatusBar from '@components/StatusBar';
 
 import './Locales';
 
@@ -27,14 +29,13 @@ import { getAllUserPreferences } from './Functions/UserPreferences';
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
-import DefaultPrefs from '~/Contexts/DefaultPreferences';
-import { AuthProvider } from '~/Contexts/AuthContext';
-import { TeamProvider } from '~/Contexts/TeamContext';
+import DefaultPrefs from './Contexts/DefaultPreferences';
+import { AuthProvider } from './Contexts/AuthContext';
+import { TeamProvider } from './Contexts/TeamContext';
 
-import { navigationRef } from '~/References/Navigation';
+import { navigationRef } from './References/Navigation';
 
-import AskReview from '~/Components/AskReview';
-import StatusBar from '@components/StatusBar';
+import AskReview from './Components/AskReview';
 
 LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
 
@@ -82,15 +83,18 @@ const App: React.FC = () => {
 		loadInitialData();
 	}, []);
 
+	const prefes = useMemo(
+		() => ({
+			preferences,
+			setPreferences,
+		}),
+		[preferences]
+	);
+
 	return isLoading ? (
 		<ActivityIndicator size="large" />
 	) : (
-		<PreferencesContext.Provider
-			value={{
-				preferences,
-				setPreferences,
-			}}
-		>
+		<PreferencesContext.Provider value={prefes}>
 			<ThemeProvider theme={preferences.appTheme}>
 				<PaperProvider>
 					<NavigationContainer

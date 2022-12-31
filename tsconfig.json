@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-      "composite": true,
       /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
       /* Basic Options */
@@ -50,6 +49,7 @@
           "@components/*": ["../shared/src/Components/*"],
           "@views/*": ["../shared/src/Views/*"],
           "@themes/*": ["../shared/src/Themes/*"],
+          "@services/*": ["../shared/src/Services/*"],
           "@styles/*": ["../shared/src/Styles/*"],
           "@utils/*": ["../shared/src/Utils/*"],
           "@teams/*": ["./src/*"],
