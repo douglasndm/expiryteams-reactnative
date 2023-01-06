@@ -2,24 +2,26 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
+import { formatCurrency } from 'react-native-format-currency';
 
-import Loading from '@components/Loading';
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import { useTeam } from '~/Contexts/TeamContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { CatPackage } from '~/@types/Functions/Subscriptions';
+import { CatPackage } from '@teams/@types/Functions/Subscriptions';
 
 import {
 	getOfferings,
 	makePurchase,
 	getTeamSubscription,
 	deleteTeamSubscription,
-} from '~/Functions/Team/Subscriptions';
+} from '@teams/Functions/Team/Subscriptions';
 import {
 	getSelectedTeam,
 	setSelectedTeam,
-} from '~/Functions/Team/SelectedTeam';
+} from '@teams/Functions/Team/SelectedTeam';
+
+import Loading from '@components/Loading';
 
 import {
 	Container,
@@ -170,7 +172,12 @@ const SubscriptionsList: React.FC = () => {
 			const { package: pack, type } = item;
 
 			const { introPrice } = pack.product;
-			const price = pack.product.price_string;
+			const { price } = pack.product;
+
+			const price_string = formatCurrency({
+				amount: Number(price.toFixed(2)),
+				code: pack.product.currencyCode,
+			});
 
 			let limit = strings.Subscription_TeamLimit_1person;
 
@@ -224,7 +231,7 @@ const SubscriptionsList: React.FC = () => {
 					text = `${introPriceStr} no primeiro mês, depois `;
 				}
 			}
-			text += `${price} mensais`;
+			text += `${price_string[0]} mensais`;
 
 			return (
 				<SubscriptionContainer
