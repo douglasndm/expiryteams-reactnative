@@ -75,6 +75,7 @@
 		5343F86896497306DC9BBA4C /* Pods-expirybusiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = expirybusiness/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50A796929514F9400946350 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = expirybusiness/main.jsbundle; sourceTree = "<group>"; };
+		A55505942968BD3A00B997DC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
 		A5855C27294F6C75002F0161 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		A5855C29294F6C75002F0161 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
@@ -558,6 +559,7 @@
 			children = (
 				4F6BBD5026790C1E00A99EA5 /* Base */,
 				4F6BBD5226790C2200A99EA5 /* pt-BR */,
+				A55505942968BD3A00B997DC /* en */,
 			);
 			name = Info.plist;
 			path = expirybusiness;
@@ -629,7 +631,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 83;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
@@ -638,7 +640,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.7.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -664,7 +666,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 83;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -672,7 +674,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.7.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -891,7 +893,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 81;
+				CURRENT_PROJECT_VERSION = 83;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -899,7 +901,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.7.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
