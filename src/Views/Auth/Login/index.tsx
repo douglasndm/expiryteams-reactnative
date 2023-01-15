@@ -31,7 +31,7 @@ import {
 
 const Login: React.FC = () => {
 	const { navigate, reset } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
+		useNavigation<StackNavigationProp<AuthRoutes>>();
 	const { initializing } = useAuth();
 
 	const [email, setEmail] = useState<string>('');
@@ -39,8 +39,6 @@ const Login: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [isLoging, setIsLoging] = useState<boolean>(false);
-
-	const [isMounted, setIsMounted] = useState(true);
 
 	const handleLogin = useCallback(async () => {
 		const schema = Yup.object().shape({
@@ -157,8 +155,6 @@ const Login: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-
-		return () => setIsMounted(false);
 	}, [navigate, reset]);
 
 	return isLoading ? (

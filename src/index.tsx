@@ -46,7 +46,8 @@ const App: React.FC = () => {
 
 	const [previousRoute, setPreviousRoute] = useState('Home');
 
-	const [preferences, setPreferences] = useState<IPreferences>(DefaultPrefs);
+	const [preferences, setPreferences] =
+		useState<IUserPreferences>(DefaultPrefs);
 
 	const loadInitialData = useCallback(async () => {
 		const prefs = await getAllUserPreferences();

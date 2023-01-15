@@ -89,8 +89,18 @@
     "ProductCardComponent_ProductExpireIn": "Expire",
     "ProductCardComponent_ProductExpiredIn": "Expired",
 
-    "Component_FloatButton_AddProduct": "New product",
-    "Component_FloatButton_AddBatch": "New batch",
+    "View_Intro_Button_Skip": "Skip",
+    "View_Intro_Button_Next": "Next",
+    "View_Intro_Button_Done": "Lets begin",
+    "View_Intro_Slide1_Title": "Daily notifications",
+    "View_Intro_Slide1_Description": "Never again forget about expired products",
+    "View_Intro_Slide2_Title": "Always at your fingertips",
+    "View_Intro_Slide2_Description": "Your products are saved in your account and protected, even if you change your phone they are still there",
+    "View_Intro_Slide3_Title": "Shared with your team",
+    "View_Intro_Slide3_Description": "Products are shared among your team so each person can collaborate to reduce your losses",
+    "View_Intro_Slide4_Title": "Meet Expiry Checker Teams",
+    "View_Intro_Slide4_Description": "Register, create your team, and add your team to it",
+
 
     "View_Login_Business_Title": "Teams",
     "View_Login_FormLogin_Title": "Sign in on your account",
