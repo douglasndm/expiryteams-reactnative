@@ -8,7 +8,6 @@ import React, {
 import { Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
 
@@ -31,21 +30,19 @@ import {
 	CategoryOptions,
 	SettingDescription,
 	Switch,
-	ButtonCancel,
-	ButtonCancelText,
 	SettingContainer,
 } from '@views/Settings/styles';
 
 import Notifications from './Components/Notifications';
 import Account from './Components/Account';
 
+import { ButtonCancel, ButtonCancelText } from './styles';
+
 const Settings: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { preferences, setPreferences } = useContext(PreferencesContext);
 	const teamContext = useTeam();
-
-	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
 
@@ -60,19 +57,7 @@ const Settings: React.FC = () => {
 	);
 
 	const loadData = useCallback(async () => {
-		try {
-			setIsLoading(true);
-
-			setAutoCompleteState(preferences.autoComplete);
-		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-		} finally {
-			setIsLoading(false);
-		}
+		setAutoCompleteState(preferences.autoComplete);
 	}, [preferences.autoComplete]);
 
 	useEffect(() => {
@@ -154,14 +139,14 @@ const Settings: React.FC = () => {
 
 					<Account />
 
-					{/* {teamContext.roleInTeam?.role.toLowerCase() ===
+					{teamContext.roleInTeam?.role.toLowerCase() ===
 						'manager' && (
 						<ButtonCancel onPress={handleNavigateCancel}>
 							<ButtonCancelText>
 								Cancelar assinatura
 							</ButtonCancelText>
 						</ButtonCancel>
-					)} */}
+					)}
 				</SettingsContent>
 			</Content>
 		</Container>
