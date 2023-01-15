@@ -19,7 +19,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settings: IUserPreferences = {
 		howManyDaysToBeNextToExpire: settingDay,
 		autoComplete: settingAutoComplete,
-		appTheme: getThemeByName(settingTheme),
+		appTheme: getThemeByName(settingTheme, true),
 		enableNotifications: settingNotification,
 	};
 
