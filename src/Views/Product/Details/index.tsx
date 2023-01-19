@@ -182,7 +182,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 								<BatchesTable
 									batches={lotesNaoTratados}
-									product_id={product?.id || ''}
+									product={product}
 								/>
 							</TableContainer>
 						)}
@@ -199,7 +199,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 								<BatchesTable
 									batches={lotesTratados}
-									product_id={product?.id || ''}
+									product={product}
 								/>
 							</>
 						)}
