@@ -3,169 +3,190 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import { useTeam } from '~/Contexts/TeamContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { exportToExcel } from '~/Functions/Excel';
+import { exportToExcel } from '@utils/Excel/Export';
 
-import { getAllProductsByBrand } from '~/Functions/Brand';
+import { getAllBrands, getAllProductsByBrand } from '@teams/Functions/Brand';
 
 import Header from '@components/Header';
 import Loading from '@components/Loading';
-import ListProducts from '~/Components/ListProducts';
+import ListProducts from '@teams/Components/ListProducts';
 
 import {
-    FloatButton,
-    Icons as FloatIcon,
-} from '~/Components/ListProducts/styles';
+	FloatButton,
+	Icons as FloatIcon,
+} from '@teams/Components/ListProducts/styles';
 
 import {
-    Container,
-    ItemTitle,
-    ActionsContainer,
-    ActionButtonsContainer,
-    Icons,
-    TitleContainer,
-    ActionText,
+	Container,
+	ItemTitle,
+	ActionsContainer,
+	ActionButtonsContainer,
+	Icons,
+	TitleContainer,
+	ActionText,
 } from '@styles/Views/GenericViewPage';
+import { getAllProducts } from '@teams/Functions/Products/Products';
+import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
+import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 
 interface Props {
-    brand_id: string;
-    brand_name: string;
+	brand_id: string;
+	brand_name: string;
 }
 
 const View: React.FC = () => {
-    const { params } = useRoute();
-    const { navigate } = useNavigation();
+	const { params } = useRoute();
+	const { navigate } = useNavigation();
 
-    const teamContext = useTeam();
+	const teamContext = useTeam();
 
-    const routeParams = params as Props;
+	const routeParams = params as Props;
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [brandName] = useState<string>(() => routeParams.brand_name);
+	const [brandName] = useState<string>(() => routeParams.brand_name);
 
-    const [products, setProducts] = useState<IProduct[]>([]);
+	const [products, setProducts] = useState<IProduct[]>([]);
 
-    const canEdit = useMemo(() => {
-        if (teamContext.roleInTeam) {
-            const { role } = teamContext.roleInTeam;
+	const canEdit = useMemo(() => {
+		if (teamContext.roleInTeam) {
+			const { role } = teamContext.roleInTeam;
 
-            if (role.toLowerCase() === 'manager') return true;
+			if (role.toLowerCase() === 'manager') return true;
 
-            if (role.toLowerCase() === 'supervisor') return true;
-        }
+			if (role.toLowerCase() === 'supervisor') return true;
+		}
 
-        return false;
-    }, [teamContext.roleInTeam]);
+		return false;
+	}, [teamContext.roleInTeam]);
 
-    const loadData = useCallback(async () => {
-        if (!teamContext.id) return;
-        try {
-            setIsLoading(true);
+	const loadData = useCallback(async () => {
+		if (!teamContext.id) return;
+		try {
+			setIsLoading(true);
 
-            const prods = await getAllProductsByBrand({
-                team_id: teamContext.id,
-                brand_id: routeParams.brand_id,
-            });
+			const prods = await getAllProductsByBrand({
+				team_id: teamContext.id,
+				brand_id: routeParams.brand_id,
+			});
 
-            setProducts(prods);
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [routeParams.brand_id, teamContext.id]);
+			setProducts(prods);
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [routeParams.brand_id, teamContext.id]);
 
-    const handleEdit = useCallback(() => {
-        navigate('BrandEdit', { brand_id: routeParams.brand_id });
-    }, [navigate, routeParams.brand_id]);
+	const handleEdit = useCallback(() => {
+		navigate('BrandEdit', { brand_id: routeParams.brand_id });
+	}, [navigate, routeParams.brand_id]);
 
-    const handleGenereteExcel = useCallback(async () => {
-        try {
-            setIsLoading(true);
+	const handleGenereteExcel = useCallback(async () => {
+		try {
+			setIsLoading(true);
 
-            await exportToExcel({
-                sortBy: 'expire_date',
-                brand: routeParams.brand_id,
-            });
+			const getProducts = async () =>
+				getAllProducts({
+					team_id: teamContext.id || '',
+					removeCheckedBatches: false,
+				});
+			const getBrands = async () =>
+				getAllBrands({ team_id: teamContext.id || '' });
+			const getCategories = async () =>
+				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
+			const getStores = async () =>
+				getAllStoresFromTeam({ team_id: teamContext.id || '' });
 
-            if (!__DEV__)
-                Analytics().logEvent('Exported_To_Excel_From_BrandView');
+			await exportToExcel({
+				sortBy: 'expire_date',
+				brand: routeParams.brand_id,
+				getProducts,
+				getBrands,
+				getCategories,
+				getStores,
+			});
 
-            showMessage({
-                message: strings.View_Brand_View_SuccessExportExcel,
-                type: 'info',
-            });
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [routeParams.brand_id]);
+			if (!__DEV__)
+				Analytics().logEvent('Exported_To_Excel_From_BrandView');
 
-    const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct', { brand: routeParams.brand_id });
-    }, [navigate, routeParams.brand_id]);
+			showMessage({
+				message: strings.View_Brand_View_SuccessExportExcel,
+				type: 'info',
+			});
+		} catch (err) {
+			if (err instanceof Error)
+				if (!err.message.includes('did not share')) {
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+				}
+		} finally {
+			setIsLoading(false);
+		}
+	}, [routeParams.brand_id, teamContext.id]);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+	const handleNavigateAddProduct = useCallback(() => {
+		navigate('AddProduct', { brand: routeParams.brand_id });
+	}, [navigate, routeParams.brand_id]);
 
-    return isLoading ? (
-        <Loading />
-    ) : (
-        <Container>
-            <Header title="Marca" noDrawer />
+	useEffect(() => {
+		loadData();
+	}, [loadData]);
 
-            <TitleContainer>
-                <ItemTitle>{brandName}</ItemTitle>
+	return isLoading ? (
+		<Loading />
+	) : (
+		<Container>
+			<Header title="Marca" noDrawer />
 
-                <ActionsContainer>
-                    {canEdit && (
-                        <ActionButtonsContainer onPress={handleEdit}>
-                            <ActionText>
-                                {
-                                    strings.View_ProductDetails_Button_UpdateProduct
-                                }
-                            </ActionText>
-                            <Icons name="create-outline" size={22} />
-                        </ActionButtonsContainer>
-                    )}
+			<TitleContainer>
+				<ItemTitle>{brandName}</ItemTitle>
 
-                    <ActionButtonsContainer onPress={handleGenereteExcel}>
-                        <ActionText>Gerar Excel</ActionText>
-                        <Icons name="stats-chart-outline" size={22} />
-                    </ActionButtonsContainer>
-                </ActionsContainer>
-            </TitleContainer>
+				<ActionsContainer>
+					{canEdit && (
+						<ActionButtonsContainer onPress={handleEdit}>
+							<ActionText>
+								{
+									strings.View_ProductDetails_Button_UpdateProduct
+								}
+							</ActionText>
+							<Icons name="create-outline" size={22} />
+						</ActionButtonsContainer>
+					)}
 
-            <ListProducts
-                products={products}
-                deactiveFloatButton
-                onRefresh={loadData}
-            />
+					<ActionButtonsContainer onPress={handleGenereteExcel}>
+						<ActionText>Gerar Excel</ActionText>
+						<Icons name="stats-chart-outline" size={22} />
+					</ActionButtonsContainer>
+				</ActionsContainer>
+			</TitleContainer>
 
-            <FloatButton
-                icon={() => (
-                    <FloatIcon name="add-outline" color="white" size={22} />
-                )}
-                small
-                label={strings.View_FloatMenu_AddProduct}
-                onPress={handleNavigateAddProduct}
-            />
-        </Container>
-    );
+			<ListProducts
+				products={products}
+				deactiveFloatButton
+				onRefresh={loadData}
+			/>
+
+			<FloatButton
+				icon={() => (
+					<FloatIcon name="add-outline" color="white" size={22} />
+				)}
+				small
+				label={strings.View_FloatMenu_AddProduct}
+				onPress={handleNavigateAddProduct}
+			/>
+		</Container>
+	);
 };
 
 export default View;

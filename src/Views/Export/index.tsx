@@ -83,7 +83,10 @@ const Export: React.FC = () => {
 			setIsExcelLoading(true);
 
 			const getProducts = async () =>
-				getAllProducts({ team_id: teamContext.id || '' });
+				getAllProducts({
+					team_id: teamContext.id || '',
+					removeCheckedBatches: false,
+				});
 			const getBrands = async () =>
 				getAllBrands({ team_id: teamContext.id || '' });
 			const getCategories = async () =>

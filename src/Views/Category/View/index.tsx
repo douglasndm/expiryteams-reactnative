@@ -8,8 +8,12 @@ import strings from '@teams/Locales';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
 
+import { exportToExcel } from '@utils/Excel/Export';
+import { getAllProducts } from '@teams/Functions/Products/Products';
 import { getAllProductsFromCategory } from '@teams/Functions/Categories/Products';
-import { exportToExcel } from '@teams/Functions/Excel';
+import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
+import { getAllBrands } from '@teams/Functions/Brand';
+import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 
 import Header from '@components/Header';
 import Loading from '@components/Loading';
@@ -88,9 +92,25 @@ const CategoryView: React.FC = () => {
 		try {
 			setIsLoading(true);
 
+			const getProducts = async () =>
+				getAllProducts({
+					team_id: teamContext.id || '',
+					removeCheckedBatches: false,
+				});
+			const getBrands = async () =>
+				getAllBrands({ team_id: teamContext.id || '' });
+			const getCategories = async () =>
+				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
+			const getStores = async () =>
+				getAllStoresFromTeam({ team_id: teamContext.id || '' });
+
 			await exportToExcel({
 				sortBy: 'expire_date',
 				category: routeParams.id,
+				getProducts,
+				getBrands,
+				getCategories,
+				getStores,
 			});
 
 			if (!__DEV__)
@@ -102,14 +122,16 @@ const CategoryView: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('did not share')) {
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+				}
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.id]);
+	}, [routeParams.id, teamContext.id]);
 
 	useEffect(() => {
 		loadData();

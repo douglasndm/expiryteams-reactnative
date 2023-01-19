@@ -4,21 +4,22 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@teams/Locales';
+
+import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { exportToExcel } from '@utils/Excel/Export';
+import { getAllProductsFromStore } from '@teams/Functions/Team/Stores/Products';
+
 import Header from '@components/Header';
 import Loading from '@components/Loading';
-import strings from '~/Locales';
 
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { exportToExcel } from '~/Functions/Excel';
-import { getAllProductsFromStore } from '~/Functions/Team/Stores/Products';
-
-import ListProducts from '~/Components/ListProducts';
+import ListProducts from '@teams/Components/ListProducts';
 
 import {
 	FloatButton,
 	Icons as FloatIcon,
-} from '~/Components/ListProducts/styles';
+} from '@teams/Components/ListProducts/styles';
 
 import {
 	Container,
@@ -29,6 +30,10 @@ import {
 	TitleContainer,
 	ActionText,
 } from '@styles/Views/GenericViewPage';
+import { getAllProducts } from '@teams/Functions/Products/Products';
+import { getAllBrands } from '@teams/Functions/Brand';
+import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
+import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 
 interface Props {
 	store_id: string;
@@ -79,9 +84,25 @@ const StoreView: React.FC = () => {
 		try {
 			setIsLoading(true);
 
+			const getProducts = async () =>
+				getAllProducts({
+					team_id: teamContext.id || '',
+					removeCheckedBatches: false,
+				});
+			const getBrands = async () =>
+				getAllBrands({ team_id: teamContext.id || '' });
+			const getCategories = async () =>
+				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
+			const getStores = async () =>
+				getAllStoresFromTeam({ team_id: teamContext.id || '' });
+
 			await exportToExcel({
 				sortBy: 'expire_date',
 				store: routeParams.store_id,
+				getProducts,
+				getBrands,
+				getCategories,
+				getStores,
 			});
 
 			if (!__DEV__)
@@ -93,14 +114,16 @@ const StoreView: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('did not share')) {
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+				}
 		} finally {
 			setIsLoading(false);
 		}
-	}, []);
+	}, [routeParams.store_id, teamContext.id]);
 
 	const handleNavigateAddProduct = useCallback(() => {
 		navigate('AddProduct', { store: routeParams.store_id });
