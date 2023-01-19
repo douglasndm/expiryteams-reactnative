@@ -2,6 +2,19 @@ import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import sharedStrings from '@shared/Locales';
+import strings from '@teams/Locales';
+
+import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { exportToExcel } from '@utils/Excel/Export';
+import { importExportFileFromApp } from '@teams/Functions/ImportExport';
+
+import { getAllProducts } from '@teams/Functions/Products/Products';
+import { getAllBrands } from '@teams/Functions/Brand';
+import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
+import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
+
 import Header from '@components/Header';
 import Button from '@components/Button';
 import PaddingComponent from '@components/PaddingComponent';
@@ -17,13 +30,6 @@ import {
 	RadioButton,
 	RadioButtonText,
 } from '@views/Export/styles';
-
-import strings from '~/Locales';
-
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { importExportFileFromApp } from '~/Functions/ImportExport';
-import { exportToExcel } from '~/Functions/Excel';
 
 const Export: React.FC = () => {
 	const { reset } = useNavigation();
@@ -71,29 +77,54 @@ const Export: React.FC = () => {
 	}, [reset, teamContext.id]);
 
 	const handleExportToExcel = useCallback(async () => {
+		if (!teamContext.id) return;
+
 		try {
 			setIsExcelLoading(true);
 
+			const getProducts = async () =>
+				getAllProducts({ team_id: teamContext.id || '' });
+			const getBrands = async () =>
+				getAllBrands({ team_id: teamContext.id || '' });
+			const getCategories = async () =>
+				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
+			const getStores = async () =>
+				getAllStoresFromTeam({ team_id: teamContext.id || '' });
+
 			if (checked === 'created_at') {
-				await exportToExcel({ sortBy: 'created_date' });
+				await exportToExcel({
+					sortBy: 'created_date',
+					getProducts,
+					getBrands,
+					getCategories,
+					getStores,
+				});
 			} else {
-				await exportToExcel({ sortBy: 'expire_date' });
+				await exportToExcel({
+					sortBy: 'expire_date',
+					getProducts,
+					getBrands,
+					getCategories,
+					getStores,
+				});
 			}
 
 			showMessage({
-				message: 'Arquivo excel gerado com sucesso',
+				message: sharedStrings.View_Export_Excel_SuccessMessage,
 				type: 'info',
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('did not share')) {
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+				}
 		} finally {
 			setIsExcelLoading(false);
 		}
-	}, [checked]);
+	}, [checked, teamContext.id]);
 
 	return (
 		<Container>
