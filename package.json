@@ -6,12 +6,11 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/expirybusiness/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "lint": "eslint .",
     "test": "jest",
     "postinstall": "patch-package",
-    "codepush:ios": "appcenter CodePush release-react -a DouglasNunesdeMattos/Expiry-Checker-Business-iOS -d Production --plist-file \"./ios/expirybusiness/Base.lproj/Info.plist\"",
-    "codepush:android": "appcenter CodePush release-react -a DouglasNunesdeMattos/Expiry-Checker-Business-Android -d Production"
+    "check-dependencies": "rnx-dep-check",
+    "fix-dependencies": "rnx-dep-check --write"
   },
   "dependencies": {
     "@logrocket/react-native": "^1.4.0",
@@ -45,7 +44,7 @@
     "react-native-bouncy-checkbox": "^2.1.2",
     "react-native-camera": "^4.2.1",
     "react-native-code-push": "^7.0.5",
-    "react-native-config": "^1.4.5",
+    "react-native-config": "^1.4.12",
     "react-native-currency-input": "^1.0.1",
     "react-native-date-picker": "^4.1.1",
     "react-native-device-info": "^10.0.2",
@@ -85,7 +84,7 @@
     "@babel/core": "^7.15.0",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.15.3",
-    "@rnx-kit/dep-check": "^1.13.1",
+    "@rnx-kit/dep-check": "^1.14.0",
     "@types/crypto-js": "^3.1.47",
     "@types/jest": "^27.4.1",
     "@types/react-native": "^0.66.4",
@@ -108,5 +107,27 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnx-kit": {
+    "reactNativeVersion": "^0.71.0",
+    "kitType": "app",
+    "capabilities": [
+      "animation",
+      "babel-preset-react-native",
+      "core",
+      "core-android",
+      "core-ios",
+      "filesystem",
+      "gestures",
+      "jest",
+      "masked-view",
+      "navigation/native",
+      "navigation/stack",
+      "react",
+      "react-test-renderer",
+      "safe-area",
+      "screens",
+      "storage"
+    ]
   }
 }
