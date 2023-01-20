@@ -9,12 +9,12 @@
     "lint": "eslint .",
     "test": "jest",
     "postinstall": "patch-package",
-    "check-dependencies": "rnx-dep-check",
-    "fix-dependencies": "rnx-dep-check --write"
+    "check-dependencies": "rnx-align-deps",
+    "fix-dependencies": "rnx-align-deps --write"
   },
   "dependencies": {
     "@logrocket/react-native": "^1.4.0",
-    "@react-native-async-storage/async-storage": "^1.17.10",
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-clipboard/clipboard": "^1.8.4",
     "@react-native-community/blur": "^4.2.0",
     "@react-native-community/push-notification-ios": "^1.10.1",
@@ -66,7 +66,7 @@
     "react-native-purchases": "^5.2.2",
     "react-native-push-notification": "^8.1.0",
     "react-native-qrcode-scanner": "^1.5.5",
-    "react-native-reanimated": "^2.12.0",
+    "react-native-reanimated": "^2.14.1",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-share": "^7.2.0",
@@ -81,7 +81,7 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@rnx-kit/dep-check": "^1.14.0",
+    "@rnx-kit/align-deps": "^2.0.3",
     "@types/crypto-js": "^3.1.47",
     "@types/react-native-push-notification": "^5.0.5",
     "@types/react-native-share": "^3.3.0",
