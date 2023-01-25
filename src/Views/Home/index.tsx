@@ -175,8 +175,10 @@ const Home: React.FC = () => {
 			setSearchString(code);
 			handleSearchChange(code);
 			setEnableBarCodeReader(false);
+
+			handleSearch();
 		},
-		[handleSearchChange]
+		[handleSearch, handleSearchChange]
 	);
 
 	return isLoading ? (
