@@ -2,7 +2,7 @@ import { startOfDay, parseISO, compareAsc, isDate } from 'date-fns';
 
 import API from '@teams/Services/API';
 
-import { sortBatches } from './Batches';
+import { sortBatches } from '@utils/Product/Batches';
 
 interface getAllProductsProps {
 	team_id: string;
