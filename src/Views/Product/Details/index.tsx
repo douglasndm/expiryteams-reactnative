@@ -3,8 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { showMessage } from 'react-native-flash-message';
-import { format, parseISO } from 'date-fns';
-import { getLocales } from 'react-native-localize';
 
 import strings from '@teams/Locales';
 
@@ -15,26 +13,18 @@ import { getProduct } from '@teams/Functions/Products/Product';
 import Header from '@components/Header';
 import Loading from '@components/Loading';
 
+import PageHeader from '@views/Product/View/Components/PageHeader';
 import BatchesTable from '@views/Product/View/Components/BatchesTable';
 
 import {
 	Container,
 	Content,
-	PageHeader,
-	ProductContainer,
-	ProductInformationContent,
-	ProductName,
-	ProductCode,
-	ProductInfo,
-	ActionsButtonContainer,
-	ActionButton,
 	PageContent,
-	Icons,
 	CategoryDetails,
 	CategoryDetailsText,
 	TableContainer,
 	FloatButton,
-} from './styles';
+} from '@views/Product/View/styles';
 
 interface Request {
 	route: {
@@ -59,19 +49,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 	const [lotesTratados, setLotesTratados] = useState<Array<IBatch>>([]);
 	const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
-
-	const dateFormat = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'MM/dd/yyyy';
-		}
-		return 'dd/MM/yyyy';
-	}, []);
-
-	const created_at = useMemo(() => {
-		if (product)
-			return format(parseISO(product.created_at), dateFormat, {});
-		return null;
-	}, [dateFormat, product]);
 
 	const loadData = useCallback(async () => {
 		if (!teamContext.id) return;
@@ -98,10 +75,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		navigate('AddBatch', { productId });
 	}, [navigate, productId]);
 
-	const handleEdit = useCallback(() => {
-		navigate('EditProduct', { product: JSON.stringify(product) });
-	}, [navigate, product]);
-
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
@@ -124,50 +97,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		<>
 			<Container>
 				<Content>
-					<Header
-						title={strings.View_ProductDetails_PageTitle}
-						noDrawer
-					/>
-					<PageHeader>
-						{!!product && (
-							<ProductContainer>
-								<ProductInformationContent>
-									<ProductName>
-										{!!product && product?.name}
-									</ProductName>
-									{!!product.code && product?.code && (
-										<ProductCode>
-											{strings.View_ProductDetails_Code}:{' '}
-											{product.code}
-										</ProductCode>
-									)}
-									<ProductInfo>
-										{product.categories.length > 0 &&
-											`${strings.View_ProductDetails_Categories}: ${product.categories[0].name}`}
-									</ProductInfo>
-									{created_at && (
-										<ProductInfo>{`Adicionado em ${created_at}`}</ProductInfo>
-									)}
-
-									<ActionsButtonContainer>
-										<ActionButton
-											icon={() => (
-												<Icons
-													name="create-outline"
-													size={22}
-												/>
-											)}
-											onPress={handleEdit}
-										>
-											{
-												strings.View_ProductDetails_Button_UpdateProduct
-											}
-										</ActionButton>
-									</ActionsButtonContainer>
-								</ProductInformationContent>
-							</ProductContainer>
-						)}
-					</PageHeader>
+					<PageHeader product={product} />
 
 					<PageContent>
 						{lotesNaoTratados.length > 0 && (
