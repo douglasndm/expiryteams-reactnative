@@ -1,1 +1,4 @@
-{}
+{
+  "react-native-code-push": "7.0.5",
+  "@sentry/react-native": "4.14.0"
+}
