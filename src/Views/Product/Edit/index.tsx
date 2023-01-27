@@ -10,6 +10,7 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 
 import {
 	deleteProduct,
+	getProduct,
 	updateProduct,
 } from '@teams/Functions/Products/Product';
 import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
@@ -48,7 +49,7 @@ import {
 interface RequestParams {
 	route: {
 		params: {
-			product: string;
+			productId: string;
 		};
 	};
 }
@@ -69,9 +70,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		return 'repositor';
 	}, [teamContext.roleInTeam]);
 
-	const product = useMemo<IProduct>(() => {
-		return JSON.parse(route.params.product);
-	}, [route.params.product]);
+	const productId = useMemo<string>(() => {
+		return route.params.productId;
+	}, [route.params.productId]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
@@ -101,8 +102,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		try {
 			setIsLoading(true);
 
-			setName(product.name);
-			setCode(product.code);
+			const prod = await getProduct({
+				productId,
+				team_id: teamContext.id,
+			});
+
+			setName(prod.name);
+			setCode(prod.code);
 
 			const response = await getExtraInfoForProducts({
 				team_id: teamContext.id,
@@ -143,14 +149,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 			setStores(storesArray);
 
-			if (product.categories.length > 0) {
-				setSelectedCategory(product.categories[0].id);
+			if (prod.categories.length > 0) {
+				setSelectedCategory(prod.categories[0].id);
 			}
-			if (product.brand) {
-				setSelectedBrand(product.brand);
+			if (prod.brand) {
+				setSelectedBrand(prod.brand);
 			}
-			if (product.store) {
-				setSelectedStore(product.store);
+			if (prod.store) {
+				setSelectedStore(prod.store);
 			}
 		} catch (err) {
 			if (err instanceof Error)
@@ -161,7 +167,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, product, teamContext.id]);
+	}, [isMounted, productId, teamContext.id]);
 
 	const updateProd = useCallback(async () => {
 		if (!isMounted || !teamContext.id) return;
@@ -180,7 +186,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			await updateProduct({
 				team_id: teamContext.id,
 				product: {
-					id: product.id,
+					id: productId,
 					name,
 					code,
 					brand: selectedBrand,
@@ -195,7 +201,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			});
 
 			replace('ProductDetails', {
-				id: product.id,
+				id: productId,
 			});
 		} catch (err) {
 			if (err instanceof Error)
@@ -208,7 +214,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		code,
 		isMounted,
 		name,
-		product.id,
+		productId,
 		replace,
 		selectedBrand,
 		selectedCategory,
@@ -221,7 +227,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		try {
 			await deleteProduct({
 				team_id: teamContext.id,
-				product_id: product.id,
+				product_id: productId,
 			});
 
 			showMessage({
@@ -241,7 +247,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		} finally {
 			setDeleteComponentVisible(false);
 		}
-	}, [isMounted, product.id, reset, teamContext.id]);
+	}, [isMounted, productId, reset, teamContext.id]);
 
 	const handleOnCodeRead = useCallback((codeRead: string) => {
 		setCode(codeRead);
@@ -323,11 +329,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 										placeholder={
 											strings.View_EditProduct_InputPlacehoder_Name
 										}
-										accessibilityLabel={
-											strings.View_EditProduct_InputAccessibility_Name
-										}
 										value={name}
-										onChangeText={value => {
+										onChangeText={(value: string) => {
 											setName(value);
 											setNameFieldError(false);
 										}}
