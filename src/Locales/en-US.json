@@ -361,9 +361,6 @@
 
     "View_Export_PageTitle": "Export",
     "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",
-    "View_Export_SortTitle": "Sort products by",
-    "View_Export_SortByCreatedDate": "Created date",
-    "View_Export_SortByExpireDate": "Expiry date",
     "View_Export_Button_ExportExcel": "Export to Excel",
 
     "View_Profile_PageTitle": "Profile",
