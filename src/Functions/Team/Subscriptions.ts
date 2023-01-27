@@ -1,6 +1,7 @@
-import Purchases, { UpgradeInfo } from 'react-native-purchases';
+import Purchases, { PurchasesError, UpgradeInfo } from 'react-native-purchases';
 import Auth from '@react-native-firebase/auth';
 import EnvConfig from 'react-native-config';
+import { Adjust, AdjustEvent } from 'react-native-adjust';
 
 import api from '@teams/Services/API';
 
@@ -21,6 +22,10 @@ async function setup() {
 	if (selectedTeam) {
 		await Purchases.logIn(selectedTeam.userRole.team.id);
 	}
+
+	Adjust.getAdid(id => {
+		Purchases.setAdjustID(id);
+	});
 }
 
 export async function getOfferings(): Promise<Array<CatPackage>> {
@@ -96,6 +101,11 @@ export async function makePurchase({
 	team_id,
 }: makePurchaseProps): Promise<ITeamSubscription> {
 	try {
+		const initialAdjustEvent = new AdjustEvent(
+			'User is opening system payment window'
+		);
+		Adjust.trackEvent(initialAdjustEvent);
+
 		const { currentUser } = Auth();
 
 		if (currentUser && currentUser.uid) {
@@ -117,7 +127,12 @@ export async function makePurchase({
 				  }
 				: null;
 
-		await Purchases.purchasePackage(pack, upgrade);
+		const { productIdentifier, customerInfo } =
+			await Purchases.purchasePackage(pack, upgrade);
+
+		const adjustEvent = new AdjustEvent(`Purchase_${productIdentifier}`);
+		adjustEvent.setRevenue(pack.product.price, pack.product.currencyCode);
+		Adjust.trackEvent(adjustEvent);
 
 		// Apaga todas as assinaturas antigas
 		await api.delete(`/team/${team_id}/subscriptions`);
@@ -130,7 +145,12 @@ export async function makePurchase({
 
 		return response.data;
 	} catch (err) {
-		if (err.userCancelled) {
+		if ((err as PurchasesError).userCancelled) {
+			const finalAdjustEvent = new AdjustEvent(
+				'User cancel the subscription process'
+			);
+			Adjust.trackEvent(finalAdjustEvent);
+
 			console.log('User canceled purchase');
 		} else if (err instanceof Error) {
 			throw new Error(err.message);
