@@ -14,7 +14,7 @@ import ProductDetails from '@teams/Views/Product/Details';
 import Settings from '@teams/Views/Settings';
 import About from '@teams/Views/About';
 import Error from '@teams/Views/Informations/Error';
-import PhotoView from '@teams/Views/PhotoView';
+import PhotoView from '@views/Product/PhotoView';
 
 import WeekView from '@teams/Views/Product/WeekView';
 

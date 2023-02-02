@@ -10,7 +10,6 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { getProduct } from '@teams/Functions/Products/Product';
 
-import Header from '@components/Header';
 import Loading from '@components/Loading';
 
 import PageHeader from '@views/Product/View/Components/PageHeader';
@@ -97,7 +96,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		<>
 			<Container>
 				<Content>
-					<PageHeader product={product} />
+					{product && (
+						<PageHeader
+							product={product}
+							imagePath={product.thumbnail}
+						/>
+					)}
 
 					<PageContent>
 						{lotesNaoTratados.length > 0 && (
