@@ -1,12 +1,12 @@
 diff --git a/node_modules/react-native-code-push/android/codepush.gradle b/node_modules/react-native-code-push/android/codepush.gradle
-index 22be273..615a790 100644
+index 78134d3..63d2e57 100644
 --- a/node_modules/react-native-code-push/android/codepush.gradle
 +++ b/node_modules/react-native-code-push/android/codepush.gradle
-@@ -25,6 +25,11 @@ gradle.projectsEvaluated {
-     }
+@@ -25,6 +25,11 @@ android.buildTypes.each { buildType ->
  
+ gradle.projectsEvaluated {
      android.applicationVariants.all { variant ->
-+         // skip debug build variant
++        // skip debug build variant
 +        if (variant.buildType.name == "debug") {
 +            return;
 +        }
