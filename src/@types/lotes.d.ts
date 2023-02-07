@@ -1,8 +1,8 @@
-interface ILote {
-    id: number;
-    lote: string;
-    exp_date: Date;
-    amount?: number;
-    price?: number;
-    status?: string;
+interface IBatch {
+	id: number;
+	name: string;
+	exp_date: Date;
+	amount?: number;
+	price?: number;
+	status?: string;
 }
