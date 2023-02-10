@@ -176,9 +176,22 @@ const Home: React.FC = () => {
 			handleSearchChange(code);
 			setEnableBarCodeReader(false);
 
-			handleSearch();
+			let prods: IProduct[] = [];
+
+			if (searchString && searchString !== '') {
+				prods = searchProducts({
+					products,
+					query: searchString,
+				});
+			}
+
+			prods = sortProductsByBatchesExpDate({
+				products: prods,
+			});
+
+			setProductsSearch(prods);
 		},
-		[handleSearch, handleSearchChange]
+		[handleSearchChange, products, searchString]
 	);
 
 	return isLoading ? (

@@ -112,7 +112,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 82
+        versionCode 90
         versionName "1.7.3"
 
         // FOR REACT NATIVE CAMERA
