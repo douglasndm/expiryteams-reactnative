@@ -1,4 +1,5 @@
-import { getThemeByName } from '@themes/index';
+import { getThemeByName } from '@shared/Themes';
+import { getAppTheme } from '@utils/Themes';
 
 import { IUserPreferences } from '@teams/@types/userPreference';
 
@@ -7,8 +8,6 @@ import {
 	getHowManyDaysToBeNextExp,
 	getAutoComplete,
 } from './Settings';
-
-import { getAppTheme } from './Themes';
 
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settingDay = await getHowManyDaysToBeNextExp();
