@@ -13,6 +13,8 @@ import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import screens from 'react-native-screens';
 
+import Sentry from '@services/Sentry';
+
 import StatusBar from '@components/StatusBar';
 
 import './Locales';
@@ -125,4 +127,4 @@ const codePushOptions: CodePushOptions = {
 	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
 };
 
-export default CodePush(codePushOptions)(App);
+export default CodePush(codePushOptions)(Sentry.wrap(App));
