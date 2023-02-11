@@ -1,6 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 
 import PreferencesContext from '@teams/Contexts/PreferencesContext';
+
+import { imageExistsLocally, getLocally } from '@utils/Images/GetLocally';
+import { saveLocally } from '@utils/Images/SaveLocally';
 
 import Card from '@components/Product/List/Card';
 
@@ -14,11 +18,32 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 
 	const [imagePath, setImagePath] = useState<string | undefined>();
 
+	const handleImage = useCallback(async () => {
+		if (product.code)
+			try {
+				const existsLocally = await imageExistsLocally(product.code);
+
+				if (existsLocally) {
+					const localImage = getLocally(product.code);
+
+					if (Platform.OS === 'android') {
+						setImagePath(`file://${localImage}`);
+					} else if (Platform.OS === 'ios') {
+						setImagePath(localImage);
+					}
+				} else if (product.thumbnail) {
+					setImagePath(product.thumbnail);
+
+					saveLocally(product.thumbnail, product.code.trim());
+				}
+			} catch (err) {
+				setImagePath(undefined);
+			}
+	}, [product.code, product.thumbnail]);
+
 	useEffect(() => {
-		if (product.thumbnail) {
-			setImagePath(product.thumbnail);
-		}
-	}, [product.thumbnail]);
+		handleImage();
+	}, [handleImage]);
 
 	return (
 		<Card
