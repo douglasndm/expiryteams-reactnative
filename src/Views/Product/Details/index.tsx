@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,6 +10,8 @@ import strings from '@teams/Locales';
 import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { getProduct } from '@teams/Functions/Products/Product';
+import { imageExistsLocally, getLocally } from '@utils/Images/GetLocally';
+import { saveLocally } from '@utils/Images/SaveLocally';
 
 import Loading from '@components/Loading';
 
@@ -45,6 +48,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [product, setProduct] = useState<IProduct>();
+	const [imagePath, setImagePath] = useState<string | undefined>();
 
 	const [lotesTratados, setLotesTratados] = useState<Array<IBatch>>([]);
 	const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
@@ -69,6 +73,34 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 			setIsLoading(false);
 		}
 	}, [productId, teamContext.id]);
+
+	const handleImage = useCallback(async () => {
+		if (!product) return;
+		if (product.code)
+			try {
+				const existsLocally = await imageExistsLocally(product.code);
+
+				if (existsLocally) {
+					const localImage = getLocally(product.code);
+
+					if (Platform.OS === 'android') {
+						setImagePath(`file://${localImage}`);
+					} else if (Platform.OS === 'ios') {
+						setImagePath(localImage);
+					}
+				} else if (product.thumbnail) {
+					setImagePath(product.thumbnail);
+
+					saveLocally(product.thumbnail, product.code.trim());
+				}
+			} catch (err) {
+				setImagePath(undefined);
+			}
+	}, [product]);
+
+	useEffect(() => {
+		handleImage();
+	}, [handleImage]);
 
 	const addNewLote = useCallback(() => {
 		navigate('AddBatch', { productId });
@@ -97,10 +129,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 			<Container>
 				<Content>
 					{product && (
-						<PageHeader
-							product={product}
-							imagePath={product.thumbnail}
-						/>
+						<PageHeader product={product} imagePath={imagePath} />
 					)}
 
 					<PageContent>
