@@ -330,7 +330,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 											strings.View_EditProduct_InputPlacehoder_Name
 										}
 										value={name}
-										onChangeText={(value: string) => {
+										onChange={(value: string) => {
 											setName(value);
 											setNameFieldError(false);
 										}}
