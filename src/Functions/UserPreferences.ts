@@ -11,7 +11,7 @@ import {
 
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settingDay = await getHowManyDaysToBeNextExp();
-	const settingTheme = await getAppTheme();
+	const settingTheme = await getAppTheme(true);
 	const settingAutoComplete = await getAutoComplete();
 	const settingNotification = await getEnableNotifications();
 
