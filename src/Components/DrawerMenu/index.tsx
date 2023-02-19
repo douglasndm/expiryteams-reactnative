@@ -100,14 +100,14 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 						</MenuContent>
 					</MenuItemContainer>
 
-					<MenuItemContainer onPress={navigateToWeekProds}>
+					{/* <MenuItemContainer onPress={navigateToWeekProds}>
 						<MenuContent>
 							<Icons name="funnel-outline" />
 							<MenuItemText>
 								{sharedStrings.Menu_Button_GoToByWeeks}
 							</MenuItemText>
 						</MenuContent>
-					</MenuItemContainer>
+					</MenuItemContainer> */}
 
 					<MenuItemContainer onPress={navigateToCategories}>
 						<MenuContent>
