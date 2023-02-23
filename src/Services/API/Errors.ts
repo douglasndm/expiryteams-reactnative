@@ -1,11 +1,11 @@
 import { destroySession } from '@teams/Functions/Auth/Session';
 
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import { reset } from '~/References/Navigation';
+import { reset } from '@teams/References/Navigation';
 
-import { clearSelectedteam } from '~/Functions/Team/SelectedTeam';
-import AppError from '~/Errors/AppError';
+import { clearSelectedteam } from '@teams/Functions/Team/SelectedTeam';
+import AppError from '@teams/Errors/AppError';
 
 async function errorsHandler(error: any): Promise<void> {
 	let err = '';
