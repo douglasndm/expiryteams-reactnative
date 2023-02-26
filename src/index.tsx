@@ -19,6 +19,7 @@ import StatusBar from '@components/StatusBar';
 
 import './Locales';
 
+import '@services/AppCheck';
 import './Services/Adjust';
 import './Services/LogRocket';
 import './Services/Analytics';

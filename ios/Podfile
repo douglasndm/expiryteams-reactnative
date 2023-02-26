@@ -44,6 +44,12 @@ target 'expirybusiness' do
         :app_path => "#{Pod::Config.instance.installation_root}/.."
     )
 
+    pod 'Firebase', :modular_headers => true
+    pod 'FirebaseCore', :modular_headers => true
+    pod 'GoogleUtilities', :modular_headers => true
+    $RNFirebaseAsStaticFramework = true
+    $RNGoogleMobileAdsAsStaticFramework = true
+
     permissions_path = '../../../node_modules/react-native-permissions/ios'
     pod 'Firebase/AppCheck'
     pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
