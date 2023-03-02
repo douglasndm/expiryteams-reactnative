@@ -6,7 +6,7 @@ interface Response {
 }
 
 async function findProductByCode(code: string): Promise<Response | null> {
-	const response = await api.get<Response>(`/product/${code}`);
+	const response = await api.get<Response>(`/products/search?query=${code}`);
 
 	if (response.data !== null) return response.data;
 
