@@ -1,8 +1,8 @@
-import Purchases, { PurchasesError, UpgradeInfo } from 'react-native-purchases';
+import { PurchasesError, UpgradeInfo } from 'react-native-purchases';
 import Auth from '@react-native-firebase/auth';
-import EnvConfig from 'react-native-config';
 import { Adjust, AdjustEvent } from 'react-native-adjust';
 
+import Purchases from '@services/RevenueCat';
 import api from '@teams/Services/API';
 
 import {
@@ -12,12 +12,11 @@ import {
 import { getSelectedTeam } from './SelectedTeam';
 
 async function setup() {
-	Purchases.setDebugLogsEnabled(true);
-	Purchases.configure({
-		apiKey: EnvConfig.REVENUECAT_PUBLIC_APP_ID || '',
-	});
-
 	const selectedTeam = await getSelectedTeam();
+
+	if (!selectedTeam) return;
+	if (selectedTeam && selectedTeam.userRole.role.toLowerCase() !== 'manager')
+		return;
 
 	if (selectedTeam) {
 		await Purchases.logIn(selectedTeam.userRole.team.id);
