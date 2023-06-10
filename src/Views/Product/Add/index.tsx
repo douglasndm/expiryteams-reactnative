@@ -173,7 +173,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 					const response = await findProductByCode(query);
 
-					if (response !== null) {
+					if (response !== null && !!response.name) {
 						setProductFinded(true);
 						setProductNameFinded(response.name);
 
