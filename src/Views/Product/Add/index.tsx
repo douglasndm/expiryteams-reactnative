@@ -489,29 +489,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 										/>
 									</InputTextIconContainer>
 
-									{teamContext.shareProducts && (
-										<>
-											{isFindingProd && (
-												<InputTextLoading />
-											)}
+									{isFindingProd && <InputTextLoading />}
 
-											{productFinded &&
-												!isFindingProd && (
-													<InputTextIconContainer
-														style={{
-															marginTop: -5,
-														}}
-														onPress={
-															handleSwitchFindModal
-														}
-													>
-														<Icon
-															name="download"
-															size={30}
-														/>
-													</InputTextIconContainer>
-												)}
-										</>
+									{productFinded && !isFindingProd && (
+										<InputTextIconContainer
+											style={{
+												marginTop: -5,
+											}}
+											onPress={handleSwitchFindModal}
+										>
+											<Icon name="download" size={30} />
+										</InputTextIconContainer>
 									)}
 								</InputCodeTextContainer>
 								{codeFieldError && (
