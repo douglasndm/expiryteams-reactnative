@@ -191,15 +191,14 @@ const Home: React.FC = () => {
 	const handleOnCodeRead = useCallback(
 		code => {
 			setSearchString(code);
-			handleSearchChange(code);
 			setEnableBarCodeReader(false);
 
 			let prods: IProduct[] = [];
 
-			if (searchString && searchString !== '') {
+			if (code && code !== '') {
 				prods = searchProducts({
 					products,
-					query: searchString,
+					query: code,
 				});
 			}
 
@@ -209,7 +208,7 @@ const Home: React.FC = () => {
 
 			setProductsSearch(prods);
 		},
-		[handleSearchChange, products, searchString]
+		[products]
 	);
 
 	return isLoading ? (
