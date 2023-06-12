@@ -254,13 +254,13 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - OpenSSL-Universal (1.1.1100)
-  - Permission-Camera (3.8.0):
+  - Permission-Camera (3.0.5):
     - RNPermissions
-  - Permission-Notifications (3.8.0):
+  - Permission-Notifications (3.0.5):
     - RNPermissions
   - PromisesObjC (2.2.0)
-  - PurchasesHybridCommon (4.16.0):
-    - RevenueCat (= 4.19.0)
+  - PurchasesHybridCommon (4.18.0):
+    - RevenueCat (= 4.21.0)
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -633,7 +633,7 @@ PODS:
     - React-perflogger (= 0.71.8)
   - ReactNativeLocalization (2.3.1):
     - React-Core
-  - RevenueCat (4.19.0)
+  - RevenueCat (4.21.0)
   - RNCAsyncStorage (1.18.1):
     - React-Core
   - RNCClipboard (1.11.2):
@@ -685,10 +685,10 @@ PODS:
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
-  - RNPermissions (3.8.0):
+  - RNPermissions (3.0.5):
     - React-Core
-  - RNPurchases (5.15.0):
-    - PurchasesHybridCommon (= 4.16.0)
+  - RNPurchases (5.16.0):
+    - PurchasesHybridCommon (= 4.18.0)
     - React-Core
   - RNReanimated (2.17.0):
     - DoubleConversion
@@ -1104,10 +1104,10 @@ SPEC CHECKSUMS:
   lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Permission-Camera: e6d142d7d8b714afe0a83e5e6ae17eb949f1e3e9
-  Permission-Notifications: aa91ec29236626ff59cb60e08389c0a59a9d32c5
+  Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
+  Permission-Notifications: 16ccd862111103378a7bab9fb1c5c71addffc348
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
-  PurchasesHybridCommon: 28ef600c2fc202d376f4c327cbc8ddf324dc4f2b
+  PurchasesHybridCommon: 6b510d4965166df2137347a414d6a8e2906d5a5e
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: 8af6a32dfc2b65ec82193c2dee6e1011ff22ac2a
   RCTTypeSafety: bee9dd161c175896c680d47ef1d9eaacf2b587f4
@@ -1147,7 +1147,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7c51ae9d4b3e9608a2366e39ccaa606aa551b9ed
   ReactCommon: 85c98ab0a509e70bf5ee5d9715cf68dbf495b84c
   ReactNativeLocalization: 076497d7ca70341c751cd3b3e7c86187332a182d
-  RevenueCat: 53bd212b0d1a882ebaec4a3f9d6af438a9703c66
+  RevenueCat: 465a9dc1fff60b09f29792082e5d5d5aeed01122
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
   RNCMaskedView: 949696f25ec596bfc697fc88e6f95cf0c79669b6
@@ -1165,8 +1165,8 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: f75d81410b40aaa99e71ae8f8bb7a88620c95042
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
-  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
-  RNPurchases: 311bdc0a6cdb36d19fb46de5d94c474cff78c9d6
+  RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
+  RNPurchases: 6744af10718d9bd85b9daaa6c1b47196e295b6b4
   RNReanimated: d4f363f4987ae0ade3e36ff81c94e68261bf4b8d
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSentry: 4fb2cd7d2d6cb94423c24884488206ef881da136
@@ -1183,4 +1183,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 24e8dda52fb30d872f437d8fd6de0f6419bbfc1f
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
