@@ -254,9 +254,9 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - OpenSSL-Universal (1.1.1100)
-  - Permission-Camera (3.0.5):
+  - Permission-Camera (3.6.1):
     - RNPermissions
-  - Permission-Notifications (3.0.5):
+  - Permission-Notifications (3.6.1):
     - RNPermissions
   - PromisesObjC (2.2.0)
   - PurchasesHybridCommon (4.18.0):
@@ -685,7 +685,7 @@ PODS:
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
-  - RNPermissions (3.0.5):
+  - RNPermissions (3.6.1):
     - React-Core
   - RNPurchases (5.16.0):
     - PurchasesHybridCommon (= 4.18.0)
@@ -1104,8 +1104,8 @@ SPEC CHECKSUMS:
   lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
-  Permission-Notifications: 16ccd862111103378a7bab9fb1c5c71addffc348
+  Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
+  Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   PurchasesHybridCommon: 6b510d4965166df2137347a414d6a8e2906d5a5e
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
@@ -1165,7 +1165,7 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: f75d81410b40aaa99e71ae8f8bb7a88620c95042
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
-  RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
+  RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNPurchases: 6744af10718d9bd85b9daaa6c1b47196e295b6b4
   RNReanimated: d4f363f4987ae0ade3e36ff81c94e68261bf4b8d
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
