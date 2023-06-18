@@ -6,8 +6,6 @@ import sharedStrings from '@shared/Locales';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
 
-import UserInfo from './UserInfo';
-
 import {
 	Container,
 	MainMenuContainer,
@@ -16,7 +14,10 @@ import {
 	MenuItemText,
 	Icons,
 	DrawerSection,
-} from './styles';
+	PageContainer,
+} from '@components/Menu/Drawer/styles';
+
+import UserInfo from './UserInfo';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
 	props: DrawerContentOptions
@@ -77,131 +78,137 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 	}, [navigation]);
 
 	return (
-		<Container>
-			<MainMenuContainer>
-				<UserInfo navigate={navigation.navigate} />
+		<PageContainer>
+			<Container>
+				<MainMenuContainer>
+					<UserInfo navigate={navigation.navigate} />
 
-				<DrawerSection>
-					<MenuItemContainer onPress={navigateToHome}>
-						<MenuContent>
-							<Icons name="home-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToHome}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-
-					<MenuItemContainer onPress={navigateToAddProduct}>
-						<MenuContent>
-							<Icons name="add" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToAddProduct}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-
-					<MenuItemContainer onPress={navigateToWeekProds}>
-						<MenuContent>
-							<Icons name="funnel-outline" />
-							<MenuItemText>
-								{sharedStrings.Menu_Button_GoToByWeeks}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-
-					<MenuItemContainer onPress={navigateToCategories}>
-						<MenuContent>
-							<Icons name="file-tray-full-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToCategories}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-
-					<MenuItemContainer onPress={navigateToBrands}>
-						<MenuContent>
-							<Icons name="ribbon-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToBrands}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-
-					{isManager && (
-						<MenuItemContainer onPress={navigateToStores}>
+					<DrawerSection>
+						<MenuItemContainer onPress={navigateToHome}>
 							<MenuContent>
-								<Icons name="list-outline" />
+								<Icons name="home-outline" />
 								<MenuItemText>
-									{strings.Menu_Button_GoToStores}
+									{strings.Menu_Button_GoToHome}
 								</MenuItemText>
 							</MenuContent>
 						</MenuItemContainer>
-					)}
 
-					<MenuItemContainer onPress={navigateToExport}>
+						<MenuItemContainer onPress={navigateToAddProduct}>
+							<MenuContent>
+								<Icons name="add" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToAddProduct}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						<MenuItemContainer onPress={navigateToWeekProds}>
+							<MenuContent>
+								<Icons name="funnel-outline" />
+								<MenuItemText>
+									{sharedStrings.Menu_Button_GoToByWeeks}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						<MenuItemContainer onPress={navigateToCategories}>
+							<MenuContent>
+								<Icons name="file-tray-full-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToCategories}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						<MenuItemContainer onPress={navigateToBrands}>
+							<MenuContent>
+								<Icons name="ribbon-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToBrands}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						{isManager && (
+							<MenuItemContainer onPress={navigateToStores}>
+								<MenuContent>
+									<Icons name="list-outline" />
+									<MenuItemText>
+										{strings.Menu_Button_GoToStores}
+									</MenuItemText>
+								</MenuContent>
+							</MenuItemContainer>
+						)}
+
+						<MenuItemContainer onPress={navigateToExport}>
+							<MenuContent>
+								<Icons name="download-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToExport}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						{!!teamContext.id && (
+							<MenuItemContainer onPress={handleNavigateToTeam}>
+								<MenuContent>
+									<Icons name="briefcase-outline" />
+									<MenuItemText>
+										{teamContext.name}
+									</MenuItemText>
+								</MenuContent>
+							</MenuItemContainer>
+						)}
+
+						{isManager && (
+							<MenuItemContainer
+								onPress={handleNavigateToTeamLogs}
+							>
+								<MenuContent>
+									<Icons name="book-outline" />
+									<MenuItemText>
+										{strings.Menu_Button_GoToLogs}
+									</MenuItemText>
+								</MenuContent>
+							</MenuItemContainer>
+						)}
+					</DrawerSection>
+				</MainMenuContainer>
+
+				<DrawerSection>
+					<MenuItemContainer onPress={handleNavigateToSettings}>
 						<MenuContent>
-							<Icons name="download-outline" />
+							<Icons name="settings-outline" />
 							<MenuItemText>
-								{strings.Menu_Button_GoToExport}
+								{strings.Menu_Button_GoToSettings}
 							</MenuItemText>
 						</MenuContent>
 					</MenuItemContainer>
 
-					{!!teamContext.id && (
-						<MenuItemContainer onPress={handleNavigateToTeam}>
-							<MenuContent>
-								<Icons name="briefcase-outline" />
-								<MenuItemText>{teamContext.name}</MenuItemText>
-							</MenuContent>
-						</MenuItemContainer>
-					)}
+					<MenuItemContainer onPress={handleNavigateToAbout}>
+						<MenuContent>
+							<Icons name="help-circle-outline" />
+							<MenuItemText>
+								{strings.Menu_Button_GoToAbout}
+							</MenuItemText>
+						</MenuContent>
+					</MenuItemContainer>
 
-					{isManager && (
-						<MenuItemContainer onPress={handleNavigateToTeamLogs}>
+					{__DEV__ && (
+						<MenuItemContainer
+							onPress={() => navigation.navigate('Test')}
+						>
 							<MenuContent>
-								<Icons name="book-outline" />
+								<Icons name="bug-outline" />
 								<MenuItemText>
-									{strings.Menu_Button_GoToLogs}
+									{strings.Menu_Button_GoToTest}
 								</MenuItemText>
 							</MenuContent>
 						</MenuItemContainer>
 					)}
 				</DrawerSection>
-			</MainMenuContainer>
-
-			<DrawerSection>
-				<MenuItemContainer onPress={handleNavigateToSettings}>
-					<MenuContent>
-						<Icons name="settings-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToSettings}
-						</MenuItemText>
-					</MenuContent>
-				</MenuItemContainer>
-
-				<MenuItemContainer onPress={handleNavigateToAbout}>
-					<MenuContent>
-						<Icons name="help-circle-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToAbout}
-						</MenuItemText>
-					</MenuContent>
-				</MenuItemContainer>
-
-				{__DEV__ && (
-					<MenuItemContainer
-						onPress={() => navigation.navigate('Test')}
-					>
-						<MenuContent>
-							<Icons name="bug-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToTest}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-				)}
-			</DrawerSection>
-		</Container>
+			</Container>
+		</PageContainer>
 	);
 };
 
