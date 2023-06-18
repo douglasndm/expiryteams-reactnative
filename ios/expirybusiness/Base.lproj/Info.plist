@@ -57,7 +57,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>We need your permission to access the device&apos;s camera to user barcode reader.</string>
+	<string>We need your permission to access the device's camera to user barcode reader.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to help to understand where the app is most used</string>
 	<key>UIAppFonts</key>
@@ -88,6 +88,13 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

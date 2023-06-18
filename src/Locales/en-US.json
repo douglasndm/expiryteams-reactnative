@@ -78,6 +78,13 @@
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_AddNewProduct": "Add new product",
+    "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Delete selected",
+    "ListProductsComponent_DeleteProducts_ActionBar_Cancel": "Cancel selection",
+    "ListProductsComponent_DeleteProducts_Modal_Title": "Delete many products",
+    "ListProductsComponent_DeleteProducts_Modal_Description": "Are you going to delete SEVERAL products, this action cannot be undone!",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Keep": "Keep products",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Delete": "Delete selected",
+    "ListProductsComponent_ProductsDeleted_Notification": "The products were deleted",
 
     "LoadingComponent_Text": "Loading...",
 

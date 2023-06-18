@@ -77,6 +77,13 @@
     "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_AddNewProduct": "Adicionar novo produto",
+    "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Apagar selecionados",
+    "ListProductsComponent_DeleteProducts_ActionBar_Cancel": "Cancelar seleção",
+    "ListProductsComponent_DeleteProducts_Modal_Title": "Apagar vários produtos",
+    "ListProductsComponent_DeleteProducts_Modal_Description": "Você está preste a apagar VÁRIOS PRODUTOS, essa ação não pode ser revertida",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Keep": "Manter produtos",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Delete": "Apagar selecionados",
+    "ListProductsComponent_ProductsDeleted_Notification": "Os produtos selecionandos foram apagados",
 
     "LoadingComponent_Text": "Carregando...",
 

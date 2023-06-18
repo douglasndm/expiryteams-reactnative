@@ -1,11 +1,11 @@
 import React, { useContext, useMemo } from 'react';
 import { addDays, isPast, parseISO, startOfDay } from 'date-fns';
 
-import ProductCard from '~/Components/ListProducts/ProductCard';
+import ProductCard from '@teams/Components/ListProducts/ProductCard';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import PreferencesContext from '@teams/Contexts/PreferencesContext';
 
-import { Container } from './styles';
+import { Container } from '@components/Product/List/Card/styles';
 
 interface RequestProps {
 	product: IProduct;

@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
-import { View, FlatList, RefreshControl } from 'react-native';
+import { View, FlatList, RefreshControl, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
@@ -15,11 +14,13 @@ import {
 	sortProductsByBatchesExpDate,
 } from '@teams/Functions/Products/Products';
 
+import Dialog from '@components/Dialog';
+import ActionButtons from '@components/Product/List/ActionButtons';
+
 import ProductItem from './ProductContainer';
 
 import {
 	Container,
-	ActionButtonsContainer,
 	CategoryDetails,
 	CategoryDetailsText,
 	EmptyListText,
@@ -30,7 +31,6 @@ import {
 	SelectButtonContainer,
 	SelectButton,
 	SelectIcon,
-	ButtonPaper,
 } from './styles';
 
 interface RequestProps {
@@ -220,22 +220,12 @@ const ListProducts: React.FC<RequestProps> = ({
 
 	return (
 		<Container>
-			{selectMode && isAdmin && (
-				<ActionButtonsContainer>
-					<ButtonPaper
-						icon={() => <Icons name="trash-outline" />}
-						onPress={handleSwitchDeleteModal}
-					>
-						Apagar selecionados
-					</ButtonPaper>
-
-					<ButtonPaper
-						icon={() => <Icons name="exit-outline" />}
-						onPress={handleDisableSelectMode}
-					>
-						Cancelar seleção
-					</ButtonPaper>
-				</ActionButtonsContainer>
+			{isAdmin && (
+				<ActionButtons
+					selectMode={selectMode}
+					onCancelDelete={handleDisableSelectMode}
+					onConfirmDelete={handleSwitchDeleteModal}
+				/>
 			)}
 			<FlatList
 				ref={listRef}
@@ -252,6 +242,7 @@ const ListProducts: React.FC<RequestProps> = ({
 						onRefresh={handleRefresh}
 					/>
 				}
+				numColumns={Dimensions.get('screen').width > 600 ? 2 : 1}
 			/>
 
 			{!deactiveFloatButton && (
@@ -265,27 +256,21 @@ const ListProducts: React.FC<RequestProps> = ({
 				/>
 			)}
 
-			<Dialog.Container
+			<Dialog
 				visible={deleteModal}
-				onBackdropPress={handleSwitchDeleteModal}
-			>
-				<Dialog.Title>
-					{strings.View_EditBatch_WarningDelete_Title}
-				</Dialog.Title>
-				<Dialog.Description>
-					Você está preste a apagar VÁRIOS PRODUTOS, essa ação não
-					pode ser revertida
-				</Dialog.Description>
-				<Dialog.Button
-					label="Manter produtos"
-					onPress={handleSwitchDeleteModal}
-				/>
-				<Dialog.Button
-					label={strings.View_EditBatch_WarningDelete_Button_Confirm}
-					color="red"
-					onPress={handleDeleteMany}
-				/>
-			</Dialog.Container>
+				onDismiss={handleSwitchDeleteModal}
+				onConfirm={handleDeleteMany}
+				title={strings.ListProductsComponent_DeleteProducts_Modal_Title}
+				description={
+					strings.ListProductsComponent_DeleteProducts_Modal_Description
+				}
+				confirmText={
+					strings.ListProductsComponent_DeleteProducts_Modal_Button_Delete
+				}
+				cancelText={
+					strings.ListProductsComponent_DeleteProducts_Modal_Button_Keep
+				}
+			/>
 		</Container>
 	);
 };
