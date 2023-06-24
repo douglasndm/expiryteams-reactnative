@@ -1,5 +1,9 @@
-require_relative '../../../node_modules/react-native/scripts/react_native_pods'
-require_relative '../../../node_modules/@react-native-community/cli-platform-ios/native_modules'
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
@@ -22,6 +26,8 @@ if linkage != nil
 end
 
 target 'expirybusiness' do
+    #use_frameworks!
+
     config = use_native_modules!
 
     # Flags change depending on the env values.
@@ -46,7 +52,13 @@ target 'expirybusiness' do
 
     pod 'Firebase', :modular_headers => true
     pod 'FirebaseCore', :modular_headers => true
+    pod 'FirebaseCoreInternal', :modular_headers => true
     pod 'GoogleUtilities', :modular_headers => true
+    pod "FirebaseSessions", :modular_headers => true
+    pod "FirebaseCoreExtension", :modular_headers => true
+    pod "FirebaseInstallations",  :modular_headers => true
+    pod "GoogleDataTransport", :modular_headers => true
+    pod "nanopb", :modular_headers => true
     $RNFirebaseAsStaticFramework = true
     $RNGoogleMobileAdsAsStaticFramework = true
 
