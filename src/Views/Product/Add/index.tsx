@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
 
 import BarCodeReader from '@components/BarCodeReader';
 import InputText from '@components/InputText';
@@ -34,6 +33,8 @@ import DaysToBeNext from '@teams/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
+
+import FillModal from '@shared/Views/Product/Add/Components/FillModal';
 
 import {
 	Container,
@@ -140,6 +141,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const [duplicateId, setDuplicateId] = useState('');
 
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
+
+	const handleCompleteInfo = useCallback(() => {
+		if (productNameFinded?.trim()) {
+			setName(productNameFinded.trim());
+			setShowProdFindedModal(false);
+		}
+	}, [productNameFinded]);
 
 	const completeInfo = useCallback(
 		(prodName?: string) => {
@@ -614,25 +622,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 							/>
 						</PageContent>
 
-						<Dialog.Container
-							visible={showProdFindedModal}
-							onBackdropPress={handleSwitchFindModal}
-						>
-							<Dialog.Title>Completar infomações?</Dialog.Title>
-							<Dialog.Description>
-								Este produto pode ser algumas informações
-								completadas automáticamente, gostaria de
-								completar as informações?
-							</Dialog.Description>
-							<Dialog.Button
-								label="Não"
-								onPress={handleSwitchFindModal}
-							/>
-							<Dialog.Button
-								label="Sim"
-								onPress={() => completeInfo()}
-							/>
-						</Dialog.Container>
+						<FillModal
+							onConfirm={handleCompleteInfo}
+							show={showProdFindedModal}
+							setShow={handleSwitchFindModal}
+						/>
 					</Content>
 				</Container>
 			)}
