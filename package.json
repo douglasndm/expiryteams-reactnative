@@ -22,7 +22,6 @@
     "@react-native-firebase/analytics": "^18.1.0",
     "@react-native-firebase/app": "^18.1.0",
     "@react-native-firebase/app-check": "^18.1.0",
-    "@react-native-firebase/crashlytics": "^18.1.0",
     "@react-native-firebase/in-app-messaging": "^18.1.0",
     "@react-native-firebase/installations": "^18.1.0",
     "@react-native-firebase/messaging": "^18.1.0",

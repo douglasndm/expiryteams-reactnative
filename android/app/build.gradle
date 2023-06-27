@@ -116,9 +116,6 @@ android {
                 keyPassword project.env.get("ANDROID_UPLOAD_KEY_PASSWORD")
             }
         }
-        lintOptions {
-            checkReleaseBuilds false
-        }
     }
     buildTypes {
         debug {
