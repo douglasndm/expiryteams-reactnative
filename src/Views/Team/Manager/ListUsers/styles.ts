@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { RectButton } from 'react-native-gesture-handler';
 import { darken } from 'polished';
 
 export const Container = styled.View`
@@ -12,7 +11,7 @@ interface TeamItemContainerProps {
 	isPending?: boolean;
 }
 
-export const TeamItemContainer = styled(RectButton)<TeamItemContainerProps>`
+export const TeamItemContainer = styled.TouchableOpacity<TeamItemContainerProps>`
 	background-color: ${props => props.theme.colors.inputBackground};
 	padding: 20px 14px;
 	margin-bottom: 10px;
@@ -92,7 +91,7 @@ export const InputText = styled.TextInput.attrs(props => ({
 	color: ${props => props.theme.colors.text};
 `;
 
-export const AddCategoryButtonContainer = styled(RectButton)`
+export const AddCategoryButtonContainer = styled.TouchableOpacity`
 	background-color: ${props => props.theme.colors.accent};
 	padding: 13px 15px;
 	border-radius: 12px;

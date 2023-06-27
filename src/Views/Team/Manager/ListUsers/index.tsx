@@ -220,6 +220,18 @@ const ListUsers: React.FC = () => {
 			const isPending =
 				!!item.status && item.status.toLowerCase() === 'pending';
 
+			const userRole = () => {
+				if (item.role) {
+					if (item.role.toLowerCase() === 'manager')
+						return strings.UserInfo_Role_Manager;
+					if (item.role.toLowerCase() === 'supervisor') {
+						return strings.UserInfo_Role_Supervisor;
+					}
+				}
+
+				return strings.UserInfo_Role_Repositor;
+			};
+
 			return (
 				<TeamItemContainer
 					onPress={() => handleNavigateToUser(item)}
@@ -237,7 +249,7 @@ const ListUsers: React.FC = () => {
 						<TeamItemRole>
 							{isPending
 								? strings.View_UsersInTeam_List_PendingStatus
-								: item.role.toUpperCase()}
+								: userRole().toUpperCase()}
 						</TeamItemRole>
 					</UserInfoContainer>
 				</TeamItemContainer>
@@ -271,7 +283,7 @@ const ListUsers: React.FC = () => {
 
 								<AddCategoryButtonContainer
 									onPress={handleAddUser}
-									enabled={!isAdding}
+									disabled={isAdding}
 								>
 									{isAdding ? (
 										<LoadingIcon />
