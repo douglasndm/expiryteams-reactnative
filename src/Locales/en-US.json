@@ -74,8 +74,6 @@
     "Component_Camera_Button_TakeAnotherPicture": "Take another picture",
     "Component_Camera_Button_SavePicture": "Looks good",
 
-
-    "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_AddNewProduct": "Add new product",
     "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Delete selected",

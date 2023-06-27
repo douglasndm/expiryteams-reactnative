@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
-import { View, FlatList, RefreshControl, Dimensions } from 'react-native';
+import { FlatList, RefreshControl, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -21,8 +21,6 @@ import ProductItem from './ProductContainer';
 
 import {
 	Container,
-	CategoryDetails,
-	CategoryDetailsText,
 	EmptyListText,
 	FloatButton,
 	Icons,
@@ -92,23 +90,6 @@ const ListProducts: React.FC<RequestProps> = ({
 	const handleNavigateAddProduct = useCallback(() => {
 		navigate('AddProduct', {});
 	}, [navigate]);
-
-	const ListHeader = useCallback(() => {
-		return (
-			<View>
-				{/* Verificar se há items antes de criar o titulo */}
-				{prods.length > 0 && (
-					<CategoryDetails>
-						<CategoryDetailsText>
-							{
-								strings.ListProductsComponent_Title_ProductsNextToExp
-							}
-						</CategoryDetailsText>
-					</CategoryDetails>
-				)}
-			</View>
-		);
-	}, [prods]);
 
 	const EmptyList = useCallback(() => {
 		return (
@@ -231,7 +212,6 @@ const ListProducts: React.FC<RequestProps> = ({
 				ref={listRef}
 				data={prods}
 				keyExtractor={item => String(item.id)}
-				ListHeaderComponent={ListHeader}
 				renderItem={renderComponent}
 				ListEmptyComponent={EmptyList}
 				initialNumToRender={10}
