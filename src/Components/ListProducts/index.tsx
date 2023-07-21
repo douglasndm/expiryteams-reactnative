@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { FlatList, RefreshControl, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
@@ -22,8 +20,6 @@ import ProductItem from './ProductContainer';
 import {
 	Container,
 	EmptyListText,
-	FloatButton,
-	Icons,
 	InvisibleComponent,
 	ProductContainer,
 	SelectButtonContainer,
@@ -34,7 +30,6 @@ import {
 interface RequestProps {
 	products: Array<IProduct>;
 	onRefresh?: () => void;
-	deactiveFloatButton?: boolean;
 	sortProdsByBatchExpDate?: boolean;
 	listRef?: React.RefObject<FlatList<IProduct>>;
 }
@@ -42,12 +37,9 @@ interface RequestProps {
 const ListProducts: React.FC<RequestProps> = ({
 	products,
 	onRefresh,
-	deactiveFloatButton,
 	sortProdsByBatchExpDate,
 	listRef,
 }: RequestProps) => {
-	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
-
 	const teamContext = useTeam();
 
 	const [refreshing, setRefreshing] = React.useState<boolean>(false);
@@ -86,10 +78,6 @@ const ListProducts: React.FC<RequestProps> = ({
 			setProds(products);
 		}
 	}, [products, sortProducts]);
-
-	const handleNavigateAddProduct = useCallback(() => {
-		navigate('AddProduct', {});
-	}, [navigate]);
 
 	const EmptyList = useCallback(() => {
 		return (
@@ -224,17 +212,6 @@ const ListProducts: React.FC<RequestProps> = ({
 				}
 				numColumns={Dimensions.get('screen').width > 600 ? 2 : 1}
 			/>
-
-			{!deactiveFloatButton && (
-				<FloatButton
-					icon={() => (
-						<Icons name="add-outline" color="white" size={22} />
-					)}
-					small
-					label={strings.View_FloatMenu_AddProduct}
-					onPress={handleNavigateAddProduct}
-				/>
-			)}
 
 			<Dialog
 				visible={deleteModal}
