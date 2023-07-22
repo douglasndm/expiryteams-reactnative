@@ -13,13 +13,9 @@ import { getAllProductsFromStore } from '@teams/Functions/Team/Stores/Products';
 
 import Header from '@components/Header';
 import Loading from '@components/Loading';
+import FloatButton from '@components/FloatButton';
 
 import ListProducts from '@teams/Components/ListProducts';
-
-import {
-	FloatButton,
-	Icons as FloatIcon,
-} from '@teams/Components/ListProducts/styles';
 
 import {
 	Container,
@@ -125,10 +121,6 @@ const StoreView: React.FC = () => {
 		}
 	}, [routeParams.store_id, teamContext.id]);
 
-	const handleNavigateAddProduct = useCallback(() => {
-		navigate('AddProduct', { store: routeParams.store_id });
-	}, [navigate, routeParams.store_id]);
-
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
@@ -157,19 +149,11 @@ const StoreView: React.FC = () => {
 				</ActionsContainer>
 			</TitleContainer>
 
-			<ListProducts
-				products={products}
-				onRefresh={loadData}
-				deactiveFloatButton
-			/>
+			<ListProducts products={products} onRefresh={loadData} />
 
 			<FloatButton
-				icon={() => (
-					<FloatIcon name="add-outline" color="white" size={22} />
-				)}
-				small
-				label={strings.View_FloatMenu_AddProduct}
-				onPress={handleNavigateAddProduct}
+				navigateTo="AddProduct"
+				categoryId={routeParams.store_id}
 			/>
 		</Container>
 	);

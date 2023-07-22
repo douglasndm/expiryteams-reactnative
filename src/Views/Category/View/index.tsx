@@ -17,12 +17,9 @@ import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 
 import Header from '@components/Header';
 import Loading from '@components/Loading';
+import FloatButton from '@components/FloatButton';
 
 import ListProducts from '@teams/Components/ListProducts';
-import {
-	FloatButton,
-	Icons as FloatIcon,
-} from '@teams/Components/ListProducts/styles';
 
 import {
 	Container,
@@ -82,10 +79,6 @@ const CategoryView: React.FC = () => {
 
 	const handleEdit = useCallback(() => {
 		navigate('CategoryEdit', { id: routeParams.id });
-	}, [navigate, routeParams.id]);
-
-	const handleNavigateAddProduct = useCallback(() => {
-		navigate('AddProduct', { category: routeParams.id });
 	}, [navigate, routeParams.id]);
 
 	const handleExportExcel = useCallback(async () => {
@@ -170,20 +163,9 @@ const CategoryView: React.FC = () => {
 				</ActionsContainer>
 			</TitleContainer>
 
-			<ListProducts
-				products={products}
-				deactiveFloatButton
-				onRefresh={loadData}
-			/>
+			<ListProducts products={products} onRefresh={loadData} />
 
-			<FloatButton
-				icon={() => (
-					<FloatIcon name="add-outline" color="white" size={22} />
-				)}
-				small
-				label={strings.View_FloatMenu_AddProduct}
-				onPress={handleNavigateAddProduct}
-			/>
+			<FloatButton navigateTo="AddProduct" categoryId={routeParams.id} />
 		</Container>
 	);
 };
