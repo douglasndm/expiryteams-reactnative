@@ -50,7 +50,6 @@ react {
     // hermesFlags = ["-O", "-output-source-map"]
 }
 
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 
 /**
@@ -73,9 +72,6 @@ def enableProguardInReleaseBuilds = false
 
 def useIntlJsc = false
 
-def codePushStagingDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_STAGING_DEPLOYMENTKEY") +'"'
-def codePushProductionDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_PRODUCTION_DEPLOYMENTKEY") +'"'
-
 /**
  * Architectures to build native code for in debug.
  */
@@ -92,8 +88,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 102
-        versionName "1.7.10"
+        versionCode 104
+        versionName "1.7.12"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -120,19 +116,13 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-
-            // Note: CodePush updates shouldn't be tested in Debug mode as they're overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
-            resValue "string", "CodePushDeploymentKey", '""'
         }
         releaseStaging {
-            resValue "string", "CodePushDeploymentKey", codePushStagingDeploymentKey
             // Note: It's a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
             // Add the following line if not already there
             matchingFallbacks = ['release']
         }
         release {
-            resValue "string", "CodePushDeploymentKey", codePushProductionDeploymentKey
-
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             shrinkResources enableProguardInReleaseBuilds
