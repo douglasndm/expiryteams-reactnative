@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList, RefreshControl, Dimensions } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -7,10 +7,7 @@ import strings from '@teams/Locales';
 import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { sortBatches, removeCheckedBatches } from '@utils/Product/Batches';
-import {
-	deleteManyProducts,
-	sortProductsByBatchesExpDate,
-} from '@teams/Functions/Products/Products';
+import { deleteManyProducts } from '@teams/Functions/Products/Products';
 
 import Dialog from '@components/Dialog';
 import ActionButtons from '@components/Product/List/ActionButtons';
@@ -30,21 +27,20 @@ import {
 interface RequestProps {
 	products: Array<IProduct>;
 	onRefresh?: () => void;
-	sortProdsByBatchExpDate?: boolean;
 	listRef?: React.RefObject<FlatList<IProduct>>;
+	loadMoreProducts: () => void;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
 	products,
 	onRefresh,
-	sortProdsByBatchExpDate,
 	listRef,
+	loadMoreProducts,
 }: RequestProps) => {
 	const teamContext = useTeam();
 
 	const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-	const [prods, setProds] = useState<Array<IProduct>>([]);
 	const [selectedProds, setSelectedProds] = useState<Array<string>>([]);
 	const [selectMode, setSelectMode] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
@@ -56,28 +52,6 @@ const ListProducts: React.FC<RequestProps> = ({
 		}
 		return false;
 	}, [teamContext.roleInTeam]);
-
-	const sortProducts = useMemo(
-		() => sortProdsByBatchExpDate,
-		[sortProdsByBatchExpDate]
-	);
-
-	useEffect(() => {
-		if (products) {
-			if (sortProducts === true) {
-				if (sortProducts === true) {
-					const sortedProducts = sortProductsByBatchesExpDate({
-						products,
-					});
-
-					setProds(sortedProducts);
-					return;
-				}
-			}
-
-			setProds(products);
-		}
-	}, [products, sortProducts]);
 
 	const EmptyList = useCallback(() => {
 		return (
@@ -198,7 +172,7 @@ const ListProducts: React.FC<RequestProps> = ({
 			)}
 			<FlatList
 				ref={listRef}
-				data={prods}
+				data={products}
 				keyExtractor={item => String(item.id)}
 				renderItem={renderComponent}
 				ListEmptyComponent={EmptyList}
@@ -210,6 +184,8 @@ const ListProducts: React.FC<RequestProps> = ({
 						onRefresh={handleRefresh}
 					/>
 				}
+				onEndReached={loadMoreProducts}
+				onEndReachedThreshold={0.5}
 				numColumns={Dimensions.get('screen').width > 600 ? 2 : 1}
 			/>
 

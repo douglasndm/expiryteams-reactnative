@@ -14,7 +14,6 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 import AppError from '@teams/Errors/AppError';
 
 import { searchProducts } from '@utils/Product/Search';
-import { getSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -49,6 +48,8 @@ const Home: React.FC = () => {
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 	const [enableDatePicker, setEnableDatePicker] = useState(false);
 
+	const [page, setPage] = useState(0);
+
 	const [products, setProducts] = useState<Array<IProduct>>([]);
 
 	const [searchString, setSearchString] = useState<string>();
@@ -56,53 +57,69 @@ const Home: React.FC = () => {
 	const [enableBarCodeReader, setEnableBarCodeReader] =
 		useState<boolean>(false);
 
+	const loadProducts = useCallback(
+		async (pageNumber: number): Promise<IProduct[]> => {
+			try {
+				const productsResponse = await getAllProducts({
+					team_id: teamContext.id || '',
+					page: pageNumber,
+				});
+
+				return productsResponse;
+			} catch (error) {
+				if (error instanceof AppError) {
+					showMessage({
+						message: error.message,
+						type: 'danger',
+					});
+					if (error.errorCode === 5) {
+						reset({
+							routes: [{ name: 'ViewTeam' }],
+						});
+					}
+				}
+				if (error instanceof Error)
+					showMessage({
+						message: error.message,
+						type: 'danger',
+					});
+			}
+
+			return [];
+		},
+		[reset, teamContext.id]
+	);
+
 	const loadData = useCallback(async () => {
 		if (!isMounted) return;
 		try {
 			setIsLoading(true);
-
-			const selectedTeam = await getSelectedTeam();
-
-			if (!selectedTeam) {
-				return;
-			}
-
-			const productsResponse = await getAllProducts({
-				team_id: selectedTeam.userRole.team.id,
-			});
-
-			const prods = productsResponse.map(p => ({
-				...p,
-				name: p.name.toLowerCase(),
-				code: p.code?.toLowerCase(),
-				batches: p.batches.map(b => ({
-					...b,
-					name: b.name.toLowerCase(),
-				})),
-			}));
+			const prods = await loadProducts(0);
 
 			setProducts(prods);
-		} catch (err) {
-			if (err instanceof AppError) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-				if (err.errorCode === 5) {
-					reset({
-						routes: [{ name: 'ViewTeam' }],
-					});
-				}
-			}
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, reset]);
+	}, [isMounted, loadProducts]);
+
+	const loadMoreProducts = useCallback(async () => {
+		const nextPage = page + 1;
+
+		const moreProds = await loadProducts(nextPage);
+		const prods = products;
+
+		moreProds.forEach(prod => {
+			const exists = prods.find(produto => produto.id === prod.id);
+
+			if (!exists) {
+				prods.push(prod);
+			}
+		});
+
+		setProducts(prods);
+
+		setPage(nextPage);
+	}, [loadProducts, page, products]);
 
 	useEffect(() => {
 		loadData();
@@ -189,7 +206,7 @@ const Home: React.FC = () => {
 	);
 
 	const handleOnCodeRead = useCallback(
-		code => {
+		(code: string) => {
 			setSearchString(code);
 			setEnableBarCodeReader(false);
 
@@ -267,10 +284,9 @@ const Home: React.FC = () => {
 						}}
 					/>
 					<ListProducts
-						products={productsSearch}
+						products={products}
 						onRefresh={loadData}
-						sortProdsByBatchExpDate={false}
-						deactiveFloatButton
+						loadMoreProducts={loadMoreProducts}
 						listRef={listRef}
 					/>
 				</Container>

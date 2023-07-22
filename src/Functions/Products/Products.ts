@@ -8,6 +8,7 @@ interface getAllProductsProps {
 	team_id: string;
 	removeCheckedBatches?: boolean;
 	sortByBatches?: boolean;
+	page?: number;
 }
 
 interface getAllProductsResponse extends IProduct {
@@ -18,9 +19,17 @@ export async function getAllProducts({
 	team_id,
 	removeCheckedBatches = true,
 	sortByBatches = true,
+	page,
 }: getAllProductsProps): Promise<Array<getAllProductsResponse>> {
 	const response = await API.get<IAllTeamProducts>(
-		`/team/${team_id}/products?removeCheckedBatches=${removeCheckedBatches}&sortByBatches=${sortByBatches}`
+		`/team/${team_id}/products`,
+		{
+			params: {
+				removeCheckedBatches,
+				sortByBatches,
+				page,
+			},
+		}
 	);
 
 	const products: getAllProductsResponse[] = response.data.products.map(
