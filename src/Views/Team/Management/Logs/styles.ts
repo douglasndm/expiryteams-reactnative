@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
 	background-color: ${props => props.theme.colors.background};
@@ -10,7 +9,7 @@ export const List = styled.FlatList`
 	margin: 10px 15px;
 `;
 
-export const LogCard = styled(RectButton)`
+export const LogCard = styled.Pressable`
 	margin: 2px 0;
 	padding: 15px;
 	border-radius: 12px;

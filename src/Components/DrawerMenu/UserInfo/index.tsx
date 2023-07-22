@@ -56,15 +56,11 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
 							<UserName>{user.displayName}</UserName>
 						)}
 
-						{!!user.email && <UserEmail>{user?.email}</UserEmail>}
-
-						{!!teamContext.name && (
-							<UserInfo>
-								{`${
-									teamContext.name
-								} (${userRole.toUpperCase()})`}
-							</UserInfo>
+						{!user.displayName && (
+							<UserEmail>{user?.email}</UserEmail>
 						)}
+
+						<UserInfo>{`${userRole.toUpperCase()}`}</UserInfo>
 					</TextContainer>
 				</>
 			)}
