@@ -34,6 +34,7 @@ import {
 
 import {
 	getAllProducts,
+	searchProducts as getSearchProducts,
 	sortProductsByBatchesExpDate,
 } from '@teams/Functions/Products/Products';
 
@@ -90,7 +91,7 @@ const Home: React.FC = () => {
 		[reset, teamContext.id]
 	);
 
-	const loadData = useCallback(async () => {
+	const initialLoad = useCallback(async () => {
 		if (!isMounted) return;
 		try {
 			setIsLoading(true);
@@ -122,18 +123,16 @@ const Home: React.FC = () => {
 	}, [loadProducts, page, products]);
 
 	useEffect(() => {
-		loadData();
+		initialLoad();
 
 		return () => {
 			setIsMounted(false);
 		};
-	}, [loadData]);
+	}, [initialLoad]);
 
 	useEffect(() => {
-		if (isMounted) {
-			setProductsSearch(products);
-		}
-	}, [isMounted, products]);
+		setProductsSearch(products);
+	}, [products]);
 
 	const handleSearchChange = useCallback(
 		(value: string) => {
@@ -146,22 +145,19 @@ const Home: React.FC = () => {
 		[products]
 	);
 
-	const handleSearch = useCallback(() => {
-		let prods: IProduct[] = [];
+	const handleSearch = useCallback(async () => {
+		if (!teamContext.id || !searchString) return;
 
-		if (searchString && searchString !== '') {
-			prods = searchProducts({
-				products,
-				query: searchString,
+		if (searchString.trim() !== '') {
+			const response = await getSearchProducts({
+				team_id: teamContext.id,
+				page: 0,
+				query: searchString.trim(),
 			});
+
+			setProductsSearch(response);
 		}
-
-		prods = sortProductsByBatchesExpDate({
-			products: prods,
-		});
-
-		setProductsSearch(prods);
-	}, [products, searchString]);
+	}, [searchString, teamContext.id]);
 
 	const handleOnBarCodeReaderOpen = useCallback(() => {
 		setEnableBarCodeReader(true);
@@ -284,8 +280,8 @@ const Home: React.FC = () => {
 						}}
 					/>
 					<ListProducts
-						products={products}
-						onRefresh={loadData}
+						products={productsSearch}
+						onRefresh={initialLoad}
 						loadMoreProducts={loadMoreProducts}
 						listRef={listRef}
 					/>
