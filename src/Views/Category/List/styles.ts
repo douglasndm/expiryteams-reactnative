@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
 	flex: 1;
@@ -37,7 +36,7 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
 		`}
 `;
 
-export const AddCategoryButtonContainer = styled(RectButton)`
+export const AddCategoryButtonContainer = styled.Pressable`
 	background-color: ${props => props.theme.colors.accent};
 	padding: 13px 15px;
 	border-radius: 12px;
@@ -52,7 +51,7 @@ export const ListCategories = styled.FlatList`
 	margin: 0 10px;
 `;
 
-export const CategoryItemContainer = styled(RectButton)`
+export const CategoryItemContainer = styled.Pressable`
 	background-color: ${props => props.theme.colors.inputBackground};
 	padding: 20px;
 	margin-bottom: 10px;

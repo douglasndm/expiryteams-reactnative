@@ -1,9 +1,8 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 import { Image } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export const Container = styled(RectButton)`
+export const Container = styled.Pressable`
 	flex-direction: row;
 	padding: 10px;
 `;

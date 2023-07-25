@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components/native';
 import DatePicker from 'react-native-date-picker';
 import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.SafeAreaView`
 	flex: 1;
@@ -87,7 +86,7 @@ export const InputTextLoading = styled.ActivityIndicator.attrs(props => ({
 	margin-left: 7px;
 `;
 
-export const InputTextIconContainer = styled(RectButton)``;
+export const InputTextIconContainer = styled.Pressable``;
 
 export const Icon = styled(Ionicons).attrs(props => ({
 	color: props.theme.colors.inputText,
