@@ -7,26 +7,31 @@ import { sortBatches } from '@utils/Product/Batches';
 interface searchProductsProps {
 	team_id: string;
 	removeCheckedBatches?: boolean;
-	page?: number;
 	query: string;
 }
 
-async function searchProducts(props: searchProductsProps): Promise<IProduct[]> {
-	const { team_id, removeCheckedBatches, page, query } = props;
+interface ISearchResponse {
+	page: number;
+	per_page: number;
+	total: number;
+	products: IProduct[];
+}
 
-	const response = await API.get<IProduct[]>(
+async function searchProducts(props: searchProductsProps): Promise<IProduct[]> {
+	const { team_id, removeCheckedBatches, query } = props;
+
+	const response = await API.get<ISearchResponse>(
 		`/team/${team_id}/products/search`,
 		{
 			params: {
 				removeCheckedBatches: removeCheckedBatches || true,
 				sortByBatches: true,
-				page,
 				search: query,
 			},
 		}
 	);
 
-	return response.data;
+	return response.data.products;
 }
 
 interface getAllProductsProps {

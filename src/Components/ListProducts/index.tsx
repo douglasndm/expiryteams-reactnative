@@ -10,6 +10,7 @@ import { sortBatches, removeCheckedBatches } from '@utils/Product/Batches';
 import { deleteManyProducts } from '@teams/Functions/Products/Products';
 
 import Dialog from '@components/Dialog';
+import PaddingComponent from '@components/PaddingComponent';
 import ActionButtons from '@components/Product/List/ActionButtons';
 
 import ProductItem from './ProductContainer';
@@ -17,7 +18,6 @@ import ProductItem from './ProductContainer';
 import {
 	Container,
 	EmptyListText,
-	InvisibleComponent,
 	ProductContainer,
 	SelectButtonContainer,
 	SelectButton,
@@ -28,7 +28,7 @@ interface RequestProps {
 	products: Array<IProduct>;
 	onRefresh?: () => void;
 	listRef?: React.RefObject<FlatList<IProduct>>;
-	loadMoreProducts: () => void;
+	loadMoreProducts?: () => void;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
@@ -62,7 +62,7 @@ const ListProducts: React.FC<RequestProps> = ({
 	}, []);
 
 	const FooterButton = useCallback(() => {
-		return <InvisibleComponent />;
+		return <PaddingComponent />;
 	}, []);
 
 	const switchSelectedItem = useCallback(
@@ -178,15 +178,15 @@ const ListProducts: React.FC<RequestProps> = ({
 				ListEmptyComponent={EmptyList}
 				initialNumToRender={10}
 				ListFooterComponent={FooterButton}
+				onEndReachedThreshold={0.5}
+				onEndReached={loadMoreProducts}
+				numColumns={Dimensions.get('screen').width > 600 ? 2 : 1}
 				refreshControl={
 					<RefreshControl
 						refreshing={refreshing}
 						onRefresh={handleRefresh}
 					/>
 				}
-				onEndReached={loadMoreProducts}
-				onEndReachedThreshold={0.5}
-				numColumns={Dimensions.get('screen').width > 600 ? 2 : 1}
 			/>
 
 			<Dialog
@@ -208,4 +208,4 @@ const ListProducts: React.FC<RequestProps> = ({
 	);
 };
 
-export default ListProducts;
+export default React.memo(ListProducts);
