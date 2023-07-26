@@ -20,7 +20,6 @@ import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
 import InputText from '@components/InputText';
 
-import DaysToBeNext from '@teams/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
@@ -32,19 +31,17 @@ import {
 	InputContainer,
 	InputTextContainer,
 	InputTextTip,
+	MoreInformationsContainer,
+	MoreInformationsTitle,
+} from '@views/Product/Add/styles';
+
+import {
 	InputCodeTextContainer,
 	InputCodeText,
 	InputTextIconContainer,
-	MoreInformationsContainer,
-	MoreInformationsTitle,
 } from '../Add/styles';
 
-import {
-	ButtonPaper,
-	Icons,
-	ActionsButtonContainer,
-	PageTitleContainer,
-} from './styles';
+import { Icons } from './styles';
 
 interface RequestParams {
 	route: {
@@ -93,6 +90,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
+
+	const isSupervisor = useMemo(() => {
+		if (userRole === 'manager' || userRole === 'supervisor') {
+			return true;
+		}
+		return false;
+	}, [userRole]);
 
 	const loadData = useCallback(async () => {
 		if (!isMounted) return;
@@ -262,9 +266,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		setIsBarCodeEnabled(false);
 	}, []);
 
-	const handleSwitchShowDeleteProduct = useCallback(() => {
-		setDeleteComponentVisible(!deleteComponentVisible);
-	}, [deleteComponentVisible]);
+	const switchShowDeleteModal = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
 
 	useEffect(() => {
 		loadData();
@@ -287,39 +291,27 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				/>
 			) : (
 				<Container>
-					<PageTitleContainer>
-						<Header
-							title={strings.View_EditProduct_PageTitle}
-							noDrawer
-						/>
-
-						<ActionsButtonContainer>
-							<ButtonPaper
-								icon={() => (
-									<Icons name="save-outline" size={22} />
-								)}
-								onPress={updateProd}
-							>
-								{strings.View_EditProduct_Button_Save}
-							</ButtonPaper>
-
-							{(userRole === 'manager' ||
-								userRole === 'supervisor') && (
-								<ButtonPaper
-									icon={() => (
-										<Icons name="trash-outline" size={22} />
-									)}
-									onPress={() => {
-										setDeleteComponentVisible(true);
-									}}
-								>
-									{
-										strings.View_ProductDetails_Button_DeleteProduct
-									}
-								</ButtonPaper>
-							)}
-						</ActionsButtonContainer>
-					</PageTitleContainer>
+					<Header
+						title={strings.View_EditProduct_PageTitle}
+						noDrawer
+						appBarActions={[
+							{
+								icon: 'content-save-outline',
+								onPress: updateProd,
+							},
+						]}
+						moreMenuItems={
+							isSupervisor
+								? [
+										{
+											title: strings.View_ProductDetails_Button_DeleteProduct,
+											leadingIcon: 'trash-can-outline',
+											onPress: switchShowDeleteModal,
+										},
+								  ]
+								: []
+						}
+					/>
 
 					<PageContent>
 						<InputContainer>
@@ -405,7 +397,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 					<Dialog.Container
 						visible={deleteComponentVisible}
-						onBackdropPress={handleSwitchShowDeleteProduct}
+						onBackdropPress={switchShowDeleteModal}
 					>
 						<Dialog.Title>
 							{strings.View_ProductDetails_WarningDelete_Title}
@@ -417,7 +409,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 							label={
 								strings.View_ProductDetails_WarningDelete_Button_Cancel
 							}
-							onPress={handleSwitchShowDeleteProduct}
+							onPress={switchShowDeleteModal}
 						/>
 						<Dialog.Button
 							label={

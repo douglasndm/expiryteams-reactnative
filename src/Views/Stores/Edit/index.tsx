@@ -3,25 +3,23 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import strings from '@teams/Locales';
+
+import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
+import { updateStore } from '@teams/Functions/Team/Stores/Update';
+import { deleteStore } from '@teams/Functions/Team/Stores/Delete';
+
 import Header from '@components/Header';
 import Loading from '@components/Loading';
-import strings from '~/Locales';
-
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
-import { updateStore } from '~/Functions/Team/Stores/Update';
-import { deleteStore } from '~/Functions/Team/Stores/Delete';
 
 import {
 	Container,
 	Content,
-	ActionsButtonContainer,
-	ButtonPaper,
 	InputTextContainer,
 	InputText,
 	InputTextTip,
-	Icons,
 } from './styles';
 
 interface Props {
@@ -69,7 +67,7 @@ const Edit: React.FC = () => {
 		loadData();
 	}, []);
 
-	const onNameChange = useCallback(value => {
+	const onNameChange = useCallback((value: string) => {
 		setErrorName('');
 		setName(value);
 	}, []);
@@ -132,16 +130,32 @@ const Edit: React.FC = () => {
 		}
 	}, [reset, routeParams.store_id, teamContext.id]);
 
-	const handleSwitchDeleteVisible = useCallback(() => {
-		setDeleteComponentVisible(!deleteComponentVisible);
-	}, [deleteComponentVisible]);
+	const handleSwitchShowDelete = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
 
 	return isLoading ? (
 		<Loading />
 	) : (
 		<>
 			<Container>
-				<Header title={strings.View_Store_Edit_PageTitle} noDrawer />
+				<Header
+					title={strings.View_Store_Edit_PageTitle}
+					noDrawer
+					appBarActions={[
+						{
+							icon: 'content-save-outline',
+							onPress: handleUpdate,
+						},
+					]}
+					moreMenuItems={[
+						{
+							title: strings.View_ProductDetails_Button_DeleteProduct,
+							leadingIcon: 'trash-can-outline',
+							onPress: handleSwitchShowDelete,
+						},
+					]}
+				/>
 
 				<Content>
 					<InputTextContainer hasError={!!errorName}>
@@ -154,31 +168,11 @@ const Edit: React.FC = () => {
 						/>
 					</InputTextContainer>
 					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
-
-					<ActionsButtonContainer>
-						<ButtonPaper
-							icon={() => <Icons name="save-outline" size={22} />}
-							onPress={handleUpdate}
-						>
-							{strings.View_Store_Edit_ButtonSave}
-						</ButtonPaper>
-
-						<ButtonPaper
-							icon={() => (
-								<Icons name="trash-outline" size={22} />
-							)}
-							onPress={() => {
-								setDeleteComponentVisible(true);
-							}}
-						>
-							{strings.View_ProductDetails_Button_DeleteProduct}
-						</ButtonPaper>
-					</ActionsButtonContainer>
 				</Content>
 			</Container>
 			<Dialog.Container
 				visible={deleteComponentVisible}
-				onBackdropPress={handleSwitchDeleteVisible}
+				onBackdropPress={handleSwitchShowDelete}
 			>
 				<Dialog.Title>
 					{strings.View_Store_Edit_DeleteModal_Title}
@@ -188,7 +182,7 @@ const Edit: React.FC = () => {
 				</Dialog.Description>
 				<Dialog.Button
 					label={strings.View_Store_Edit_DeleteModal_Cancel}
-					onPress={handleSwitchDeleteVisible}
+					onPress={handleSwitchShowDelete}
 				/>
 				<Dialog.Button
 					label={strings.View_Store_Edit_DeleteModal_Confirm}

@@ -4,30 +4,29 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import StatusBar from '@components/StatusBar';
-import Header from '@components/Header';
-import Loading from '@components/Loading';
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import { useTeam } from '~/Contexts/TeamContext';
-import { useAuth } from '~/Contexts/AuthContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
+import { useAuth } from '@teams/Contexts/AuthContext';
 
-import { removeUserFromTeam } from '~/Functions/Team/Users';
-import { updateUserRole } from '~/Functions/User/Roles';
-import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
+import { removeUserFromTeam } from '@teams/Functions/Team/Users';
+import { updateUserRole } from '@teams/Functions/User/Roles';
+import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 import {
 	addUserToStore,
 	removeUserFromStore,
-} from '~/Functions/Team/Stores/User';
+} from '@teams/Functions/Team/Stores/User';
+
+import Header from '@components/Header';
+import Loading from '@components/Loading';
 
 import {
 	PickerContainer,
 	Picker,
-} from '~/Components/Product/Inputs/Pickers/styles';
+} from '@teams/Components/Product/Inputs/Pickers/styles';
 
 import {
 	Container,
-	PageHeader,
 	PageContent,
 	UserName,
 	UserInfo,
@@ -35,9 +34,6 @@ import {
 	CodeTitle,
 	CodeContainer,
 	Code,
-	ActionsButtonsContainer,
-	ActionButton,
-	Icon,
 	RadioButtonContainer,
 	RadioButton,
 	RadioButtonText,
@@ -128,7 +124,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		}
 	}, [isMounted, teamContext.id]);
 
-	const handleOnChange = useCallback(value => {
+	const handleOnChange = useCallback((value: string) => {
 		setSelectedStore(value);
 	}, []);
 
@@ -260,38 +256,42 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		};
 	}, []);
 
+	const enableManager = useMemo(() => {
+		if (enableManagerTools && authContext.user && !isMyself) {
+			return true;
+		}
+		return false;
+	}, []);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
-			<StatusBar />
-
-			<PageHeader>
-				<Header title={strings.View_UserDetails_PageTitle} noDrawer />
-
-				{enableManagerTools && authContext.user && !isMyself && (
-					<ActionsButtonsContainer>
-						{!userIsPending && (
-							<ActionButton
-								icon={() => (
-									<Icon name="save-outline" size={22} />
-								)}
-								onPress={handleUpdate}
-							>
-								Atualizar
-							</ActionButton>
-						)}
-						<ActionButton
-							icon={() => (
-								<Icon name="person-remove-outline" size={22} />
-							)}
-							onPress={handleRemoveUser}
-						>
-							Remover
-						</ActionButton>
-					</ActionsButtonsContainer>
-				)}
-			</PageHeader>
+			<Header
+				title={strings.View_UserDetails_PageTitle}
+				noDrawer
+				appBarActions={
+					enableManager
+						? [
+								{
+									icon: 'content-save-outline',
+									onPress: handleUpdate,
+								},
+						  ]
+						: []
+				}
+				moreMenuItems={
+					enableManager
+						? [
+								{
+									title: 'Remover',
+									leadingIcon: 'account-minus-outline',
+									onPress: handleRemoveUser,
+								},
+						  ]
+						: []
+				}
+			/>
 
 			<PageContent>
 				{!!user.name && !!user.lastName && (

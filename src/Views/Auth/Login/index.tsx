@@ -161,14 +161,13 @@ const Login: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
+			<LogoContainer>
+				<Logo />
+				<LogoTitle>
+					{strings.View_Login_Business_Title.toUpperCase()}
+				</LogoTitle>
+			</LogoContainer>
 			<Content>
-				<LogoContainer>
-					<Logo />
-					<LogoTitle>
-						{strings.View_Login_Business_Title.toUpperCase()}
-					</LogoTitle>
-				</LogoContainer>
-
 				<FormContainer>
 					<FormTitle>{strings.View_Login_FormLogin_Title}</FormTitle>
 					<LoginForm>

@@ -26,10 +26,8 @@ import { findProductByCode } from '@teams/Functions/Products/FindByCode';
 import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
 import { findDuplicate } from '@teams/Functions/Products/FindDuplicate';
 
-import GenericButton from '@components/Button';
 import Loading from '@components/Loading';
 
-import DaysToBeNext from '@teams/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
@@ -127,7 +125,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const [isFindingProd, setIsFindingProd] = useState<boolean>(false);
-	const [isAdding, setIsAdding] = useState<boolean>(false);
 
 	const [productFinded, setProductFinded] = useState<boolean>(false);
 	const [productNameFinded, setProductNameFinded] = useState<null | string>(
@@ -440,11 +437,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				/>
 			) : (
 				<Container>
+					<Header
+						title={strings.View_AddProduct_PageTitle}
+						noDrawer
+						appBarActions={[
+							{
+								icon: 'content-save-outline',
+								onPress: handleSave,
+							},
+						]}
+					/>
 					<Content>
-						<Header
-							title={strings.View_AddProduct_PageTitle}
-							noDrawer
-						/>
 						<PageContent>
 							<InputContainer>
 								<InputGroup>
@@ -613,13 +616,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 									/>
 								</ExpDateGroup>
 							</InputContainer>
-
-							<GenericButton
-								text={strings.View_AddProduct_Button_Save}
-								isLoading={isAdding}
-								onPress={handleSave}
-								contentStyle={{ marginBottom: 30 }}
-							/>
 						</PageContent>
 
 						<FillModal

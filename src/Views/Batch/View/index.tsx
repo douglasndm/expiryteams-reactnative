@@ -22,8 +22,6 @@ import {
 	ButtonPaper,
 } from '@teams/Views/Product/Edit/styles';
 
-import { PageTitleContainer, Icons } from '../Edit/styles';
-
 import {
 	Container,
 	BatchContainer,
@@ -179,18 +177,16 @@ const View: React.FC = () => {
 
 	return (
 		<Container>
-			<PageTitleContainer>
-				<Header title="Lote" noDrawer />
-
-				<ActionsButtonContainer>
-					<ButtonPaper
-						icon={() => <Icons name="create-outline" size={22} />}
-						onPress={handleNaviEdit}
-					>
-						Editar
-					</ButtonPaper>
-				</ActionsButtonContainer>
-			</PageTitleContainer>
+			<Header
+				title="Lote"
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'square-edit-outline',
+						onPress: handleNaviEdit,
+					},
+				]}
+			/>
 
 			{!!batch && (
 				<BatchContainer>

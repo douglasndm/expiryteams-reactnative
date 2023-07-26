@@ -9,14 +9,16 @@ import strings from '@teams/Locales';
 import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { exportToExcel } from '@utils/Excel/Export';
+import { searchProducts } from '@utils/Product/Search';
+
 import { getAllProducts } from '@teams/Functions/Products/Products';
 import { getAllProductsFromCategory } from '@teams/Functions/Categories/Products';
 import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
 import { getAllBrands } from '@teams/Functions/Brand';
 import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 
-import Header from '@components/Header';
 import Loading from '@components/Loading';
+import Header from '@components/Products/List/Header';
 import FloatButton from '@components/FloatButton';
 
 import ListProducts from '@teams/Components/ListProducts';
@@ -24,11 +26,7 @@ import ListProducts from '@teams/Components/ListProducts';
 import {
 	Container,
 	ItemTitle,
-	ActionsContainer,
-	ActionButtonsContainer,
-	Icons,
 	TitleContainer,
-	ActionText,
 } from '@styles/Views/GenericViewPage';
 
 interface Props {
@@ -46,12 +44,25 @@ const CategoryView: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [searchQuery, setSearchQuery] = React.useState('');
+
 	const categoryName = useMemo(() => {
 		if (routeParams.category_name) {
 			return routeParams.category_name;
 		}
 		return '';
 	}, [routeParams.category_name]);
+
+	const isManager = useMemo(() => {
+		if (
+			!!teamContext.roleInTeam &&
+			teamContext.roleInTeam.role.toLowerCase() === 'manager'
+		) {
+			return true;
+		}
+		return false;
+	}, [teamContext.roleInTeam]);
 
 	const [products, setProducts] = useState<IProduct[]>([]);
 
@@ -76,6 +87,10 @@ const CategoryView: React.FC = () => {
 			setIsLoading(false);
 		}
 	}, [routeParams.id, teamContext.id]);
+
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
 
 	const handleEdit = useCallback(() => {
 		navigate('CategoryEdit', { id: routeParams.id });
@@ -130,40 +145,53 @@ const CategoryView: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchQuery(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(
+		(value?: string) => {
+			const query = value && value.trim() !== '' ? value : searchQuery;
+
+			let prods: IProduct[] = [];
+
+			if (query && query !== '') {
+				prods = searchProducts({
+					products,
+					query,
+				});
+			}
+
+			setProductsSearch(prods);
+		},
+		[products, searchQuery]
+	);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
 			<Header
 				title={strings.View_Category_List_View_BeforeCategoryName}
-				noDrawer
+				searchValue={searchQuery}
+				onSearchChange={handleSearchChange}
+				handleSearch={handleSearch}
+				exportToExcel={handleExportExcel}
+				navigateToEdit={isManager ? handleEdit : undefined}
 			/>
 
 			<TitleContainer>
 				<ItemTitle>{categoryName}</ItemTitle>
-
-				<ActionsContainer>
-					{!!teamContext.roleInTeam &&
-						teamContext.roleInTeam.role.toLowerCase() ===
-							'manager' && (
-							<ActionButtonsContainer onPress={handleEdit}>
-								<ActionText>
-									{
-										strings.View_ProductDetails_Button_UpdateProduct
-									}
-								</ActionText>
-								<Icons name="create-outline" size={22} />
-							</ActionButtonsContainer>
-						)}
-
-					<ActionButtonsContainer onPress={handleExportExcel}>
-						<ActionText>Gerar Excel</ActionText>
-						<Icons name="stats-chart-outline" size={22} />
-					</ActionButtonsContainer>
-				</ActionsContainer>
 			</TitleContainer>
 
-			<ListProducts products={products} onRefresh={loadData} />
+			<ListProducts products={productsSearch} onRefresh={loadData} />
 
 			<FloatButton navigateTo="AddProduct" categoryId={routeParams.id} />
 		</Container>

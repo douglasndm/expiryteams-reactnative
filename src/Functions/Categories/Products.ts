@@ -1,24 +1,22 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
 
 interface getAllProductsFromCategoryProps {
-    team_id: string;
-    category_id: string;
+	team_id: string;
+	category_id: string;
 }
 
 interface getAllProductsFromCategoryResponse {
-    category_name: string;
-    products: Array<IProduct>;
+	category_name: string;
+	products: Array<IProduct>;
 }
 
 export async function getAllProductsFromCategory({
-    team_id,
-    category_id,
-}: getAllProductsFromCategoryProps): Promise<
-    getAllProductsFromCategoryResponse
-> {
-    const response = await api.get<getAllProductsFromCategoryResponse>(
-        `/team/${team_id}/categories/${category_id}/products`
-    );
+	team_id,
+	category_id,
+}: getAllProductsFromCategoryProps): Promise<getAllProductsFromCategoryResponse> {
+	const response = await api.get<getAllProductsFromCategoryResponse>(
+		`/team/${team_id}/categories/${category_id}/products`
+	);
 
-    return response.data;
+	return response.data;
 }

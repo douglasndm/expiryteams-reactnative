@@ -3,7 +3,7 @@ import DatePicker from 'react-native-date-picker';
 import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.View`
 	flex: 1;
 	background: ${({ theme }) => theme.colors.background};
 `;

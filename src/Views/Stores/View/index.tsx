@@ -9,10 +9,12 @@ import strings from '@teams/Locales';
 import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { exportToExcel } from '@utils/Excel/Export';
+import { searchProducts } from '@utils/Product/Search';
+
 import { getAllProductsFromStore } from '@teams/Functions/Team/Stores/Products';
 
-import Header from '@components/Header';
 import Loading from '@components/Loading';
+import Header from '@components/Products/List/Header';
 import FloatButton from '@components/FloatButton';
 
 import ListProducts from '@teams/Components/ListProducts';
@@ -20,11 +22,7 @@ import ListProducts from '@teams/Components/ListProducts';
 import {
 	Container,
 	ItemTitle,
-	ActionsContainer,
-	ActionButtonsContainer,
-	Icons,
 	TitleContainer,
-	ActionText,
 } from '@styles/Views/GenericViewPage';
 import { getAllProducts } from '@teams/Functions/Products/Products';
 import { getAllBrands } from '@teams/Functions/Brand';
@@ -45,6 +43,9 @@ const StoreView: React.FC = () => {
 	const routeParams = params as Props;
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [searchQuery, setSearchQuery] = React.useState('');
 
 	const [storeName] = useState<string>(() => routeParams.store_name);
 
@@ -72,11 +73,15 @@ const StoreView: React.FC = () => {
 		}
 	}, [routeParams.store_id, teamContext.id]);
 
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
+
 	const handleEdit = useCallback(() => {
 		navigate('StoreEdit', { store_id: routeParams.store_id });
 	}, [navigate, routeParams.store_id]);
 
-	const handleGenereteExcel = useCallback(async () => {
+	const handleExportExcel = useCallback(async () => {
 		try {
 			setIsLoading(true);
 
@@ -121,6 +126,35 @@ const StoreView: React.FC = () => {
 		}
 	}, [routeParams.store_id, teamContext.id]);
 
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchQuery(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(
+		(value?: string) => {
+			const query = value && value.trim() !== '' ? value : searchQuery;
+
+			let prods: IProduct[] = [];
+
+			if (query && query !== '') {
+				prods = searchProducts({
+					products,
+					query,
+				});
+			}
+
+			setProductsSearch(prods);
+		},
+		[products, searchQuery]
+	);
+
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
@@ -129,27 +163,20 @@ const StoreView: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
-			<Header title="Loja" noDrawer />
+			<Header
+				title="Loja"
+				searchValue={searchQuery}
+				onSearchChange={handleSearchChange}
+				handleSearch={handleSearch}
+				exportToExcel={handleExportExcel}
+				navigateToEdit={handleEdit}
+			/>
 
 			<TitleContainer>
 				<ItemTitle>{storeName}</ItemTitle>
-
-				<ActionsContainer>
-					<ActionButtonsContainer onPress={handleEdit}>
-						<ActionText>
-							{strings.View_ProductDetails_Button_UpdateProduct}
-						</ActionText>
-						<Icons name="create-outline" size={22} />
-					</ActionButtonsContainer>
-
-					<ActionButtonsContainer onPress={handleGenereteExcel}>
-						<ActionText>Gerar Excel</ActionText>
-						<Icons name="stats-chart-outline" size={22} />
-					</ActionButtonsContainer>
-				</ActionsContainer>
 			</TitleContainer>
 
-			<ListProducts products={products} onRefresh={loadData} />
+			<ListProducts products={productsSearch} onRefresh={loadData} />
 
 			<FloatButton
 				navigateTo="AddProduct"

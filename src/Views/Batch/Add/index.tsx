@@ -11,8 +11,8 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 import { getProduct } from '@teams/Functions/Products/Product';
 import { createBatch } from '@teams/Functions/Products/Batches/Batch';
 
+import Loading from '@components/Loading';
 import Header from '@components/Header';
-import GenericButton from '@components/Button';
 import InputText from '@components/InputText';
 
 import {
@@ -131,7 +131,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 		return () => setIsMounted(false);
 	}, [loadData]);
 
-	const handleAmountChange = useCallback(value => {
+	const handleAmountChange = useCallback((value: string) => {
 		const regex = /^[0-9\b]+$/;
 
 		if (value === '' || regex.test(value)) {
@@ -143,9 +143,20 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 		setPrice(value);
 	}, []);
 
-	return (
+	return isAdding ? (
+		<Loading />
+	) : (
 		<PageContainer>
-			<Header title={strings.View_AddBatch_PageTitle} noDrawer />
+			<Header
+				title={strings.View_AddBatch_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleSave,
+					},
+				]}
+			/>
 			<PageContent>
 				<InputContainer>
 					<ProductHeader>
@@ -206,12 +217,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 						/>
 					</ExpDateGroup>
 				</InputContainer>
-
-				<GenericButton
-					text={strings.View_AddBatch_Button_Save}
-					onPress={handleSave}
-					isLoading={isAdding}
-				/>
 			</PageContent>
 		</PageContainer>
 	);

@@ -4,14 +4,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
+import strings from '@teams/Locales';
+
+import { updateUser, updatePassword } from '@teams/Functions/Auth/Account';
+import { getUser } from '@teams/Functions/User/List';
+
 import Header from '@components/Header';
 import Input from '@components/InputText';
-import Button from '@components/Button';
 import Loading from '@components/Loading';
-import strings from '~/Locales';
-
-import { updateUser, updatePassword } from '~/Functions/Auth/Account';
-import { getUser } from '~/Functions/User/List';
 
 import {
 	Container,
@@ -184,11 +184,20 @@ const User: React.FC = () => {
 		};
 	}, []);
 
-	return isLoading ? (
+	return isLoading || isUpdating ? (
 		<Loading />
 	) : (
 		<Container>
-			<Header title={strings.View_Profile_PageTitle} noDrawer />
+			<Header
+				title={strings.View_Profile_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+			/>
 
 			<Content>
 				<InputGroup>
@@ -264,12 +273,6 @@ const User: React.FC = () => {
 						{strings.View_Profile_Alert_Tip_EmptyPasswordConfirm}
 					</InputTextTip>
 				)}
-
-				<Button
-					text={strings.View_Profile_Button_Update}
-					onPress={handleUpdate}
-					isLoading={isUpdating}
-				/>
 			</Content>
 		</Container>
 	);

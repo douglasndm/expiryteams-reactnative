@@ -3,11 +3,10 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@teams/Locales';
+import { enterTeamCode } from '@teams/Functions/Team/Users';
+
 import Header from '@components/Header';
-import strings from '~/Locales';
-
-import { enterTeamCode } from '~/Functions/Team/Users';
-
 import Button from '@components/Button';
 
 import {

@@ -1,22 +1,21 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
+import { createStore } from '@teams/Functions/Team/Stores/Create';
+
 import Header from '@components/Header';
 import Loading from '@components/Loading';
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
-import { createStore } from '~/Functions/Team/Stores/Create';
 
 import {
 	Container,
 	InputContainer,
 	InputTextContainer,
 	InputText,
-	List,
 	ListTitle,
 	Icons,
 	LoadingIcon,
@@ -25,6 +24,7 @@ import {
 	ListItemTitle,
 	AddButtonContainer,
 	AddNewItemContent,
+	Content,
 } from '@styles/Views/GenericListPage';
 
 const ListView: React.FC = () => {
@@ -66,7 +66,7 @@ const ListView: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
-	const handleOnTextChange = useCallback(value => {
+	const handleOnTextChange = useCallback((value: string) => {
 		setInputHasError(false);
 		setInputErrorMessage('');
 		setNewStoreName(value);
@@ -111,65 +111,54 @@ const ListView: React.FC = () => {
 		[navigate]
 	);
 
-	const renderItem = useCallback(
-		({ item }) => {
-			return (
-				<ListItemContainer
-					onPress={() => handleNavigateToStore(item.id, item.name)}
-				>
-					<ListItemTitle>{item.name}</ListItemTitle>
-				</ListItemContainer>
-			);
-		},
-		[handleNavigateToStore]
-	);
-
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
 			<Header title="Lojas" />
+			<Content>
+				<AddNewItemContent>
+					<InputContainer>
+						<InputTextContainer hasError={inputHasError}>
+							<InputText
+								value={newStoreName}
+								onChangeText={handleOnTextChange}
+								placeholder="Adicionar nova loja"
+							/>
+						</InputTextContainer>
 
-			<AddNewItemContent>
-				<InputContainer>
-					<InputTextContainer hasError={inputHasError}>
-						<InputText
-							value={newStoreName}
-							onChangeText={handleOnTextChange}
-							placeholder="Adicionar nova loja"
-						/>
-					</InputTextContainer>
+						<AddButtonContainer
+							onPress={handleSave}
+							enabled={!isAdding}
+						>
+							{isAdding ? (
+								<LoadingIcon />
+							) : (
+								<Icons name="add-circle-outline" />
+							)}
+						</AddButtonContainer>
+					</InputContainer>
 
-					<AddButtonContainer
-						onPress={handleSave}
-						enabled={!isAdding}
-					>
-						{isAdding ? (
-							<LoadingIcon />
-						) : (
-							<Icons name="add-circle-outline" />
-						)}
-					</AddButtonContainer>
-				</InputContainer>
+					{!!inputErrorMessage && (
+						<InputTextTip>{inputErrorMessage}</InputTextTip>
+					)}
+				</AddNewItemContent>
 
-				{!!inputErrorMessage && (
-					<InputTextTip>{inputErrorMessage}</InputTextTip>
-				)}
-			</AddNewItemContent>
+				<ListTitle>Todas as lojas</ListTitle>
 
-			<ListTitle>Todas as lojas</ListTitle>
-
-			<List
-				data={stores}
-				keyExtractor={(item, index) => String(index)}
-				renderItem={renderItem}
-				refreshControl={
-					<RefreshControl
-						refreshing={isLoading}
-						onRefresh={loadData}
-					/>
-				}
-			/>
+				{stores.map(store => {
+					return (
+						<ListItemContainer
+							key={store.id}
+							onPress={() =>
+								handleNavigateToStore(store.id, store.name)
+							}
+						>
+							<ListItemTitle>{store.name}</ListItemTitle>
+						</ListItemContainer>
+					);
+				})}
+			</Content>
 		</Container>
 	);
 };

@@ -1,194 +1,196 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import { deleteUser } from '~/Functions/User';
-import { UserTeamsResponse, getUserTeams } from '~/Functions/User/Teams';
+import { deleteUser } from '@teams/Functions/User';
+import { UserTeamsResponse, getUserTeams } from '@teams/Functions/User/Teams';
 
 import Header from '@components/Header';
 import InputText from '@components/InputText';
 import Button from '@components/Button';
 
 import {
-    Content,
-    ActionTitle,
-    ActionDescription,
-    ActionConsequence,
-    CheckBoxContainer,
-    CheckBox,
-    BlockContainer,
-    BlockTitle,
-    BlockDescription,
-    Link,
+	Content,
+	ActionTitle,
+	ActionDescription,
+	ActionConsequence,
+	CheckBoxContainer,
+	CheckBox,
+	BlockContainer,
+	BlockTitle,
+	BlockDescription,
+	Link,
 } from '../Team/styles';
 
 import { Container } from './styles';
 
 const User: React.FC = () => {
-    const { navigate } = useNavigation();
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
-    const [isCheckingTeams, setIsCheckingTeams] = useState<boolean>(false);
+	const [isDeleting, setIsDeleting] = useState<boolean>(false);
+	const [isCheckingTeams, setIsCheckingTeams] = useState<boolean>(false);
 
-    const [agreeConsequence, setAgreeConsequence] = useState<boolean>(false);
-    const [password, setPassword] = useState<string>('');
+	const [agreeConsequence, setAgreeConsequence] = useState<boolean>(false);
+	const [password, setPassword] = useState<string>('');
 
-    const [activesTeams, setActivesTeams] = useState<Array<UserTeamsResponse>>(
-        []
-    );
+	const [activesTeams, setActivesTeams] = useState<Array<UserTeamsResponse>>(
+		[]
+	);
 
-    const handleChangeAgreeConsequence = useCallback(() => {
-        setAgreeConsequence(!agreeConsequence);
-    }, [agreeConsequence]);
+	const handleChangeAgreeConsequence = useCallback(() => {
+		setAgreeConsequence(!agreeConsequence);
+	}, [agreeConsequence]);
 
-    const handleDelete = useCallback(async () => {
-        if (!password) {
-            showMessage({
-                message: 'Digite sua senha',
-                type: 'warning',
-            });
-            return;
-        }
-        try {
-            setIsDeleting(true);
+	const handleDelete = useCallback(async () => {
+		if (!password) {
+			showMessage({
+				message: 'Digite sua senha',
+				type: 'warning',
+			});
+			return;
+		}
+		try {
+			setIsDeleting(true);
 
-            await deleteUser({ password });
+			await deleteUser({ password });
 
-            showMessage({
-                message: 'Conta permanentemente excluída',
-                type: 'info',
-            });
+			showMessage({
+				message: 'Conta permanentemente excluída',
+				type: 'info',
+			});
 
-            navigate('Logout');
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-        } finally {
-            setIsDeleting(false);
-        }
-    }, [navigate, password]);
+			navigate('Logout');
+		} catch (err) {
+			showMessage({
+				message: err.message,
+				type: 'danger',
+			});
+		} finally {
+			setIsDeleting(false);
+		}
+	}, [navigate, password]);
 
-    const handleGoToStore = useCallback(async () => {
-        if (activesTeams.length > 0 && activesTeams[0].subscription) {
-            const storeLink =
-                activesTeams[0].subscription.subscription.store === 'app_store'
-                    ? 'https://apps.apple.com/account/subscriptions'
-                    : 'https://play.google.com/store/account/subscriptions';
+	const handleGoToStore = useCallback(async () => {
+		if (activesTeams.length > 0 && activesTeams[0].subscription) {
+			const storeLink =
+				activesTeams[0].subscription.subscription.store === 'app_store'
+					? 'https://apps.apple.com/account/subscriptions'
+					: 'https://play.google.com/store/account/subscriptions';
 
-            await Linking.openURL(storeLink);
-        }
-    }, [activesTeams]);
+			await Linking.openURL(storeLink);
+		}
+	}, [activesTeams]);
 
-    const handleReCheckTeams = useCallback(async () => {
-        try {
-            setIsCheckingTeams(true);
+	const handleReCheckTeams = useCallback(async () => {
+		try {
+			setIsCheckingTeams(true);
 
-            const response = await getUserTeams();
+			const response = await getUserTeams();
 
-            const onlyActivesTeams = response.filter(team => {
-                if (team.subscription) {
-                    if (
-                        team.subscription.subscription.unsubscribe_detected_at
-                    ) {
-                        return false;
-                    }
+			const onlyActivesTeams = response.filter(team => {
+				const { subscription } = team.subscription;
 
-                    return true;
-                }
-                return false;
-            });
+				if (subscription) {
+					if (subscription.unsubscribe_detected_at) {
+						return false;
+					}
 
-            setActivesTeams(onlyActivesTeams);
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-        } finally {
-            setIsCheckingTeams(false);
-        }
-    }, []);
+					return true;
+				}
+				return false;
+			});
 
-    const handlePasswordChange = useCallback((pass: string) => {
-        setPassword(pass);
-    }, []);
+			setActivesTeams(onlyActivesTeams);
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsCheckingTeams(false);
+		}
+	}, []);
 
-    useEffect(() => {
-        handleReCheckTeams();
-    }, [handleReCheckTeams]);
+	const handlePasswordChange = useCallback((pass: string) => {
+		setPassword(pass);
+	}, []);
 
-    return (
-        <Container>
-            <Header title="Apagar conta" noDrawer />
+	useEffect(() => {
+		handleReCheckTeams();
+	}, [handleReCheckTeams]);
 
-            <Content>
-                <ActionTitle>ATENÇÃO ⚠️</ActionTitle>
+	return (
+		<Container>
+			<Header title="Apagar conta" noDrawer />
 
-                <ActionDescription>
-                    Seu perfil será permanemente apagando e você será removido
-                    de todos os times que faz parte.
-                </ActionDescription>
-                <ActionConsequence>
-                    Está ação não pode ser desfeita
-                </ActionConsequence>
+			<Content>
+				<ActionTitle>ATENÇÃO ⚠️</ActionTitle>
 
-                <CheckBoxContainer>
-                    <CheckBox
-                        isChecked={agreeConsequence}
-                        onPress={handleChangeAgreeConsequence}
-                        disableBuiltInState
-                        bounceFriction={10}
-                        text="Entendo o que estou fazendo"
-                    />
-                </CheckBoxContainer>
+				<ActionDescription>
+					Seu perfil será permanemente apagando e você será removido
+					de todos os times que faz parte.
+				</ActionDescription>
+				<ActionConsequence>
+					Está ação não pode ser desfeita
+				</ActionConsequence>
 
-                <BlockContainer isEnable={agreeConsequence}>
-                    <BlockTitle>Seus times</BlockTitle>
-                    <BlockDescription>
-                        Você é gerente de um time que tem assinatura ativa. Você
-                        deve cancelar a assinatura primeiro
-                    </BlockDescription>
+				<CheckBoxContainer>
+					<CheckBox
+						isChecked={agreeConsequence}
+						onPress={handleChangeAgreeConsequence}
+						disableBuiltInState
+						bounceFriction={10}
+						text="Entendo o que estou fazendo"
+					/>
+				</CheckBoxContainer>
 
-                    {activesTeams.length > 0 && (
-                        <Link onPress={handleGoToStore}>Ir para a loja</Link>
-                    )}
+				<BlockContainer isEnable={agreeConsequence}>
+					<BlockTitle>Seus times</BlockTitle>
+					<BlockDescription>
+						Você é gerente de um time que tem assinatura ativa. Você
+						deve cancelar a assinatura primeiro
+					</BlockDescription>
 
-                    <Button
-                        text="Checar se assinatura foi cancelada"
-                        isLoading={isCheckingTeams}
-                        onPress={handleReCheckTeams}
-                    />
-                </BlockContainer>
+					{activesTeams.length > 0 && (
+						<Link onPress={handleGoToStore}>Ir para a loja</Link>
+					)}
 
-                <BlockContainer
-                    isEnable={agreeConsequence && activesTeams.length <= 0}
-                >
-                    <BlockTitle>Concluir</BlockTitle>
-                    <BlockDescription>
-                        ATENÇÃO: CONTINUANDO, SUA CONTA SERÁ PERMANENTEMENTE
-                        APAGADA. ESSA AÇÃO NÃO PODE SER DESFEITA
-                    </BlockDescription>
+					<Button
+						text="Checar se assinatura foi cancelada"
+						isLoading={isCheckingTeams}
+						onPress={handleReCheckTeams}
+					/>
+				</BlockContainer>
 
-                    <InputText
-                        placeholder="Sua senha"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        isPassword
-                    />
+				<BlockContainer
+					isEnable={agreeConsequence && activesTeams.length <= 0}
+				>
+					<BlockTitle>Concluir</BlockTitle>
+					<BlockDescription>
+						ATENÇÃO: CONTINUANDO, SUA CONTA SERÁ PERMANENTEMENTE
+						APAGADA. ESSA AÇÃO NÃO PODE SER DESFEITA
+					</BlockDescription>
 
-                    <Button
-                        text="Apagar conta"
-                        onPress={handleDelete}
-                        isLoading={isDeleting}
-                        contentStyle={{ backgroundColor: '#b00c17' }}
-                    />
-                </BlockContainer>
-            </Content>
-        </Container>
-    );
+					<InputText
+						placeholder="Sua senha"
+						value={password}
+						onChange={handlePasswordChange}
+						isPassword
+					/>
+
+					<Button
+						text="Apagar conta"
+						onPress={handleDelete}
+						isLoading={isDeleting}
+						contentStyle={{ backgroundColor: '#b00c17' }}
+					/>
+				</BlockContainer>
+			</Content>
+		</Container>
+	);
 };
 
 export default User;

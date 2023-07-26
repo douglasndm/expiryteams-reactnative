@@ -14,6 +14,7 @@ import { imageExistsLocally, getLocally } from '@utils/Images/GetLocally';
 import { saveLocally } from '@utils/Images/SaveLocally';
 
 import Loading from '@components/Loading';
+import Header from '@components/Header';
 
 import PageHeader from '@views/Product/View/Components/PageHeader';
 import BatchesTable from '@views/Product/View/Components/BatchesTable';
@@ -122,11 +123,26 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		}
 	}, [product]);
 
+	const handleEdit = useCallback(() => {
+		navigate('EditProduct', { productId });
+	}, [navigate, productId]);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<>
 			<Container>
+				<Header
+					title={strings.View_ProductDetails_PageTitle}
+					noDrawer
+					appBarActions={[
+						{
+							icon: 'square-edit-outline',
+							onPress: handleEdit,
+						},
+					]}
+				/>
+
 				<Content>
 					{product && (
 						<PageHeader product={product} imagePath={imagePath} />

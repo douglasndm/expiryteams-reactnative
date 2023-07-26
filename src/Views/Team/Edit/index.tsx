@@ -3,19 +3,19 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import Header from '@components/Header';
-import Input from '@components/InputText';
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import { useTeam } from '~/Contexts/TeamContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { editTeam } from '~/Functions/Team';
+import { editTeam } from '@teams/Functions/Team';
 import {
 	getSelectedTeam,
 	setSelectedTeam,
-} from '~/Functions/Team/SelectedTeam';
+} from '@teams/Functions/Team/SelectedTeam';
 
-import Button from '@components/Button';
+import Header from '@components/Header';
+import Input from '@components/InputText';
+import Loading from '@components/Loading';
 
 import { Container, Content, InputGroup, InputTextTip } from './styles';
 
@@ -24,20 +24,18 @@ const Edit: React.FC = () => {
 
 	const teamContext = useTeam();
 
-	const [isMounted, setIsMounted] = useState(true);
-
 	const [name, setName] = useState<string>('');
 	const [isUpdating, setIsUpdating] = useState<boolean>(false);
 	const [nameError, setNameError] = useState<string>('');
 
 	const handleUpdate = useCallback(async () => {
-		if (!teamContext.id || !isMounted) {
+		if (!teamContext.id) {
 			return;
 		}
 		try {
 			setIsUpdating(true);
 
-			if (!name) {
+			if (name.trim() === '') {
 				setNameError(strings.View_TeamEdit_Alert_Error_EmptyTeamName);
 				return;
 			}
@@ -53,7 +51,7 @@ const Edit: React.FC = () => {
 						...settedTeam.userRole,
 						team: {
 							...settedTeam.userRole.team,
-							name,
+							name: name.trim(),
 						},
 					},
 				});
@@ -78,7 +76,7 @@ const Edit: React.FC = () => {
 		} finally {
 			setIsUpdating(false);
 		}
-	}, [isMounted, name, pop, teamContext]);
+	}, [name, pop, teamContext]);
 
 	const handleNameChange = useCallback((value: string) => {
 		setName(value);
@@ -90,12 +88,20 @@ const Edit: React.FC = () => {
 		}
 	}, [teamContext.name]);
 
-	useEffect(() => {
-		return () => setIsMounted(false);
-	}, []);
-	return (
+	return isUpdating ? (
+		<Loading />
+	) : (
 		<Container>
-			<Header title={strings.View_TeamEdit_PageTitle} noDrawer />
+			<Header
+				title={strings.View_TeamEdit_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+			/>
 
 			<Content>
 				<InputGroup>
@@ -110,12 +116,6 @@ const Edit: React.FC = () => {
 					/>
 				</InputGroup>
 				{!!nameError && <InputTextTip>{nameError}</InputTextTip>}
-
-				<Button
-					text={strings.View_TeamEdit_Button_Update}
-					onPress={handleUpdate}
-					isLoading={isUpdating}
-				/>
 			</Content>
 		</Container>
 	);

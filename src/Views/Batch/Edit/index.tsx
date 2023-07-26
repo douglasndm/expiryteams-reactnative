@@ -33,18 +33,11 @@ import {
 	CustomDatePicker,
 } from '@teams/Views/Product/Add/styles';
 
-import {
-	ActionsButtonContainer,
-	ButtonPaper,
-} from '@teams/Views/Product/Edit/styles';
-
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
 	Container,
-	PageTitleContainer,
 	ContentHeader,
-	Icons,
 	RadioButton,
 	RadioButtonText,
 } from './styles';
@@ -86,6 +79,13 @@ const EditBatch: React.FC = () => {
 		}
 		return teamContext.roleInTeam.role.toLowerCase();
 	}, [teamContext.roleInTeam]);
+
+	const isSupervisor = useMemo(() => {
+		if (userRole === 'manager' || userRole === 'supervisor') {
+			return true;
+		}
+		return false;
+	}, [userRole]);
 
 	const productId = useMemo(() => {
 		return routeParams.productId;
@@ -216,11 +216,11 @@ const EditBatch: React.FC = () => {
 		}
 	}, [batchId, isMounted, productId, replace]);
 
-	const handleBatchChange = useCallback(value => {
+	const handleBatchChange = useCallback((value: string) => {
 		setBatch(value);
 	}, []);
 
-	const handleAmountChange = useCallback(value => {
+	const handleAmountChange = useCallback((value: string) => {
 		const regex = /^[0-9\b]+$/;
 
 		if (value === '' || regex.test(value)) {
@@ -236,42 +236,36 @@ const EditBatch: React.FC = () => {
 		setPrice(value);
 	}, []);
 
-	const handleSwitchShowDeleteBatch = useCallback(() => {
-		setDeleteComponentVisible(!deleteComponentVisible);
-	}, [deleteComponentVisible]);
+	const switchShowDeleteModal = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
 
 	return isLoading || isUpdating ? (
 		<Loading />
 	) : (
 		<Container>
+			<Header
+				title={strings.View_EditBatch_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={
+					isSupervisor
+						? [
+								{
+									title: strings.View_ProductDetails_Button_DeleteProduct,
+									leadingIcon: 'trash-can-outline',
+									onPress: switchShowDeleteModal,
+								},
+						  ]
+						: []
+				}
+			/>
 			<Content>
-				<PageTitleContainer>
-					<Header title={strings.View_EditBatch_PageTitle} noDrawer />
-
-					<ActionsButtonContainer>
-						<ButtonPaper
-							icon={() => <Icons name="save-outline" size={22} />}
-							onPress={handleUpdate}
-						>
-							{strings.View_EditBatch_Button_Save}
-						</ButtonPaper>
-
-						{(userRole === 'manager' ||
-							userRole === 'supervisor') && (
-							<ButtonPaper
-								icon={() => (
-									<Icons name="trash-outline" size={22} />
-								)}
-								onPress={() => {
-									setDeleteComponentVisible(true);
-								}}
-							>
-								{strings.View_EditBatch_Button_DeleteBatch}
-							</ButtonPaper>
-						)}
-					</ActionsButtonContainer>
-				</PageTitleContainer>
-
 				<PageContent>
 					<InputContainer>
 						<ContentHeader>
@@ -390,7 +384,7 @@ const EditBatch: React.FC = () => {
 
 				<Dialog.Container
 					visible={deleteComponentVisible}
-					onBackdropPress={handleSwitchShowDeleteBatch}
+					onBackdropPress={switchShowDeleteModal}
 				>
 					<Dialog.Title>
 						{strings.View_EditBatch_WarningDelete_Title}
@@ -402,7 +396,7 @@ const EditBatch: React.FC = () => {
 						label={
 							strings.View_EditBatch_WarningDelete_Button_Cancel
 						}
-						onPress={handleSwitchShowDeleteBatch}
+						onPress={switchShowDeleteModal}
 					/>
 					<Dialog.Button
 						label={

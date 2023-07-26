@@ -2,12 +2,12 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
-import { createAccount } from '~/Functions/Auth/Account';
-import { createSeassion } from '~/Functions/Auth/Session';
+import { createAccount } from '@teams/Functions/Auth/Account';
+import { createSeassion } from '@teams/Functions/Auth/Session';
 
-import { reset } from '~/References/Navigation';
+import { reset } from '@teams/References/Navigation';
 
 import Header from '@components/Header';
 import Input from '@components/InputText';
@@ -17,191 +17,190 @@ import { FormContainer } from '../Login/styles';
 import { Container, PageContent } from './styles';
 
 const CreateAccount: React.FC = () => {
-    const [isMounted, setIsMounted] = useState(true);
+	const [isMounted, setIsMounted] = useState(true);
 
-    const [name, setName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [passwordConfirm, setPasswordConfirm] = useState<string>('');
+	const [name, setName] = useState<string>('');
+	const [lastName, setLastName] = useState<string>('');
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
-    const [isCreating, setIsCreating] = useState<boolean>(false);
+	const [isCreating, setIsCreating] = useState<boolean>(false);
 
-    const handleNameChange = useCallback((value: string) => setName(value), []);
-    const handleLastNameChange = useCallback(
-        (value: string) => setLastName(value),
-        []
-    );
-    const handleEmailChange = useCallback(
-        (value: string) => setEmail(value.trim()),
-        []
-    );
+	const handleNameChange = useCallback((value: string) => setName(value), []);
+	const handleLastNameChange = useCallback(
+		(value: string) => setLastName(value),
+		[]
+	);
+	const handleEmailChange = useCallback(
+		(value: string) => setEmail(value.trim()),
+		[]
+	);
 
-    const handlePasswordChange = useCallback(
-        (value: string) => setPassword(value),
-        []
-    );
+	const handlePasswordChange = useCallback(
+		(value: string) => setPassword(value),
+		[]
+	);
 
-    const handlePasswordConfirmChange = useCallback(
-        (value: string) => setPasswordConfirm(value),
-        []
-    );
+	const handlePasswordConfirmChange = useCallback(
+		(value: string) => setPasswordConfirm(value),
+		[]
+	);
 
-    const handleCreateAccount = useCallback(async () => {
-        if (!isMounted) return;
-        const schema = Yup.object().shape({
-            name: Yup.string().required(
-                strings.View_CreateAccount_Alert_Error_EmptyName
-            ),
-            lastName: Yup.string().required(
-                strings.View_CreateAccount_Alert_Error_EmptyLastName
-            ),
-            email: Yup.string()
-                .required(strings.View_CreateAccount_Alert_Error_EmptyEmail)
-                .email(strings.View_CreateAccount_Alert_Error_InvalidEmail),
-            password: Yup.string()
-                .required(strings.View_CreateAccount_Alert_Error_EmptyPassword)
-                .min(6),
-            passwordConfirm: Yup.string().oneOf(
-                [Yup.ref('password'), null],
-                strings.View_CreateAccount_Alert_Error_InvalidPassConfirm
-            ),
-        });
+	const handleCreateAccount = useCallback(async () => {
+		if (!isMounted) return;
+		const schema = Yup.object().shape({
+			name: Yup.string().required(
+				strings.View_CreateAccount_Alert_Error_EmptyName
+			),
+			lastName: Yup.string().required(
+				strings.View_CreateAccount_Alert_Error_EmptyLastName
+			),
+			email: Yup.string()
+				.required(strings.View_CreateAccount_Alert_Error_EmptyEmail)
+				.email(strings.View_CreateAccount_Alert_Error_InvalidEmail),
+			password: Yup.string()
+				.required(strings.View_CreateAccount_Alert_Error_EmptyPassword)
+				.min(6),
+			passwordConfirm: Yup.string().oneOf(
+				[Yup.ref('password'), null],
+				strings.View_CreateAccount_Alert_Error_InvalidPassConfirm
+			),
+		});
 
-        try {
-            await schema.validate(
-                {
-                    name,
-                    lastName,
-                    email,
-                    password,
-                    passwordConfirm,
-                },
-                { abortEarly: false }
-            );
-        } catch (err) {
-            if (err instanceof Yup.ValidationError) {
-                showMessage({
-                    message: err.errors[0],
-                    type: 'warning',
-                });
-            }
-            return;
-        }
+		try {
+			await schema.validate(
+				{
+					name,
+					lastName,
+					email,
+					password,
+					passwordConfirm,
+				},
+				{ abortEarly: false }
+			);
+		} catch (err) {
+			if (err instanceof Yup.ValidationError) {
+				showMessage({
+					message: err.errors[0],
+					type: 'warning',
+				});
+			}
+			return;
+		}
 
-        try {
-            setIsCreating(true);
+		try {
+			setIsCreating(true);
 
-            await createAccount({
-                name,
-                lastName,
-                email,
-                password,
-                passwordConfirm,
-            });
+			await createAccount({
+				name,
+				lastName,
+				email,
+				password,
+				passwordConfirm,
+			});
 
-            // Here we register the user device
-            await createSeassion();
+			// Here we register the user device
+			await createSeassion();
 
-            showMessage({
-                message: strings.View_CreateAccount_Alert_Success_Title,
-                description: strings.View_CreateAccount_Alert_Success_Message,
-                type: 'info',
-            });
+			showMessage({
+				message: strings.View_CreateAccount_Alert_Success_Title,
+				description: strings.View_CreateAccount_Alert_Success_Message,
+				type: 'info',
+			});
 
-            reset({
-                routeHandler: 'Routes',
-                routesNames: ['VerifyEmail'],
-            });
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'warning',
-                });
-        } finally {
-            setIsCreating(false);
-        }
-    }, [email, isMounted, lastName, name, password, passwordConfirm]);
+			reset({
+				routeHandler: 'Routes',
+				routesNames: ['VerifyEmail'],
+			});
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'warning',
+				});
+		} finally {
+			setIsCreating(false);
+		}
+	}, [email, isMounted, lastName, name, password, passwordConfirm]);
 
-    useEffect(() => {
-        return () => {
-            setIsMounted(false);
-        };
-    }, []);
+	useEffect(() => {
+		return () => {
+			setIsMounted(false);
+		};
+	}, []);
 
-    return (
-        <Container>
-            <PageContent>
-                <Header title={strings.View_CreateAccount_PageTitle} noDrawer />
+	return (
+		<Container>
+			<Header title={strings.View_CreateAccount_PageTitle} noDrawer />
+			<PageContent>
+				<FormContainer>
+					<Input
+						placeholder={
+							strings.View_CreateAccount_Input_Name_Placeholder
+						}
+						autoCorrect={false}
+						autoCapitalize="words"
+						value={name}
+						onChange={handleNameChange}
+						contentStyle={{ marginBottom: 7 }}
+					/>
 
-                <FormContainer>
-                    <Input
-                        placeholder={
-                            strings.View_CreateAccount_Input_Name_Placeholder
-                        }
-                        autoCorrect={false}
-                        autoCapitalize="words"
-                        value={name}
-                        onChange={handleNameChange}
-                        contentStyle={{ marginBottom: 7 }}
-                    />
+					<Input
+						placeholder={
+							strings.View_CreateAccount_Input_LastName_Placeholder
+						}
+						autoCorrect={false}
+						autoCapitalize="words"
+						value={lastName}
+						onChange={handleLastNameChange}
+						contentStyle={{ marginBottom: 7 }}
+					/>
 
-                    <Input
-                        placeholder={
-                            strings.View_CreateAccount_Input_LastName_Placeholder
-                        }
-                        autoCorrect={false}
-                        autoCapitalize="words"
-                        value={lastName}
-                        onChange={handleLastNameChange}
-                        contentStyle={{ marginBottom: 7 }}
-                    />
+					<Input
+						placeholder={
+							strings.View_CreateAccount_Input_Email_Placeholder
+						}
+						autoCorrect={false}
+						autoCapitalize="none"
+						value={email}
+						onChange={handleEmailChange}
+						contentStyle={{ marginBottom: 7 }}
+					/>
 
-                    <Input
-                        placeholder={
-                            strings.View_CreateAccount_Input_Email_Placeholder
-                        }
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        value={email}
-                        onChange={handleEmailChange}
-                        contentStyle={{ marginBottom: 7 }}
-                    />
+					<Input
+						placeholder={
+							strings.View_CreateAccount_Input_Password_Placeholder
+						}
+						autoCorrect={false}
+						autoCapitalize="none"
+						isPassword
+						value={password}
+						onChange={handlePasswordChange}
+						contentStyle={{ marginBottom: 7 }}
+					/>
 
-                    <Input
-                        placeholder={
-                            strings.View_CreateAccount_Input_Password_Placeholder
-                        }
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        isPassword
-                        value={password}
-                        onChange={handlePasswordChange}
-                        contentStyle={{ marginBottom: 7 }}
-                    />
+					<Input
+						placeholder={
+							strings.View_CreateAccount_Input_ConfirmPassword_Placeholder
+						}
+						autoCorrect={false}
+						autoCapitalize="none"
+						isPassword
+						value={passwordConfirm}
+						onChange={handlePasswordConfirmChange}
+						contentStyle={{ marginBottom: 7 }}
+					/>
 
-                    <Input
-                        placeholder={
-                            strings.View_CreateAccount_Input_ConfirmPassword_Placeholder
-                        }
-                        autoCorrect={false}
-                        autoCapitalize="none"
-                        isPassword
-                        value={passwordConfirm}
-                        onChange={handlePasswordConfirmChange}
-                        contentStyle={{ marginBottom: 7 }}
-                    />
-
-                    <Button
-                        text={strings.View_CreateAccount_Button_CreateAccount}
-                        onPress={handleCreateAccount}
-                        isLoading={isCreating}
-                    />
-                </FormContainer>
-            </PageContent>
-        </Container>
-    );
+					<Button
+						text={strings.View_CreateAccount_Button_CreateAccount}
+						onPress={handleCreateAccount}
+						isLoading={isCreating}
+					/>
+				</FormContainer>
+			</PageContent>
+		</Container>
+	);
 };
 
 export default CreateAccount;
