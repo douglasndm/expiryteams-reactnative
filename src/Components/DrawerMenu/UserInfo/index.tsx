@@ -56,8 +56,10 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
 							<UserName>{user.displayName}</UserName>
 						)}
 
-						{!user.displayName && (
-							<UserEmail>{user?.email}</UserEmail>
+						{user.email && (
+							<UserEmail numberOfLines={1}>
+								{user?.email}
+							</UserEmail>
 						)}
 
 						<UserInfo>{`${userRole.toUpperCase()}`}</UserInfo>
