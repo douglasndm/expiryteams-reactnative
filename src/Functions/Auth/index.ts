@@ -1,43 +1,53 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
-import strings from '~/Locales';
+import strings from '@teams/Locales';
 
 import { loginFirebase } from './Firebase';
-import { createSeassion } from './Session';
+import { SessionResponse, createSeassion } from './Session';
 
 interface loginProps {
-    email: string;
-    password: string;
+	email: string;
+	password: string;
+}
+
+interface IResponse {
+	firebaseUser: FirebaseAuthTypes.User;
+	localUser: SessionResponse;
 }
 
 export async function login({
-    email,
-    password,
-}: loginProps): Promise<FirebaseAuthTypes.User> {
-    try {
-        const user = await loginFirebase({
-            email,
-            password,
-        });
+	email,
+	password,
+}: loginProps): Promise<IResponse> {
+	try {
+		const fuser = await loginFirebase({
+			email,
+			password,
+		});
 
-        // Here we register the user device
-        await createSeassion();
+		// Here we register the user device
+		const user = await createSeassion();
 
-        return user;
-    } catch (err) {
-        let error = err;
+		const response: IResponse = {
+			firebaseUser: fuser,
+			localUser: user,
+		};
 
-        if (
-            err.code === 'auth/wrong-password' ||
-            err.code === 'auth/user-not-found'
-        ) {
-            error = strings.View_Login_Error_WrongEmailOrPassword;
-        } else if (err.code === 'auth/network-request-failed') {
-            error = strings.View_Login_Error_NetworkError;
-        } else if (error === 'request error') {
-            error = 'Erro de conexão';
-        }
+		return response;
+	} catch (err) {
+		let error = err;
 
-        throw new Error(error);
-    }
+		if (
+			err.code === 'auth/wrong-password' ||
+			err.code === 'auth/user-not-found'
+		) {
+			error = strings.View_Login_Error_WrongEmailOrPassword;
+		} else if (err.code === 'auth/network-request-failed') {
+			error = strings.View_Login_Error_NetworkError;
+		} else if (error === 'request error') {
+			error = 'Erro de conexão';
+		}
+
+		throw new Error(error);
+	}
 }

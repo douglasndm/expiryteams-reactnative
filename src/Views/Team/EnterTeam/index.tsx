@@ -4,7 +4,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
+
+import { useTeam } from '@teams/Contexts/TeamContext';
+
 import { enterTeamCode } from '@teams/Functions/Team/Users';
+import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
+import { setSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -20,6 +25,8 @@ import {
 } from './styles';
 
 const EnterTeam: React.FC = () => {
+	const teamContext = useTeam();
+
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 	const { params } = useRoute<RouteProp<RoutesParams, 'EnterTeam'>>();
 
@@ -62,8 +69,21 @@ const EnterTeam: React.FC = () => {
 				type: 'info',
 			});
 
+			const teamPreferences = await getTeamPreferences({
+				team_id: userRole.team.id,
+			});
+
+			await setSelectedTeam({
+				userRole,
+				teamPreferences,
+			});
+
+			if (teamContext.reload) {
+				teamContext.reload();
+			}
+
 			reset({
-				routes: [{ name: 'TeamList' }],
+				routes: [{ name: 'Home' }],
 			});
 		} catch (err) {
 			if (err instanceof Error)
@@ -74,7 +94,7 @@ const EnterTeam: React.FC = () => {
 		} finally {
 			setIsAddingCode(false);
 		}
-	}, [isMounted, reset, userCode, userRole.team.id]);
+	}, [isMounted, reset, teamContext, userCode, userRole]);
 
 	useEffect(() => {
 		return () => setIsMounted(false);

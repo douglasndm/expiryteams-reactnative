@@ -5,7 +5,11 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
 
+import { useTeam } from '@teams/Contexts/TeamContext';
+
 import { createTeam } from '@teams/Functions/Team';
+import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
+import { setSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -19,6 +23,8 @@ import {
 } from './styles';
 
 const Add: React.FC = () => {
+	const teamContext = useTeam();
+
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isMounted, setIsMounted] = useState(true);
@@ -38,7 +44,7 @@ const Add: React.FC = () => {
 				return;
 			}
 
-			await createTeam({
+			const team = await createTeam({
 				name,
 			});
 
@@ -47,8 +53,28 @@ const Add: React.FC = () => {
 				type: 'info',
 			});
 
+			const teamPreferences = await getTeamPreferences({
+				team_id: team.id,
+			});
+
+			await setSelectedTeam({
+				userRole: {
+					role: 'manager',
+					status: 'completed',
+					team: {
+						...team,
+						isActive: false,
+					},
+				},
+				teamPreferences,
+			});
+
+			if (teamContext.reload) {
+				teamContext.reload();
+			}
+
 			reset({
-				routes: [{ name: 'TeamList' }],
+				routes: [{ name: 'Home' }],
 			});
 		} catch (err) {
 			if (err instanceof Error)
@@ -59,7 +85,7 @@ const Add: React.FC = () => {
 		} finally {
 			setIsCreating(false);
 		}
-	}, [isMounted, name, reset]);
+	}, [isMounted, name, reset, teamContext]);
 
 	useEffect(() => {
 		return () => {

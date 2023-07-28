@@ -1,5 +1,4 @@
 interface ITeamPreferences {
-    id: string;
-    allowCollectProduct?: boolean;
-    daysToBeNext?: number;
+	id: string;
+	daysToBeNext?: number;
 }

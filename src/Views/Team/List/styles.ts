@@ -1,27 +1,19 @@
 import styled, { css } from 'styled-components/native';
-import { Platform } from 'react-native';
 import { darken } from 'polished';
 
 export const Container = styled.View`
 	flex: 1;
-	padding: ${Platform.OS === 'ios' ? 60 : 16}px 10px 5px 10px;
 	background-color: ${props => props.theme.colors.background};
 `;
 
-export const Title = styled.Text`
-	color: ${props => props.theme.colors.text};
-	font-size: 26px;
-	margin-left: 10px;
-`;
-
 export const Content = styled.View`
+	padding: 10px;
 	flex: 1;
 `;
 
 export const EmptyText = styled.Text`
 	font-family: 'Open Sans';
 	font-size: 14px;
-	margin: 10px 15px 0;
 	color: ${props => props.theme.colors.text};
 `;
 
@@ -30,11 +22,6 @@ export const ListTeamsTitle = styled.Text`
 	color: ${props => props.theme.colors.text};
 	font-size: 18px;
 	font-family: 'Open Sans';
-`;
-
-export const ListCategories = styled.FlatList`
-	margin: 0 10px;
-	margin-top: 10px;
 `;
 
 interface TeamItemContainerProps {

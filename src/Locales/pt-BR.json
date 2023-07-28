@@ -50,7 +50,7 @@
     "API_Error_Code27": "Não há usuários para enviar a notificação",
     "API_Error_Code28": "",
     "API_Error_Code29": "",
-    "API_Error_Code30": "",
+    "API_Error_Code30": "O usuário já está em outro time",
     "API_Error_Code31": "A marca já existe",
     "API_Error_Code32": "Marca não encontrada",
     "API_Error_Code33": "A confirmação da senha deve ser a mesma da senha",

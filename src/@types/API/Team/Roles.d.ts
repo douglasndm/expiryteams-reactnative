@@ -1,12 +1,15 @@
+interface Subscription {
+	expireIn: Date;
+	membersLimit: number;
+	isActive: boolean;
+}
+
 interface IUserRoles {
 	team: {
 		id: string;
 		name: string;
 		isActive: boolean;
-		subscription?: {
-			expireIn: Date;
-			membersLimit: number;
-		};
+		subscriptions?: Subscription[];
 	};
 	status: 'pending' | 'completed' | null;
 	role: 'manager' | 'supervisor' | 'repositor';

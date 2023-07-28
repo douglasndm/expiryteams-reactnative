@@ -324,7 +324,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			return;
 		}
 		try {
-			setIsAdding(true);
+			setIsLoading(true);
 			let prodCategory: string | undefined;
 
 			if (selectedCategory && selectedCategory !== 'null') {
@@ -369,7 +369,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 					type: 'danger',
 				});
 		} finally {
-			setIsAdding(false);
+			setIsLoading(false);
 		}
 	}, [
 		teamContext.id,

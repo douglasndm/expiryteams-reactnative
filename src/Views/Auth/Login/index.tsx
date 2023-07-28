@@ -8,8 +8,11 @@ import * as Yup from 'yup';
 import strings from '@teams/Locales';
 
 import { useAuth } from '@teams/Contexts/AuthContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { login } from '@teams/Functions/Auth';
+import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
+import { setSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
 
 import Loading from '@components/Loading';
 import Input from '@components/InputText';
@@ -33,6 +36,8 @@ const Login: React.FC = () => {
 	const { navigate, reset } =
 		useNavigation<StackNavigationProp<AuthRoutes>>();
 	const { initializing } = useAuth();
+
+	const teamContext = useTeam();
 
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
@@ -62,39 +67,114 @@ const Login: React.FC = () => {
 			// Makes login with Firebase after that the subscriber event will handle
 			const user = await login({ email, password });
 
-			if (user && !user.emailVerified) {
-				reset({
-					routes: [
-						{
-							name: 'Routes',
-							state: {
-								routes: [
-									{
-										name: 'VerifyEmail',
-									},
-								],
-							},
-						},
-					],
-				});
-
-				return;
-			}
 			if (user) {
-				reset({
-					routes: [
-						{
-							name: 'Routes',
-							state: {
-								routes: [
-									{
-										name: 'TeamList',
-									},
-								],
+				if (!user.firebaseUser.emailVerified) {
+					reset({
+						routes: [
+							{
+								name: 'Routes',
+								state: {
+									routes: [
+										{
+											name: 'VerifyEmail',
+										},
+									],
+								},
 							},
-						},
-					],
-				});
+						],
+					});
+
+					return;
+				}
+
+				const userRole = user.localUser.team;
+
+				if (userRole && Object.keys(userRole).length > 0) {
+					const { status, role } = userRole;
+					const { team } = userRole;
+
+					const onTeam =
+						status && status.toLowerCase() === 'completed';
+					const teamRole = role ? role.toLowerCase() : null;
+
+					const uRole: IUserRoles = {
+						role,
+						status: userRole.status || null,
+						team,
+					};
+
+					if (onTeam || teamRole === 'manager') {
+						const teamPreferences = await getTeamPreferences({
+							team_id: team.id,
+						});
+
+						await setSelectedTeam({
+							userRole,
+							teamPreferences,
+						});
+
+						if (teamContext.reload) {
+							teamContext.reload();
+						}
+
+						let routeName = 'Home';
+
+						if (!team.isActive) {
+							if (teamRole === 'manager') {
+								routeName = 'ViewTeam';
+							} else {
+								routeName = 'ListTeam';
+							}
+						}
+
+						reset({
+							routes: [
+								{
+									name: 'Routes',
+									state: {
+										routes: [
+											{
+												name: routeName,
+											},
+										],
+									},
+								},
+							],
+						});
+					} else {
+						// when user is on team but they still didn't enter the code
+						reset({
+							routes: [
+								{
+									name: 'Routes',
+									state: {
+										routes: [
+											{
+												name: 'EnterTeam',
+												params: { userRole: uRole },
+											},
+										],
+									},
+								},
+							],
+						});
+					}
+				} else {
+					reset({
+						routes: [
+							{
+								name: 'Routes',
+								state: {
+									routes: [
+										{
+											name: 'TeamList',
+										},
+									],
+								},
+							},
+						],
+					});
+				}
 			}
 		} catch (err) {
 			if (err instanceof Error) {
@@ -135,22 +215,7 @@ const Login: React.FC = () => {
 							routes: [{ name: 'VerifyEmail' }],
 						},
 					});
-					return;
 				}
-				reset({
-					routes: [
-						{
-							name: 'Routes',
-							state: {
-								routes: [
-									{
-										name: 'TeamList',
-									},
-								],
-							},
-						},
-					],
-				});
 			}
 		} finally {
 			setIsLoading(false);

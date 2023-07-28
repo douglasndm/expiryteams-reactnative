@@ -50,7 +50,7 @@
     "API_Error_Code27": "There are no users to send the notification",
     "API_Error_Code28": "",
     "API_Error_Code29": "",
-    "API_Error_Code30": "",
+    "API_Error_Code30": "User is in another team",
     "API_Error_Code31": "Brand already exists",
     "API_Error_Code32": "Brand didn't found",
     "API_Error_Code33": "Password confirmation is not the same as password",

@@ -1,24 +1,46 @@
-import api from '~/Services/API';
-import { getDeviceId } from '~/Services/DeviceID';
+import api from '@teams/Services/API';
+import { getDeviceId } from '@teams/Services/DeviceID';
 
 import { clearSelectedteam } from '../Team/SelectedTeam';
 import { logoutFirebase } from './Firebase';
 
-export async function createSeassion(): Promise<void> {
-    const deviceId = await getDeviceId();
+interface SessionResponse {
+	id: string;
+	name: string | null;
+	lastName: string | null;
+	firebaseUid: string;
+	email: string;
+	team?: {
+		role: string;
+		code: string;
+		status: string;
+		team: {
+			id: string;
+			name: string;
+			isActive: boolean;
+		};
+	};
+}
 
-    let firebaseToken;
-    if (deviceId.firebase_messaging) {
-        firebaseToken = deviceId.firebase_messaging;
-    }
+async function createSeassion(): Promise<SessionResponse> {
+	const deviceId = await getDeviceId();
 
-    await api.post<IUser>(`/sessions`, {
-        deviceId: deviceId.device_uuid,
-        firebaseToken,
-    });
+	let firebaseToken;
+	if (deviceId.firebase_messaging) {
+		firebaseToken = deviceId.firebase_messaging;
+	}
+
+	const response = await api.post<SessionResponse>(`/sessions`, {
+		deviceId: deviceId.device_uuid,
+		firebaseToken,
+	});
+
+	return response.data;
 }
 
 export async function destroySession(): Promise<void> {
-    await clearSelectedteam();
-    await logoutFirebase();
+	await clearSelectedteam();
+	await logoutFirebase();
 }
+
+export { createSeassion, SessionResponse };
