@@ -883,7 +883,7 @@ DEPENDENCIES:
   - GoogleUtilities
   - hermes-engine (from `../../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
-  - "logrocket-react-native (from `../../../node_modules/@logrocket/react-native`)"
+  - "logrocket-react-native (from `../node_modules/@logrocket/react-native`)"
   - lottie-react-native (from `../../../node_modules/lottie-react-native`)
   - nanopb
   - OpenSSL-Universal (= 1.1.1100)
@@ -1030,7 +1030,7 @@ EXTERNAL SOURCES:
     :podspec: "../../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-03-20-RNv0.72.0-49794cfc7c81fb8f69fd60c3bbf85a7480cc5a77
   logrocket-react-native:
-    :path: "../../../node_modules/@logrocket/react-native"
+    :path: "../node_modules/@logrocket/react-native"
   lottie-react-native:
     :path: "../../../node_modules/lottie-react-native"
   Permission-Camera:
