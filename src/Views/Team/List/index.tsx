@@ -63,17 +63,17 @@ const List: React.FC = () => {
 			const userRole = team.role.toLowerCase();
 
 			if (userRole === 'manager') {
-				return strings.UserInfo_Role_Manager;
+				return strings.UserInfo_Role_Manager.toLowerCase();
 			}
 			if (userRole === 'supervisor') {
-				return strings.UserInfo_Role_Supervisor;
+				return strings.UserInfo_Role_Supervisor.toLowerCase();
 			}
 			if (userRole === 'repositor') {
-				return strings.UserInfo_Role_Repositor;
+				return strings.UserInfo_Role_Repositor.toLowerCase();
 			}
 		}
 
-		return strings.UserInfo_Role_Repositor;
+		return strings.UserInfo_Role_Repositor.toLowerCase();
 	}, [team]);
 
 	const status = useMemo(() => {
@@ -82,7 +82,7 @@ const List: React.FC = () => {
 				return 'completed';
 			}
 			if (!!team.status) {
-				return team.status;
+				return team.status.toLowerCase();
 			}
 		}
 
@@ -150,6 +150,28 @@ const List: React.FC = () => {
 		}
 
 		if (team.team) {
+			if (role !== 'manager' && status === 'pending') {
+				reset({
+					routes: [
+						{
+							name: 'Routes',
+							state: {
+								routes: [
+									{
+										name: 'ListTeam',
+									},
+									{
+										name: 'EnterTeam',
+										params: { userRole: team },
+									},
+								],
+							},
+						},
+					],
+				});
+				return;
+			}
+
 			const teamPreferences = await getTeamPreferences({
 				team_id: team.team.id,
 			});
@@ -180,7 +202,7 @@ const List: React.FC = () => {
 				],
 			});
 		}
-	}, [reset, role, team, teamContext]);
+	}, [reset, role, status, team, teamContext]);
 
 	return isLoading ? (
 		<Loading />

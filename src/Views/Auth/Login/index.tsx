@@ -12,7 +12,10 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { login } from '@teams/Functions/Auth';
 import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
-import { setSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
+import {
+	setSelectedTeam,
+	getSelectedTeam,
+} from '@teams/Functions/Team/SelectedTeam';
 
 import Loading from '@components/Loading';
 import Input from '@components/InputText';
@@ -45,6 +48,53 @@ const Login: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [isLoging, setIsLoging] = useState<boolean>(false);
 
+	const handleNavigate = useCallback(async () => {
+		try {
+			setIsLoading(true);
+
+			let routeName = 'Home';
+
+			const user = auth().currentUser;
+
+			const selectedTeam = await getSelectedTeam();
+
+			if (user) {
+				if (!user.emailVerified) {
+					routeName = 'VerifyEmail';
+				} else if (selectedTeam) {
+					const { team, role } = selectedTeam.userRole;
+
+					if (!team.isActive) {
+						if (role === 'manager') {
+							routeName = 'ViewTeam';
+						} else {
+							routeName = 'ListTeam';
+						}
+					}
+				} else {
+					routeName = 'TeamList';
+				}
+
+				reset({
+					routes: [
+						{
+							name: 'Routes',
+							state: {
+								routes: [
+									{
+										name: routeName,
+									},
+								],
+							},
+						},
+					],
+				});
+			}
+		} finally {
+			setIsLoading(false);
+		}
+	}, [reset]);
+
 	const handleLogin = useCallback(async () => {
 		const schema = Yup.object().shape({
 			email: Yup.string().required().email(),
@@ -68,27 +118,9 @@ const Login: React.FC = () => {
 			const user = await login({ email, password });
 
 			if (user) {
-				if (!user.firebaseUser.emailVerified) {
-					reset({
-						routes: [
-							{
-								name: 'Routes',
-								state: {
-									routes: [
-										{
-											name: 'VerifyEmail',
-										},
-									],
-								},
-							},
-						],
-					});
-
-					return;
-				}
-
 				const userRole = user.localUser.team;
 
+				// user has a role in a team
 				if (userRole && Object.keys(userRole).length > 0) {
 					const { status, role } = userRole;
 					const { team } = userRole;
@@ -96,12 +128,6 @@ const Login: React.FC = () => {
 					const onTeam =
 						status && status.toLowerCase() === 'completed';
 					const teamRole = role ? role.toLowerCase() : null;
-
-					const uRole: IUserRoles = {
-						role,
-						status: userRole.status || null,
-						team,
-					};
 
 					if (onTeam || teamRole === 'manager') {
 						const teamPreferences = await getTeamPreferences({
@@ -116,66 +142,10 @@ const Login: React.FC = () => {
 						if (teamContext.reload) {
 							teamContext.reload();
 						}
-
-						let routeName = 'Home';
-
-						if (!team.isActive) {
-							if (teamRole === 'manager') {
-								routeName = 'ViewTeam';
-							} else {
-								routeName = 'ListTeam';
-							}
-						}
-
-						reset({
-							routes: [
-								{
-									name: 'Routes',
-									state: {
-										routes: [
-											{
-												name: routeName,
-											},
-										],
-									},
-								},
-							],
-						});
-					} else {
-						// when user is on team but they still didn't enter the code
-						reset({
-							routes: [
-								{
-									name: 'Routes',
-									state: {
-										routes: [
-											{
-												name: 'EnterTeam',
-												params: { userRole: uRole },
-											},
-										],
-									},
-								},
-							],
-						});
 					}
-				} else {
-					reset({
-						routes: [
-							{
-								name: 'Routes',
-								state: {
-									routes: [
-										{
-											name: 'TeamList',
-										},
-									],
-								},
-							},
-						],
-					});
 				}
 			}
+			handleNavigate();
 		} catch (err) {
 			if (err instanceof Error) {
 				showMessage({
@@ -186,7 +156,7 @@ const Login: React.FC = () => {
 		} finally {
 			setIsLoging(false);
 		}
-	}, [email, password, reset]);
+	}, [email, handleNavigate, password, teamContext]);
 
 	const handleEmailChange = useCallback(
 		(value: string) => setEmail(value.trim()),
@@ -203,24 +173,14 @@ const Login: React.FC = () => {
 	}, [navigate]);
 
 	useEffect(() => {
-		try {
-			setIsLoading(true);
+		const user = auth().currentUser;
 
-			const user = auth().currentUser;
-
-			if (user) {
-				if (!user.emailVerified) {
-					navigate('Routes', {
-						state: {
-							routes: [{ name: 'VerifyEmail' }],
-						},
-					});
-				}
-			}
-		} finally {
+		if (user) {
+			handleNavigate();
+		} else {
 			setIsLoading(false);
 		}
-	}, [navigate, reset]);
+	}, [handleNavigate]);
 
 	return isLoading ? (
 		<Loading />
