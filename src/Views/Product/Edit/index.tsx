@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
 
 import strings from '@teams/Locales';
 
@@ -19,6 +18,7 @@ import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
 import InputText from '@components/InputText';
+import Dialog from '@components/Dialog';
 
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
@@ -395,30 +395,21 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 						</InputContainer>
 					</PageContent>
 
-					<Dialog.Container
+					<Dialog
+						title={strings.View_ProductDetails_WarningDelete_Title}
+						description={
+							strings.View_ProductDetails_WarningDelete_Message
+						}
+						confirmText={
+							strings.View_ProductDetails_WarningDelete_Button_Confirm
+						}
+						cancelText={
+							strings.View_ProductDetails_WarningDelete_Button_Cancel
+						}
 						visible={deleteComponentVisible}
-						onBackdropPress={switchShowDeleteModal}
-					>
-						<Dialog.Title>
-							{strings.View_ProductDetails_WarningDelete_Title}
-						</Dialog.Title>
-						<Dialog.Description>
-							{strings.View_ProductDetails_WarningDelete_Message}
-						</Dialog.Description>
-						<Dialog.Button
-							label={
-								strings.View_ProductDetails_WarningDelete_Button_Cancel
-							}
-							onPress={switchShowDeleteModal}
-						/>
-						<Dialog.Button
-							label={
-								strings.View_ProductDetails_WarningDelete_Button_Confirm
-							}
-							color="red"
-							onPress={handleDeleteProduct}
-						/>
-					</Dialog.Container>
+						onConfirm={handleDeleteProduct}
+						onDismiss={switchShowDeleteModal}
+					/>
 				</Container>
 			)}
 		</>

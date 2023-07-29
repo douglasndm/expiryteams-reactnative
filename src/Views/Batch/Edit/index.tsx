@@ -4,7 +4,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
 import { parseISO } from 'date-fns';
 
 import strings from '@teams/Locales';
@@ -17,9 +16,10 @@ import {
 	updateBatch,
 } from '@teams/Functions/Products/Batches/Batch';
 
+import Loading from '@components/Loading';
 import Header from '@components/Header';
 import InputText from '@components/InputText';
-import Loading from '@components/Loading';
+import Dialog from '@components/Dialog';
 
 import {
 	Content,
@@ -381,32 +381,18 @@ const EditBatch: React.FC = () => {
 						</ExpDateGroup>
 					</InputContainer>
 				</PageContent>
-
-				<Dialog.Container
-					visible={deleteComponentVisible}
-					onBackdropPress={switchShowDeleteModal}
-				>
-					<Dialog.Title>
-						{strings.View_EditBatch_WarningDelete_Title}
-					</Dialog.Title>
-					<Dialog.Description>
-						{strings.View_EditBatch_WarningDelete_Message}
-					</Dialog.Description>
-					<Dialog.Button
-						label={
-							strings.View_EditBatch_WarningDelete_Button_Cancel
-						}
-						onPress={switchShowDeleteModal}
-					/>
-					<Dialog.Button
-						label={
-							strings.View_EditBatch_WarningDelete_Button_Confirm
-						}
-						color="red"
-						onPress={handleDelete}
-					/>
-				</Dialog.Container>
 			</Content>
+			<Dialog
+				title={strings.View_EditBatch_WarningDelete_Title}
+				description={strings.View_EditBatch_WarningDelete_Message}
+				confirmText={
+					strings.View_EditBatch_WarningDelete_Button_Confirm
+				}
+				cancelText={strings.View_EditBatch_WarningDelete_Button_Cancel}
+				visible={deleteComponentVisible}
+				onConfirm={handleDelete}
+				onDismiss={switchShowDeleteModal}
+			/>
 		</Container>
 	);
 };
