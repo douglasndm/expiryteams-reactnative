@@ -1,9 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import strings from '@teams/Locales';
 
 import { useAuth } from '@teams/Contexts/AuthContext';
 import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { getUser } from '@teams/Functions/User/List';
+import {
+	getSelectedTeam,
+	setSelectedTeam,
+} from '@teams/Functions/Team/SelectedTeam';
 
 import {
 	Container,
@@ -40,6 +46,36 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
 	const handleNavigateToProfile = useCallback(() => {
 		navigate('User');
 	}, [navigate]);
+
+	const loadData = useCallback(async () => {
+		try {
+			const userResponse = await getUser();
+
+			if (userResponse.role) {
+				const currentTeam = await getSelectedTeam();
+
+				if (currentTeam) {
+					await setSelectedTeam({
+						...currentTeam,
+						userRole: {
+							...currentTeam.userRole,
+							role: userResponse.role.role.toLowerCase(),
+						},
+					});
+
+					if (teamContext.reload) {
+						teamContext.reload();
+					}
+				}
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}, [teamContext]);
+
+	useEffect(() => {
+		loadData();
+	}, []);
 
 	return (
 		<Container onPress={handleNavigateToProfile}>

@@ -2,10 +2,26 @@ import api from '@teams/Services/API';
 
 interface getUserResponse {
 	id: string;
+	fid: string;
 	email: string;
 	name: string | null;
 	last_name: string | null;
-	roles: IUserRoles[];
+	role?: {
+		role: 'manager' | 'supervisor' | 'repositor';
+		code: string | null;
+		status: string | null;
+		team: {
+			id: string;
+			name: string;
+			subscriptions?: [
+				{
+					expireIn: string;
+					membersLimit: number;
+					isActive: boolean;
+				}
+			];
+		};
+	};
 }
 
 async function getUser(): Promise<getUserResponse> {

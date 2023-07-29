@@ -177,7 +177,13 @@ const List: React.FC = () => {
 			});
 
 			await setSelectedTeam({
-				userRole: team,
+				userRole: {
+					...team,
+					team: {
+						...team.team,
+						isActive: !!(sub && sub[0].isActive),
+					},
+				},
 				teamPreferences,
 			});
 
