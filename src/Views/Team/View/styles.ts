@@ -1,11 +1,9 @@
 import styled from 'styled-components/native';
-import { Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
 	flex: 1;
-	padding: ${Platform.OS === 'ios' ? 50 : 16}px 0 5px;
 	background-color: ${props => props.theme.colors.background};
 `;
 
@@ -20,7 +18,7 @@ export const PageTitle = styled.Text`
 	color: ${({ theme }) => theme.colors.text};
 `;
 
-export const PageContent = styled.View`
+export const PageContent = styled.ScrollView`
 	padding: 15px 16px 100px;
 `;
 

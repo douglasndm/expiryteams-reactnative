@@ -6,8 +6,9 @@ import strings from '@teams/Locales';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
 
-import BackButton from '@components/BackButton';
+import Header from '@components/Header';
 import Button from '@components/Button';
+import PaddingComponent from '@components/PaddingComponent';
 
 import Subscriptions from './Components/Subscriptions';
 import Advenced from './Components/Advenced';
@@ -28,8 +29,7 @@ import {
 } from './styles';
 
 const ViewTeam: React.FC = () => {
-	const { goBack, navigate } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const teamContext = useTeam();
 
@@ -60,34 +60,31 @@ const ViewTeam: React.FC = () => {
 
 	return (
 		<Container>
-			<PageHeader>
-				{teamContext.active && (
-					<BackButton
-						handleOnPress={goBack}
-						contentStyle={{ marginLeft: -10 }}
-					/>
-				)}
-
-				<PageTitle>{strings.View_TeamView_PageTitle}</PageTitle>
-			</PageHeader>
+			{teamContext.active ? (
+				<Header
+					title={strings.View_TeamView_PageTitle}
+					noDrawer
+					appBarActions={
+						isManager
+							? [
+									{
+										icon: 'square-edit-outline',
+										onPress: handleNavigateEditTeam,
+									},
+							  ]
+							: []
+					}
+				/>
+			) : (
+				<PageHeader>
+					<PageTitle>{strings.View_TeamView_PageTitle}</PageTitle>
+				</PageHeader>
+			)}
 
 			<PageContent>
 				<TeamHeaderContainer>
 					{!!teamContext.name && (
 						<TeamName>{teamContext.name}</TeamName>
-					)}
-
-					{teamContext.active && isManager && (
-						<ActionsButtonContainer>
-							<ButtonPaper
-								icon={() => (
-									<Icons name="create-outline" size={22} />
-								)}
-								onPress={handleNavigateEditTeam}
-							>
-								{strings.View_TeamView_ActionButton_Edit}
-							</ButtonPaper>
-						</ActionsButtonContainer>
 					)}
 
 					{!teamContext.active && (
@@ -131,6 +128,8 @@ const ViewTeam: React.FC = () => {
 						onPress={handleNavigateToSettings}
 					/>
 				)}
+
+				<PaddingComponent />
 			</PageContent>
 		</Container>
 	);
