@@ -1,8 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
-
 import strings from '@teams/Locales';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
@@ -11,8 +9,9 @@ import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 import { updateStore } from '@teams/Functions/Team/Stores/Update';
 import { deleteStore } from '@teams/Functions/Team/Stores/Delete';
 
-import Header from '@components/Header';
 import Loading from '@components/Loading';
+import Header from '@components/Header';
+import Dialog from '@components/Dialog';
 
 import {
 	Container,
@@ -100,7 +99,7 @@ const Edit: React.FC = () => {
 		});
 	}, [teamContext.id, name, routeParams.store_id, reset]);
 
-	const handleDeleteBrand = useCallback(async () => {
+	const handleDeleteStore = useCallback(async () => {
 		if (!teamContext.id) return;
 		try {
 			await deleteStore({
@@ -169,27 +168,17 @@ const Edit: React.FC = () => {
 					</InputTextContainer>
 					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
 				</Content>
+
+				<Dialog
+					visible={deleteComponentVisible}
+					title={strings.View_Store_Edit_DeleteModal_Title}
+					description={strings.View_Store_Edit_DeleteModal_Message}
+					cancelText={strings.View_Store_Edit_DeleteModal_Cancel}
+					confirmText={strings.View_Store_Edit_DeleteModal_Confirm}
+					onConfirm={handleDeleteStore}
+					onDismiss={handleSwitchShowDelete}
+				/>
 			</Container>
-			<Dialog.Container
-				visible={deleteComponentVisible}
-				onBackdropPress={handleSwitchShowDelete}
-			>
-				<Dialog.Title>
-					{strings.View_Store_Edit_DeleteModal_Title}
-				</Dialog.Title>
-				<Dialog.Description>
-					{strings.View_Store_Edit_DeleteModal_Message}
-				</Dialog.Description>
-				<Dialog.Button
-					label={strings.View_Store_Edit_DeleteModal_Cancel}
-					onPress={handleSwitchShowDelete}
-				/>
-				<Dialog.Button
-					label={strings.View_Store_Edit_DeleteModal_Confirm}
-					color="red"
-					onPress={handleDeleteBrand}
-				/>
-			</Dialog.Container>
 		</>
 	);
 };

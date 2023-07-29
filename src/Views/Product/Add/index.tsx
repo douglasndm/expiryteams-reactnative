@@ -27,6 +27,7 @@ import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
 import { findDuplicate } from '@teams/Functions/Products/FindDuplicate';
 
 import Loading from '@components/Loading';
+import PaddingComponent from '@components/PaddingComponent';
 
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
@@ -623,6 +624,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 							show={showProdFindedModal}
 							setShow={handleSwitchFindModal}
 						/>
+						<PaddingComponent />
 					</Content>
 				</Container>
 			)}
