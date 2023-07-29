@@ -60,6 +60,10 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
 						userRole: {
 							...currentTeam.userRole,
 							role: userResponse.role.role.toLowerCase(),
+							team: {
+								...currentTeam.userRole.team,
+								name: userResponse.role.team.name,
+							},
 						},
 					});
 
