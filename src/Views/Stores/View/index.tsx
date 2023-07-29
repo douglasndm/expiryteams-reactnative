@@ -180,7 +180,7 @@ const StoreView: React.FC = () => {
 
 			<FloatButton
 				navigateTo="AddProduct"
-				categoryId={routeParams.store_id}
+				storeId={routeParams.store_id}
 			/>
 		</Container>
 	);
