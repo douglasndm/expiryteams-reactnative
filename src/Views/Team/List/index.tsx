@@ -176,12 +176,14 @@ const List: React.FC = () => {
 				team_id: team.team.id,
 			});
 
+			const activeSub = sub && sub.length > 0 && sub[0].isActive;
+
 			await setSelectedTeam({
 				userRole: {
 					...team,
 					team: {
 						...team.team,
-						isActive: !!(sub && sub[0].isActive),
+						isActive: activeSub || false,
 					},
 				},
 				teamPreferences,
