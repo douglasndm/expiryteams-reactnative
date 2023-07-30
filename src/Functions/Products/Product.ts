@@ -40,14 +40,12 @@ export async function createProduct({
 
 interface updateProductProps {
 	team_id: string;
-	product: Omit<IProduct, 'batches' | 'categories'>;
-	categories: Array<string>;
+	product: Omit<IProduct, 'batches'>;
 }
 
 export async function updateProduct({
 	team_id,
 	product,
-	categories,
 }: updateProductProps): Promise<IProduct> {
 	const response = await api.put<IProduct>(
 		`/team/${team_id}/products/${product.id}`,
@@ -56,7 +54,7 @@ export async function updateProduct({
 			code: product.code,
 			brand: product.brand,
 			store_id: product.store,
-			categories,
+			category_id: product.category?.id,
 		}
 	);
 

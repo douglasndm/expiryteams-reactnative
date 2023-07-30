@@ -6,7 +6,6 @@ interface IProduct {
 	thumbnail?: string;
 	store?: IStore;
 	category?: ICategory;
-	categories: Array<ICategory>;
 	batches: Array<IBatch>;
 	created_at: string;
 	updated_at: string;

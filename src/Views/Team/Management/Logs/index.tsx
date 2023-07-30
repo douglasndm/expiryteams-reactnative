@@ -65,9 +65,7 @@ const Logs: React.FC = () => {
 		[navigate]
 	);
 
-	return refreshing ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title="Logs"
@@ -76,22 +74,27 @@ const Logs: React.FC = () => {
 					{
 						icon: 'update',
 						onPress: loadData,
+						disabled: refreshing,
 					},
 				]}
 			/>
 
-			<Content>
-				{logs.map(log => (
-					<LogCard
-						key={log.id}
-						onPress={() => handleNavigateToDetails(log)}
-					>
-						<LogText>{`${getFormattedLogText(log)}`}</LogText>
-					</LogCard>
-				))}
+			{refreshing ? (
+				<Loading />
+			) : (
+				<Content>
+					{logs.map(log => (
+						<LogCard
+							key={log.id}
+							onPress={() => handleNavigateToDetails(log)}
+						>
+							<LogText>{`${getFormattedLogText(log)}`}</LogText>
+						</LogCard>
+					))}
 
-				<PaddingComponent />
-			</Content>
+					<PaddingComponent />
+				</Content>
+			)}
 		</Container>
 	);
 };

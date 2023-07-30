@@ -153,8 +153,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 			setStores(storesArray);
 
-			if (prod.categories.length > 0) {
-				setSelectedCategory(prod.categories[0].id);
+			if (prod.category) {
+				setSelectedCategory(prod.category.id);
 			}
 			if (prod.brand) {
 				setSelectedBrand(prod.brand);
@@ -180,13 +180,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			return;
 		}
 
+		const cate = selectedCategory === 'null' ? null : selectedCategory;
+
 		try {
-			const prodCategories: Array<string> = [];
-
-			if (selectedCategory && selectedCategory !== 'null') {
-				prodCategories.push(selectedCategory);
-			}
-
 			await updateProduct({
 				team_id: teamContext.id,
 				product: {
@@ -195,8 +191,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					code,
 					brand: selectedBrand,
 					store: selectedStore,
+					category: {
+						id: cate,
+					},
 				},
-				categories: prodCategories,
 			});
 
 			showMessage({
@@ -280,9 +278,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		};
 	}, []);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<>
 			{isBarCodeEnabled ? (
 				<BarCodeReader
@@ -298,6 +294,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 							{
 								icon: 'content-save-outline',
 								onPress: updateProd,
+								disabled: isLoading,
 							},
 						]}
 						moreMenuItems={
@@ -307,93 +304,103 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 											title: strings.View_ProductDetails_Button_DeleteProduct,
 											leadingIcon: 'trash-can-outline',
 											onPress: switchShowDeleteModal,
+											disabled: isLoading,
 										},
 								  ]
 								: []
 						}
 					/>
 
-					<PageContent>
-						<InputContainer>
-							<InputGroup>
-								<InputTextContainer>
-									<InputText
-										placeholder={
-											strings.View_EditProduct_InputPlacehoder_Name
+					{isLoading ? (
+						<Loading />
+					) : (
+						<PageContent>
+							<InputContainer>
+								<InputGroup>
+									<InputTextContainer>
+										<InputText
+											placeholder={
+												strings.View_EditProduct_InputPlacehoder_Name
+											}
+											value={name}
+											onChange={(value: string) => {
+												setName(value);
+												setNameFieldError(false);
+											}}
+										/>
+									</InputTextContainer>
+								</InputGroup>
+								{nameFieldError && (
+									<InputTextTip>
+										{
+											strings.View_EditProduct_Error_EmptyProductName
 										}
-										value={name}
-										onChange={(value: string) => {
-											setName(value);
-											setNameFieldError(false);
-										}}
+									</InputTextTip>
+								)}
+
+								<InputCodeTextContainer>
+									<InputCodeText
+										placeholder={
+											strings.View_EditProduct_InputPlacehoder_Code
+										}
+										accessibilityLabel={
+											strings.View_EditProduct_InputAccessibility_Code
+										}
+										value={code}
+										onChangeText={(value: string) =>
+											setCode(value)
+										}
 									/>
-								</InputTextContainer>
-							</InputGroup>
-							{nameFieldError && (
-								<InputTextTip>
-									{
-										strings.View_EditProduct_Error_EmptyProductName
-									}
-								</InputTextTip>
-							)}
+									<InputTextIconContainer
+										onPress={handleEnableBarCodeReader}
+									>
+										<Icons
+											name="barcode-outline"
+											size={34}
+										/>
+									</InputTextIconContainer>
+								</InputCodeTextContainer>
 
-							<InputCodeTextContainer>
-								<InputCodeText
-									placeholder={
-										strings.View_EditProduct_InputPlacehoder_Code
-									}
-									accessibilityLabel={
-										strings.View_EditProduct_InputAccessibility_Code
-									}
-									value={code}
-									onChangeText={value => setCode(value)}
-								/>
-								<InputTextIconContainer
-									onPress={handleEnableBarCodeReader}
-								>
-									<Icons name="barcode-outline" size={34} />
-								</InputTextIconContainer>
-							</InputCodeTextContainer>
+								<MoreInformationsContainer>
+									<MoreInformationsTitle>
+										{
+											strings.View_AddProduct_MoreInformation_Label
+										}
+									</MoreInformationsTitle>
 
-							<MoreInformationsContainer>
-								<MoreInformationsTitle>
-									{
-										strings.View_AddProduct_MoreInformation_Label
-									}
-								</MoreInformationsTitle>
-
-								<CategorySelect
-									categories={categories}
-									onChange={setSelectedCategory}
-									defaultValue={selectedCategory}
-									containerStyle={{
-										marginBottom: 10,
-									}}
-								/>
-
-								<BrandSelect
-									brands={brands}
-									onChange={setSelectedBrand}
-									defaultValue={selectedBrand}
-									containerStyle={{
-										marginBottom: 10,
-									}}
-								/>
-
-								{teamContext.roleInTeam?.role.toLowerCase() ===
-									'manager' && (
-									<StoreSelect
-										stores={stores}
-										defaultValue={selectedStore}
-										onChange={setSelectedStore}
+									<CategorySelect
+										categories={categories}
+										onChange={setSelectedCategory}
+										defaultValue={selectedCategory}
 										containerStyle={{
 											marginBottom: 10,
 										}}
 									/>
-								)}
-							</MoreInformationsContainer>
-						</InputContainer>
-					</PageContent>
+
+									<BrandSelect
+										brands={brands}
+										onChange={setSelectedBrand}
+										defaultValue={selectedBrand}
+										containerStyle={{
+											marginBottom: 10,
+										}}
+									/>
+
+									{teamContext.roleInTeam?.role.toLowerCase() ===
+										'manager' && (
+										<StoreSelect
+											stores={stores}
+											defaultValue={selectedStore}
+											onChange={setSelectedStore}
+											containerStyle={{
+												marginBottom: 10,
+											}}
+										/>
+									)}
+								</MoreInformationsContainer>
+							</InputContainer>
+						</PageContent>
+					)}
 
 					<Dialog
 						title={strings.View_ProductDetails_WarningDelete_Title}
