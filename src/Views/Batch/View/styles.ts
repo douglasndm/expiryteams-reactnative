@@ -19,7 +19,7 @@ export const BatchTitle = styled.Text`
 `;
 
 export const ExtraInfoContainer = styled.View`
-	margin: 0px 15px;
+	margin-top: 15px;
 `;
 
 export const BatchInfo = styled.Text`

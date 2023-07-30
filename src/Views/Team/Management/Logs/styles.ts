@@ -5,8 +5,8 @@ export const Container = styled.View`
 	flex: 1;
 `;
 
-export const List = styled.FlatList`
-	margin: 10px 15px;
+export const Content = styled.ScrollView`
+	padding: 5px 10px;
 `;
 
 export const LogCard = styled.Pressable`

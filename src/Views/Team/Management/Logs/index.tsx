@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -13,8 +12,9 @@ import {
 
 import Header from '@components/Header';
 import Loading from '@components/Loading';
+import PaddingComponent from '@components/PaddingComponent';
 
-import { Container, List, LogCard, LogText } from './styles';
+import { Container, Content, LogCard, LogText } from './styles';
 
 const Logs: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -48,7 +48,7 @@ const Logs: React.FC = () => {
 	}, []);
 
 	const handleNavigateToDetails = useCallback(
-		item => {
+		(item: ILog) => {
 			const log: ILog = item as ILog;
 
 			if (log.batch && log.product) {
@@ -65,32 +65,33 @@ const Logs: React.FC = () => {
 		[navigate]
 	);
 
-	const renderItem = useCallback(({ item }) => {
-		const log: ILog = item as ILog;
-
-		return (
-			<LogCard onPress={() => handleNavigateToDetails(item)}>
-				<LogText>{`${getFormattedLogText(log)}`}</LogText>
-			</LogCard>
-		);
-	}, []);
 	return refreshing ? (
 		<Loading />
 	) : (
 		<Container>
-			<Header title="Logs" noDrawer />
-
-			<List
-				data={logs}
-				keyExtractor={(_, index) => String(index)}
-				renderItem={renderItem}
-				refreshControl={
-					<RefreshControl
-						refreshing={refreshing}
-						onRefresh={loadData}
-					/>
-				}
+			<Header
+				title="Logs"
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'update',
+						onPress: loadData,
+					},
+				]}
 			/>
+
+			<Content>
+				{logs.map(log => (
+					<LogCard
+						key={log.id}
+						onPress={() => handleNavigateToDetails(log)}
+					>
+						<LogText>{`${getFormattedLogText(log)}`}</LogText>
+					</LogCard>
+				))}
+
+				<PaddingComponent />
+			</Content>
 		</Container>
 	);
 };

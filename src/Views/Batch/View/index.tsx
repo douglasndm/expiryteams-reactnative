@@ -233,6 +233,15 @@ const View: React.FC = () => {
 						</BatchPrice>
 					)}
 
+					<ExtraInfoContainer>
+						{created_at && (
+							<BatchInfo>{`Adicionado em ${created_at}`}</BatchInfo>
+						)}
+						{updated_at && (
+							<BatchInfo>{`Última vez atualizado em ${updated_at}`}</BatchInfo>
+						)}
+					</ExtraInfoContainer>
+
 					<ButtonsCointaner>
 						{(userRole === 'manager' ||
 							userRole === 'supervisor') && (
@@ -261,15 +270,6 @@ const View: React.FC = () => {
 					</ButtonsCointaner>
 				</BatchContainer>
 			)}
-
-			<ExtraInfoContainer>
-				{created_at && (
-					<BatchInfo>{`Adicionado em ${created_at}`}</BatchInfo>
-				)}
-				{updated_at && (
-					<BatchInfo>{`Última vez atualizado em ${updated_at}`}</BatchInfo>
-				)}
-			</ExtraInfoContainer>
 		</Container>
 	);
 };
