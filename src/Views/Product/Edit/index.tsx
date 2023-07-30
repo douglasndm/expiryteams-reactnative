@@ -52,7 +52,7 @@ interface RequestParams {
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
-	const { reset, replace } =
+	const { reset, navigate } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isMounted, setIsMounted] = useState(true);
@@ -202,7 +202,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				type: 'info',
 			});
 
-			replace('ProductDetails', {
+			navigate('ProductDetails', {
 				id: productId,
 			});
 		} catch (err) {
@@ -216,8 +216,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		code,
 		isMounted,
 		name,
+		navigate,
 		productId,
-		replace,
 		selectedBrand,
 		selectedCategory,
 		selectedStore,
