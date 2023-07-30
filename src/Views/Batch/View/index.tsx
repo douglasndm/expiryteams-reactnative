@@ -18,11 +18,6 @@ import Header from '@components/Header';
 import Button from '@components/Button';
 
 import {
-	ActionsButtonContainer,
-	ButtonPaper,
-} from '@teams/Views/Product/Edit/styles';
-
-import {
 	Container,
 	BatchContainer,
 	BatchTitle,
@@ -87,11 +82,15 @@ const View: React.FC = () => {
 	}, [routeParams.batch]);
 
 	const created_at = useMemo(() => {
-		if (batch) return format(parseISO(batch.created_at), dateFormat, {});
+		if (batch.created_at) {
+			return format(parseISO(batch.created_at), dateFormat, {});
+		}
 		return null;
 	}, [dateFormat, batch]);
 	const updated_at = useMemo(() => {
-		if (batch) return format(parseISO(batch.updated_at), dateFormat, {});
+		if (batch.updated_at) {
+			return format(parseISO(batch.updated_at), dateFormat, {});
+		}
 		return null;
 	}, [dateFormat, batch]);
 

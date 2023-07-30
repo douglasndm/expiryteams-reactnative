@@ -5,6 +5,7 @@ interface IProduct {
 	brand?: string | null;
 	thumbnail?: string;
 	store?: IStore;
+	category?: ICategory;
 	categories: Array<ICategory>;
 	batches: Array<IBatch>;
 	created_at: string;
