@@ -11,6 +11,7 @@ export const SubscriptionContainer = styled.View`
 `;
 
 export const SubscriptionTableTitle = styled.Text`
+	color: ${props => props.theme.colors.productCardText};
 	font-family: 'Open Sans';
 	font-weight: bold;
 	font-size: 21px;

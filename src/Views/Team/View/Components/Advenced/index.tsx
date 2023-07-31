@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -14,33 +14,14 @@ import Button from '@components/Button';
 
 import { Section, SectionTitle, SubscriptionDescription } from '../../styles';
 
-import {
-	LoadingIndicator,
-	OptionContainer,
-	ButtonPaper,
-	Icons,
-} from './styles';
+import { LoadingIndicator } from './styles';
 
 const Advenced: React.FC = () => {
-	const { navigate, reset } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const teamContext = useTeam();
 
-	const isManager = useMemo(() => {
-		if (teamContext.id) {
-			if (teamContext.roleInTeam?.role.toLowerCase() === 'manager') {
-				return true;
-			}
-		}
-		return false;
-	}, [teamContext.id, teamContext.roleInTeam]);
-
 	const [isQuiting, setIsQuiting] = useState<boolean>(false);
-
-	const handleDeleteTeam = useCallback(() => {
-		navigate('DeleteTeam');
-	}, [navigate]);
 
 	const quitTeam = useCallback(async () => {
 		if (!teamContext.id) return;
@@ -75,29 +56,14 @@ const Advenced: React.FC = () => {
 				{strings.View_TeamView_Advanced_Description}
 			</SubscriptionDescription>
 
-			{!isManager && (
-				<>
-					{isQuiting ? (
-						<LoadingIndicator />
-					) : (
-						<Button
-							text={strings.View_TeamView_Button_QuitTeam}
-							onPress={quitTeam}
-							contentStyle={{ width: 135 }}
-						/>
-					)}
-				</>
-			)}
-
-			{isManager && (
-				<OptionContainer>
-					<ButtonPaper
-						icon={() => <Icons name="trash-outline" size={22} />}
-						onPress={handleDeleteTeam}
-					>
-						{strings.View_TeamView_Advanced_Button_DeleteTeam}
-					</ButtonPaper>
-				</OptionContainer>
+			{isQuiting ? (
+				<LoadingIndicator />
+			) : (
+				<Button
+					text={strings.View_TeamView_Button_QuitTeam}
+					onPress={quitTeam}
+					contentStyle={{ width: 135 }}
+				/>
 			)}
 		</Section>
 	);

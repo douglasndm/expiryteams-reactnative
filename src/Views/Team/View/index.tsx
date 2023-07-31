@@ -56,6 +56,10 @@ const ViewTeam: React.FC = () => {
 		navigate('Settings');
 	}, [navigate]);
 
+	const handleDeleteTeam = useCallback(() => {
+		navigate('DeleteTeam');
+	}, [navigate]);
+
 	return (
 		<Container>
 			<Header
@@ -68,6 +72,17 @@ const ViewTeam: React.FC = () => {
 								{
 									icon: 'square-edit-outline',
 									onPress: handleNavigateEditTeam,
+								},
+						  ]
+						: []
+				}
+				moreMenuItems={
+					isManager
+						? [
+								{
+									leadingIcon: 'trash-can-outline',
+									title: strings.View_TeamView_Advanced_Button_DeleteTeam,
+									onPress: handleDeleteTeam,
 								},
 						  ]
 						: []
@@ -113,7 +128,7 @@ const ViewTeam: React.FC = () => {
 					</Section>
 				)}
 
-				<Advenced />
+				{!isManager && <Advenced />}
 
 				{!teamContext.active && (
 					<Button

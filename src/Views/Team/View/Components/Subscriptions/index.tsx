@@ -5,13 +5,14 @@ import { format, parseISO } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@teams/Locales';
+
+import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { getTeamSubscription } from '@teams/Functions/Team/Subscriptions';
+
 import Button from '@components/Button';
 import Loading from '@components/Loading';
-import strings from '~/Locales';
-
-import { useTeam } from '~/Contexts/TeamContext';
-
-import { getTeamSubscription } from '~/Functions/Team/Subscriptions';
 
 import { Section, SectionTitle } from '../../styles';
 
