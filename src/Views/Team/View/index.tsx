@@ -20,9 +20,6 @@ import {
 	SectionTitle,
 	SubscriptionDescription,
 	TeamName,
-	ActionsButtonContainer,
-	ButtonPaper,
-	Icons,
 	TeamHeaderContainer,
 } from './styles';
 
@@ -80,12 +77,23 @@ const ViewTeam: React.FC = () => {
 					isManager
 						? [
 								{
+									leadingIcon: 'format-list-bulleted',
+									title: strings.View_TeamView_ActionButton_Change,
+									onPress: handleNavigateTeams,
+								},
+								{
 									leadingIcon: 'trash-can-outline',
 									title: strings.View_TeamView_Advanced_Button_DeleteTeam,
 									onPress: handleDeleteTeam,
 								},
 						  ]
-						: []
+						: [
+								{
+									leadingIcon: 'format-list-bulleted',
+									title: strings.View_TeamView_ActionButton_Change,
+									onPress: handleNavigateTeams,
+								},
+						  ]
 				}
 			/>
 
@@ -93,19 +101,6 @@ const ViewTeam: React.FC = () => {
 				<TeamHeaderContainer>
 					{!!teamContext.name && (
 						<TeamName>{teamContext.name}</TeamName>
-					)}
-
-					{!teamContext.active && (
-						<ActionsButtonContainer>
-							<ButtonPaper
-								icon={() => (
-									<Icons name="list-outline" size={22} />
-								)}
-								onPress={handleNavigateTeams}
-							>
-								{strings.View_TeamView_ActionButton_Change}
-							</ButtonPaper>
-						</ActionsButtonContainer>
 					)}
 				</TeamHeaderContainer>
 
