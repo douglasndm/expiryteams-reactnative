@@ -7,17 +7,6 @@ export const Container = styled.View`
 	background-color: ${props => props.theme.colors.background};
 `;
 
-export const PageHeader = styled.View`
-	flex-direction: row;
-	margin: 0 10px;
-`;
-
-export const PageTitle = styled.Text`
-	font-size: 28px;
-	font-weight: bold;
-	color: ${({ theme }) => theme.colors.text};
-`;
-
 export const PageContent = styled.ScrollView`
 	padding: 15px 16px 100px;
 `;

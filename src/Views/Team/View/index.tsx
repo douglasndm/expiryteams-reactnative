@@ -15,8 +15,6 @@ import Advenced from './Components/Advenced';
 
 import {
 	Container,
-	PageHeader,
-	PageTitle,
 	PageContent,
 	Section,
 	SectionTitle,
@@ -60,26 +58,21 @@ const ViewTeam: React.FC = () => {
 
 	return (
 		<Container>
-			{teamContext.active ? (
-				<Header
-					title={strings.View_TeamView_PageTitle}
-					noDrawer
-					appBarActions={
-						isManager
-							? [
-									{
-										icon: 'square-edit-outline',
-										onPress: handleNavigateEditTeam,
-									},
-							  ]
-							: []
-					}
-				/>
-			) : (
-				<PageHeader>
-					<PageTitle>{strings.View_TeamView_PageTitle}</PageTitle>
-				</PageHeader>
-			)}
+			<Header
+				title={strings.View_TeamView_PageTitle}
+				noDrawer
+				disableBackButton={!teamContext.active}
+				appBarActions={
+					isManager && teamContext.active
+						? [
+								{
+									icon: 'square-edit-outline',
+									onPress: handleNavigateEditTeam,
+								},
+						  ]
+						: []
+				}
+			/>
 
 			<PageContent>
 				<TeamHeaderContainer>
