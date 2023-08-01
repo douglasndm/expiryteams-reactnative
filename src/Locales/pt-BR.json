@@ -254,8 +254,6 @@
     "View_TeamView_Subscription_CurrentSubscription_Description": "Sua assinatura possui {MEMBERS} membros e está ativa até {DATE}",
     "View_TeamView_Members_Title": "Membros",
     "View_TeamView_Members_Description": "Membros atuais do time",
-    "View_TeamView_Advanced_Title": "Avançado",
-    "View_TeamView_Advanced_Description": "Configurações avançadas do time",
     "View_TeamView_Advanced_Button_DeleteTeam": "Apagar time",
     "View_TeamView_Button_GoToMembers": "Ver membros",
     "View_TeamView_Button_QuitTeam": "Sair do time",

@@ -18,9 +18,9 @@ export const EmptyText = styled.Text`
 `;
 
 export const ListTeamsTitle = styled.Text`
-	margin: 15px 15px 0;
+	margin: 10px 15px;
 	color: ${props => props.theme.colors.text};
-	font-size: 18px;
+	font-size: 20px;
 	font-family: 'Open Sans';
 `;
 
@@ -28,7 +28,7 @@ interface TeamItemContainerProps {
 	isPending?: boolean;
 }
 
-export const TeamItemContainer = styled.Pressable<TeamItemContainerProps>`
+export const TeamItemContainer = styled.TouchableOpacity<TeamItemContainerProps>`
 	background-color: ${props => props.theme.colors.inputBackground};
 	padding: 20px;
 	margin-bottom: 10px;

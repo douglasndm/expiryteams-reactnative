@@ -256,8 +256,6 @@
     "View_TeamView_Subscription_CurrentSubscription_Description": "Your current subscription has a limit of {MEMBERS} members and it is active util {DATE}",
     "View_TeamView_Members_Title": "Members",
     "View_TeamView_Members_Description": "See who is into the team",
-    "View_TeamView_Advanced_Title": "Advanced",
-    "View_TeamView_Advanced_Description": "Advanced settings of team",
     "View_TeamView_Advanced_Button_DeleteTeam": "Delete team",
     "View_TeamView_Button_GoToMembers": "See members",
     "View_TeamView_Button_QuitTeam": "Quit team",

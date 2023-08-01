@@ -11,7 +11,6 @@ import Button from '@components/Button';
 import PaddingComponent from '@components/PaddingComponent';
 
 import Subscriptions from './Components/Subscriptions';
-import Advenced from './Components/Advenced';
 
 import {
 	Container,
@@ -122,8 +121,6 @@ const ViewTeam: React.FC = () => {
 						/>
 					</Section>
 				)}
-
-				{!isManager && <Advenced />}
 
 				{!teamContext.active && (
 					<Button

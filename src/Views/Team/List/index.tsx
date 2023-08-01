@@ -2,14 +2,19 @@ import React, { useState, useCallback, useEffect, memo, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
+import { Menu } from 'react-native-paper';
 
 import strings from '@teams/Locales';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { getUserTeams } from '@teams/Functions/Team/Users';
-import { setSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
+import {
+	clearSelectedteam,
+	setSelectedTeam,
+} from '@teams/Functions/Team/SelectedTeam';
 import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
+import { removeItSelfFromTeam } from '@teams/Functions/Team/User/Remove';
 
 import Loading from '@components/Loading';
 import Button from '@components/Button';
@@ -33,6 +38,9 @@ const List: React.FC = () => {
 
 	const [isMounted, setIsMounted] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
+
+	const [showMenu, setShowMenu] = useState(false);
+	const [isQuiting, setIsQuiting] = useState(false);
 
 	const [team, setTeam] = useState<IUserRoles | null>(null);
 
@@ -212,53 +220,108 @@ const List: React.FC = () => {
 		}
 	}, [reset, role, status, team, teamContext]);
 
+	const switchShowMenu = useCallback(() => {
+		setShowMenu(prevValue => {
+			if (team?.role.toLowerCase() === 'manager') return false;
+
+			return !prevValue;
+		});
+	}, [team]);
+
+	const quitTeam = useCallback(async () => {
+		if (!teamContext.id) return;
+
+		try {
+			setIsQuiting(true);
+			await removeItSelfFromTeam({ team_id: teamContext.id });
+
+			if (teamContext.clearTeam) {
+				teamContext.clearTeam();
+				await clearSelectedteam();
+
+				setTeam(null);
+			}
+		} catch (err) {
+			if (err instanceof Error) {
+				showMessage({
+					type: 'danger',
+					message: err.message,
+				});
+			}
+		} finally {
+			setIsQuiting(false);
+		}
+	}, [teamContext]);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
-			<Header title={strings.View_TeamList_PageTitle} noDrawer />
+			<Header
+				title={strings.View_TeamList_PageTitle}
+				noDrawer
+				moreMenuItems={[
+					{
+						title: strings.View_TeamList_Button_Settings,
+						onPress: handleSettings,
+						leadingIcon: 'cog',
+					},
+				]}
+			/>
 
-			<Content>
-				{!team && (
-					<EmptyText>{strings.View_TeamList_EmptyTeamList}</EmptyText>
-				)}
+			{isQuiting ? (
+				<Loading />
+			) : (
+				<Content>
+					{!team && (
+						<EmptyText>
+							{strings.View_TeamList_EmptyTeamList}
+						</EmptyText>
+					)}
 
-				{team && (
-					<>
-						<ListTeamsTitle>
-							{strings.View_TeamList_ListTitle}
-						</ListTeamsTitle>
-						<TeamItemContainer
-							isPending={isPending || !isActive}
-							onPress={handleSelectTeam}
+					{team && (
+						<Menu
+							visible={showMenu}
+							onDismiss={switchShowMenu}
+							anchorPosition="bottom"
+							anchor={
+								<>
+									<ListTeamsTitle>
+										{strings.View_TeamList_ListTitle}
+									</ListTeamsTitle>
+									<TeamItemContainer
+										isPending={isPending || !isActive}
+										onPress={handleSelectTeam}
+										onLongPress={switchShowMenu}
+									>
+										<TeamItemTitle>
+											{team?.team.name || ''}
+										</TeamItemTitle>
+										<TeamItemRole>
+											{isPending
+												? status.toUpperCase()
+												: role.toUpperCase()}
+										</TeamItemRole>
+									</TeamItemContainer>
+								</>
+							}
 						>
-							<TeamItemTitle>
-								{team?.team.name || ''}
-							</TeamItemTitle>
-							<TeamItemRole>
-								{isPending
-									? status.toUpperCase()
-									: role.toUpperCase()}
-							</TeamItemRole>
-						</TeamItemContainer>
-					</>
-				)}
-			</Content>
+							<Menu.Item
+								title={strings.View_TeamView_Button_QuitTeam}
+								onPress={quitTeam}
+							/>
+						</Menu>
+					)}
+				</Content>
+			)}
 
 			<Footer>
 				{!team && (
 					<Button
 						text={strings.View_TeamList_Button_CreateTeam}
 						onPress={handleNavigateCreateTeam}
-						contentStyle={{ width: 150, marginBottom: 0 }}
 					/>
 				)}
-
-				<Button
-					text={strings.View_TeamList_Button_Settings}
-					onPress={handleSettings}
-					contentStyle={{ width: 150 }}
-				/>
 			</Footer>
 		</Container>
 	);
