@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { DrawerContentOptions } from '@react-navigation/drawer';
+import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 import strings from '@teams/Locales';
 import sharedStrings from '@shared/Locales';
@@ -19,8 +19,8 @@ import {
 
 import UserInfo from './UserInfo';
 
-const DrawerMenu: React.FC<DrawerContentOptions> = (
-	props: DrawerContentOptions
+const DrawerMenu: React.FC<DrawerContentComponentProps> = (
+	props: DrawerContentComponentProps
 ) => {
 	const { navigation } = props;
 
@@ -129,16 +129,14 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 							</MenuContent>
 						</MenuItemContainer>
 
-						{isManager && (
-							<MenuItemContainer onPress={navigateToStores}>
-								<MenuContent>
-									<Icons name="list-outline" />
-									<MenuItemText>
-										{strings.Menu_Button_GoToStores}
-									</MenuItemText>
-								</MenuContent>
-							</MenuItemContainer>
-						)}
+						<MenuItemContainer onPress={navigateToStores}>
+							<MenuContent>
+								<Icons name="list-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToStores}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
 
 						<MenuItemContainer onPress={navigateToExport}>
 							<MenuContent>
