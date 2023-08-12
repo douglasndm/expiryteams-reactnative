@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useRef,
+	memo,
+	useMemo,
+} from 'react';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -119,10 +126,20 @@ const Home: React.FC = () => {
 		[initialLoad]
 	);
 
+	const title = useMemo(() => {
+		if (teamContext.roleInTeam?.store?.name) {
+			return teamContext.roleInTeam.store.name;
+		}
+		if (teamContext.name) {
+			return teamContext.name;
+		}
+		return '';
+	}, [teamContext]);
+
 	return (
 		<Container>
 			<HomeComponent
-				title={teamContext.name || ''}
+				title={title}
 				isLoading={isLoading}
 				productsListRef={listRef}
 				searchFor={handleSearch}

@@ -18,6 +18,10 @@ interface TeamContextData {
 	roleInTeam: {
 		role: 'repositor' | 'supervisor' | 'manager';
 		status: 'pending' | 'completed';
+		store: {
+			id: string;
+			name: string;
+		} | null;
 	} | null;
 	reload: () => void;
 	clearTeam: () => void;
@@ -50,6 +54,7 @@ const TeamProvider: React.FC = ({ children }: any) => {
 			setRoleInTeam({
 				role,
 				status,
+				store: response.userRole.store,
 			});
 		}
 

@@ -22,6 +22,10 @@ interface getUserResponse {
 			];
 		};
 	};
+	store: {
+		id: string;
+		name: string;
+	} | null;
 }
 
 async function getUser(): Promise<getUserResponse> {

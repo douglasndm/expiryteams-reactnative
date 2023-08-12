@@ -15,6 +15,7 @@ import {
 } from '@teams/Functions/Team/SelectedTeam';
 import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
 import { removeItSelfFromTeam } from '@teams/Functions/Team/User/Remove';
+import { getUser } from '@teams/Functions/User/List';
 
 import Loading from '@components/Loading';
 import Button from '@components/Button';
@@ -186,6 +187,8 @@ const List: React.FC = () => {
 
 			const activeSub = sub && sub.length > 0 && sub[0].isActive;
 
+			const userResponse = await getUser();
+
 			await setSelectedTeam({
 				userRole: {
 					...team,
@@ -193,6 +196,7 @@ const List: React.FC = () => {
 						...team.team,
 						isActive: activeSub || false,
 					},
+					store: userResponse.store,
 				},
 				teamPreferences,
 			});

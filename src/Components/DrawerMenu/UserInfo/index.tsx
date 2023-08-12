@@ -64,6 +64,7 @@ const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
 								...currentTeam.userRole.team,
 								name: userResponse.role.team.name,
 							},
+							store: userResponse.store,
 						},
 					});
 

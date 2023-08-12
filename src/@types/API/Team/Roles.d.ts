@@ -13,4 +13,8 @@ interface IUserRoles {
 	};
 	status: 'pending' | 'completed' | null;
 	role: 'manager' | 'supervisor' | 'repositor';
+	store: {
+		id: string;
+		name: string;
+	} | null;
 }

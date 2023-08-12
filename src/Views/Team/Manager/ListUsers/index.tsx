@@ -213,7 +213,7 @@ const ListUsers: React.FC = () => {
 	}
 
 	const renderCategory = useCallback(
-		props => {
+		(props: renderProps) => {
 			const params = props as renderProps;
 			const { item } = params;
 
@@ -251,6 +251,10 @@ const ListUsers: React.FC = () => {
 								? strings.View_UsersInTeam_List_PendingStatus
 								: userRole().toUpperCase()}
 						</TeamItemRole>
+
+						{item.store && (
+							<TeamItemRole>{item.store.name}</TeamItemRole>
+						)}
 					</UserInfoContainer>
 				</TeamItemContainer>
 			);
@@ -259,56 +263,54 @@ const ListUsers: React.FC = () => {
 	);
 
 	return (
-		<>
+		<Container>
+			<Header title={strings.View_UsersInTeam_PageTitle} noDrawer />
+
+			{role === 'manager' && (
+				<AddCategoryContent>
+					<InputContainer>
+						<InputTextContainer hasError={inputHasError}>
+							<InputText
+								value={newUserEmail || ''}
+								onChange={handleOnTextChange}
+								keyboardType="email-address"
+								autoCapitalize="none"
+								placeholder={
+									strings.View_UsersInTeam_Input_AddNewUser_Placeholder
+								}
+							/>
+						</InputTextContainer>
+
+						<AddCategoryButtonContainer
+							onPress={handleAddUser}
+							disabled={isAdding}
+						>
+							{isAdding ? (
+								<LoadingIcon />
+							) : (
+								<Icons name="add-circle-outline" />
+							)}
+						</AddCategoryButtonContainer>
+					</InputContainer>
+
+					{!!inputErrorMessage && (
+						<InputTextTip>{inputErrorMessage}</InputTextTip>
+					)}
+				</AddCategoryContent>
+			)}
+
+			<ListTitle>{strings.View_UsersInTeam_List_Title}</ListTitle>
+
 			{isLoading ? (
 				<Loading />
 			) : (
-				<Container>
-					<Header title={strings.View_UsersInTeam_PageTitle} />
-
-					{role === 'manager' && (
-						<AddCategoryContent>
-							<InputContainer>
-								<InputTextContainer hasError={inputHasError}>
-									<InputText
-										value={newUserEmail || ''}
-										onChange={handleOnTextChange}
-										keyboardType="email-address"
-										autoCapitalize="none"
-										placeholder={
-											strings.View_UsersInTeam_Input_AddNewUser_Placeholder
-										}
-									/>
-								</InputTextContainer>
-
-								<AddCategoryButtonContainer
-									onPress={handleAddUser}
-									disabled={isAdding}
-								>
-									{isAdding ? (
-										<LoadingIcon />
-									) : (
-										<Icons name="add-circle-outline" />
-									)}
-								</AddCategoryButtonContainer>
-							</InputContainer>
-
-							{!!inputErrorMessage && (
-								<InputTextTip>{inputErrorMessage}</InputTextTip>
-							)}
-						</AddCategoryContent>
-					)}
-
-					<ListTitle>{strings.View_UsersInTeam_List_Title}</ListTitle>
-
-					<ListCategories
-						data={users}
-						keyExtractor={(item, index) => String(index)}
-						renderItem={renderCategory}
-					/>
-				</Container>
+				<ListCategories
+					data={users}
+					keyExtractor={(item, index) => String(index)}
+					renderItem={renderCategory}
+				/>
 			)}
-		</>
+		</Container>
 	);
 };
 

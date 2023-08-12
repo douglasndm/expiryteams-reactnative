@@ -27,6 +27,10 @@ interface getUserTeamsResponse {
 			];
 		};
 	};
+	store: {
+		id: string;
+		name: string;
+	} | null;
 }
 
 export async function getUserTeams(): Promise<getUserTeamsResponse> {
