@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
@@ -50,6 +50,16 @@ const StoreView: React.FC = () => {
 	const [storeName] = useState<string>(() => routeParams.store_name);
 
 	const [products, setProducts] = useState<IProduct[]>([]);
+
+	const isManager = useMemo(() => {
+		if (
+			!!teamContext.roleInTeam &&
+			teamContext.roleInTeam.role.toLowerCase() === 'manager'
+		) {
+			return true;
+		}
+		return false;
+	}, [teamContext.roleInTeam]);
 
 	const loadData = useCallback(async () => {
 		if (!teamContext.id) return;
@@ -169,7 +179,7 @@ const StoreView: React.FC = () => {
 				onSearchChange={handleSearchChange}
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
-				navigateToEdit={handleEdit}
+				navigateToEdit={isManager ? handleEdit : undefined}
 			/>
 
 			<TitleContainer>
