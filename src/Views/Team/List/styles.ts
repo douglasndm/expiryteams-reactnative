@@ -48,12 +48,12 @@ export const TeamItemContainer = styled.TouchableOpacity<TeamItemContainerProps>
 `;
 
 export const TeamItemTitle = styled.Text`
-	color: ${props => props.theme.colors.text};
+	color: ${props => props.theme.colors.productCardText};
 	font-size: 18px;
 `;
 
 export const TeamItemRole = styled.Text`
-	color: ${props => props.theme.colors.text};
+	color: ${props => props.theme.colors.productCardText};
 	font-size: 15px;
 `;
 

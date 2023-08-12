@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 
 import PreferencesContext from '@teams/Contexts/PreferencesContext';
+import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { imageExistsLocally, getLocally } from '@utils/Images/GetLocally';
 import { saveLocally } from '@utils/Images/SaveLocally';
@@ -14,6 +15,7 @@ interface Request {
 }
 
 const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
+	const teamContext = useTeam();
 	const { preferences } = useContext(PreferencesContext);
 
 	const [imagePath, setImagePath] = useState<string | undefined>();
@@ -51,6 +53,7 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 			imagePath={imagePath}
 			daysToBeNext={preferences.howManyDaysToBeNextToExpire}
 			onLongPress={onLongPress}
+			storeName={teamContext.roleInTeam?.store?.name || undefined}
 		/>
 	);
 };

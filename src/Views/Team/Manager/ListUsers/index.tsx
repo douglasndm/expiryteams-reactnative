@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -308,6 +309,12 @@ const ListUsers: React.FC = () => {
 					data={users}
 					keyExtractor={(item, index) => String(index)}
 					renderItem={renderCategory}
+					refreshControl={
+						<RefreshControl
+							refreshing={isLoading}
+							onRefresh={loadData}
+						/>
+					}
 				/>
 			)}
 		</Container>

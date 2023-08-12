@@ -145,7 +145,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 				<Content>
 					{product && (
-						<PageHeader product={product} imagePath={imagePath} />
+						<PageHeader
+							product={product}
+							imagePath={imagePath}
+							enableStore
+							storeName={
+								teamContext.roleInTeam?.store?.name || undefined
+							}
+						/>
 					)}
 
 					<PageContent>
