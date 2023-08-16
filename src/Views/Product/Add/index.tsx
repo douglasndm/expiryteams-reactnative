@@ -268,6 +268,20 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			);
 
 			setStores(storesArray);
+
+			const { roleInTeam } = teamContext;
+
+			if (roleInTeam) {
+				if (roleInTeam.role.toLowerCase() !== 'manager') {
+					if (roleInTeam.store) {
+						const store = storesArray.find(
+							sto => sto.key === roleInTeam.store?.id
+						);
+
+						if (store) setSelectedStore(store.value);
+					}
+				}
+			}
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -277,7 +291,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, teamContext.id]);
+	}, [isMounted, teamContext]);
 
 	const handleSwitchFindModal = useCallback(() => {
 		setShowProdFindedModal(!showProdFindedModal);
