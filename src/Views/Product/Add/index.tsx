@@ -10,11 +10,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 
-import BarCodeReader from '@components/BarCodeReader';
-import InputText from '@components/InputText';
-
-import Header from '@components/Header';
 import strings from '@teams/Locales';
+
+import BarCodeReader from '@components/BarCodeReader';
+import Header from '@components/Header';
+import InputText from '@components/InputText';
+import Dialog from '@components/Dialog';
 
 import PreferencesContext from '@teams/Contexts/PreferencesContext';
 import { useTeam } from '@teams/Contexts/TeamContext';
@@ -27,6 +28,7 @@ import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
 import { findDuplicate } from '@teams/Functions/Products/FindDuplicate';
 
 import Loading from '@components/Loading';
+import Camera from '@components/Camera';
 import PaddingComponent from '@components/PaddingComponent';
 
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
@@ -35,6 +37,13 @@ import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
 
 import FillModal from '@shared/Views/Product/Add/Components/FillModal';
 
+import {
+	CameraButtonContainer,
+	ImageContainer,
+	ProductImage,
+	ProductImageContainer,
+} from '@shared/Views/Product/Add/styles';
+import { uploadImage } from '@teams/Functions/Product/Image';
 import {
 	Container,
 	PageContent,
@@ -95,6 +104,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const [amount, setAmount] = useState('');
 	const [price, setPrice] = useState<number | null>(null);
 	const [expDate, setExpDate] = useState(new Date());
+	const [photoPath, setPhotoPath] = useState('');
 
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(
 		() => {
@@ -131,14 +141,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const [productNameFinded, setProductNameFinded] = useState<null | string>(
 		null
 	);
-	const [showProdFindedModal, setShowProdFindedModal] =
-		useState<boolean>(false);
+	const [showProdFindedModal, setShowProdFindedModal] = useState(false);
+	const [showModalDuplicate, setShowModalDuplicate] = useState(false);
 
 	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 	const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
 	const [duplicateId, setDuplicateId] = useState('');
 
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
+	const [enableCamera, setEnableCamera] = useState(false);
 
 	const handleCompleteInfo = useCallback(() => {
 		if (productNameFinded?.trim()) {
@@ -164,16 +175,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 	const findProductByEAN = useCallback(
 		async (ean_code: string) => {
-			if (ean_code.length < 8) return;
+			const queryWithoutLetters = ean_code.replace(/\D/g, '').trim();
+			const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
 
-			if (ean_code.trim() !== '') {
+			if (query.length < 8) return;
+
+			if (query.trim() !== '') {
 				// if (getLocales()[0].languageCode === 'pt') {
 				try {
 					setIsFindingProd(true);
-					const queryWithoutLetters = ean_code
-						.replace(/\D/g, '')
-						.trim();
-					const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
 
 					if (query === '') return;
 
@@ -278,6 +288,36 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			navigate('AddBatch', { productId: duplicateId });
 	}, [duplicateId, navigate]);
 
+	const addBatch = useCallback(async () => {
+		if (!duplicateId || (duplicateId && duplicateId.trim() === '')) return;
+
+		try {
+			setIsLoading(true);
+
+			await createBatch({
+				productId: duplicateId,
+				batch: {
+					name: batch || '01',
+					exp_date: String(expDate),
+					amount: Number(amount),
+					price: Number(price),
+					status: 'unchecked',
+				},
+			});
+
+			showMessage({
+				message: 'O lote foi adicionado ao produto existente',
+				type: 'info',
+			});
+
+			replace('ProductDetails', {
+				id: duplicateId,
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [amount, batch, duplicateId, expDate, price, replace]);
+
 	const findDuplicateProducts = useCallback(async () => {
 		if (!teamContext.id) return;
 		try {
@@ -321,7 +361,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			return;
 		}
 
-		if (nameFieldError || codeFieldError) {
+		if (nameFieldError) {
+			return;
+		}
+
+		if (codeFieldError) {
+			setShowModalDuplicate(true);
 			return;
 		}
 		try {
@@ -355,6 +400,14 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				},
 			});
 
+			if (!!photoPath) {
+				await uploadImage({
+					team_id: teamContext.id,
+					product_id: createdProduct.id,
+					path: photoPath,
+				});
+			}
+
 			showMessage({
 				message: strings.View_Success_ProductCreated,
 				type: 'info',
@@ -385,10 +438,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		expDate,
 		amount,
 		price,
+		photoPath,
 		replace,
 	]);
 
-	const handleAmountChange = useCallback(value => {
+	const handleAmountChange = useCallback((value: string) => {
 		const regex = /^[0-9\b]+$/;
 
 		if (value === '' || regex.test(value)) {
@@ -396,12 +450,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		}
 	}, []);
 
-	const handleEnableBarCodeReader = useCallback(() => {
-		setIsBarCodeEnabled(true);
+	const handleSwitchCodeReader = useCallback(() => {
+		setIsBarCodeEnabled(prevState => !prevState);
 	}, []);
 
-	const handleDisableBarCodeReader = useCallback(() => {
-		setIsBarCodeEnabled(false);
+	const switchCameraEnable = useCallback(() => {
+		setEnableCamera(prevState => !prevState);
+	}, []);
+
+	const handleSwitchDupliateModal = useCallback(() => {
+		setShowModalDuplicate(prevState => !prevState);
 	}, []);
 
 	const handleOnCodeRead = useCallback(
@@ -409,9 +467,25 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			setCode(codeRead);
 			setIsBarCodeEnabled(false);
 			await findProductByEAN(codeRead);
+			await findDuplicateProducts();
 		},
-		[findProductByEAN]
+		[findDuplicateProducts, findProductByEAN]
 	);
+
+	const onPhotoTaken = useCallback((path: string) => {
+		setPhotoPath(path);
+		setEnableCamera(false);
+	}, []);
+
+	const handleNameChange = useCallback((value: string) => {
+		setName(value);
+		setNameFieldError(false);
+	}, []);
+
+	const handleCodeChange = useCallback((value: string) => {
+		setCode(value);
+		setCodeFieldError(false);
+	}, []);
 
 	const handlePriceChange = useCallback((value: number) => {
 		if (value <= 0) {
@@ -421,23 +495,30 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		setPrice(value);
 	}, []);
 
+	const handleDateChange = useCallback((value: Date) => {
+		setExpDate(value);
+	}, []);
+
 	useEffect(() => {
 		return () => {
 			setIsMounted(false);
 		};
 	}, []);
 
-	return isLoading ? (
-		<Loading />
+	return enableCamera ? (
+		<Camera
+			onPhotoTaken={onPhotoTaken}
+			switchEnableCamera={switchCameraEnable}
+		/>
 	) : (
-		<>
+		<Container>
 			{isBarCodeEnabled ? (
 				<BarCodeReader
 					onCodeRead={handleOnCodeRead}
-					onClose={handleDisableBarCodeReader}
+					onClose={handleSwitchCodeReader}
 				/>
 			) : (
-				<Container>
+				<>
 					<Header
 						title={strings.View_AddProduct_PageTitle}
 						noDrawer
@@ -445,190 +526,227 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 							{
 								icon: 'content-save-outline',
 								onPress: handleSave,
+								disabled: isLoading,
 							},
 						]}
 					/>
-					<Content>
-						<PageContent>
-							<InputContainer>
-								<InputGroup>
-									<InputTextContainer
-										hasError={nameFieldError}
-									>
-										<InputText
-											placeholder={
-												strings.View_AddProduct_InputPlacehoder_Name
-											}
-											value={name}
-											onChange={(value: string) => {
-												setName(value);
-												setNameFieldError(false);
-											}}
-										/>
-									</InputTextContainer>
-								</InputGroup>
-								{nameFieldError && (
-									<InputTextTip>
-										{
-											strings.View_AddProduct_AlertTypeProductName
-										}
-									</InputTextTip>
+
+					{isLoading ? (
+						<Loading />
+					) : (
+						<Content>
+							<PageContent>
+								{!!photoPath && (
+									<ImageContainer>
+										<ProductImageContainer>
+											<ProductImage
+												source={{
+													uri: `file://${photoPath}`,
+												}}
+											/>
+										</ProductImageContainer>
+									</ImageContainer>
 								)}
 
-								<InputCodeTextContainer
-									hasError={codeFieldError}
-								>
-									<InputCodeText
-										placeholder={
-											strings.View_AddProduct_InputPlacehoder_Code
-										}
-										accessibilityLabel={
-											strings.View_AddProduct_InputAccessibility_Code
-										}
-										value={code}
-										onBlur={handleCodeBlur}
-										onChangeText={value => {
-											setCode(value);
-											setCodeFieldError(false);
-										}}
-									/>
-									<InputTextIconContainer
-										onPress={handleEnableBarCodeReader}
-									>
-										<Icon
-											name="barcode-outline"
-											size={34}
-										/>
-									</InputTextIconContainer>
-
-									{isFindingProd && <InputTextLoading />}
-
-									{productFinded && !isFindingProd && (
-										<InputTextIconContainer
-											style={{
-												marginTop: -5,
-											}}
-											onPress={handleSwitchFindModal}
-										>
-											<Icon name="download" size={30} />
-										</InputTextIconContainer>
-									)}
-								</InputCodeTextContainer>
-								{codeFieldError && (
-									<InputTextTip
-										onPress={handleNavigateToAddBatch}
-									>
-										O produto já está cadastrado
-									</InputTextTip>
-								)}
-
-								<MoreInformationsContainer>
-									<MoreInformationsTitle>
-										{
-											strings.View_AddProduct_MoreInformation_Label
-										}
-									</MoreInformationsTitle>
-
+								<InputContainer>
 									<InputGroup>
 										<InputTextContainer
-											style={{
-												flex: 5,
-												marginRight: 10,
-											}}
+											hasError={nameFieldError}
 										>
 											<InputText
 												placeholder={
-													strings.View_AddProduct_InputPlacehoder_Batch
+													strings.View_AddProduct_InputPlacehoder_Name
 												}
-												value={batch}
-												onChange={value =>
-													setBatch(value)
-												}
+												value={name}
+												onChange={handleNameChange}
 											/>
 										</InputTextContainer>
-										<InputTextContainer>
-											<InputText
-												contentStyle={{ flex: 4 }}
-												placeholder={
-													strings.View_AddProduct_InputPlacehoder_Amount
-												}
-												keyboardType="numeric"
-												value={String(amount)}
-												onChange={handleAmountChange}
+
+										<CameraButtonContainer
+											onPress={switchCameraEnable}
+										>
+											<Icon
+												name="camera-outline"
+												size={36}
 											/>
-										</InputTextContainer>
+										</CameraButtonContainer>
 									</InputGroup>
+									{nameFieldError && (
+										<InputTextTip>
+											{
+												strings.View_AddProduct_AlertTypeProductName
+											}
+										</InputTextTip>
+									)}
 
-									<Currency
-										value={price}
-										onChangeValue={handlePriceChange}
-										delimiter={
-											currency === 'BRL' ? ',' : '.'
-										}
-										placeholder={
-											strings.View_AddProduct_InputPlacehoder_UnitPrice
-										}
-									/>
+									<InputCodeTextContainer
+										hasError={codeFieldError}
+									>
+										<InputCodeText
+											placeholder={
+												strings.View_AddProduct_InputPlacehoder_Code
+											}
+											accessibilityLabel={
+												strings.View_AddProduct_InputAccessibility_Code
+											}
+											value={code}
+											onBlur={handleCodeBlur}
+											onChangeText={handleCodeChange}
+										/>
+										<InputTextIconContainer
+											onPress={handleSwitchCodeReader}
+										>
+											<Icon
+												name="barcode-outline"
+												size={34}
+											/>
+										</InputTextIconContainer>
 
-									<CategorySelect
-										categories={categories}
-										onChange={setSelectedCategory}
-										defaultValue={selectedCategory}
-										containerStyle={{
-											marginBottom: 10,
-										}}
-									/>
+										{isFindingProd && <InputTextLoading />}
 
-									<BrandSelect
-										brands={brands}
-										onChange={setSelectedBrand}
-										defaultValue={selectedBrand}
-										containerStyle={{
-											marginBottom: 10,
-										}}
-									/>
-									{teamContext.roleInTeam?.role.toLowerCase() ===
-										'manager' && (
-										<StoreSelect
-											stores={stores}
-											defaultValue={selectedStore}
-											onChange={setSelectedStore}
+										{productFinded && !isFindingProd && (
+											<InputTextIconContainer
+												style={{
+													marginTop: -5,
+												}}
+												onPress={handleSwitchFindModal}
+											>
+												<Icon
+													name="download"
+													size={30}
+												/>
+											</InputTextIconContainer>
+										)}
+									</InputCodeTextContainer>
+									{codeFieldError && (
+										<InputTextTip
+											onPress={handleNavigateToAddBatch}
+										>
+											O produto já está cadastrado
+										</InputTextTip>
+									)}
+
+									<MoreInformationsContainer>
+										<MoreInformationsTitle>
+											{
+												strings.View_AddProduct_MoreInformation_Label
+											}
+										</MoreInformationsTitle>
+
+										<InputGroup>
+											<InputTextContainer
+												style={{
+													flex: 5,
+													marginRight: 10,
+												}}
+											>
+												<InputText
+													placeholder={
+														strings.View_AddProduct_InputPlacehoder_Batch
+													}
+													value={batch}
+													onChange={value =>
+														setBatch(value)
+													}
+												/>
+											</InputTextContainer>
+											<InputTextContainer>
+												<InputText
+													contentStyle={{ flex: 4 }}
+													placeholder={
+														strings.View_AddProduct_InputPlacehoder_Amount
+													}
+													keyboardType="numeric"
+													value={String(amount)}
+													onChange={
+														handleAmountChange
+													}
+												/>
+											</InputTextContainer>
+										</InputGroup>
+
+										<Currency
+											value={price}
+											onChangeValue={handlePriceChange}
+											delimiter={
+												currency === 'BRL' ? ',' : '.'
+											}
+											placeholder={
+												strings.View_AddProduct_InputPlacehoder_UnitPrice
+											}
+										/>
+
+										<CategorySelect
+											categories={categories}
+											onChange={setSelectedCategory}
+											defaultValue={selectedCategory}
 											containerStyle={{
 												marginBottom: 10,
 											}}
 										/>
-									)}
-								</MoreInformationsContainer>
 
-								<ExpDateGroup>
-									<ExpDateLabel>
-										{strings.View_AddProduct_CalendarTitle}
-									</ExpDateLabel>
+										<BrandSelect
+											brands={brands}
+											onChange={setSelectedBrand}
+											defaultValue={selectedBrand}
+											containerStyle={{
+												marginBottom: 10,
+											}}
+										/>
+										{teamContext.roleInTeam?.role.toLowerCase() ===
+											'manager' && (
+											<StoreSelect
+												stores={stores}
+												defaultValue={selectedStore}
+												onChange={setSelectedStore}
+												containerStyle={{
+													marginBottom: 10,
+												}}
+											/>
+										)}
+									</MoreInformationsContainer>
 
-									<CustomDatePicker
-										accessibilityLabel={
-											strings.View_AddProduct_CalendarAccessibilityDescription
-										}
-										date={expDate}
-										onDateChange={value => {
-											setExpDate(value);
-										}}
-										locale={locale}
-									/>
-								</ExpDateGroup>
-							</InputContainer>
-						</PageContent>
+									<ExpDateGroup>
+										<ExpDateLabel>
+											{
+												strings.View_AddProduct_CalendarTitle
+											}
+										</ExpDateLabel>
 
-						<FillModal
-							onConfirm={handleCompleteInfo}
-							show={showProdFindedModal}
-							setShow={handleSwitchFindModal}
-						/>
-						<PaddingComponent />
-					</Content>
-				</Container>
+										<CustomDatePicker
+											accessibilityLabel={
+												strings.View_AddProduct_CalendarAccessibilityDescription
+											}
+											date={expDate}
+											onDateChange={handleDateChange}
+											locale={locale}
+										/>
+									</ExpDateGroup>
+								</InputContainer>
+							</PageContent>
+
+							<FillModal
+								onConfirm={handleCompleteInfo}
+								show={showProdFindedModal}
+								setShow={handleSwitchFindModal}
+							/>
+							<PaddingComponent />
+						</Content>
+					)}
+				</>
 			)}
-		</>
+
+			<Dialog
+				visible={showModalDuplicate}
+				title="Este produto já existe"
+				description="Você deseja adicionar um lote ao produto existente?"
+				cancelText="Adicionar lote"
+				confirmText="Cancelar"
+				onCancel={addBatch}
+				onDismiss={handleSwitchDupliateModal}
+				onConfirm={handleSwitchDupliateModal}
+			/>
+		</Container>
 	);
 };
 

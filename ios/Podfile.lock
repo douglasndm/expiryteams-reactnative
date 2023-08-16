@@ -749,11 +749,11 @@ PODS:
     - Firebase/AppCheck (= 10.12.0)
     - React-Core
     - RNFBApp
-  - RNFBAuth (18.2.0):
+  - RNFBAuth (18.3.0):
     - Firebase/Auth (= 10.12.0)
     - React-Core
     - RNFBApp
-  - RNFBDynamicLinks (18.2.0):
+  - RNFBDynamicLinks (18.3.0):
     - Firebase/DynamicLinks (= 10.12.0)
     - GoogleUtilities/AppDelegateSwizzler
     - React-Core
@@ -841,6 +841,10 @@ PODS:
   - SentryPrivate (8.7.1)
   - SocketRocket (0.6.1)
   - SSZipArchive (2.2.3)
+  - VisionCamera (2.15.6):
+    - React
+    - React-callinvoker
+    - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -961,6 +965,7 @@ DEPENDENCIES:
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../../../node_modules/react-native-share`)
   - RNZipArchive (from `../../../node_modules/react-native-zip-archive`)
+  - VisionCamera (from `../../../node_modules/react-native-vision-camera`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1177,6 +1182,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-share"
   RNZipArchive:
     :path: "../../../node_modules/react-native-zip-archive"
+  VisionCamera:
+    :path: "../../../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../../../node_modules/react-native/ReactCommon/yoga"
 
@@ -1286,8 +1293,8 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 767ad4566e94ce77c0b1bed9a7a02abda146423b
   RNFBApp: 9a54c7fd5a1c33684a862b51b9c00914a358061c
   RNFBAppCheck: 7f060037c1535fcb73143b8d0a3ac6c43b1bfaec
-  RNFBAuth: e467cbc872eb8d73e48516b1429dcec19bad0292
-  RNFBDynamicLinks: 5d86ceeb9ff22f9bd093b15316fd553082d69be4
+  RNFBAuth: e3f51b2e4acc39e4664b24117f9106af493b2dd3
+  RNFBDynamicLinks: 6f4468964b4c284374e1920bc1f82ede01e4db71
   RNFBInAppMessaging: 218cf426ede6383c1a808c31814966f6f18da67f
   RNFBInstallations: 712329a1a8ef1eb136d1685ffed5173b70270e66
   RNFBMessaging: 5fa69e7c4f9641fc222327208d90d3b56e907f58
@@ -1308,6 +1315,7 @@ SPEC CHECKSUMS:
   SentryPrivate: b3c448eacdabe9eab7679a2e0af609c608f91572
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  VisionCamera: 3443b55e018be345be1dcf1bfb2c0291872aad92
   Yoga: 8796b55dba14d7004f980b54bcc9833ee45b28ce
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
