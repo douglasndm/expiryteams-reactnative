@@ -26,4 +26,6 @@ export const SelectButton = styled.Pressable`
 
 export const SelectIcon = styled(Ionicons).attrs(() => ({
 	size: 28,
-}))``;
+}))`
+	color: ${({ theme }) => theme.colors.text};
+`;
