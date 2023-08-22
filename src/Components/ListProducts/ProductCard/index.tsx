@@ -36,12 +36,17 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 				} else if (product.thumbnail) {
 					setImagePath(product.thumbnail);
 
-					saveLocally(product.thumbnail, product.code.trim());
+					if (product.thumbnail.includes('/teams/')) {
+						// this means the product has a personal image for the team and it not only the generic one
+						saveLocally(product.thumbnail, product.id);
+					} else {
+						saveLocally(product.thumbnail, product.code.trim());
+					}
 				}
 			} catch (err) {
 				setImagePath(undefined);
 			}
-	}, [product.code, product.thumbnail]);
+	}, [product.code, product.id, product.thumbnail]);
 
 	useEffect(() => {
 		handleImage();

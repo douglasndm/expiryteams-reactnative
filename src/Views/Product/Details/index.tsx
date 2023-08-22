@@ -80,8 +80,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 		const filename = product.thumbnail?.split('/').pop();
 		const withoutAcessToken = filename?.split('?')[0];
+		const withoutExtension = withoutAcessToken
+			?.split('.')
+			.slice(0, -1)
+			.join('.');
 
-		let searchFor = withoutAcessToken;
+		let searchFor = withoutExtension;
 
 		if (!searchFor) {
 			searchFor = product.code;
@@ -89,10 +93,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 		if (searchFor)
 			try {
-				const existsLocally = await imageExistsLocally(searchFor);
+				const existsLocally = await imageExistsLocally(product.id);
 
 				if (existsLocally) {
-					const localImage = getLocally(searchFor);
+					const localImage = getLocally(product.id);
 
 					if (Platform.OS === 'android') {
 						setImagePath(`file://${localImage}`);
@@ -102,7 +106,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				} else if (product.thumbnail) {
 					setImagePath(product.thumbnail);
 
-					saveLocally(product.thumbnail, searchFor.trim());
+					saveLocally(product.thumbnail, product.id);
 				}
 			} catch (err) {
 				setImagePath(undefined);

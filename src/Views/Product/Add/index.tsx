@@ -20,8 +20,11 @@ import Dialog from '@components/Dialog';
 import PreferencesContext from '@teams/Contexts/PreferencesContext';
 import { useTeam } from '@teams/Contexts/TeamContext';
 
+import { saveLocally } from '@utils/Images/SaveLocally';
+
 import { createProduct } from '@teams/Functions/Products/Product';
 import { createBatch } from '@teams/Functions/Products/Batches/Batch';
+import { uploadImage } from '@teams/Functions/Product/Image';
 
 import { findProductByCode } from '@teams/Functions/Products/FindByCode';
 import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
@@ -43,7 +46,6 @@ import {
 	ProductImage,
 	ProductImageContainer,
 } from '@shared/Views/Product/Add/styles';
-import { uploadImage } from '@teams/Functions/Product/Image';
 import {
 	Container,
 	PageContent,
@@ -420,6 +422,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 					product_id: createdProduct.id,
 					path: photoPath,
 				});
+
+				// await saveLocally(photoPath, createdProduct.id);
 			}
 
 			showMessage({

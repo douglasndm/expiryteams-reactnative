@@ -44,4 +44,15 @@ async function uploadImage(props: uploadImageProps): Promise<void> {
 	);
 }
 
-export { uploadImage };
+interface removeImageProps {
+	team_id: string;
+	product_id: string;
+}
+
+async function removeImage(props: removeImageProps): Promise<void> {
+	await api.delete(
+		`/team/${props.team_id}/upload/product/${props.product_id}/image`
+	);
+}
+
+export { uploadImage, removeImage };

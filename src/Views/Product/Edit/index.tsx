@@ -1,21 +1,29 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
+import { Menu } from 'react-native-paper';
 
 import strings from '@teams/Locales';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
+
+import { getLocally, imageExistsLocally } from '@utils/Images/GetLocally';
+import { saveLocally } from '@utils/Images/SaveLocally';
+import { removeLocalImage } from '@utils/Images/RemoveLocally';
 
 import {
 	deleteProduct,
 	getProduct,
 	updateProduct,
 } from '@teams/Functions/Products/Product';
+import { removeImage, uploadImage } from '@teams/Functions/Product/Image';
 import { getExtraInfoForProducts } from '@teams/Functions/Products/ExtraInfo';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
+import Camera from '@components/Camera';
 import BarCodeReader from '@components/BarCodeReader';
 import InputText from '@components/InputText';
 import Dialog from '@components/Dialog';
@@ -33,14 +41,18 @@ import {
 	InputTextTip,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
+	ImageContainer,
+	ProductImageContainer,
+	ProductImage,
+	CameraButtonContainer,
 } from '@views/Product/Add/styles';
 
 import {
 	InputCodeTextContainer,
 	InputCodeText,
 	InputTextIconContainer,
+	Icon,
 } from '../Add/styles';
-
 import { Icons } from './styles';
 
 interface RequestParams {
@@ -72,10 +84,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, [route.params.productId]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [photoFailed, setPhotoFailed] = useState<boolean>(false);
 	const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
+
+	const [product, setProduct] = useState<IProduct>();
 
 	const [name, setName] = useState('');
 	const [code, setCode] = useState<string | undefined>('');
+	const [photoPath, setPhotoPath] = useState('');
 
 	const [categories, setCategories] = useState<Array<IPickerItem>>([]);
 	const [brands, setBrands] = useState<Array<IPickerItem>>([]);
@@ -90,6 +106,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
+	const [showMenu, setShowMenu] = useState(false);
+	const [enableCamera, setEnableCamera] = useState(false);
 
 	const isSupervisor = useMemo(() => {
 		if (userRole === 'manager' || userRole === 'supervisor') {
@@ -97,6 +115,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		}
 		return false;
 	}, [userRole]);
+
+	const switchShowMenu = useCallback(() => {
+		setShowMenu(prevValue => !prevValue);
+	}, []);
 
 	const loadData = useCallback(async () => {
 		if (!isMounted) return;
@@ -162,6 +184,30 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			if (prod.store) {
 				setSelectedStore(prod.store);
 			}
+
+			setProduct(prod);
+
+			if (prod.thumbnail) {
+				try {
+					const existsLocally = await imageExistsLocally(productId);
+
+					if (existsLocally) {
+						const localImage = getLocally(productId);
+
+						if (Platform.OS === 'android') {
+							setPhotoPath(`file://${localImage}`);
+						} else if (Platform.OS === 'ios') {
+							setPhotoPath(localImage);
+						}
+					} else if (prod.thumbnail) {
+						setPhotoPath(prod.thumbnail);
+
+						saveLocally(prod.thumbnail, productId);
+					}
+				} catch (err) {
+					setPhotoPath('');
+				}
+			}
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -197,6 +243,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				},
 			});
 
+			if (!!photoPath) {
+				await uploadImage({
+					team_id: teamContext.id,
+					product_id: productId,
+					path: photoPath,
+				});
+
+				// await saveLocally(photoPath, productId);
+			}
+
 			showMessage({
 				message: strings.View_Success_ProductUpdated,
 				type: 'info',
@@ -217,6 +273,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		isMounted,
 		name,
 		navigate,
+		photoPath,
 		productId,
 		selectedBrand,
 		selectedCategory,
@@ -251,6 +308,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		}
 	}, [isMounted, productId, reset, teamContext.id]);
 
+	const handleOnPhotoPress = useCallback(() => {
+		if (!product.thumbnail) return;
+
+		if (product.thumbnail) {
+			navigate('PhotoView', {
+				product_id: productId,
+			});
+		}
+	}, [navigate, product?.thumbnail, productId]);
+
 	const handleOnCodeRead = useCallback((codeRead: string) => {
 		setCode(codeRead);
 		setIsBarCodeEnabled(false);
@@ -264,9 +331,36 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		setIsBarCodeEnabled(false);
 	}, []);
 
+	const switchCameraEnable = useCallback(() => {
+		setEnableCamera(prevState => !prevState);
+	}, []);
+
 	const switchShowDeleteModal = useCallback(() => {
 		setDeleteComponentVisible(prevState => !prevState);
 	}, []);
+
+	const onPhotoTaken = useCallback((path: string) => {
+		setPhotoPath(path);
+		setPhotoFailed(false);
+		setEnableCamera(false);
+	}, []);
+
+	const onPhotoLoadFailed = useCallback(() => {
+		setPhotoFailed(true);
+	}, []);
+
+	const handleRemovePhoto = useCallback(async () => {
+		if (!teamContext.id) return;
+		setShowMenu(false);
+		setPhotoPath('');
+
+		await removeImage({
+			team_id: teamContext.id,
+			product_id: productId,
+		});
+
+		await removeLocalImage(productId);
+	}, [productId, teamContext.id]);
 
 	useEffect(() => {
 		loadData();
@@ -278,7 +372,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		};
 	}, []);
 
-	return (
+	return enableCamera ? (
+		<Camera
+			onPhotoTaken={onPhotoTaken}
+			switchEnableCamera={switchCameraEnable}
+		/>
+	) : (
 		<>
 			{isBarCodeEnabled ? (
 				<BarCodeReader
@@ -315,6 +414,34 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 						<Loading />
 					) : (
 						<PageContent>
+							{!!photoPath && !photoFailed && (
+								<Menu
+									visible={showMenu}
+									onDismiss={switchShowMenu}
+									anchorPosition="bottom"
+									anchor={
+										<ImageContainer>
+											<ProductImageContainer
+												onPress={handleOnPhotoPress}
+												onLongPress={switchShowMenu}
+											>
+												<ProductImage
+													source={{
+														uri: `file://${photoPath}`,
+													}}
+													onError={onPhotoLoadFailed}
+												/>
+											</ProductImageContainer>
+										</ImageContainer>
+									}
+								>
+									<Menu.Item
+										title="Remover foto"
+										onPress={handleRemovePhoto}
+									/>
+								</Menu>
+							)}
+
 							<InputContainer>
 								<InputGroup>
 									<InputTextContainer>
@@ -329,6 +456,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 											}}
 										/>
 									</InputTextContainer>
+
+									<CameraButtonContainer
+										onPress={switchCameraEnable}
+									>
+										<Icon name="camera-outline" size={36} />
+									</CameraButtonContainer>
 								</InputGroup>
 								{nameFieldError && (
 									<InputTextTip>
@@ -416,6 +549,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 						visible={deleteComponentVisible}
 						onConfirm={handleDeleteProduct}
 						onDismiss={switchShowDeleteModal}
+						onCancel={switchShowDeleteModal}
 					/>
 				</Container>
 			)}
