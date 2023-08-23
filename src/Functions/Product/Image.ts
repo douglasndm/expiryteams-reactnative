@@ -2,6 +2,8 @@ import { Platform } from 'react-native';
 
 import api from '@teams/Services/API';
 
+import { removeLocalImage } from '@utils/Images/RemoveLocally';
+
 interface uploadImageProps {
 	team_id: string;
 	product_id: string;
@@ -53,6 +55,8 @@ async function removeImage(props: removeImageProps): Promise<void> {
 	await api.delete(
 		`/team/${props.team_id}/upload/product/${props.product_id}/image`
 	);
+
+	await removeLocalImage(props.product_id);
 }
 
 export { uploadImage, removeImage };

@@ -1,5 +1,7 @@
 import api from '@teams/Services/API';
 
+import { removeImage } from '../Product/Image';
+
 interface getProductProps {
 	productId: string;
 	team_id: string;
@@ -70,5 +72,6 @@ export async function deleteProduct({
 	team_id,
 	product_id,
 }: deleteProductProps): Promise<void> {
+	await removeImage({ team_id, product_id });
 	await api.delete<IProduct>(`/team/${team_id}/products/${product_id}`);
 }
