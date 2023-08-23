@@ -21,12 +21,25 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 	const [imagePath, setImagePath] = useState<string | undefined>();
 
 	const handleImage = useCallback(async () => {
-		if (product.code)
+		const filename = product.thumbnail?.split('/').pop();
+		const withoutAcessToken = filename?.split('?')[0];
+		const withoutExtension = withoutAcessToken
+			?.split('.')
+			.slice(0, -1)
+			.join('.');
+
+		let searchFor = withoutExtension;
+
+		if (!searchFor) {
+			searchFor = product.code;
+		}
+
+		if (searchFor)
 			try {
-				const existsLocally = await imageExistsLocally(product.code);
+				const existsLocally = await imageExistsLocally(searchFor);
 
 				if (existsLocally) {
-					const localImage = getLocally(product.code);
+					const localImage = getLocally(searchFor);
 
 					if (Platform.OS === 'android') {
 						setImagePath(`file://${localImage}`);
@@ -36,12 +49,7 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 				} else if (product.thumbnail) {
 					setImagePath(product.thumbnail);
 
-					if (product.thumbnail.includes('/teams/')) {
-						// this means the product has a personal image for the team and it not only the generic one
-						saveLocally(product.thumbnail, product.id);
-					} else {
-						saveLocally(product.thumbnail, product.code.trim());
-					}
+					saveLocally(product.thumbnail, product.id);
 				}
 			} catch (err) {
 				setImagePath(undefined);
