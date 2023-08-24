@@ -1,6 +1,6 @@
 import api from '@teams/Services/API';
 
-import { removeImage } from '../Product/Image';
+import { removeLocalImage } from '@utils/Images/RemoveLocally';
 
 interface getProductProps {
 	productId: string;
@@ -72,6 +72,6 @@ export async function deleteProduct({
 	team_id,
 	product_id,
 }: deleteProductProps): Promise<void> {
-	await removeImage({ team_id, product_id });
 	await api.delete<IProduct>(`/team/${team_id}/products/${product_id}`);
+	removeLocalImage(product_id);
 }
