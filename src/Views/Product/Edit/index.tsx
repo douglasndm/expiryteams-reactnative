@@ -236,13 +236,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					name,
 					code,
 					brand: selectedBrand,
-					store: selectedStore,
+					store: selectedStore
+						? {
+								id: selectedStore,
+						  }
+						: null,
 					category: {
 						id: cate,
 					},
 				},
 			});
 
+			/*
 			if (!!photoPath) {
 				await uploadImage({
 					team_id: teamContext.id,
@@ -251,7 +256,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				});
 
 				// await saveLocally(photoPath, productId);
-			}
+			} */
 
 			showMessage({
 				message: strings.View_Success_ProductUpdated,

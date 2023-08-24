@@ -44,6 +44,7 @@ const Home: React.FC = () => {
 		if (!teamContext.id) return [];
 		try {
 			const productsResponse = await getAllProducts({
+				removeCheckedBatches: false,
 				team_id: teamContext.id,
 			});
 
