@@ -105,6 +105,7 @@ const CategoryView: React.FC = () => {
 					team_id: teamContext.id || '',
 					removeCheckedBatches: false,
 				});
+
 			const getBrands = async () =>
 				getAllBrands({ team_id: teamContext.id || '' });
 			const getCategories = async () =>
