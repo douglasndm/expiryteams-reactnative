@@ -169,9 +169,7 @@ const View: React.FC = () => {
 		[products, searchQuery]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Brand_View_PageTitle}
@@ -180,18 +178,28 @@ const View: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={canEdit ? handleEdit : undefined}
+				isLoading={isLoading}
 			/>
 
 			<TitleContainer>
 				<ItemTitle>{brandName}</ItemTitle>
 			</TitleContainer>
 
-			<ListProducts products={productsSearch} onRefresh={loadData} />
+			{isLoading ? (
+				<Loading />
+			) : (
+				<>
+					<ListProducts
+						products={productsSearch}
+						onRefresh={loadData}
+					/>
 
-			<FloatButton
-				navigateTo="AddProduct"
-				brandId={routeParams.brand_id}
-			/>
+					<FloatButton
+						navigateTo="AddProduct"
+						brandId={routeParams.brand_id}
+					/>
+				</>
+			)}
 		</Container>
 	);
 };

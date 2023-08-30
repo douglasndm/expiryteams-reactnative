@@ -169,9 +169,7 @@ const StoreView: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title="Loja"
@@ -180,18 +178,28 @@ const StoreView: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={isManager ? handleEdit : undefined}
+				isLoading={isLoading}
 			/>
 
 			<TitleContainer>
 				<ItemTitle>{storeName}</ItemTitle>
 			</TitleContainer>
 
-			<ListProducts products={productsSearch} onRefresh={loadData} />
+			{isLoading ? (
+				<Loading />
+			) : (
+				<>
+					<ListProducts
+						products={productsSearch}
+						onRefresh={loadData}
+					/>
 
-			<FloatButton
-				navigateTo="AddProduct"
-				storeId={routeParams.store_id}
-			/>
+					<FloatButton
+						navigateTo="AddProduct"
+						storeId={routeParams.store_id}
+					/>
+				</>
+			)}
 		</Container>
 	);
 };

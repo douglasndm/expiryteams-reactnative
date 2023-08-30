@@ -175,9 +175,7 @@ const CategoryView: React.FC = () => {
 		[products, searchQuery]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Category_List_View_BeforeCategoryName}
@@ -186,13 +184,18 @@ const CategoryView: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={isManager ? handleEdit : undefined}
+				isLoading={isLoading}
 			/>
 
 			<TitleContainer>
 				<ItemTitle>{categoryName}</ItemTitle>
 			</TitleContainer>
 
-			<ListProducts products={productsSearch} onRefresh={loadData} />
+			{isLoading ? (
+				<Loading />
+			) : (
+				<ListProducts products={productsSearch} onRefresh={loadData} />
+			)}
 
 			<FloatButton navigateTo="AddProduct" categoryId={routeParams.id} />
 		</Container>

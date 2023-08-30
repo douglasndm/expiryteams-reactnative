@@ -105,17 +105,19 @@ const User: React.FC = () => {
 					newPassword,
 				});
 			} catch (err) {
-				let error = err.message;
-				if (err.code === 'auth/wrong-password') {
-					error =
-						strings.View_Profile_Alert_Error_WrongCurrentPassword;
+				if (err instanceof Error) {
+					let error = err.message;
+					if (err.code === 'auth/wrong-password') {
+						error =
+							strings.View_Profile_Alert_Error_WrongCurrentPassword;
+					}
+					showMessage({
+						message: error,
+						type: 'danger',
+					});
+					setIsUpdating(false);
+					return;
 				}
-				showMessage({
-					message: error,
-					type: 'danger',
-				});
-				setIsUpdating(false);
-				return;
 			}
 		}
 
@@ -184,9 +186,7 @@ const User: React.FC = () => {
 		};
 	}, []);
 
-	return isLoading || isUpdating ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Profile_PageTitle}
@@ -195,85 +195,92 @@ const User: React.FC = () => {
 					{
 						icon: 'content-save-outline',
 						onPress: handleUpdate,
+						disabled: isLoading || isUpdating,
 					},
 				]}
 			/>
 
-			<Content>
-				<InputGroup>
-					<Input
-						value={name}
-						onChange={handleNameChange}
-						placeholder={
-							strings.View_Profile_InputText_Placeholder_Name
-						}
-						hasError={nameError}
-					/>
-				</InputGroup>
-				{nameError && (
-					<InputTextTip>
-						{strings.View_Profile_Alert_Tip_EmptyName}
-					</InputTextTip>
-				)}
+			{isLoading || isUpdating ? (
+				<Loading />
+			) : (
+				<Content>
+					<InputGroup>
+						<Input
+							value={name}
+							onChange={handleNameChange}
+							placeholder={
+								strings.View_Profile_InputText_Placeholder_Name
+							}
+							hasError={nameError}
+						/>
+					</InputGroup>
+					{nameError && (
+						<InputTextTip>
+							{strings.View_Profile_Alert_Tip_EmptyName}
+						</InputTextTip>
+					)}
 
-				<InputGroup>
-					<Input
-						placeholder={
-							strings.View_Profile_InputText_Placeholder_LastName
-						}
-						value={lastName}
-						onChange={handleLastNameChange}
-					/>
-				</InputGroup>
+					<InputGroup>
+						<Input
+							placeholder={
+								strings.View_Profile_InputText_Placeholder_LastName
+							}
+							value={lastName}
+							onChange={handleLastNameChange}
+						/>
+					</InputGroup>
 
-				<InputGroupTitle>
-					{strings.View_Profile_Label_PasswordGroup}
-				</InputGroupTitle>
-				<InputGroup>
-					<Input
-						placeholder={
-							strings.View_Profile_InputText_Placeholder_Password
-						}
-						value={password}
-						onChange={handlePasswordChange}
-						isPassword
-					/>
-				</InputGroup>
+					<InputGroupTitle>
+						{strings.View_Profile_Label_PasswordGroup}
+					</InputGroupTitle>
+					<InputGroup>
+						<Input
+							placeholder={
+								strings.View_Profile_InputText_Placeholder_Password
+							}
+							value={password}
+							onChange={handlePasswordChange}
+							isPassword
+						/>
+					</InputGroup>
 
-				<InputGroup>
-					<Input
-						placeholder={
-							strings.View_Profile_InputText_Placeholder_NewPassword
-						}
-						value={newPassword}
-						onChange={handleNewPasswordChange}
-						hasError={newPasswordError}
-						isPassword
-					/>
-				</InputGroup>
-				{newPasswordError && (
-					<InputTextTip>
-						{strings.View_Profile_Alert_Tip_EmptyPassword}
-					</InputTextTip>
-				)}
+					<InputGroup>
+						<Input
+							placeholder={
+								strings.View_Profile_InputText_Placeholder_NewPassword
+							}
+							value={newPassword}
+							onChange={handleNewPasswordChange}
+							hasError={newPasswordError}
+							isPassword
+						/>
+					</InputGroup>
+					{newPasswordError && (
+						<InputTextTip>
+							{strings.View_Profile_Alert_Tip_EmptyPassword}
+						</InputTextTip>
+					)}
 
-				<InputGroup>
-					<Input
-						placeholder={
-							strings.View_Profile_InputText_Placeholder_ConfirNewPassword
-						}
-						value={newPasswordConfi}
-						onChange={handleNewPasswordConfiChange}
-						hasError={newPasswordConfiError}
-						isPassword
-					/>
-				</InputGroup>
-				{newPasswordConfiError && (
-					<InputTextTip>
-						{strings.View_Profile_Alert_Tip_EmptyPasswordConfirm}
-					</InputTextTip>
-				)}
-			</Content>
+					<InputGroup>
+						<Input
+							placeholder={
+								strings.View_Profile_InputText_Placeholder_ConfirNewPassword
+							}
+							value={newPasswordConfi}
+							onChange={handleNewPasswordConfiChange}
+							hasError={newPasswordConfiError}
+							isPassword
+						/>
+					</InputGroup>
+					{newPasswordConfiError && (
+						<InputTextTip>
+							{
+								strings.View_Profile_Alert_Tip_EmptyPasswordConfirm
+							}
+						</InputTextTip>
+					)}
+				</Content>
+			)}
 		</Container>
 	);
 };

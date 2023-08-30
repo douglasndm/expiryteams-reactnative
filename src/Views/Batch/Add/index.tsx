@@ -64,6 +64,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
 	const [isMounted, setIsMounted] = useState(true);
 	const [isAdding, setIsAdding] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const [name, setName] = useState('');
 	const [code, setCode] = useState('');
@@ -116,12 +117,21 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
 	const loadData = useCallback(async () => {
 		if (!isMounted || !teamContext.id) return;
-		const prod = await getProduct({ productId, team_id: teamContext.id });
 
-		if (prod) {
-			setName(prod.name);
+		try {
+			setIsLoading(true);
+			const prod = await getProduct({
+				productId,
+				team_id: teamContext.id,
+			});
 
-			if (prod.code) setCode(prod.code);
+			if (prod) {
+				setName(prod.name);
+
+				if (prod.code) setCode(prod.code);
+			}
+		} finally {
+			setIsLoading(false);
 		}
 	}, [isMounted, productId, teamContext.id]);
 
@@ -143,9 +153,11 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 		setPrice(value);
 	}, []);
 
-	return isAdding ? (
-		<Loading />
-	) : (
+	const handleDateChange = useCallback((value: Date) => {
+		setExpDate(value);
+	}, []);
+
+	return (
 		<PageContainer>
 			<Header
 				title={strings.View_AddBatch_PageTitle}
@@ -154,70 +166,73 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 					{
 						icon: 'content-save-outline',
 						onPress: handleSave,
+						disabled: isAdding || isLoading,
 					},
 				]}
 			/>
-			<PageContent>
-				<InputContainer>
-					<ProductHeader>
-						<ProductName>{name}</ProductName>
-						<ProductCode>{code}</ProductCode>
-					</ProductHeader>
+			{isLoading || isAdding ? (
+				<Loading />
+			) : (
+				<PageContent>
+					<InputContainer>
+						<ProductHeader>
+							<ProductName>{name}</ProductName>
+							<ProductCode>{code}</ProductCode>
+						</ProductHeader>
 
-					<InputGroup>
-						<InputTextContainer
-							style={{
-								flex: 5,
-								marginRight: 5,
-							}}
-						>
-							<InputText
-								placeholder={
-									strings.View_AddBatch_InputPlacehoder_Batch
-								}
-								value={lote}
-								onChange={value => setLote(value)}
-							/>
-						</InputTextContainer>
-						<InputTextContainer
-							style={{
-								flex: 4,
-							}}
-						>
-							<InputText
-								placeholder={
-									strings.View_AddBatch_InputPlacehoder_Amount
-								}
-								keyboardType="numeric"
-								value={amount}
-								onChange={handleAmountChange}
-							/>
-						</InputTextContainer>
-					</InputGroup>
+						<InputGroup>
+							<InputTextContainer
+								style={{
+									flex: 5,
+									marginRight: 5,
+								}}
+							>
+								<InputText
+									placeholder={
+										strings.View_AddBatch_InputPlacehoder_Batch
+									}
+									value={lote}
+									onChange={value => setLote(value)}
+								/>
+							</InputTextContainer>
+							<InputTextContainer
+								style={{
+									flex: 4,
+								}}
+							>
+								<InputText
+									placeholder={
+										strings.View_AddBatch_InputPlacehoder_Amount
+									}
+									keyboardType="numeric"
+									value={amount}
+									onChange={handleAmountChange}
+								/>
+							</InputTextContainer>
+						</InputGroup>
 
-					<Currency
-						value={price}
-						onChangeValue={handlePriceChange}
-						delimiter={currency === 'BRL' ? ',' : '.'}
-						placeholder={
-							strings.View_AddBatch_InputPlacehoder_UnitPrice
-						}
-					/>
-
-					<ExpDateGroup>
-						<ExpDateLabel>
-							{strings.View_AddBatch_CalendarTitle}
-						</ExpDateLabel>
-						<CustomDatePicker
-							date={expDate}
-							onDateChange={value => {
-								setExpDate(value);
-							}}
-							locale={locale}
+						<Currency
+							value={price}
+							onChangeValue={handlePriceChange}
+							delimiter={currency === 'BRL' ? ',' : '.'}
+							placeholder={
+								strings.View_AddBatch_InputPlacehoder_UnitPrice
+							}
 						/>
-					</ExpDateGroup>
-				</InputContainer>
-			</PageContent>
+
+						<ExpDateGroup>
+							<ExpDateLabel>
+								{strings.View_AddBatch_CalendarTitle}
+							</ExpDateLabel>
+							<CustomDatePicker
+								date={expDate}
+								onDateChange={handleDateChange}
+								locale={locale}
+							/>
+						</ExpDateGroup>
+					</InputContainer>
+				</PageContent>
+			)}
 		</PageContainer>
 	);
 };

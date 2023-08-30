@@ -5,7 +5,7 @@ export const PageContainer = styled.View`
 	background: ${({ theme }) => theme.colors.background};
 `;
 export const PageContent = styled.ScrollView`
-	padding: 0 16px 0 16px;
+	padding: 0 10px;
 `;
 
 export const ProductHeader = styled.View`
@@ -13,13 +13,13 @@ export const ProductHeader = styled.View`
 `;
 
 export const ProductName = styled.Text`
-	font-size: 32px;
+	font-size: 22px;
 
 	color: ${props => props.theme.colors.text};
 `;
 
 export const ProductCode = styled.Text`
-	font-size: 18px;
+	font-size: 16px;
 
 	color: ${props => props.theme.colors.text};
 `;

@@ -111,54 +111,57 @@ const ListView: React.FC = () => {
 		[navigate]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header title="Lojas" />
-			<Content>
-				<AddNewItemContent>
-					<InputContainer>
-						<InputTextContainer hasError={inputHasError}>
-							<InputText
-								value={newStoreName}
-								onChangeText={handleOnTextChange}
-								placeholder="Adicionar nova loja"
-							/>
-						</InputTextContainer>
 
-						<AddButtonContainer
-							onPress={handleSave}
-							enabled={!isAdding}
-						>
-							{isAdding ? (
-								<LoadingIcon />
-							) : (
-								<Icons name="add-circle-outline" />
-							)}
-						</AddButtonContainer>
-					</InputContainer>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Content>
+					<AddNewItemContent>
+						<InputContainer>
+							<InputTextContainer hasError={inputHasError}>
+								<InputText
+									value={newStoreName}
+									onChangeText={handleOnTextChange}
+									placeholder="Adicionar nova loja"
+								/>
+							</InputTextContainer>
 
-					{!!inputErrorMessage && (
-						<InputTextTip>{inputErrorMessage}</InputTextTip>
-					)}
-				</AddNewItemContent>
+							<AddButtonContainer
+								onPress={handleSave}
+								enabled={!isAdding}
+							>
+								{isAdding ? (
+									<LoadingIcon />
+								) : (
+									<Icons name="add-circle-outline" />
+								)}
+							</AddButtonContainer>
+						</InputContainer>
 
-				<ListTitle>Todas as lojas</ListTitle>
+						{!!inputErrorMessage && (
+							<InputTextTip>{inputErrorMessage}</InputTextTip>
+						)}
+					</AddNewItemContent>
 
-				{stores.map(store => {
-					return (
-						<ListItemContainer
-							key={store.id}
-							onPress={() =>
-								handleNavigateToStore(store.id, store.name)
-							}
-						>
-							<ListItemTitle>{store.name}</ListItemTitle>
-						</ListItemContainer>
-					);
-				})}
-			</Content>
+					<ListTitle>Todas as lojas</ListTitle>
+
+					{stores.map(store => {
+						return (
+							<ListItemContainer
+								key={store.id}
+								onPress={() =>
+									handleNavigateToStore(store.id, store.name)
+								}
+							>
+								<ListItemTitle>{store.name}</ListItemTitle>
+							</ListItemContainer>
+						);
+					})}
+				</Content>
+			)}
 		</Container>
 	);
 };

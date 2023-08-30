@@ -133,29 +133,37 @@ const Edit: React.FC = () => {
 		setDeleteComponentVisible(prevState => !prevState);
 	}, []);
 
-	return isLoading ? (
-		<Loading />
-	) : (
-		<>
-			<Container>
-				<Header
-					title={strings.View_Store_Edit_PageTitle}
-					noDrawer
-					appBarActions={[
-						{
-							icon: 'content-save-outline',
-							onPress: handleUpdate,
-						},
-					]}
-					moreMenuItems={[
-						{
-							title: strings.View_ProductDetails_Button_DeleteProduct,
-							leadingIcon: 'trash-can-outline',
-							onPress: handleSwitchShowDelete,
-						},
-					]}
-				/>
+	return (
+		<Container>
+			<Header
+				title={strings.View_Store_Edit_PageTitle}
+				noDrawer
+				appBarActions={
+					isLoading
+						? []
+						: [
+								{
+									icon: 'content-save-outline',
+									onPress: handleUpdate,
+								},
+						  ]
+				}
+				moreMenuItems={
+					isLoading
+						? []
+						: [
+								{
+									title: strings.View_ProductDetails_Button_DeleteProduct,
+									leadingIcon: 'trash-can-outline',
+									onPress: handleSwitchShowDelete,
+								},
+						  ]
+				}
+			/>
 
+			{isLoading ? (
+				<Loading />
+			) : (
 				<Content>
 					<InputTextContainer hasError={!!errorName}>
 						<InputText
@@ -168,18 +176,18 @@ const Edit: React.FC = () => {
 					</InputTextContainer>
 					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
 				</Content>
+			)}
 
-				<Dialog
-					visible={deleteComponentVisible}
-					title={strings.View_Store_Edit_DeleteModal_Title}
-					description={strings.View_Store_Edit_DeleteModal_Message}
-					cancelText={strings.View_Store_Edit_DeleteModal_Cancel}
-					confirmText={strings.View_Store_Edit_DeleteModal_Confirm}
-					onConfirm={handleDeleteStore}
-					onDismiss={handleSwitchShowDelete}
-				/>
-			</Container>
-		</>
+			<Dialog
+				visible={deleteComponentVisible}
+				title={strings.View_Store_Edit_DeleteModal_Title}
+				description={strings.View_Store_Edit_DeleteModal_Message}
+				cancelText={strings.View_Store_Edit_DeleteModal_Cancel}
+				confirmText={strings.View_Store_Edit_DeleteModal_Confirm}
+				onConfirm={handleDeleteStore}
+				onDismiss={handleSwitchShowDelete}
+			/>
+		</Container>
 	);
 };
 
