@@ -229,6 +229,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		const cate = selectedCategory === 'null' ? null : selectedCategory;
 
 		try {
+			setIsLoading(true);
 			await updateProduct({
 				team_id: teamContext.id,
 				product: {
@@ -247,7 +248,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				},
 			});
 
-			/*
 			if (!!photoPath) {
 				await uploadImage({
 					team_id: teamContext.id,
@@ -256,7 +256,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				});
 
 				// await saveLocally(photoPath, productId);
-			} */
+			}
 
 			showMessage({
 				message: strings.View_Success_ProductUpdated,
@@ -272,6 +272,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					message: err.message,
 					type: 'danger',
 				});
+		} finally {
+			setIsLoading(false);
 		}
 	}, [
 		code,
@@ -289,6 +291,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	const handleDeleteProduct = useCallback(async () => {
 		if (!isMounted || !teamContext.id) return;
 		try {
+			setIsLoading(true);
 			await deleteProduct({
 				team_id: teamContext.id,
 				product_id: productId,
@@ -310,6 +313,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				});
 		} finally {
 			setDeleteComponentVisible(false);
+			setIsLoading(false);
 		}
 	}, [isMounted, productId, reset, teamContext.id]);
 
