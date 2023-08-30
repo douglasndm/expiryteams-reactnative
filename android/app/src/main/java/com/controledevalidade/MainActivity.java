@@ -5,7 +5,6 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import android.os.Bundle;
-import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
 
@@ -38,7 +37,6 @@ public class MainActivity extends ReactActivity {
   // https://github.com/software-mansion/react-native-screens/issues/114
   @Override
   protected void onCreate(Bundle savedInstance){
-        SplashScreen.show(this, R.style.SplashScreenTheme, true);
         // super.onCreate(savedInstance);
         super.onCreate(null);
   }
