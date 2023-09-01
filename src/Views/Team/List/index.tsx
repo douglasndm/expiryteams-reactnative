@@ -233,18 +233,17 @@ const List: React.FC = () => {
 	}, [team]);
 
 	const quitTeam = useCallback(async () => {
-		if (!teamContext.id) return;
+		if (!team) return;
 
 		try {
 			setIsQuiting(true);
-			await removeItSelfFromTeam({ team_id: teamContext.id });
+			await removeItSelfFromTeam({ team_id: team.team.id });
 
 			if (teamContext.clearTeam) {
 				teamContext.clearTeam();
-				await clearSelectedteam();
-
-				setTeam(null);
 			}
+			await clearSelectedteam();
+			setTeam(null);
 		} catch (err) {
 			if (err instanceof Error) {
 				showMessage({
@@ -255,7 +254,7 @@ const List: React.FC = () => {
 		} finally {
 			setIsQuiting(false);
 		}
-	}, [teamContext]);
+	}, [team, teamContext]);
 
 	return isLoading ? (
 		<Loading />
