@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import { Menu } from 'react-native-paper';
+import * as Yup from 'yup';
 
 import strings from '@teams/Locales';
 
@@ -92,6 +93,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	const [name, setName] = useState('');
 	const [code, setCode] = useState<string | undefined>('');
 	const [photoPath, setPhotoPath] = useState('');
+	const [isTeamPhoto, setIsTeamPhoto] = useState(false);
 
 	const [categories, setCategories] = useState<Array<IPickerItem>>([]);
 	const [brands, setBrands] = useState<Array<IPickerItem>>([]);
@@ -204,6 +206,31 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 						saveLocally(prod.thumbnail, productId);
 					}
+
+					// this check if the image is a team photo by checking if image name is an uuid
+					// if the image is not an uuid, the thumbnail is a generic image that can't be removed
+					// #region
+					const splitedName = prod.thumbnail.split('/');
+					const fName = splitedName[splitedName.length - 1];
+					const withoutExtension = fName
+						.split('.')
+						.slice(0, -1)
+						.join('.');
+
+					const schema = Yup.object().shape({
+						name: Yup.string().uuid(),
+					});
+
+					const isUUID = await schema.isValid({
+						name: withoutExtension,
+					});
+
+					if (isUUID) {
+						setIsTeamPhoto(true);
+					} else {
+						setIsTeamPhoto(false);
+					}
+					// #endregion
 				} catch (err) {
 					setPhotoPath('');
 				}
@@ -444,10 +471,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 										</ImageContainer>
 									}
 								>
-									<Menu.Item
-										title="Remover foto"
-										onPress={handleRemovePhoto}
-									/>
+									{isTeamPhoto && (
+										<Menu.Item
+											title="Remover foto"
+											onPress={handleRemovePhoto}
+										/>
+									)}
 								</Menu>
 							)}
 
