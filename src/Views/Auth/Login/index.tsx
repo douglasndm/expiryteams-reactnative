@@ -176,12 +176,12 @@ const Login: React.FC = () => {
 	useEffect(() => {
 		const user = auth().currentUser;
 
+		BootSplash.hide({ fade: true });
+
 		if (user) {
 			handleNavigate();
 		} else {
 			setIsLoading(false);
-
-			BootSplash.hide({ fade: true });
 		}
 	}, [handleNavigate]);
 
