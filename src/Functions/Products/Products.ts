@@ -24,7 +24,7 @@ async function searchProducts(props: searchProductsProps): Promise<IProduct[]> {
 		`/team/${team_id}/products/search`,
 		{
 			params: {
-				removeCheckedBatches: removeCheckedBatches || true,
+				removeCheckedBatches: removeCheckedBatches || false,
 				sortByBatches: true,
 				search: query,
 			},

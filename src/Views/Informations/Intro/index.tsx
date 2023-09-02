@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
+import BootSplash from 'react-native-bootsplash';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -64,6 +65,7 @@ const Intro: React.FC = () => {
 				navigate('Login');
 				return;
 			}
+			await BootSplash.hide({ fade: true });
 		}
 		setShowIntro(true);
 	}, [navigate]);

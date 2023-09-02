@@ -44,6 +44,7 @@
     "react-native": "0.72.4",
     "react-native-adjust": "^4.33.0",
     "react-native-app-intro-slider": "^4.0.4",
+    "react-native-bootsplash": "^5.0.2",
     "react-native-bouncy-checkbox": "^2.1.2",
     "react-native-camera": "^4.2.1",
     "react-native-config": "^1.5.1",

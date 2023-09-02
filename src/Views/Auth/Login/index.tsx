@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import BootSplash from 'react-native-bootsplash';
 import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
@@ -179,6 +180,8 @@ const Login: React.FC = () => {
 			handleNavigate();
 		} else {
 			setIsLoading(false);
+
+			BootSplash.hide({ fade: true });
 		}
 	}, [handleNavigate]);
 

@@ -6,6 +6,7 @@ import React, {
 	memo,
 	useMemo,
 } from 'react';
+import BootSplash from 'react-native-bootsplash';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -80,6 +81,7 @@ const Home: React.FC = () => {
 			setProducts(prods);
 		} finally {
 			setIsLoading(false);
+			await BootSplash.hide({ fade: true });
 		}
 	}, [loadProducts]);
 
