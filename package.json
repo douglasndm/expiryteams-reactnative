@@ -46,7 +46,7 @@
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-bootsplash": "^5.0.2",
     "react-native-bouncy-checkbox": "^2.1.2",
-    "react-native-camera": "^4.2.1",
+    "react-native-camera-kit": "*",
     "react-native-config": "^1.5.1",
     "react-native-currency-input": "^1.0.1",
     "react-native-date-picker": "^4.1.1",

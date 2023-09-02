@@ -91,9 +91,6 @@ android {
         versionCode 116
         versionName "1.9.0"
 
-        // FOR REACT NATIVE CAMERA
-        missingDimensionStrategy 'react-native-camera', 'general'
-
         resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
 
