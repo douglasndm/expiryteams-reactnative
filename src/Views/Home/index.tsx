@@ -16,9 +16,7 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 
 import AppError from '@teams/Errors/AppError';
 
-import Loading from '@components/Loading';
-
-import ListProducts from '@teams/Components/ListProducts';
+import ListProds from '@components/Product/List';
 
 import HomeComponent from '@views/Home';
 import { Container } from '@views/Home/styles';
@@ -33,13 +31,27 @@ const Home: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 	const teamContext = useTeam();
 
+	interface listProdsRefProps {
+		switchDeleteModal: () => void;
+		switchSelectMode: () => void;
+	}
+
 	const listRef = useRef<FlatList<IProduct>>(null);
+	const listProdsRef = useRef<listProdsRefProps>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [searchString, setSearchString] = useState<string>('');
+	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+	const [enableBarCodeReader, setEnableBarCodeReader] =
+		useState<boolean>(false);
+	const [enableDatePicker, setEnableDatePicker] = useState(false);
+	const [enableSearch, setEnableSearch] = useState(false);
+
+	const [selectMode, setSelectMode] = useState(false);
 
 	const [products, setProducts] = useState<Array<IProduct>>([]);
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
 	const loadProducts = useCallback(async (): Promise<IProduct[]> => {
 		if (!teamContext.id) return [];
@@ -71,6 +83,10 @@ const Home: React.FC = () => {
 
 		return [];
 	}, [reset, teamContext.id]);
+
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
 
 	const initialLoad = useCallback(async () => {
 		try {
@@ -112,7 +128,7 @@ const Home: React.FC = () => {
 					query: search,
 				});
 
-				setProducts(response);
+				setProductsSearch(response);
 			}
 		},
 		[teamContext.id]
@@ -139,28 +155,34 @@ const Home: React.FC = () => {
 		return '';
 	}, [teamContext]);
 
+	const handleSwitchSelectMode = useCallback(() => {
+		setSelectMode(prevState => !prevState);
+	}, []);
+
 	return (
 		<Container>
 			<HomeComponent
 				title={title}
-				isLoading={isLoading}
 				productsListRef={listRef}
 				searchFor={handleSearch}
 				productsCount={products.length}
 				onSearch={handleSearch}
 				onSearchTextChange={onSearchChange}
 				searchValue={searchString}
+				enableSelectMode={selectMode}
+				handleSwitchSelectMode={handleSwitchSelectMode}
+				enableCalendar
 			/>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<ListProducts
-					products={products}
-					onRefresh={initialLoad}
-					listRef={listRef}
-				/>
-			)}
+			<ListProds
+				products={productsSearch}
+				onRefresh={initialLoad}
+				isRefreshing={isLoading}
+				listRef={listRef}
+				ref={listProdsRef}
+				handleDeleteMany={() => {}}
+				setSelectModeOnParent={setSelectMode}
+			/>
 		</Container>
 	);
 };

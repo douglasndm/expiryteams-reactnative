@@ -15,9 +15,8 @@ import { getAllProductsFromStore } from '@teams/Functions/Team/Stores/Products';
 
 import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
+import ListProducts from '@components/Product/List';
 import FloatButton from '@components/FloatButton';
-
-import ListProducts from '@teams/Components/ListProducts';
 
 import {
 	Container,

@@ -17,11 +17,9 @@ import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
 import { getAllBrands } from '@teams/Functions/Brand';
 import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
+import ListProds from '@components/Product/List';
 import FloatButton from '@components/FloatButton';
-
-import ListProducts from '@teams/Components/ListProducts';
 
 import {
 	Container,
@@ -191,11 +189,11 @@ const CategoryView: React.FC = () => {
 				<ItemTitle>{categoryName}</ItemTitle>
 			</TitleContainer>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<ListProducts products={productsSearch} onRefresh={loadData} />
-			)}
+			<ListProds
+				products={productsSearch}
+				isRefreshing={isLoading}
+				onRefresh={loadData}
+			/>
 
 			<FloatButton navigateTo="AddProduct" categoryId={routeParams.id} />
 		</Container>

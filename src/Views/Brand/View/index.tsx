@@ -14,9 +14,8 @@ import { getAllBrands, getAllProductsByBrand } from '@teams/Functions/Brand';
 
 import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
+import ListProducts from '@components/Product/List';
 import FloatButton from '@components/FloatButton';
-
-import ListProducts from '@teams/Components/ListProducts';
 
 import {
 	Container,
