@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 import strings from '@teams/Locales';
-import sharedStrings from '@shared/Locales';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
 
@@ -40,10 +39,6 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 
 	const navigateToAddProduct = useCallback(() => {
 		navigation.navigate('AddProduct', {});
-	}, [navigation]);
-
-	const navigateToWeekProds = useCallback(() => {
-		navigation.navigate('WeekView');
 	}, [navigation]);
 
 	const navigateToCategories = useCallback(() => {
@@ -98,15 +93,6 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 								<Icons name="add" />
 								<MenuItemText>
 									{strings.Menu_Button_GoToAddProduct}
-								</MenuItemText>
-							</MenuContent>
-						</MenuItemContainer>
-
-						<MenuItemContainer onPress={navigateToWeekProds}>
-							<MenuContent>
-								<Icons name="funnel-outline" />
-								<MenuItemText>
-									{sharedStrings.Menu_Button_GoToByWeeks}
 								</MenuItemText>
 							</MenuContent>
 						</MenuItemContainer>

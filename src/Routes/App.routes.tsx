@@ -16,8 +16,6 @@ import About from '@teams/Views/About';
 import Error from '@teams/Views/Informations/Error';
 import PhotoView from '@views/Product/PhotoView';
 
-import WeekView from '@teams/Views/Product/WeekView';
-
 import BatchView from '@teams/Views/Batch/View';
 import BatchDiscount from '@teams/Views/Batch/Discount';
 
@@ -82,7 +80,6 @@ const Routes: React.FC = () => {
 			>
 				<Stack.Screen name="Home" component={Home} />
 				<Stack.Screen name="AddProduct" component={AddProduct} />
-				<Stack.Screen name="WeekView" component={WeekView} />
 
 				<Stack.Screen name="Settings" component={Settings} />
 				<Stack.Screen name="About" component={About} />
