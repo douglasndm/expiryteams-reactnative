@@ -1,5 +1,7 @@
 import api from '@teams/Services/API';
 
+import { fixProductsDates } from '../Products/Products';
+
 interface getAllProductsFromCategoryProps {
 	team_id: string;
 	category_id: string;
@@ -14,9 +16,14 @@ export async function getAllProductsFromCategory({
 	team_id,
 	category_id,
 }: getAllProductsFromCategoryProps): Promise<getAllProductsFromCategoryResponse> {
-	const response = await api.get<getAllProductsFromCategoryResponse>(
+	const { data } = await api.get<getAllProductsFromCategoryResponse>(
 		`/team/${team_id}/categories/${category_id}/products`
 	);
 
-	return response.data;
+	const products = fixProductsDates(data.products);
+
+	return {
+		category_name: data.category_name,
+		products,
+	};
 }

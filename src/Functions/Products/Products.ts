@@ -41,8 +41,25 @@ interface getAllProductsProps {
 	page?: number;
 }
 
-interface getAllProductsResponse extends IProduct {
-	store_name: string;
+function convertDate(date: string): Date {
+	if (isDate(date)) {
+		return date as Date;
+	}
+	return parseISO(date);
+}
+
+export function fixProductsDates(products: Array<IProduct>): Array<IProduct> {
+	return products.map(prod => ({
+		...prod,
+		created_at: convertDate(prod.created_at),
+		updated_at: convertDate(prod.updated_at),
+		batches: prod.batches.map(batch => ({
+			...batch,
+			exp_date: convertDate(batch.exp_date),
+			created_at: convertDate(batch.created_at),
+			updated_at: convertDate(batch.updated_at),
+		})),
+	}));
 }
 
 export async function getAllProducts({
@@ -50,8 +67,8 @@ export async function getAllProducts({
 	removeCheckedBatches = true,
 	sortByBatches = true,
 	page,
-}: getAllProductsProps): Promise<Array<getAllProductsResponse>> {
-	const response = await API.get<IAllTeamProducts>(
+}: getAllProductsProps): Promise<IProduct[]> {
+	const { data } = await API.get<IAllTeamProducts>(
 		`/team/${team_id}/products`,
 		{
 			params: {
@@ -62,19 +79,7 @@ export async function getAllProducts({
 		}
 	);
 
-	const products: getAllProductsResponse[] = response.data.products.map(
-		prod => ({
-			...prod,
-			store: prod.store?.id,
-			store_name: prod.store?.name,
-			batches: prod.batches.map(batch => ({
-				...batch,
-				exp_date: isDate(batch.exp_date)
-					? batch.exp_date
-					: parseISO(batch.exp_date),
-			})),
-		})
-	);
+	const products = fixProductsDates(data.products);
 
 	return products;
 }
