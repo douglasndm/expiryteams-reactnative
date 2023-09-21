@@ -13,7 +13,6 @@ import { searchProducts } from '@utils/Product/Search';
 
 import { getAllProductsFromStore } from '@teams/Functions/Team/Stores/Products';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
 import ListProducts from '@components/Product/List';
 import FloatButton from '@components/FloatButton';
@@ -184,21 +183,16 @@ const StoreView: React.FC = () => {
 				<ItemTitle>{storeName}</ItemTitle>
 			</TitleContainer>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<ListProducts
-						products={productsSearch}
-						onRefresh={loadData}
-					/>
+			<ListProducts
+				products={productsSearch}
+				onRefresh={loadData}
+				isRefreshing={isLoading}
+			/>
 
-					<FloatButton
-						navigateTo="AddProduct"
-						storeId={routeParams.store_id}
-					/>
-				</>
-			)}
+			<FloatButton
+				navigateTo="AddProduct"
+				storeId={routeParams.store_id}
+			/>
 		</Container>
 	);
 };

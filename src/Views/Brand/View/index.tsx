@@ -12,7 +12,6 @@ import { searchProducts } from '@utils/Product/Search';
 
 import { getAllBrands, getAllProductsByBrand } from '@teams/Functions/Brand';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
 import ListProducts from '@components/Product/List';
 import FloatButton from '@components/FloatButton';
@@ -184,21 +183,16 @@ const View: React.FC = () => {
 				<ItemTitle>{brandName}</ItemTitle>
 			</TitleContainer>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<ListProducts
-						products={productsSearch}
-						onRefresh={loadData}
-					/>
+			<ListProducts
+				products={productsSearch}
+				onRefresh={loadData}
+				isRefreshing={isLoading}
+			/>
 
-					<FloatButton
-						navigateTo="AddProduct"
-						brandId={routeParams.brand_id}
-					/>
-				</>
-			)}
+			<FloatButton
+				navigateTo="AddProduct"
+				brandId={routeParams.brand_id}
+			/>
 		</Container>
 	);
 };
