@@ -79,6 +79,16 @@ const Home: React.FC = () => {
 		return [];
 	}, [reset, teamContext.id]);
 
+	const hasPermission = useMemo(() => {
+		if (!teamContext.roleInTeam) return false;
+
+		const { role } = teamContext.roleInTeam;
+
+		if (role.toLowerCase() === 'manager') return true;
+		if (role.toLowerCase() === 'supervisor') return true;
+		return false;
+	}, [teamContext.roleInTeam]);
+
 	useEffect(() => {
 		setProductsSearch(products);
 	}, [products]);
@@ -214,8 +224,10 @@ const Home: React.FC = () => {
 				isRefreshing={isLoading}
 				listRef={listRef}
 				ref={listProdsRef}
-				handleDeleteMany={handleDeleteMany}
-				setSelectModeOnParent={setSelectMode}
+				handleDeleteMany={hasPermission ? handleDeleteMany : undefined}
+				setSelectModeOnParent={
+					hasPermission ? setSelectMode : undefined
+				}
 			/>
 		</Container>
 	);
