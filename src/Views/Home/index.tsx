@@ -16,16 +16,16 @@ import { showMessage } from 'react-native-flash-message';
 import { useTeam } from '@teams/Contexts/TeamContext';
 
 import AppError from '@teams/Errors/AppError';
+import {
+	deleteManyProducts,
+	getAllProducts,
+	searchProducts as getSearchProducts,
+} from '@teams/Functions/Products/Products';
 
 import ListProds from '@components/Product/List';
 
 import HomeComponent from '@views/Home';
 import { Container } from '@views/Home/styles';
-
-import {
-	getAllProducts,
-	searchProducts as getSearchProducts,
-} from '@teams/Functions/Products/Products';
 
 const Home: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -100,6 +100,34 @@ const Home: React.FC = () => {
 		initialLoad();
 	}, [initialLoad]);
 
+	const handleDeleteMany = useCallback(
+		async (idsToDelete: string[] | number[]) => {
+			if (idsToDelete.length <= 0) return;
+
+			try {
+				if (!teamContext.id) {
+					return;
+				}
+
+				const ids = idsToDelete.map(id => String(id));
+
+				await deleteManyProducts({
+					productsIds: ids,
+					team_id: teamContext.id,
+				});
+
+				await initialLoad();
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			}
+		},
+		[initialLoad, teamContext.id]
+	);
+
 	const handleSearch = useCallback(
 		async (query?: string) => {
 			if (!teamContext.id || !query) return;
@@ -158,6 +186,12 @@ const Home: React.FC = () => {
 		}
 	}, []);
 
+	const handleSwitchDeleteModal = useCallback(() => {
+		if (listProdsRef.current?.switchDeleteModal) {
+			listProdsRef.current.switchDeleteModal();
+		}
+	}, []);
+
 	return (
 		<Container>
 			<HomeComponent
@@ -170,6 +204,7 @@ const Home: React.FC = () => {
 				searchValue={searchString}
 				enableSelectMode={selectMode}
 				handleSwitchSelectMode={handleSwitchSelectMode}
+				handleSwitchDeleteModal={handleSwitchDeleteModal}
 				enableCalendar
 			/>
 
@@ -179,7 +214,7 @@ const Home: React.FC = () => {
 				isRefreshing={isLoading}
 				listRef={listRef}
 				ref={listProdsRef}
-				handleDeleteMany={() => {}}
+				handleDeleteMany={handleDeleteMany}
 				setSelectModeOnParent={setSelectMode}
 			/>
 		</Container>
