@@ -10,6 +10,7 @@ import BootSplash from 'react-native-bootsplash';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { format, isValid, parseISO } from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
@@ -25,7 +26,6 @@ import {
 	getAllProducts,
 	searchProducts as getSearchProducts,
 } from '@teams/Functions/Products/Products';
-import { format, isValid, parseISO } from 'date-fns';
 
 const Home: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -42,11 +42,6 @@ const Home: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [searchString, setSearchString] = useState<string>('');
-	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-	const [enableBarCodeReader, setEnableBarCodeReader] =
-		useState<boolean>(false);
-	const [enableDatePicker, setEnableDatePicker] = useState(false);
-	const [enableSearch, setEnableSearch] = useState(false);
 
 	const [selectMode, setSelectMode] = useState(false);
 
@@ -157,6 +152,10 @@ const Home: React.FC = () => {
 
 	const handleSwitchSelectMode = useCallback(() => {
 		setSelectMode(prevState => !prevState);
+
+		if (listProdsRef.current) {
+			listProdsRef.current.switchSelectMode();
+		}
 	}, []);
 
 	return (
