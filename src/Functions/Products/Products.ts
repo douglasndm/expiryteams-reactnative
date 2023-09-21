@@ -17,23 +17,6 @@ interface ISearchResponse {
 	products: IProduct[];
 }
 
-async function searchProducts(props: searchProductsProps): Promise<IProduct[]> {
-	const { team_id, removeCheckedBatches, query } = props;
-
-	const response = await API.get<ISearchResponse>(
-		`/team/${team_id}/products/search`,
-		{
-			params: {
-				removeCheckedBatches: removeCheckedBatches || false,
-				sortByBatches: true,
-				search: query,
-			},
-		}
-	);
-
-	return response.data.products;
-}
-
 interface getAllProductsProps {
 	team_id: string;
 	removeCheckedBatches?: boolean;
@@ -75,6 +58,25 @@ export async function getAllProducts({
 				removeCheckedBatches,
 				sortByBatches,
 				page,
+			},
+		}
+	);
+
+	const products = fixProductsDates(data.products);
+
+	return products;
+}
+
+async function searchProducts(props: searchProductsProps): Promise<IProduct[]> {
+	const { team_id, removeCheckedBatches, query } = props;
+
+	const { data } = await API.get<ISearchResponse>(
+		`/team/${team_id}/products/search`,
+		{
+			params: {
+				removeCheckedBatches: removeCheckedBatches || false,
+				sortByBatches: true,
+				search: query,
 			},
 		}
 	);
