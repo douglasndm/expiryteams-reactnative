@@ -50,8 +50,6 @@ react {
     // hermesFlags = ["-O", "-output-source-map"]
 }
 
-apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
-
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
@@ -88,7 +86,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 116
+        versionCode 118
         versionName "1.9.0"
 
         resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())

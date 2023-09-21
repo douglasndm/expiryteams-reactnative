@@ -11,8 +11,6 @@ import Analyticts from '@react-native-firebase/analytics';
 import FlashMessage from 'react-native-flash-message';
 import screens from 'react-native-screens';
 
-import Sentry from '@services/Sentry';
-
 import StatusBar from '@components/StatusBar';
 
 import './Locales';
@@ -119,4 +117,4 @@ const App: React.FC = () => {
 	);
 };
 
-export default Sentry.wrap(App);
+export default App;
