@@ -17,7 +17,6 @@ import './Locales';
 
 import '@services/AppCheck';
 import './Services/Adjust';
-import './Services/LogRocket';
 import './Services/Analytics';
 import './Services/RemoteConfig';
 import DeepLinking from './Services/DeepLinking';
