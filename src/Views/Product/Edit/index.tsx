@@ -275,7 +275,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				},
 			});
 
-			if (!!photoPath) {
+			if (!!photoPath && photoFailed === false) {
 				await uploadImage({
 					team_id: teamContext.id,
 					product_id: productId,
