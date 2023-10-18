@@ -2,7 +2,7 @@ interface IProduct {
 	id: string;
 	name: string;
 	code?: string;
-	brand?: string | null;
+	brand?: IBrand;
 	thumbnail?: string;
 	store?: IStore;
 	category?: ICategory;

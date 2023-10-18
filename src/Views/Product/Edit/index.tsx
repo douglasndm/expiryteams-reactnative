@@ -263,7 +263,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					id: productId,
 					name,
 					code,
-					brand: selectedBrand,
+					brand: selectedBrand
+						? {
+								id: selectedBrand,
+						  }
+						: null,
 					store: selectedStore
 						? {
 								id: selectedStore,
@@ -307,6 +311,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		isMounted,
 		name,
 		navigate,
+		photoFailed,
 		photoPath,
 		productId,
 		selectedBrand,
