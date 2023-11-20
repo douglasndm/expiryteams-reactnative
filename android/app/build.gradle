@@ -154,11 +154,6 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-
-    // Adjust
-    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
-
-    implementation "com.android.installreferrer:installreferrer:2.2"
 }
 
 apply from: file("../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

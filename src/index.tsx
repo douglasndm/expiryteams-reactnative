@@ -16,7 +16,6 @@ import StatusBar from '@components/StatusBar';
 import './Locales';
 
 import '@services/AppCheck';
-import './Services/Adjust';
 import './Services/Analytics';
 import './Services/RemoteConfig';
 import DeepLinking from './Services/DeepLinking';
