@@ -12,6 +12,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4DF275BDF7F0D8D44CF737CB /* libPods-expirybusiness.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B6BEE9FC5758D24F57FE65 /* libPods-expirybusiness.a */; };
+		4F1C12CB2B0DD0A500C27D5E /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C12C72B0DD0A500C27D5E /* Ionicons.ttf */; };
+		4F1C12CC2B0DD0A500C27D5E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C12C82B0DD0A500C27D5E /* MaterialCommunityIcons.ttf */; };
+		4F1C12CD2B0DD0A500C27D5E /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C12C92B0DD0A500C27D5E /* Feather.ttf */; };
+		4F1C12CE2B0DD0A500C27D5E /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C12CA2B0DD0A500C27D5E /* MaterialIcons.ttf */; };
 		4F7816CB264DF917007165DA /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7816CA264DF917007165DA /* File.swift */; };
 		4F7816CD264DFA54007165DA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F7816CC264DFA54007165DA /* GoogleService-Info.plist */; };
 		4F781702264E046F007165DA /* swiftly-610.m4r in Resources */ = {isa = PBXBuildFile; fileRef = 4F781701264E046F007165DA /* swiftly-610.m4r */; };
@@ -27,9 +31,6 @@
 		4FEB01AA264F505A007B215D /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FEB01A9264F505A007B215D /* Logo.png */; };
 		6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C27294F6C75002F0161 /* Ionicons.ttf */; };
-		A5855C2B294F6C75002F0161 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */; };
-		A5855C2C294F6C75002F0161 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5855C29294F6C75002F0161 /* MaterialIcons.ttf */; };
 		A5A506B627EA8B7200010839 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5A506B527EA8B7200010839 /* Config.xcconfig */; };
 		A5D1E0802AA2B62D00454B3D /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5D1E07F2AA2B62D00454B3D /* BootSplash.storyboard */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,10 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = expirybusiness/main.m; sourceTree = "<group>"; };
 		1CAB3D6B9FAA868B8CDABE44 /* Pods-expirybusiness-expirybusinessTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.staging.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.staging.xcconfig"; sourceTree = "<group>"; };
 		26154AC4419AC653AD5F55CC /* Pods-expirybusiness-expirybusinessTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4F1C12C72B0DD0A500C27D5E /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		4F1C12C82B0DD0A500C27D5E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		4F1C12C92B0DD0A500C27D5E /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
+		4F1C12CA2B0DD0A500C27D5E /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		4F6BBD5026790C1E00A99EA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		4F6BBD5226790C2200A99EA5 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "pt-BR"; path = "pt-BR.lproj/Info.plist"; sourceTree = "<group>"; };
 		4F7816C9264DF917007165DA /* expirybusiness-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "expirybusiness-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -76,9 +81,6 @@
 		5343F86896497306DC9BBA4C /* Pods-expirybusiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = expirybusiness/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50A796929514F9400946350 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = expirybusiness/main.jsbundle; sourceTree = "<group>"; };
-		A5855C27294F6C75002F0161 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
-		A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
-		A5855C29294F6C75002F0161 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		A594003429567BBA0067E150 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
 		A5A506B527EA8B7200010839 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A5D1E07F2AA2B62D00454B3D /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = expirybusiness/BootSplash.storyboard; sourceTree = "<group>"; };
@@ -161,9 +163,10 @@
 			isa = PBXGroup;
 			children = (
 				4FEB01A9264F505A007B215D /* Logo.png */,
-				A5855C27294F6C75002F0161 /* Ionicons.ttf */,
-				A5855C28294F6C75002F0161 /* MaterialCommunityIcons.ttf */,
-				A5855C29294F6C75002F0161 /* MaterialIcons.ttf */,
+				4F1C12C92B0DD0A500C27D5E /* Feather.ttf */,
+				4F1C12C72B0DD0A500C27D5E /* Ionicons.ttf */,
+				4F1C12C82B0DD0A500C27D5E /* MaterialCommunityIcons.ttf */,
+				4F1C12CA2B0DD0A500C27D5E /* MaterialIcons.ttf */,
 				4F781708264E0A61007165DA /* OpenSans-Bold.ttf */,
 				4F781703264E0A60007165DA /* OpenSans-Light.ttf */,
 				4F781707264E0A61007165DA /* OpenSans-Regular.ttf */,
@@ -333,17 +336,18 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				4F781712264E0A61007165DA /* Roboto-Bold.ttf in Resources */,
 				A5D1E0802AA2B62D00454B3D /* BootSplash.storyboard in Resources */,
+				4F1C12CE2B0DD0A500C27D5E /* MaterialIcons.ttf in Resources */,
 				4F78170E264E0A61007165DA /* Roboto-Regular.ttf in Resources */,
 				A5A506B627EA8B7200010839 /* Config.xcconfig in Resources */,
-				A5855C2A294F6C75002F0161 /* Ionicons.ttf in Resources */,
-				A5855C2B294F6C75002F0161 /* MaterialCommunityIcons.ttf in Resources */,
 				4F78170D264E0A61007165DA /* Roboto-Light.ttf in Resources */,
 				4F78170C264E0A61007165DA /* OpenSans-SemiBold.ttf in Resources */,
+				4F1C12CD2B0DD0A500C27D5E /* Feather.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				4FEB01AA264F505A007B215D /* Logo.png in Resources */,
-				A5855C2C294F6C75002F0161 /* MaterialIcons.ttf in Resources */,
+				4F1C12CB2B0DD0A500C27D5E /* Ionicons.ttf in Resources */,
 				4F781702264E046F007165DA /* swiftly-610.m4r in Resources */,
 				4F7816CD264DFA54007165DA /* GoogleService-Info.plist in Resources */,
+				4F1C12CC2B0DD0A500C27D5E /* MaterialCommunityIcons.ttf in Resources */,
 				4F781711264E0A61007165DA /* Roboto-Medium.ttf in Resources */,
 				4F781710264E0A61007165DA /* OpenSans-Bold.ttf in Resources */,
 				4F78170F264E0A61007165DA /* OpenSans-Regular.ttf in Resources */,
@@ -796,8 +800,8 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					" ",
-					"-Wl -ld_classic ",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -870,8 +874,8 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					" ",
-					"-Wl -ld_classic ",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -943,8 +947,8 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					" ",
-					"-Wl -ld_classic ",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				SDKROOT = iphoneos;
