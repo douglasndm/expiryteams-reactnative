@@ -58,6 +58,8 @@
 	<string>We need your permission to access the device's camera to user barcode reader.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to help to understand where the app is most used</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Our expiration date app requires access to your photo library so you can import product photos directly from your gallery. This streamlines the validation process and helps you maintain a visual record of your products. Your photos will be used solely for this purpose and will not be shared with third parties.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Bold.ttf</string>
