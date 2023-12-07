@@ -10,6 +10,7 @@ import {
 import Analyticts from '@react-native-firebase/analytics';
 import FlashMessage from 'react-native-flash-message';
 import screens from 'react-native-screens';
+import CodePush from 'react-native-code-push';
 
 import StatusBar from '@components/StatusBar';
 
@@ -115,4 +116,4 @@ const App: React.FC = () => {
 	);
 };
 
-export default App;
+export default CodePush(App);
