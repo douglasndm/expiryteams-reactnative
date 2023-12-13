@@ -287,8 +287,8 @@ PODS:
   - PromisesObjC (2.3.1)
   - PromisesSwift (2.3.1):
     - PromisesObjC (= 2.3.1)
-  - PurchasesHybridCommon (6.1.2):
-    - RevenueCat (= 4.25.9)
+  - PurchasesHybridCommon (8.1.1):
+    - RevenueCat (= 4.31.2)
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -725,7 +725,7 @@ PODS:
     - React-Core
   - ReactNativeLocalization (2.3.2):
     - React-Core
-  - RevenueCat (4.25.9)
+  - RevenueCat (4.31.2)
   - RNBootSplash (5.0.3):
     - React-Core
   - RNCAsyncStorage (1.19.3):
@@ -794,8 +794,8 @@ PODS:
     - React-Core
   - RNPermissions (3.6.1):
     - React-Core
-  - RNPurchases (6.6.5):
-    - PurchasesHybridCommon (= 6.1.2)
+  - RNPurchases (7.5.1):
+    - PurchasesHybridCommon (= 8.1.1)
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -1238,7 +1238,7 @@ SPEC CHECKSUMS:
   Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   PromisesSwift: 28dca69a9c40779916ac2d6985a0192a5cb4a265
-  PurchasesHybridCommon: b7c4205b6d2479cdd8914084a2b536e5e5b1445f
+  PurchasesHybridCommon: 2439f6e671fb4d60878a652e4377fa7e588368e6
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: df81ab637d35fac9e6eb94611cfd20f0feb05455
   RCTTypeSafety: 4636e4a36c7c2df332bda6d59b19b41c443d4287
@@ -1283,7 +1283,7 @@ SPEC CHECKSUMS:
   ReactCommon: 91ece8350ebb3dd2be9cef662abd78b6948233c0
   ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
   ReactNativeLocalization: fb171138cdc80d5d0d4f20243d2fc82c2b3cc48f
-  RevenueCat: 4160d04575059fc1edbb973981f541b705ddebef
+  RevenueCat: 63f6f4ae6916095561b90b2e1de86a492af67493
   RNBootSplash: a496398664e0bd17a6de2845a1c7c73deccb5ae3
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNCClipboard: 3f0451a8100393908bea5c5c5b16f96d45f30bfc
@@ -1306,7 +1306,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
-  RNPurchases: 536d66e63df8dd67f9323d9575eb23580843b4af
+  RNPurchases: 6460a884756442e75b2d25a1d7e58cd39ebbffe6
   RNReanimated: 9633f8c2e214b721e35e371b473fbf3a1522948d
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
