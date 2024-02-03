@@ -1,7 +1,9 @@
 #import "AppDelegate.h"
 #import "RNBootSplash.h"
 
+#import "RNFBAppCheckModule.h"
 #import <Firebase.h>
+
 #import <CodePush/CodePush.h>
 
 #import <React/RCTBundleURLProvider.h>
@@ -10,6 +12,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // FIREBASE
+    [RNFBAppCheckModule sharedInstance];
     [FIRApp configure];
 
     self.moduleName = @"expirybusiness";

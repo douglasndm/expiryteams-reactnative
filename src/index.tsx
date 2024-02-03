@@ -16,7 +16,7 @@ import StatusBar from '@components/StatusBar';
 
 import './Locales';
 
-import '@services/AppCheck';
+import '@services/Firebase/AppCheck';
 import './Services/Analytics';
 import './Services/RemoteConfig';
 import DeepLinking from './Services/DeepLinking';
