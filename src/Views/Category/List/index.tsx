@@ -78,6 +78,7 @@ const CategoryList: React.FC = () => {
 			isLoading={isLoading}
 			isAdding={isAdding}
 			allowCreate={isManager}
+			showNoCategory={false}
 			createCategory={createCategoryProgress}
 		/>
 	);
