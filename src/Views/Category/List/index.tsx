@@ -61,10 +61,12 @@ const CategoryList: React.FC = () => {
 	);
 
 	const isManager = useMemo(() => {
-		if (teamContext.roleInTeam)
-			if (teamContext.roleInTeam.role.toLowerCase() === 'manager') {
+		if (teamContext.roleInTeam) {
+			const role = teamContext.roleInTeam.role.toLowerCase();
+			if (role === 'manager' || role === 'supervisor') {
 				return true;
 			}
+		}
 		return false;
 	}, [teamContext.roleInTeam]);
 
