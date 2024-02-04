@@ -18,7 +18,6 @@
     "Menu_Button_GoToSettings": "Configurações",
     "Menu_Button_Logout": "Sair",
     "Menu_Button_GoToAbout": "Sobre",
-    "Menu_Button_KnowOthersApps": "Outros apps",
     "Menu_Button_GoToTest": "Teste",
 
     "API_Error_Code1": "Verifique se as informações fornecidas estão corretas",
@@ -432,11 +431,6 @@
     "Subscription_TeamLimit_30people": "30 pessoas",
     "Subscription_TeamLimit_45people": "45 pessoas",
     "Subscription_TeamLimit_60people": "60 pessoas",
-
-    "AskUserReview_Title": "Você está gostando do aplicativo?",
-    "AskUserReview_Description": "Estou me esforçando para criar o melhor aplicativo da categoria, você poderia tirar alguns segundos para dizer como está o meu trabalho?",
-    "AskUserReview_Button_No": "Não agora",
-    "AskUserReview_Button_Yes": "Claro, fazer avaliação",
 
     "BeforeTermsAndPrivacy": "Ao usar este aplicativo você está aceitando nossos ",
     "BetweenTermsAndPrivacy": " e ",
