@@ -11,7 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		4DF275BDF7F0D8D44CF737CB /* libPods-expirybusiness.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B6BEE9FC5758D24F57FE65 /* libPods-expirybusiness.a */; };
+		32240024A37415F43133DD9F /* Pods_expirybusiness_expirybusinessTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6692063B5964E95D37D471 /* Pods_expirybusiness_expirybusinessTests.framework */; };
 		4F1C12CB2B0DD0A500C27D5E /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C12C72B0DD0A500C27D5E /* Ionicons.ttf */; };
 		4F1C12CC2B0DD0A500C27D5E /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C12C82B0DD0A500C27D5E /* MaterialCommunityIcons.ttf */; };
 		4F1C12CD2B0DD0A500C27D5E /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C12C92B0DD0A500C27D5E /* Feather.ttf */; };
@@ -29,8 +29,8 @@
 		4F781712264E0A61007165DA /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F78170A264E0A61007165DA /* Roboto-Bold.ttf */; };
 		4F9CEDAE265AAFD3006A5B9D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F9CEDAD265AAFD3006A5B9D /* StoreKit.framework */; };
 		4FEB01AA264F505A007B215D /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FEB01A9264F505A007B215D /* Logo.png */; };
-		6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9C0D086249892AFEA449E0BA /* Pods_expirybusiness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7381A1321CF8FC23B10648C1 /* Pods_expirybusiness.framework */; };
 		A5A506B627EA8B7200010839 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5A506B527EA8B7200010839 /* Config.xcconfig */; };
 		A5D1E0802AA2B62D00454B3D /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5D1E07F2AA2B62D00454B3D /* BootSplash.storyboard */; };
 /* End PBXBuildFile section */
@@ -49,7 +49,6 @@
 		00E356EE1AD99517003FC87E /* expirybusinessTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = expirybusinessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* expirybusinessTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = expirybusinessTests.m; sourceTree = "<group>"; };
-		07B6BEE9FC5758D24F57FE65 /* libPods-expirybusiness.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-expirybusiness.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* expirybusiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = expirybusiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = expirybusiness/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.mm; path = expirybusiness/AppDelegate.mm; sourceTree = "<group>"; };
@@ -57,6 +56,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = expirybusiness/main.m; sourceTree = "<group>"; };
 		1CAB3D6B9FAA868B8CDABE44 /* Pods-expirybusiness-expirybusinessTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.staging.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.staging.xcconfig"; sourceTree = "<group>"; };
 		26154AC4419AC653AD5F55CC /* Pods-expirybusiness-expirybusinessTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4E6692063B5964E95D37D471 /* Pods_expirybusiness_expirybusinessTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_expirybusiness_expirybusinessTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1C12C72B0DD0A500C27D5E /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		4F1C12C82B0DD0A500C27D5E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
 		4F1C12C92B0DD0A500C27D5E /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
@@ -79,6 +79,7 @@
 		4F9CEDAF265AAFF8006A5B9D /* expirybusiness.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = expirybusiness.entitlements; path = expirybusiness/expirybusiness.entitlements; sourceTree = "<group>"; };
 		4FEB01A9264F505A007B215D /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		5343F86896497306DC9BBA4C /* Pods-expirybusiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.debug.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.debug.xcconfig"; sourceTree = "<group>"; };
+		7381A1321CF8FC23B10648C1 /* Pods_expirybusiness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_expirybusiness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = expirybusiness/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50A796929514F9400946350 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = expirybusiness/main.jsbundle; sourceTree = "<group>"; };
 		A594003429567BBA0067E150 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
@@ -86,7 +87,6 @@
 		A5D1E07F2AA2B62D00454B3D /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = expirybusiness/BootSplash.storyboard; sourceTree = "<group>"; };
 		B983B0E933AFDCC0FD300CDD /* Pods-expirybusiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.release.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.release.xcconfig"; sourceTree = "<group>"; };
 		C0BBC9163B52F22772ED4982 /* Pods-expirybusiness.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness.staging.xcconfig"; path = "Target Support Files/Pods-expirybusiness/Pods-expirybusiness.staging.xcconfig"; sourceTree = "<group>"; };
-		E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-expirybusiness-expirybusinessTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F6ABD5F845207C53F2CDD429 /* Pods-expirybusiness-expirybusinessTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-expirybusiness-expirybusinessTests.release.xcconfig"; path = "Target Support Files/Pods-expirybusiness-expirybusinessTests/Pods-expirybusiness-expirybusinessTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6863CE3EF17B6A1B474CAFB8 /* libPods-expirybusiness-expirybusinessTests.a in Frameworks */,
+				32240024A37415F43133DD9F /* Pods_expirybusiness_expirybusinessTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,8 +104,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DF275BDF7F0D8D44CF737CB /* libPods-expirybusiness.a in Frameworks */,
 				4F9CEDAE265AAFD3006A5B9D /* StoreKit.framework in Frameworks */,
+				9C0D086249892AFEA449E0BA /* Pods_expirybusiness.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,8 +153,8 @@
 				A594003429567BBA0067E150 /* hermes.xcframework */,
 				4F9CEDAD265AAFD3006A5B9D /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				07B6BEE9FC5758D24F57FE65 /* libPods-expirybusiness.a */,
-				E7668C0B16525458ED1F75C5 /* libPods-expirybusiness-expirybusinessTests.a */,
+				7381A1321CF8FC23B10648C1 /* Pods_expirybusiness.framework */,
+				4E6692063B5964E95D37D471 /* Pods_expirybusiness_expirybusinessTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -649,7 +649,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 130;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
@@ -695,7 +695,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 130;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;
@@ -781,6 +781,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
@@ -869,6 +880,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
@@ -949,6 +971,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
@@ -991,7 +1024,7 @@
 				CODE_SIGN_ENTITLEMENTS = expirybusiness/expirybusiness.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 130;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = expirybusiness/Base.lproj/Info.plist;

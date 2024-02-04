@@ -116,7 +116,7 @@ const ViewTeam: React.FC = () => {
 						</SubscriptionDescription>
 
 						<Button
-							text={strings.View_TeamView_Button_GoToMembers}
+							title={strings.View_TeamView_Button_GoToMembers}
 							onPress={handleNavigateToMembers}
 						/>
 					</Section>
@@ -124,7 +124,7 @@ const ViewTeam: React.FC = () => {
 
 				{!teamContext.active && (
 					<Button
-						text={strings.View_TeamView_Button_GoToSettings}
+						title={strings.View_TeamView_Button_GoToSettings}
 						onPress={handleNavigateToSettings}
 					/>
 				)}

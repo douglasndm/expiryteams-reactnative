@@ -48,12 +48,10 @@ import UserDetails from '@teams/Views/Team/Manager/UserDetails';
 
 import Logs from '@teams/Views/Team/Management/Logs';
 
-import VerifyEmail from '@teams/Views/Auth/VerifyEmail';
+import VerifyEmail from '@teams/Views/Account/VerifyEmail';
 
 import DeleteTeam from '@teams/Views/Informations/Delete/Team';
 import DeleteUser from '@teams/Views/Informations/Delete/User';
-
-import Subscription from '@teams/Views/Subscription';
 
 import Test from '@teams/Views/Test';
 
@@ -125,8 +123,6 @@ const Routes: React.FC = () => {
 				<Stack.Screen name="UserDetails" component={UserDetails} />
 
 				<Stack.Screen name="TeamLogs" component={Logs} />
-
-				<Stack.Screen name="Subscription" component={Subscription} />
 
 				<Stack.Screen name="DeleteTeam" component={DeleteTeam} />
 				<Stack.Screen name="DeleteUser" component={DeleteUser} />

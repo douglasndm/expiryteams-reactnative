@@ -77,7 +77,6 @@ type RoutesParams = {
 	EditTeam;
 	ListUsersFromTeam;
 
-	Subscription;
 	Test;
 
 	VerifyEmail;

@@ -1,6 +1,4 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { format, parseISO } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
@@ -14,6 +12,7 @@ import { getTeamSubscription } from '@teams/Functions/Team/Subscriptions';
 import Button from '@components/Button';
 import Loading from '@components/Loading';
 
+import { handlePurchase } from '@teams/Utils/Purchases/HandlePurchase';
 import { Section, SectionTitle } from '../../styles';
 
 import {
@@ -24,8 +23,6 @@ import {
 } from './styles';
 
 const Subscriptions: React.FC = () => {
-	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
-
 	const [subscription, setSubscription] =
 		useState<ITeamSubscription | null>();
 
@@ -77,9 +74,9 @@ const Subscriptions: React.FC = () => {
 		};
 	}, []);
 
-	const handleNavigatePurchase = useCallback(() => {
-		navigate('Subscription');
-	}, [navigate]);
+	const handleNavigatePurchase = useCallback(async () => {
+		await handlePurchase();
+	}, []);
 
 	return isLoading ? (
 		<Loading />
@@ -94,7 +91,7 @@ const Subscriptions: React.FC = () => {
 			</SubscriptionDescription>
 
 			<Button
-				text={
+				title={
 					!subscription
 						? strings.View_TeamView_Subscription_Button_SeePlans
 						: strings.View_TeamView_Subscription_Button_ChangePlans

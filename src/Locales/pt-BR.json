@@ -421,16 +421,8 @@
 
     "Function_Team_JoinTeam_InvalidCode": "Código inválido.",
 
-    "Subscription_TeamLimit_1person": "1 pessoa",
-    "Subscription_TeamLimit_2people": "2 pessoas",
-    "Subscription_TeamLimit_3people": "3 pessoas",
-    "Subscription_TeamLimit_5people": "5 pessoas",
-    "Subscription_TeamLimit_10people": "10 pessoas",
-    "Subscription_TeamLimit_15people": "15 pessoas",
-    "Subscription_TeamLimit_20people": "20 pessoas",
-    "Subscription_TeamLimit_30people": "30 pessoas",
-    "Subscription_TeamLimit_45people": "45 pessoas",
-    "Subscription_TeamLimit_60people": "60 pessoas",
+    "Util_HandlePurchase_Alert_Subscription_Success": "Sua assinatura foi atualizada",
+    "Util_HandlePurchase_Alert_Restore_Success": "Sua assinatura foi restaurada",
 
     "BeforeTermsAndPrivacy": "Ao usar este aplicativo você está aceitando nossos ",
     "BetweenTermsAndPrivacy": " e ",
