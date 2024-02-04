@@ -13,6 +13,7 @@ import {
 	resendConfirmationEmail,
 } from '@teams/Functions/Auth/Account';
 
+import Header from '@components/Header';
 import Button from '@components/Button';
 
 import {
@@ -24,8 +25,7 @@ import {
 } from './styles';
 
 const VerifyEmail: React.FC = () => {
-	const { navigate, reset } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { user } = useAuth();
 
@@ -62,10 +62,6 @@ const VerifyEmail: React.FC = () => {
 		}
 	}, [isMounted, reset]);
 
-	const handleLogout = useCallback(() => {
-		navigate('Logout');
-	}, [navigate]);
-
 	const handleResendConfirmEmail = useCallback(async () => {
 		try {
 			setResendedEmail(true);
@@ -94,6 +90,8 @@ const VerifyEmail: React.FC = () => {
 
 	return (
 		<Container>
+			<Header title="Confirmação de e-mail" noDrawer />
+
 			<Content>
 				<LottieView
 					source={animation}
@@ -116,16 +114,9 @@ const VerifyEmail: React.FC = () => {
 				)}
 
 				<Button
-					text={strings.View_ConfirmEmail_Button_Confirmed}
+					title={strings.View_ConfirmEmail_Button_Confirmed}
 					isLoading={isCheckLoading}
 					onPress={handleCheckEmail}
-					contentStyle={{ width: 150 }}
-				/>
-
-				<Button
-					text={strings.View_ConfirmEmail_Button_Logout}
-					onPress={handleLogout}
-					contentStyle={{ width: 150, marginTop: 0 }}
 				/>
 
 				{!resendedEmail && (

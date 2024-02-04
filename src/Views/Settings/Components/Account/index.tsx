@@ -1,14 +1,25 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import auth from '@react-native-firebase/auth';
+
+import strings from '@teams/Locales';
 
 import Button from '@components/Button';
 
-import strings from '@teams/Locales';
-import { Category, CategoryOptions, CategoryTitle } from '../../styles';
+import {
+	Category,
+	CategoryOptions,
+	CategoryTitle,
+	SettingDescription,
+} from '../../styles';
 
 const Account: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const user = useMemo(() => {
+		return auth().currentUser;
+	}, []);
 
 	const handleLogout = useCallback(() => {
 		navigate('Logout');
@@ -22,15 +33,19 @@ const Account: React.FC = () => {
 		<Category>
 			<CategoryTitle>Conta</CategoryTitle>
 
+			{user && (
+				<SettingDescription>E-mail: {user.email}</SettingDescription>
+			)}
+
 			<CategoryOptions>
 				<Button
-					text={strings.View_Settings_Button_SignOut}
+					title={strings.View_Settings_Button_SignOut}
 					onPress={handleLogout}
 					contentStyle={{ width: 135 }}
 				/>
 
 				<Button
-					text={strings.View_Settings_Button_DeleteAccount}
+					title={strings.View_Settings_Button_DeleteAccount}
 					onPress={handleNavigateDelete}
 					contentStyle={{
 						width: 135,

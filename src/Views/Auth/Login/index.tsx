@@ -60,9 +60,7 @@ const Login: React.FC = () => {
 			const selectedTeam = await getSelectedTeam();
 
 			if (user) {
-				if (!user.emailVerified) {
-					routeName = 'VerifyEmail';
-				} else if (selectedTeam) {
+				if (selectedTeam) {
 					const { team, role } = selectedTeam.userRole;
 
 					if (!team.isActive) {
@@ -229,7 +227,7 @@ const Login: React.FC = () => {
 					</LoginForm>
 
 					<Button
-						text={strings.View_Login_Button_SignIn}
+						title={strings.View_Login_Button_SignIn}
 						onPress={handleLogin}
 						isLoading={isLoging || initializing}
 					/>

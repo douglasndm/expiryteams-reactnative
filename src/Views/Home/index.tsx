@@ -213,6 +213,7 @@ const Home: React.FC = () => {
 				onSearchTextChange={onSearchChange}
 				searchValue={searchString}
 				enableSelectMode={selectMode}
+				enableCheckEmail
 				handleSwitchSelectMode={handleSwitchSelectMode}
 				handleSwitchDeleteModal={handleSwitchDeleteModal}
 				enableCalendar
