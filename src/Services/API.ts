@@ -1,6 +1,7 @@
 import axios from 'axios';
 import EnvConfig from 'react-native-config';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
+import crashlytics from '@react-native-firebase/crashlytics';
 import auth from '@react-native-firebase/auth';
 import appCheck from '@react-native-firebase/app-check';
 
@@ -17,15 +18,21 @@ api.interceptors.request.use(async config => {
 		config.headers.appbuildnumber = getBuildNumber();
 		config.headers.appversion = getVersion();
 
-		const device = await getDeviceId();
+		try {
+			const device = await getDeviceId();
+			config.headers.deviceid = device.device_uuid || '';
 
-		// const { token } = await appCheck().getToken();
-		// config.headers['X-Firebase-AppCheck'] = token;
+			const userToken = await auth().currentUser?.getIdToken();
+			config.headers.Authorization = `Bearer ${userToken}`;
 
-		config.headers.deviceid = device.device_uuid || '';
-
-		const userToken = await auth().currentUser?.getIdToken();
-		config.headers.Authorization = `Bearer ${userToken}`;
+			const { token } = await appCheck().getToken();
+			config.headers['X-Firebase-AppCheck'] = token;
+		} catch (error) {
+			console.log(error);
+			if (error instanceof Error) {
+				crashlytics().recordError(error);
+			}
+		}
 	}
 	return config;
 });
