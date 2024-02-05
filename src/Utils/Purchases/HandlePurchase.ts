@@ -1,16 +1,23 @@
+import Purchases from '@services/RevenueCat';
 import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
 
+import { getCurrentTeam } from '../Settings/CurrentTeam';
+
 async function handlePurchase(): Promise<boolean> {
+	const currentTeam = await getCurrentTeam();
+	if (!currentTeam) return false;
+
+	await Purchases.logIn(currentTeam.id);
+
 	if (!__DEV__) {
 		Analytics().logEvent('started_susbscription_process');
 	}
 
-	const paywallResult: PAYWALL_RESULT =
-		await RevenueCatUI.presentPaywallIfNeeded({});
+	const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywall({});
 
 	if (
 		paywallResult === PAYWALL_RESULT.PURCHASED ||

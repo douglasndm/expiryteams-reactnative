@@ -8,8 +8,9 @@ import strings from '@teams/Locales';
 import { useTeam } from '@teams/Contexts/TeamContext';
 
 import { createTeam } from '@teams/Functions/Team';
-import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
-import { setSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
+
+import { handlePurchase } from '@teams/Utils/Purchases/HandlePurchase';
+import { setCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -48,33 +49,21 @@ const Add: React.FC = () => {
 				name,
 			});
 
+			await setCurrentTeam(team);
+
 			showMessage({
 				message: strings.View_CreateTeam_Message_SuccessCreated,
 				type: 'info',
 			});
 
-			const teamPreferences = await getTeamPreferences({
-				team_id: team.id,
-			});
-
-			await setSelectedTeam({
-				userRole: {
-					role: 'manager',
-					status: 'completed',
-					team: {
-						...team,
-						isActive: false,
-					},
-				},
-				teamPreferences,
-			});
+			await handlePurchase();
 
 			if (teamContext.reload) {
 				teamContext.reload();
 			}
 
 			reset({
-				routes: [{ name: 'Home' }],
+				routes: [{ name: 'TeamList' }],
 			});
 		} catch (err) {
 			if (err instanceof Error)
@@ -118,7 +107,7 @@ const Add: React.FC = () => {
 				)}
 
 				<Button
-					text={strings.View_CreateTeam_Button_CreateTeam}
+					title={strings.View_CreateTeam_Button_CreateTeam}
 					isLoading={isCreating}
 					onPress={handleCreate}
 				/>

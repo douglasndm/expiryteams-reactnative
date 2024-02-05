@@ -1,5 +1,6 @@
 import api from '@teams/Services/API';
 
+import { clearCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 import { clearSelectedteam } from './SelectedTeam';
 
 interface createTeamProps {
@@ -34,5 +35,6 @@ interface deleteTeamProps {
 
 export async function deleteTeam({ team_id }: deleteTeamProps): Promise<void> {
 	await clearSelectedteam();
+	await clearCurrentTeam();
 	await api.delete(`/team/${team_id}`);
 }

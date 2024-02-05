@@ -2,6 +2,7 @@ import { startOfDay, parseISO, compareAsc, isDate } from 'date-fns';
 
 import API from '@teams/Services/API';
 
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 import { sortBatches } from '@utils/Product/Batches';
 
 interface searchProductsProps {
@@ -18,7 +19,6 @@ interface ISearchResponse {
 }
 
 interface getAllProductsProps {
-	team_id: string;
 	removeCheckedBatches?: boolean;
 	sortByBatches?: boolean;
 	page?: number;
@@ -46,13 +46,18 @@ export function fixProductsDates(products: Array<IProduct>): Array<IProduct> {
 }
 
 export async function getAllProducts({
-	team_id,
 	removeCheckedBatches = true,
 	sortByBatches = true,
 	page,
 }: getAllProductsProps): Promise<IProduct[]> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const { data } = await API.get<IAllTeamProducts>(
-		`/team/${team_id}/products`,
+		`/team/${currentTeam.id}/products`,
 		{
 			params: {
 				removeCheckedBatches,

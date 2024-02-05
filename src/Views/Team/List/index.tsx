@@ -17,6 +17,9 @@ import { getTeamPreferences } from '@teams/Functions/Team/Preferences';
 import { removeItSelfFromTeam } from '@teams/Functions/Team/User/Remove';
 import { getUser } from '@teams/Functions/User/List';
 
+import { setCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+import { getCurrentSubscription } from '@teams/Utils/Subscriptions/GetCurrent';
+
 import Loading from '@components/Loading';
 import Button from '@components/Button';
 import Header from '@components/Header';
@@ -33,11 +36,10 @@ import {
 } from './styles';
 
 const List: React.FC = () => {
-	const { navigate, reset } =
+	const { navigate, reset, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 	const teamContext = useTeam();
 
-	const [isMounted, setIsMounted] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [showMenu, setShowMenu] = useState(false);
@@ -46,10 +48,10 @@ const List: React.FC = () => {
 	const [team, setTeam] = useState<IUserRoles | null>(null);
 
 	const loadData = useCallback(async () => {
-		if (!isMounted) return;
 		try {
 			setIsLoading(true);
 
+			await getCurrentSubscription();
 			const response = await getUserTeams();
 
 			if (response.role) {
@@ -65,7 +67,7 @@ const List: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted]);
+	}, []);
 
 	const role = useMemo(() => {
 		if (team && team.role) {
@@ -135,10 +137,10 @@ const List: React.FC = () => {
 	}, [navigate]);
 
 	useEffect(() => {
-		loadData();
+		const unsubscribe = addListener('focus', loadData);
 
-		return () => setIsMounted(false);
-	}, []);
+		return unsubscribe;
+	}, [addListener, loadData]);
 
 	const handleSelectTeam = useCallback(async () => {
 		if (!team) return;
@@ -200,6 +202,7 @@ const List: React.FC = () => {
 				},
 				teamPreferences,
 			});
+			await setCurrentTeam(team.team);
 
 			if (teamContext.reload) {
 				teamContext.reload();
@@ -263,6 +266,13 @@ const List: React.FC = () => {
 			<Header
 				title={strings.View_TeamList_PageTitle}
 				noDrawer
+				appBarActions={[
+					{
+						icon: 'update',
+						onPress: loadData,
+						disabled: isLoading,
+					},
+				]}
 				moreMenuItems={[
 					{
 						title: strings.View_TeamList_Button_Settings,
@@ -321,7 +331,7 @@ const List: React.FC = () => {
 			<Footer>
 				{!team && (
 					<Button
-						text={strings.View_TeamList_Button_CreateTeam}
+						title={strings.View_TeamList_Button_CreateTeam}
 						onPress={handleNavigateCreateTeam}
 					/>
 				)}

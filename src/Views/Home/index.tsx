@@ -49,11 +49,9 @@ const Home: React.FC = () => {
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
 	const loadProducts = useCallback(async (): Promise<IProduct[]> => {
-		if (!teamContext.id) return [];
 		try {
 			const productsResponse = await getAllProducts({
 				removeCheckedBatches: false,
-				team_id: teamContext.id,
 			});
 
 			return productsResponse;
@@ -77,7 +75,7 @@ const Home: React.FC = () => {
 		}
 
 		return [];
-	}, [reset, teamContext.id]);
+	}, [reset]);
 
 	const hasPermission = useMemo(() => {
 		if (!teamContext.roleInTeam) return false;
