@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -40,6 +40,16 @@ const ListView: React.FC = () => {
 	const [isAdding, setIsAdding] = useState<boolean>(false);
 	const [inputHasError, setInputHasError] = useState<boolean>(false);
 	const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
+
+	const isManager = useMemo(() => {
+		if (teamContext.roleInTeam) {
+			const role = teamContext.roleInTeam.role.toLowerCase();
+			if (role === 'manager') {
+				return true;
+			}
+		}
+		return false;
+	}, [teamContext.roleInTeam]);
 
 	const loadData = useCallback(async () => {
 		if (!teamContext.id) return;
@@ -119,32 +129,34 @@ const ListView: React.FC = () => {
 				<Loading />
 			) : (
 				<Content>
-					<AddNewItemContent>
-						<InputContainer>
-							<InputTextContainer hasError={inputHasError}>
-								<InputText
-									value={newStoreName}
-									onChangeText={handleOnTextChange}
-									placeholder="Adicionar nova loja"
-								/>
-							</InputTextContainer>
+					{isManager && (
+						<AddNewItemContent>
+							<InputContainer>
+								<InputTextContainer hasError={inputHasError}>
+									<InputText
+										value={newStoreName}
+										onChangeText={handleOnTextChange}
+										placeholder="Adicionar nova loja"
+									/>
+								</InputTextContainer>
 
-							<AddButtonContainer
-								onPress={handleSave}
-								enabled={!isAdding}
-							>
-								{isAdding ? (
-									<LoadingIcon />
-								) : (
-									<Icons name="add-circle-outline" />
-								)}
-							</AddButtonContainer>
-						</InputContainer>
+								<AddButtonContainer
+									onPress={handleSave}
+									disabled={isAdding}
+								>
+									{isAdding ? (
+										<LoadingIcon />
+									) : (
+										<Icons name="add-circle-outline" />
+									)}
+								</AddButtonContainer>
+							</InputContainer>
 
-						{!!inputErrorMessage && (
-							<InputTextTip>{inputErrorMessage}</InputTextTip>
-						)}
-					</AddNewItemContent>
+							{!!inputErrorMessage && (
+								<InputTextTip>{inputErrorMessage}</InputTextTip>
+							)}
+						</AddNewItemContent>
+					)}
 
 					<ListTitle>Todas as lojas</ListTitle>
 
