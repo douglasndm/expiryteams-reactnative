@@ -19,8 +19,8 @@ api.interceptors.request.use(async config => {
 
 		const device = await getDeviceId();
 
-		const { token } = await appCheck().getToken();
-		config.headers['X-Firebase-AppCheck'] = token;
+		// const { token } = await appCheck().getToken();
+		// config.headers['X-Firebase-AppCheck'] = token;
 
 		config.headers.deviceid = device.device_uuid || '';
 
