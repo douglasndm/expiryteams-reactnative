@@ -1,7 +1,7 @@
 {
   "name": "expirybusiness",
-  "version": "1.10.3",
-  "build": "134",
+  "version": "1.10.4",
+  "build": "135",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
