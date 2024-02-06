@@ -1,15 +1,17 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
 
-interface getAllStoresFromTeamProps {
-    team_id: string;
-}
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
-async function getAllStoresFromTeam({
-    team_id,
-}: getAllStoresFromTeamProps): Promise<IStore[]> {
-    const response = await api.get<IStore[]>(`/team/${team_id}/stores`);
+async function getAllStoresFromTeam(): Promise<IStore[]> {
+	const currentTeam = await getCurrentTeam();
 
-    return response.data;
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.get<IStore[]>(`/team/${currentTeam.id}/stores`);
+
+	return response.data;
 }
 
 export { getAllStoresFromTeam };

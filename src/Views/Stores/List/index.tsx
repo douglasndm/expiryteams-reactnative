@@ -52,13 +52,10 @@ const ListView: React.FC = () => {
 	}, [teamContext.roleInTeam]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 
-			const response = await getAllStoresFromTeam({
-				team_id: teamContext.id,
-			});
+			const response = await getAllStoresFromTeam();
 
 			setStores(response);
 		} catch (err) {
@@ -70,7 +67,7 @@ const ListView: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [teamContext.id]);
+	}, []);
 
 	useEffect(() => {
 		loadData();
