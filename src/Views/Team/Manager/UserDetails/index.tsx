@@ -34,10 +34,12 @@ import {
 	CodeTitle,
 	CodeContainer,
 	Code,
-	RadioButtonContainer,
-	RadioButton,
-	RadioButtonText,
-	RadioButtonContent,
+	SettingContainer,
+	SettingTitle,
+	SettingDescription,
+	RoleText,
+	RadioButtonGroup,
+	RadioButtonItem,
 } from './styles';
 
 interface UserDetailsProps {
@@ -263,6 +265,15 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		return false;
 	}, []);
 
+	const handleOnRoleChange = useCallback((value: string) => {
+		if (value.toLowerCase() === 'supervisor') {
+			setSelectedRole('supervisor');
+			return;
+		}
+
+		setSelectedRole('repositor');
+	}, []);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -329,39 +340,39 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 								/>
 							</PickerContainer>
 
-							<RadioButtonContainer>
-								<RadioButtonContent>
-									<RadioButton
-										value="checked"
-										status={
-											selectedRole === 'repositor'
-												? 'checked'
-												: 'unchecked'
-										}
-										onPress={() =>
-											setSelectedRole('repositor')
-										}
-									/>
-									<RadioButtonText>Repositor</RadioButtonText>
-								</RadioButtonContent>
+							<SettingContainer>
+								<SettingTitle>
+									Escolha o cargo do usuário
+								</SettingTitle>
 
-								<RadioButtonContent>
-									<RadioButton
-										value="unchecked"
-										status={
-											selectedRole === 'supervisor'
-												? 'checked'
-												: 'unchecked'
-										}
-										onPress={() =>
-											setSelectedRole('supervisor')
-										}
+								<SettingDescription>
+									Escolha com base nas responsabilidades dos
+									usuários.
+								</SettingDescription>
+
+								<SettingDescription>
+									<RoleText>Repositor</RoleText>: gerencie
+									produtos com acesso básico.
+								</SettingDescription>
+								<SettingDescription>
+									<RoleText>Supervisor</RoleText>: controle
+									completo, incluindo exclusão de produtos.
+								</SettingDescription>
+
+								<RadioButtonGroup
+									onValueChange={handleOnRoleChange}
+									value={selectedRole}
+								>
+									<RadioButtonItem
+										label="Repositor"
+										value="repositor"
 									/>
-									<RadioButtonText>
-										Supervisor
-									</RadioButtonText>
-								</RadioButtonContent>
-							</RadioButtonContainer>
+									<RadioButtonItem
+										label="Supervisor"
+										value="supervisor"
+									/>
+								</RadioButtonGroup>
+							</SettingContainer>
 						</>
 					)}
 			</PageContent>

@@ -6,9 +6,8 @@ export const Container = styled.View`
 	background-color: ${props => props.theme.colors.background};
 `;
 
-export const PageContent = styled.View`
-	padding: 15px 20px 0;
-	flex: 1;
+export const PageContent = styled.ScrollView`
+	padding: 15px 10px 0;
 `;
 
 export const UserName = styled.Text`
@@ -52,22 +51,33 @@ export const Code = styled.Text`
 	font-weight: bold;
 `;
 
-export const RadioButtonContainer = styled.View`
-	flex-direction: row;
-	justify-content: center;
+export const SettingContainer = styled.View`
+	margin-top: 20px;
+	padding: 15px 15px 25px;
+	background-color: ${props => props.theme.colors.productBackground};
+	border-radius: 12px;
 `;
 
-export const RadioButtonContent = styled.View`
-	flex-direction: row;
-	align-items: center;
-	margin-right: 10px;
+export const SettingTitle = styled.Text`
+	color: ${({ theme }) => theme.colors.text};
+	font-family: 'Open Sans';
+	font-size: 18px;
+	font-weight: bold;
 `;
 
-export const RadioButton = styled(RadioPaper).attrs(props => ({
+export const SettingDescription = styled.Text`
+	margin-top: 10px;
+	color: ${({ theme }) => theme.colors.text};
+	font-family: 'Open Sans';
+`;
+
+export const RoleText = styled.Text`
+	font-weight: bold;
+`;
+
+export const RadioButtonGroup = styled(RadioPaper.Group)``;
+
+export const RadioButtonItem = styled(RadioPaper.Item).attrs(props => ({
 	color: props.theme.colors.accent,
 	uncheckedColor: props.theme.colors.subText,
 }))``;
-
-export const RadioButtonText = styled.Text`
-	color: ${({ theme }) => theme.colors.text};
-`;
