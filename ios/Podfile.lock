@@ -1358,7 +1358,7 @@ PODS:
   - RNPaywalls (7.19.0):
     - PurchasesHybridCommonUI (= 9.6.0)
     - React-Core
-  - RNPermissions (4.1.1):
+  - RNPermissions (4.1.0):
     - React-Core
   - RNPurchases (7.19.0):
     - PurchasesHybridCommon (= 9.6.0)
@@ -1480,7 +1480,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../../../node_modules/react-native-localize`)
   - RNPaywalls (from `../node_modules/react-native-purchases-ui`)
-  - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNPermissions (from `../../../node_modules/react-native-permissions`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
@@ -1702,7 +1702,7 @@ EXTERNAL SOURCES:
   RNPaywalls:
     :path: "../node_modules/react-native-purchases-ui"
   RNPermissions:
-    :path: "../node_modules/react-native-permissions"
+    :path: "../../../node_modules/react-native-permissions"
   RNPurchases:
     :path: "../node_modules/react-native-purchases"
   RNReanimated:
@@ -1836,7 +1836,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a426f2b9134a10ac56ff78593fb068541e68f0e7
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPaywalls: 4363f95174b342f7fd315a48949416206cc47cb1
-  RNPermissions: b7988ae79582536c5f9bcc684f69a99f96e958da
+  RNPermissions: 5dc64e9b0823db9b8dbddcb3ec0c7338fbb6e12e
   RNPurchases: 7dffc0621cd72de61ecd053cc973fb6a3c3dad20
   RNReanimated: b034cb9f759fd61c13939821d0a599900abf77fd
   RNScreens: 2b73f5eb2ac5d94fbd61fa4be0bfebd345716825
