@@ -51,7 +51,13 @@ const List: React.FC = () => {
 		try {
 			setIsLoading(true);
 
-			await getCurrentSubscription();
+			// We use a try catch because this route throw an exeption if team doesn't have
+			// a subscription, so it breaks the rest of the function
+			try {
+				await getCurrentSubscription();
+			} catch (error) {
+				console.log(error);
+			}
 			const response = await getUserTeams();
 
 			if (response.role) {
