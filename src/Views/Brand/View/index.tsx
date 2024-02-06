@@ -176,6 +176,7 @@ const View: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={canEdit ? handleEdit : undefined}
+				productsCount={products.length}
 				isLoading={isLoading}
 			/>
 

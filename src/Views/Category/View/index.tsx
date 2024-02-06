@@ -182,6 +182,7 @@ const CategoryView: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={isManager ? handleEdit : undefined}
+				productsCount={products.length}
 				isLoading={isLoading}
 			/>
 
