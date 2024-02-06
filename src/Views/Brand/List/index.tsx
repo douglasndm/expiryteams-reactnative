@@ -3,26 +3,19 @@ import { showMessage } from 'react-native-flash-message';
 
 import ListView from '@views/Brand/List';
 
-import { useTeam } from '@teams/Contexts/TeamContext';
-
 import { createBrand, getAllBrands } from '@teams/Functions/Brand';
 
 const BrandList: React.FC = () => {
-	const teamContext = useTeam();
-
 	const [isAdding, setIsAdding] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [brands, setBrands] = useState<IBrand[]>([]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 
-			const response = await getAllBrands({
-				team_id: teamContext.id,
-			});
+			const response = await getAllBrands();
 
 			setBrands(response);
 		} catch (err) {
@@ -34,17 +27,15 @@ const BrandList: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [teamContext.id]);
+	}, []);
 
 	const createBrandProgress = useCallback(
 		async (name: string) => {
-			if (!teamContext.id) return;
 			try {
 				setIsAdding(true);
 
 				const newBrand = await createBrand({
 					brandName: name,
-					team_id: teamContext.id,
 				});
 
 				setBrands([...brands, newBrand]);
@@ -52,7 +43,7 @@ const BrandList: React.FC = () => {
 				setIsAdding(false);
 			}
 		},
-		[brands, teamContext.id]
+		[brands]
 	);
 
 	useEffect(() => {

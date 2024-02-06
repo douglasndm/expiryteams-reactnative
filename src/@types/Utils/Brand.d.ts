@@ -1,23 +1,16 @@
 interface IBrand {
-    id: string;
-    name: string;
-}
-
-interface getAllBrandsProps {
-    team_id: string;
+	id: string;
+	name: string;
 }
 
 interface createBrandProps {
-    brandName: string;
-    team_id: string;
+	brandName: string;
 }
 
 interface updateBrandProps {
-    brand: IBrand;
-    team_id: string;
+	brand: IBrand;
 }
 
 interface deleteBrandProps {
-    brand_id: string;
-    team_id: string;
+	brand_id: string;
 }

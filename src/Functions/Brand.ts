@@ -1,22 +1,32 @@
 import api from '@teams/Services/API';
 
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+
 import { fixProductsDates } from './Products/Products';
 
-export async function getAllBrands({
-	team_id,
-}: getAllBrandsProps): Promise<Array<IBrand>> {
-	const response = await api.get<IBrand[]>(`/team/${team_id}/brands`);
+export async function getAllBrands(): Promise<Array<IBrand>> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.get<IBrand[]>(`/team/${currentTeam.id}/brands`);
 
 	return response.data;
 }
 
 export async function createBrand({
 	brandName,
-	team_id,
 }: createBrandProps): Promise<IBrand> {
-	const response = await api.post<IBrand>(`/team/${team_id}/brands`, {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.post<IBrand>(`/team/${currentTeam.id}/brands`, {
 		name: brandName,
-		team_id,
 	});
 
 	return response.data;
@@ -24,9 +34,14 @@ export async function createBrand({
 
 export async function updateBrand({
 	brand,
-	team_id,
 }: updateBrandProps): Promise<IBrand> {
-	const response = await api.put<IBrand>(`/team/${team_id}/brands`, {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.put<IBrand>(`/team/${currentTeam.id}/brands`, {
 		brand_id: brand.id,
 		name: brand.name,
 	});
@@ -35,16 +50,20 @@ export async function updateBrand({
 }
 
 interface getAllProductsByBrandProps {
-	team_id: string;
 	brand_id: string;
 }
 
 export async function getAllProductsByBrand({
-	team_id,
 	brand_id,
 }: getAllProductsByBrandProps): Promise<Array<IProduct>> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const { data } = await api.get<Array<IProduct>>(
-		`/team/${team_id}/brands/${brand_id}/products`
+		`/team/${currentTeam.id}/brands/${brand_id}/products`
 	);
 
 	const products = fixProductsDates(data);
@@ -54,7 +73,12 @@ export async function getAllProductsByBrand({
 
 export async function deleteBrand({
 	brand_id,
-	team_id,
 }: deleteBrandProps): Promise<void> {
-	await api.delete(`/team/${team_id}/brands/${brand_id}`);
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.delete(`/team/${currentTeam.id}/brands/${brand_id}`);
 }
