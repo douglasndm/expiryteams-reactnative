@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useState,
+	useMemo,
+	useRef,
+} from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -11,13 +17,16 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 import { exportToExcel } from '@utils/Excel/Export';
 import { searchProducts } from '@utils/Product/Search';
 
-import { getAllProducts } from '@teams/Functions/Products/Products';
+import {
+	deleteManyProducts,
+	getAllProducts,
+} from '@teams/Functions/Products/Products';
 import { getAllProductsFromCategory } from '@teams/Functions/Categories/Products';
 import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
 import { getAllBrands } from '@teams/Functions/Brand';
 import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 
-import Header from '@components/Products/List/Header';
+import HomeComponent from '@views/Home';
 import ListProds from '@components/Product/List';
 import FloatButton from '@components/FloatButton';
 
@@ -40,7 +49,16 @@ const CategoryView: React.FC = () => {
 
 	const routeParams = params as Props;
 
+	interface listProdsRefProps {
+		switchDeleteModal: () => void;
+		switchSelectMode: () => void;
+	}
+
+	const listProdsRef = useRef<listProdsRefProps>();
+
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [selectMode, setSelectMode] = useState(false);
 
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 	const [searchQuery, setSearchQuery] = React.useState('');
@@ -59,6 +77,16 @@ const CategoryView: React.FC = () => {
 		) {
 			return true;
 		}
+		return false;
+	}, [teamContext.roleInTeam]);
+
+	const hasPermission = useMemo(() => {
+		if (!teamContext.roleInTeam) return false;
+
+		const { role } = teamContext.roleInTeam;
+
+		if (role.toLowerCase() === 'manager') return true;
+		if (role.toLowerCase() === 'supervisor') return true;
 		return false;
 	}, [teamContext.roleInTeam]);
 
@@ -100,16 +128,13 @@ const CategoryView: React.FC = () => {
 
 			const getProducts = async () =>
 				getAllProducts({
-					team_id: teamContext.id || '',
 					removeCheckedBatches: false,
 				});
 
-			const getBrands = async () =>
-				getAllBrands({ team_id: teamContext.id || '' });
+			const getBrands = async () => getAllBrands();
 			const getCategories = async () =>
 				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
-			const getStores = async () =>
-				getAllStoresFromTeam({ team_id: teamContext.id || '' });
+			const getStores = async () => getAllStoresFromTeam();
 
 			await exportToExcel({
 				sortBy: 'expire_date',
@@ -173,17 +198,64 @@ const CategoryView: React.FC = () => {
 		[products, searchQuery]
 	);
 
+	const handleDeleteMany = useCallback(
+		async (idsToDelete: string[] | number[]) => {
+			if (idsToDelete.length <= 0) return;
+
+			try {
+				if (!teamContext.id) {
+					return;
+				}
+
+				const ids = idsToDelete.map(id => String(id));
+
+				await deleteManyProducts({
+					productsIds: ids,
+					team_id: teamContext.id,
+				});
+
+				await loadData();
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			}
+		},
+		[loadData, teamContext.id]
+	);
+
+	const handleSwitchSelectMode = useCallback(() => {
+		setSelectMode(prevState => !prevState);
+
+		if (listProdsRef.current) {
+			listProdsRef.current.switchSelectMode();
+		}
+	}, []);
+
+	const handleSwitchDeleteModal = useCallback(() => {
+		if (listProdsRef.current?.switchDeleteModal) {
+			listProdsRef.current.switchDeleteModal();
+		}
+	}, []);
+
 	return (
 		<Container>
-			<Header
+			<HomeComponent
 				title={strings.View_Category_List_View_BeforeCategoryName}
+				showBackButton
 				searchValue={searchQuery}
-				onSearchChange={handleSearchChange}
-				handleSearch={handleSearch}
-				exportToExcel={handleExportExcel}
-				navigateToEdit={isManager ? handleEdit : undefined}
+				onSearchTextChange={handleSearchChange}
+				onSearch={handleSearch}
+				searchFor={handleSearch}
+				onExcelExport={handleExportExcel}
+				onNavigateToEdit={isManager ? handleEdit : undefined}
 				productsCount={products.length}
 				isLoading={isLoading}
+				enableSelectMode={selectMode}
+				handleSwitchSelectMode={handleSwitchSelectMode}
+				handleSwitchDeleteModal={handleSwitchDeleteModal}
 			/>
 
 			<TitleContainer>
@@ -191,9 +263,14 @@ const CategoryView: React.FC = () => {
 			</TitleContainer>
 
 			<ListProds
+				ref={listProdsRef}
 				products={productsSearch}
 				isRefreshing={isLoading}
 				onRefresh={loadData}
+				handleDeleteMany={hasPermission ? handleDeleteMany : undefined}
+				setSelectModeOnParent={
+					hasPermission ? setSelectMode : undefined
+				}
 			/>
 
 			<FloatButton navigateTo="AddProduct" categoryId={routeParams.id} />

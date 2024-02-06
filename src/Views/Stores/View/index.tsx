@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
@@ -13,7 +19,7 @@ import { searchProducts } from '@utils/Product/Search';
 
 import { getAllProductsFromStore } from '@teams/Functions/Team/Stores/Products';
 
-import Header from '@components/Products/List/Header';
+import HomeComponent from '@views/Home';
 import ListProducts from '@components/Product/List';
 import FloatButton from '@components/FloatButton';
 
@@ -22,7 +28,10 @@ import {
 	ItemTitle,
 	TitleContainer,
 } from '@styles/Views/GenericViewPage';
-import { getAllProducts } from '@teams/Functions/Products/Products';
+import {
+	deleteManyProducts,
+	getAllProducts,
+} from '@teams/Functions/Products/Products';
 import { getAllBrands } from '@teams/Functions/Brand';
 import { getAllCategoriesFromTeam } from '@teams/Functions/Categories';
 import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
@@ -40,7 +49,16 @@ const StoreView: React.FC = () => {
 
 	const routeParams = params as Props;
 
+	interface listProdsRefProps {
+		switchDeleteModal: () => void;
+		switchSelectMode: () => void;
+	}
+
+	const listProdsRef = useRef<listProdsRefProps>();
+
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [selectMode, setSelectMode] = useState(false);
 
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 	const [searchQuery, setSearchQuery] = React.useState('');
@@ -56,6 +74,16 @@ const StoreView: React.FC = () => {
 		) {
 			return true;
 		}
+		return false;
+	}, [teamContext.roleInTeam]);
+
+	const hasPermission = useMemo(() => {
+		if (!teamContext.roleInTeam) return false;
+
+		const { role } = teamContext.roleInTeam;
+
+		if (role.toLowerCase() === 'manager') return true;
+		if (role.toLowerCase() === 'supervisor') return true;
 		return false;
 	}, [teamContext.roleInTeam]);
 
@@ -95,15 +123,13 @@ const StoreView: React.FC = () => {
 
 			const getProducts = async () =>
 				getAllProducts({
-					team_id: teamContext.id || '',
 					removeCheckedBatches: false,
 				});
 			const getBrands = async () =>
 				getAllBrands({ team_id: teamContext.id || '' });
 			const getCategories = async () =>
 				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
-			const getStores = async () =>
-				getAllStoresFromTeam({ team_id: teamContext.id || '' });
+			const getStores = async () => getAllStoresFromTeam();
 
 			await exportToExcel({
 				sortBy: 'expire_date',
@@ -167,17 +193,64 @@ const StoreView: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
+	const handleDeleteMany = useCallback(
+		async (idsToDelete: string[] | number[]) => {
+			if (idsToDelete.length <= 0) return;
+
+			try {
+				if (!teamContext.id) {
+					return;
+				}
+
+				const ids = idsToDelete.map(id => String(id));
+
+				await deleteManyProducts({
+					productsIds: ids,
+					team_id: teamContext.id,
+				});
+
+				await loadData();
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			}
+		},
+		[loadData, teamContext.id]
+	);
+
+	const handleSwitchSelectMode = useCallback(() => {
+		setSelectMode(prevState => !prevState);
+
+		if (listProdsRef.current) {
+			listProdsRef.current.switchSelectMode();
+		}
+	}, []);
+
+	const handleSwitchDeleteModal = useCallback(() => {
+		if (listProdsRef.current?.switchDeleteModal) {
+			listProdsRef.current.switchDeleteModal();
+		}
+	}, []);
+
 	return (
 		<Container>
-			<Header
+			<HomeComponent
 				title="Loja"
+				showBackButton
 				searchValue={searchQuery}
-				onSearchChange={handleSearchChange}
-				handleSearch={handleSearch}
-				exportToExcel={handleExportExcel}
-				navigateToEdit={isManager ? handleEdit : undefined}
+				onSearchTextChange={handleSearchChange}
+				onSearch={handleSearch}
+				searchFor={handleSearch}
+				onExcelExport={handleExportExcel}
+				onNavigateToEdit={isManager ? handleEdit : undefined}
 				productsCount={products.length}
 				isLoading={isLoading}
+				enableSelectMode={selectMode}
+				handleSwitchSelectMode={handleSwitchSelectMode}
+				handleSwitchDeleteModal={handleSwitchDeleteModal}
 			/>
 
 			<TitleContainer>
@@ -185,9 +258,14 @@ const StoreView: React.FC = () => {
 			</TitleContainer>
 
 			<ListProducts
+				ref={listProdsRef}
 				products={productsSearch}
-				onRefresh={loadData}
 				isRefreshing={isLoading}
+				onRefresh={loadData}
+				handleDeleteMany={hasPermission ? handleDeleteMany : undefined}
+				setSelectModeOnParent={
+					hasPermission ? setSelectMode : undefined
+				}
 			/>
 
 			<FloatButton
