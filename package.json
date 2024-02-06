@@ -1,6 +1,7 @@
 {
   "name": "expirybusiness",
-  "version": "1.10.2",
+  "version": "1.10.3",
+  "build": "134",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -41,8 +42,8 @@
     "date-fns": "^2.29.2",
     "lottie-react-native": "^5.1.4",
     "polished": "^4.1.1",
-    "react": "18.2.0",
-    "react-native": "0.73.2",
+    "react": "*",
+    "react-native": "*",
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-bootsplash": "*",
     "react-native-bouncy-checkbox": "^2.1.2",
