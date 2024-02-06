@@ -42,14 +42,10 @@ const Team: React.FC = () => {
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
 	const loadSubscriptions = useCallback(async () => {
-		if (!teamContext.id) {
-			return;
-		}
-
-		const isActive = await isSubscriptionActive(teamContext.id);
+		const isActive = await isSubscriptionActive();
 
 		setActivesSubs(isActive);
-	}, [teamContext.id]);
+	}, []);
 
 	const handleChangeAgree = useCallback(() => {
 		setEnableExcel(!enableExcel);
@@ -88,7 +84,7 @@ const Team: React.FC = () => {
 				throw new Error('Team is not selected');
 			}
 
-			await deleteTeam({ team_id: teamContext.id });
+			await deleteTeam();
 
 			showMessage({
 				message: 'O time foi apagado',
@@ -157,7 +153,7 @@ const Team: React.FC = () => {
 						todos os seus produtos
 					</BlockDescription>
 
-					<Button text="Gerar arquivo" onPress={handleExcelExport} />
+					<Button title="Gerar arquivo" onPress={handleExcelExport} />
 
 					<CheckBoxContainer>
 						<CheckBox
@@ -186,7 +182,7 @@ const Team: React.FC = () => {
 					)}
 
 					<Button
-						text="Checar se assinatura foi cancelada"
+						title="Checar se assinatura foi cancelada"
 						isLoading={isCheckingSub}
 						onPress={handleCheckSubscription}
 					/>
@@ -209,7 +205,7 @@ const Team: React.FC = () => {
 					</BlockDescription>
 
 					<Button
-						text="Apagar time"
+						title="Apagar time"
 						onPress={handleDeleteTeam}
 						isLoading={isDeleting}
 						contentStyle={{ backgroundColor: '#b00c17' }}

@@ -1,6 +1,8 @@
 import Purchases from '@services/RevenueCat';
 import api from '@teams/Services/API';
 
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+
 import { getSelectedTeam } from './SelectedTeam';
 
 async function setup() {
@@ -15,23 +17,39 @@ async function setup() {
 	}
 }
 
-async function getTeamSubscription(
-	team_id: string
-): Promise<ITeamSubscription> {
+async function getTeamSubscription(): Promise<ITeamSubscription> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const response = await api.get<ITeamSubscription>(
-		`/team/${team_id}/subscriptions`
+		`/team/${currentTeam.id}/subscriptions`
 	);
 
 	return response.data;
 }
 
-async function deleteTeamSubscription(team_id: string): Promise<void> {
-	await api.delete(`/team/${team_id}/subscriptions`);
+async function deleteTeamSubscription(): Promise<void> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.delete(`/team/${currentTeam.id}/subscriptions`);
 }
 
-async function isSubscriptionActive(team_id: string): Promise<boolean> {
+async function isSubscriptionActive(): Promise<boolean> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const response = await api.get<Subscription[]>(
-		`/team/${team_id}/subscriptions/store`
+		`/team/${currentTeam.id}/subscriptions/store`
 	);
 
 	const anyActive = response.data.find(

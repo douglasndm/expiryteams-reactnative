@@ -5,8 +5,6 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
 
-import { useTeam } from '@teams/Contexts/TeamContext';
-
 import { getTeamSubscription } from '@teams/Functions/Team/Subscriptions';
 
 import Button from '@components/Button';
@@ -26,9 +24,6 @@ const Subscriptions: React.FC = () => {
 	const [subscription, setSubscription] =
 		useState<ITeamSubscription | null>();
 
-	const teamContext = useTeam();
-
-	const [isMounted, setIsMounted] = useState(true);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const dateFormat = useMemo(() => {
@@ -46,11 +41,10 @@ const Subscriptions: React.FC = () => {
 	}, [dateFormat, subscription]);
 
 	const loadData = useCallback(async () => {
-		if (!isMounted || !teamContext.id) return;
 		try {
 			setIsLoading(true);
 
-			const sub = await getTeamSubscription(teamContext.id);
+			const sub = await getTeamSubscription();
 
 			setSubscription(sub);
 		} catch (err) {
@@ -62,16 +56,10 @@ const Subscriptions: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, teamContext.id]);
-
-	useEffect(() => {
-		loadData();
 	}, []);
 
 	useEffect(() => {
-		return () => {
-			setIsMounted(false);
-		};
+		loadData();
 	}, []);
 
 	const handleNavigatePurchase = useCallback(async () => {
@@ -121,4 +109,4 @@ const Subscriptions: React.FC = () => {
 	);
 };
 
-export default Subscriptions;
+export default React.memo(Subscriptions);

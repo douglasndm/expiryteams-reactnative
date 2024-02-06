@@ -75,7 +75,7 @@ const Home: React.FC = () => {
 		}
 
 		return [];
-	}, [reset]);
+	}, []);
 
 	const hasPermission = useMemo(() => {
 		if (!teamContext.roleInTeam) return false;

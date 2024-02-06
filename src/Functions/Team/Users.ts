@@ -4,6 +4,8 @@ import strings from '@teams/Locales';
 
 import api from '@teams/Services/API';
 
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+
 interface getUserTeamsResponse {
 	id: string;
 	fid: string;
@@ -52,15 +54,15 @@ export async function getUserTeams(): Promise<getUserTeamsResponse> {
 	return data;
 }
 
-interface getAllUsersFromTeamProps {
-	team_id: string;
-}
+export async function getAllUsersFromTeam(): Promise<Array<IUserInTeam>> {
+	const currentTeam = await getCurrentTeam();
 
-export async function getAllUsersFromTeam({
-	team_id,
-}: getAllUsersFromTeamProps): Promise<Array<IUserInTeam>> {
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const response = await api.get<Array<IUserInTeam>>(
-		`/team/${team_id}/users`
+		`/team/${currentTeam.id}/users`
 	);
 
 	return response.data;

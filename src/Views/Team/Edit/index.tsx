@@ -29,7 +29,7 @@ const Edit: React.FC = () => {
 	const [nameError, setNameError] = useState<string>('');
 
 	const handleUpdate = useCallback(async () => {
-		if (!teamContext.id) {
+		if (!teamContext) {
 			return;
 		}
 		try {
@@ -40,7 +40,7 @@ const Edit: React.FC = () => {
 				return;
 			}
 
-			await editTeam({ team_id: teamContext.id, name });
+			await editTeam({ name });
 
 			const settedTeam = await getSelectedTeam();
 

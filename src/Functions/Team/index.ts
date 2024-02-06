@@ -1,6 +1,10 @@
 import api from '@teams/Services/API';
 
-import { clearCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+import {
+	clearCurrentTeam,
+	getCurrentTeam,
+} from '@teams/Utils/Settings/CurrentTeam';
+
 import { clearSelectedteam } from './SelectedTeam';
 
 interface createTeamProps {
@@ -16,25 +20,29 @@ export async function createTeam({ name }: createTeamProps): Promise<ITeam> {
 }
 
 interface editTeamProps {
-	team_id: string;
 	name: string;
 }
 
-export async function editTeam({
-	team_id,
-	name,
-}: editTeamProps): Promise<void> {
-	await api.put<ITeam>(`/team/${team_id}`, {
+export async function editTeam({ name }: editTeamProps): Promise<void> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.put<ITeam>(`/team/${currentTeam.id}`, {
 		name,
 	});
 }
 
-interface deleteTeamProps {
-	team_id: string;
-}
+export async function deleteTeam(): Promise<void> {
+	const currentTeam = await getCurrentTeam();
 
-export async function deleteTeam({ team_id }: deleteTeamProps): Promise<void> {
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	await clearSelectedteam();
 	await clearCurrentTeam();
-	await api.delete(`/team/${team_id}`);
+	await api.delete(`/team/${currentTeam.id}`);
 }

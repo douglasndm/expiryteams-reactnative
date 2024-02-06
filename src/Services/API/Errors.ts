@@ -5,6 +5,8 @@ import strings from '@teams/Locales';
 import { reset } from '@teams/References/Navigation';
 
 import { clearSelectedteam } from '@teams/Functions/Team/SelectedTeam';
+import { clearCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+
 import AppError from '@teams/Errors/AppError';
 
 async function errorsHandler(error: any): Promise<void> {
@@ -44,16 +46,6 @@ async function errorsHandler(error: any): Promise<void> {
 					});
 					break;
 
-				case 5:
-					// Subscription is not active
-					/*
-                    reset({
-                        routeHandler: 'Routes',
-                        routesNames: ['ViewTeam'],
-                    });
-                    */
-					break;
-
 				case 7:
 					// User was not found
 					reset({
@@ -65,6 +57,7 @@ async function errorsHandler(error: any): Promise<void> {
 					// User is not in team
 					// could be removed or manager deleted the team
 					await clearSelectedteam();
+					await clearCurrentTeam();
 					reset({
 						routesNames: ['TeamList'],
 					});

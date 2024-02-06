@@ -59,19 +59,9 @@ const ListUsers: React.FC = () => {
 	const [users, setUsers] = useState<Array<IUserInTeam>>([]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) {
-			showMessage({
-				message: 'Team is not selected',
-				type: 'danger',
-			});
-			return;
-		}
-
 		try {
 			setIsLoading(true);
-			const roles = await getAllUsersFromTeam({
-				team_id: teamContext.id,
-			});
+			const roles = await getAllUsersFromTeam();
 
 			const sorted = roles.sort((role1, role2) => {
 				const r1 = role1.role.toLowerCase();
@@ -122,10 +112,6 @@ const ListUsers: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [teamContext.id]);
-
-	useEffect(() => {
-		loadData();
 	}, []);
 
 	const handleOnTextChange = useCallback((value: string) => {
