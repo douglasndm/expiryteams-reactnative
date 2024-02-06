@@ -18,6 +18,8 @@ import {
 	getSelectedTeam,
 } from '@teams/Functions/Team/SelectedTeam';
 
+import { setCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+
 import Loading from '@components/Loading';
 import Input from '@components/InputText';
 import Button from '@components/Button';
@@ -137,6 +139,8 @@ const Login: React.FC = () => {
 							userRole,
 							teamPreferences,
 						});
+
+						await setCurrentTeam(team);
 
 						if (teamContext.reload) {
 							teamContext.reload();
