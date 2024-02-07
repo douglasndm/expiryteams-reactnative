@@ -59,7 +59,7 @@ export const SettingContainer = styled.View`
 `;
 
 export const SettingTitle = styled.Text`
-	color: ${({ theme }) => theme.colors.text};
+	color: ${props => props.theme.colors.productCardText};
 	font-family: 'Open Sans';
 	font-size: 18px;
 	font-weight: bold;
@@ -67,7 +67,7 @@ export const SettingTitle = styled.Text`
 
 export const SettingDescription = styled.Text`
 	margin-top: 10px;
-	color: ${({ theme }) => theme.colors.text};
+	color: ${props => props.theme.colors.productCardText};
 	font-family: 'Open Sans';
 `;
 
