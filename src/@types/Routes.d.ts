@@ -21,7 +21,7 @@ type RoutesParams = {
 		productId: string;
 		batchId: string;
 	};
-	Error;
+	NoInternet;
 	PhotoView: {
 		productId: string;
 	};

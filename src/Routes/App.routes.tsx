@@ -13,7 +13,7 @@ import EditBatch from '@teams/Views/Batch/Edit';
 import ProductDetails from '@teams/Views/Product/Details';
 import Settings from '@teams/Views/Settings';
 import About from '@teams/Views/About';
-import Error from '@teams/Views/Informations/Error';
+import NoInternet from '@views/Informations/Errors/NoInternet';
 import PhotoView from '@views/Product/PhotoView';
 
 import BatchView from '@teams/Views/Batch/View';
@@ -88,7 +88,6 @@ const Routes: React.FC = () => {
 				<Stack.Screen name="AddBatch" component={AddBatch} />
 				<Stack.Screen name="EditProduct" component={EditProduct} />
 				<Stack.Screen name="EditBatch" component={EditBatch} />
-				<Stack.Screen name="Error" component={Error} />
 				<Stack.Screen name="PhotoView" component={PhotoView} />
 
 				<Stack.Screen name="BatchView" component={BatchView} />
@@ -128,6 +127,8 @@ const Routes: React.FC = () => {
 				<Stack.Screen name="DeleteUser" component={DeleteUser} />
 
 				<Stack.Screen name="VerifyEmail" component={VerifyEmail} />
+
+				<Stack.Screen name="NoInternet" component={NoInternet} />
 
 				<Stack.Screen name="Test" component={Test} />
 			</Stack.Navigator>

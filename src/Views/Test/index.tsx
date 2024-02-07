@@ -1,49 +1,52 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import messaging from '@react-native-firebase/messaging';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import Button from '@components/Button';
 
+import { deleteSubscription } from '@teams/Functions/Team/Subscriptions/Delete';
+import { getSelectedTeam } from '@teams/Functions/Team/SelectedTeam';
+
 import { Container, Category } from '../Settings/styles';
-import { deleteSubscription } from '~/Functions/Team/Subscriptions/Delete';
-import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 
 const Test: React.FC = () => {
-    const handleMessaingToken = useCallback(async () => {
-        const token = await messaging().getToken();
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-        console.log(token);
-    }, []);
+	const handleToken = useCallback(async () => {
+		const token = await auth().currentUser?.getIdTokenResult();
 
-    const handleToken = useCallback(async () => {
-        const token = await auth().currentUser?.getIdTokenResult();
+		console.log(token?.token);
+	}, []);
 
-        console.log(token?.token);
-    }, []);
+	const deleteSub = useCallback(async () => {
+		const team = await getSelectedTeam();
 
-    const deleteSub = useCallback(async () => {
-        const team = await getSelectedTeam();
+		if (!team) return;
+		await deleteSubscription(team.userRole.team.id);
+	}, []);
 
-        if (!team) return;
-        await deleteSubscription(team.userRole.team.id);
-    }, []);
+	const handleNavigate = useCallback(() => {
+		navigate('NoInternet');
+	}, [navigate]);
 
-    return (
-        <Container>
-            <ScrollView>
-                <Category>
-                    <Button
-                        text="Log Messaing token"
-                        onPress={handleMessaingToken}
-                    />
-                    <Button text="Log user token" onPress={handleToken} />
+	return (
+		<Container>
+			<ScrollView>
+				<Category>
+					<Button title="Log user token" onPress={handleToken} />
 
-                    <Button text="Delete subscription" onPress={deleteSub} />
-                </Category>
-            </ScrollView>
-        </Container>
-    );
+					<Button title="Delete subscription" onPress={deleteSub} />
+
+					<Button
+						title="Navigate to noInternet"
+						onPress={handleNavigate}
+					/>
+				</Category>
+			</ScrollView>
+		</Container>
+	);
 };
 
 export default Test;

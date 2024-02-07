@@ -5,7 +5,7 @@ interface Request {
 	notPremium?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
 	flex: 1;
 	background: ${props => props.theme.colors.background};
 `;
