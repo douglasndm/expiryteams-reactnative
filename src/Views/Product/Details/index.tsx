@@ -116,10 +116,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		handleImage();
 	}, [handleImage]);
 
-	const addNewLote = useCallback(() => {
-		navigate('AddBatch', { productId });
-	}, [navigate, productId]);
-
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
