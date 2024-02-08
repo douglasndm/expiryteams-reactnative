@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -23,14 +23,6 @@ const DrawerMenu: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const teamContext = useTeam();
-
-	const isManager = useMemo(() => {
-		if (teamContext.roleInTeam)
-			if (teamContext.roleInTeam.role.toLowerCase() === 'manager') {
-				return true;
-			}
-		return false;
-	}, [teamContext]);
 
 	const navigateToHome = useCallback(() => {
 		navigate('Home', {});
@@ -60,10 +52,6 @@ const DrawerMenu: React.FC = () => {
 		navigate('ViewTeam');
 	}, [navigate]);
 
-	const handleNavigateToTeamLogs = useCallback(() => {
-		navigate('TeamLogs');
-	}, [navigate]);
-
 	const handleNavigateToSettings = useCallback(() => {
 		navigate('Settings');
 	}, [navigate]);
@@ -80,7 +68,7 @@ const DrawerMenu: React.FC = () => {
 		<PageContainer>
 			<Container>
 				<MainMenuContainer>
-					<UserInfo navigate={navigate} />
+					<UserInfo />
 
 					<DrawerSection>
 						<MenuItemContainer onPress={navigateToHome}>
@@ -136,30 +124,6 @@ const DrawerMenu: React.FC = () => {
 								</MenuItemText>
 							</MenuContent>
 						</MenuItemContainer>
-
-						{!!teamContext.id && (
-							<MenuItemContainer onPress={handleNavigateToTeam}>
-								<MenuContent>
-									<Icons name="briefcase-outline" />
-									<MenuItemText>
-										{teamContext.name}
-									</MenuItemText>
-								</MenuContent>
-							</MenuItemContainer>
-						)}
-
-						{isManager && (
-							<MenuItemContainer
-								onPress={handleNavigateToTeamLogs}
-							>
-								<MenuContent>
-									<Icons name="book-outline" />
-									<MenuItemText>
-										{strings.Menu_Button_GoToLogs}
-									</MenuItemText>
-								</MenuContent>
-							</MenuItemContainer>
-						)}
 					</DrawerSection>
 				</MainMenuContainer>
 
@@ -172,6 +136,17 @@ const DrawerMenu: React.FC = () => {
 							</MenuItemText>
 						</MenuContent>
 					</MenuItemContainer>
+
+					{!!teamContext.id && (
+						<MenuItemContainer onPress={handleNavigateToTeam}>
+							<MenuContent>
+								<Icons name="briefcase-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToYourTeam}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+					)}
 
 					<MenuItemContainer onPress={handleNavigateToAbout}>
 						<MenuContent>

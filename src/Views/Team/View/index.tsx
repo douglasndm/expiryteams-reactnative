@@ -48,6 +48,10 @@ const ViewTeam: React.FC = () => {
 		navigate('TeamList');
 	}, [navigate]);
 
+	const handleNavigateToTeamLogs = useCallback(() => {
+		navigate('TeamLogs');
+	}, [navigate]);
+
 	const handleNavigateToSettings = useCallback(() => {
 		navigate('Settings');
 	}, [navigate]);
@@ -106,20 +110,40 @@ const ViewTeam: React.FC = () => {
 				{isManager && <Subscriptions />}
 
 				{teamContext.active && (
-					<Section>
-						<SectionTitle>
-							{strings.View_TeamView_Members_Title}
-						</SectionTitle>
+					<>
+						<Section>
+							<SectionTitle>
+								{strings.View_TeamView_Members_Title}
+							</SectionTitle>
 
-						<SubscriptionDescription>
-							{strings.View_TeamView_Members_Description}
-						</SubscriptionDescription>
+							<SubscriptionDescription>
+								{strings.View_TeamView_Members_Description}
+							</SubscriptionDescription>
 
-						<Button
-							title={strings.View_TeamView_Button_GoToMembers}
-							onPress={handleNavigateToMembers}
-						/>
-					</Section>
+							<Button
+								title={strings.View_TeamView_Button_GoToMembers}
+								onPress={handleNavigateToMembers}
+							/>
+						</Section>
+						{isManager && (
+							<Section>
+								<SectionTitle>
+									{strings.View_TeamView_Logs_Title}
+								</SectionTitle>
+
+								<SubscriptionDescription>
+									{strings.View_TeamView_Logs_Description}
+								</SubscriptionDescription>
+
+								<Button
+									title={
+										strings.View_TeamView_Button_GoToLogs
+									}
+									onPress={handleNavigateToTeamLogs}
+								/>
+							</Section>
+						)}
+					</>
 				)}
 
 				{!teamContext.active && (

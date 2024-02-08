@@ -227,6 +227,7 @@ const Home: React.FC = () => {
 				setSelectModeOnParent={
 					hasPermission ? setSelectMode : undefined
 				}
+				disableImage={false}
 			/>
 		</Container>
 	);
