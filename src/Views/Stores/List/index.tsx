@@ -1,6 +1,4 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
@@ -8,38 +6,15 @@ import { useTeam } from '@teams/Contexts/TeamContext';
 import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 import { createStore } from '@teams/Functions/Team/Stores/Create';
 
-import Header from '@components/Header';
-import Loading from '@components/Loading';
-
-import {
-	Container,
-	InputContainer,
-	InputTextContainer,
-	InputText,
-	ListTitle,
-	Icons,
-	LoadingIcon,
-	InputTextTip,
-	ListItemContainer,
-	ListItemTitle,
-	AddButtonContainer,
-	AddNewItemContent,
-	Content,
-} from '@styles/Views/GenericListPage';
+import List from '@views/Store/List';
 
 const ListView: React.FC = () => {
-	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
-
 	const teamContext = useTeam();
 
 	const [stores, setStores] = useState<Array<IStore>>([]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-
-	const [newStoreName, setNewStoreName] = useState<string | undefined>();
 	const [isAdding, setIsAdding] = useState<boolean>(false);
-	const [inputHasError, setInputHasError] = useState<boolean>(false);
-	const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
 
 	const isManager = useMemo(() => {
 		if (teamContext.roleInTeam) {
@@ -73,105 +48,38 @@ const ListView: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
-	const handleOnTextChange = useCallback((value: string) => {
-		setInputHasError(false);
-		setInputErrorMessage('');
-		setNewStoreName(value);
-	}, []);
+	const handleSave = useCallback(
+		async (storeName: string) => {
+			try {
+				setIsAdding(true);
 
-	const handleSave = useCallback(async () => {
-		if (!teamContext.id) return;
-		try {
-			if (!newStoreName) {
-				setInputHasError(true);
-				setInputErrorMessage('Digite o nome da loja');
-				return;
-			}
-
-			setIsAdding(true);
-
-			const store = await createStore({
-				name: newStoreName,
-				team_id: teamContext.id,
-			});
-
-			setStores([...stores, store]);
-			setNewStoreName('');
-		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
+				const store = await createStore({
+					name: storeName,
 				});
-		} finally {
-			setIsAdding(false);
-		}
-	}, [newStoreName, stores, teamContext.id]);
 
-	const handleNavigateToStore = useCallback(
-		(store_id: string, store_name: string) => {
-			navigate('StoreView', {
-				store_id,
-				store_name,
-			});
+				setStores([...stores, store]);
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			} finally {
+				setIsAdding(false);
+			}
 		},
-		[navigate]
+		[stores]
 	);
 
 	return (
-		<Container>
-			<Header title="Lojas" />
-
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Content>
-					{isManager && (
-						<AddNewItemContent>
-							<InputContainer>
-								<InputTextContainer hasError={inputHasError}>
-									<InputText
-										value={newStoreName}
-										onChangeText={handleOnTextChange}
-										placeholder="Adicionar nova loja"
-									/>
-								</InputTextContainer>
-
-								<AddButtonContainer
-									onPress={handleSave}
-									disabled={isAdding}
-								>
-									{isAdding ? (
-										<LoadingIcon />
-									) : (
-										<Icons name="add-circle-outline" />
-									)}
-								</AddButtonContainer>
-							</InputContainer>
-
-							{!!inputErrorMessage && (
-								<InputTextTip>{inputErrorMessage}</InputTextTip>
-							)}
-						</AddNewItemContent>
-					)}
-
-					<ListTitle>Todas as lojas</ListTitle>
-
-					{stores.map(store => {
-						return (
-							<ListItemContainer
-								key={store.id}
-								onPress={() =>
-									handleNavigateToStore(store.id, store.name)
-								}
-							>
-								<ListItemTitle>{store.name}</ListItemTitle>
-							</ListItemContainer>
-						);
-					})}
-				</Content>
-			)}
-		</Container>
+		<List
+			stores={stores}
+			isLoading={isLoading}
+			isAdding={isAdding}
+			allowCreate={isManager}
+			showNoStore={false}
+			createStore={handleSave}
+		/>
 	);
 };
 

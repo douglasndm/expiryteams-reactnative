@@ -1,4 +1,5 @@
 import api from '@teams/Services/API';
+
 import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
 interface updateUserRoleProps {

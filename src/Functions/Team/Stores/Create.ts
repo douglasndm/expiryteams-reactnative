@@ -1,19 +1,23 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
+
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
 interface createStoreProps {
-    name: string;
-    team_id: string;
+	name: string;
 }
 
-async function createStore({
-    name,
-    team_id,
-}: createStoreProps): Promise<IStore> {
-    const response = await api.post<IStore>(`/team/${team_id}/stores`, {
-        name,
-    });
+async function createStore({ name }: createStoreProps): Promise<IStore> {
+	const currentTeam = await getCurrentTeam();
 
-    return response.data;
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.post<IStore>(`/team/${currentTeam.id}/stores`, {
+		name,
+	});
+
+	return response.data;
 }
 
 export { createStore };
