@@ -6,7 +6,7 @@ export const Container = styled.View`
 	background-color: ${props => props.theme.colors.background};
 `;
 
-export const PageContent = styled.ScrollView`
+export const PageContent = styled.View`
 	padding: 15px 10px 0;
 `;
 

@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -19,11 +20,6 @@ import {
 
 import Header from '@components/Header';
 import Loading from '@components/Loading';
-
-import {
-	PickerContainer,
-	Picker,
-} from '@teams/Components/Product/Inputs/Pickers/styles';
 
 import {
 	Container,
@@ -58,8 +54,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 	const authContext = useAuth();
 	const teamContext = useTeam();
 
-	const [isMounted, setIsMounted] = useState(true);
-
 	const user: IUserInTeam = useMemo(() => {
 		return JSON.parse(String(route.params.user));
 	}, [route.params.user]);
@@ -87,23 +81,20 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		return 'repositor';
 	});
 
-	const [selectedStore, setSelectedStore] = useState<string | null>(() => {
+	const [selectedStore, setSelectedStore] = useState<string>(() => {
 		if (user.stores && user.stores.length > 0) {
 			return user.stores[0].id;
 		}
-		return null;
+		return 'noStore';
 	});
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const loadData = useCallback(async () => {
-		if (!isMounted || !teamContext.id) return;
 		try {
 			setIsLoading(true);
 
-			const allStores = await getAllStoresFromTeam({
-				team_id: teamContext.id,
-			});
+			const allStores = await getAllStoresFromTeam();
 
 			const storesToAdd: IPickerItem[] = [];
 			allStores.forEach(store => {
@@ -124,10 +115,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, teamContext.id]);
-
-	const handleOnChange = useCallback((value: string) => {
-		setSelectedStore(value);
 	}, []);
 
 	const enableManagerTools = useMemo(() => {
@@ -148,41 +135,24 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		return false;
 	}, [user.status]);
 
-	const userRole = useMemo(() => {
-		if (user.role) {
-			const { role } = user;
-
-			if (role?.toLowerCase() === 'manager')
-				return strings.UserInfo_Role_Manager;
-			if (role?.toLowerCase() === 'supervisor') {
-				return strings.UserInfo_Role_Supervisor;
-			}
-		}
-
-		return strings.UserInfo_Role_Repositor;
-	}, [user]);
-
 	const handleCopyCode = useCallback(() => {
 		Clipboard.setString(user.code);
 
 		showMessage({
-			message: 'Código copiado para área de transferencia',
+			message: strings.View_UserDetails_Alert_Code_InTransferArea,
 			type: 'info',
 		});
 	}, [user.code]);
 
 	const handleRemoveUser = useCallback(async () => {
-		if (!isMounted || !teamContext.id) return;
-
 		try {
 			setIsLoading(true);
 			await removeUserFromTeam({
-				team_id: teamContext.id,
 				user_id: user.id,
 			});
 
 			showMessage({
-				message: 'Usuário removido do time',
+				message: strings.View_UserDetails_Alert_User_Removed,
 				type: 'info',
 			});
 
@@ -196,17 +166,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, pop, teamContext.id, user.id]);
+	}, [pop, user.id]);
 
 	const handleUpdate = useCallback(async () => {
-		if (!isMounted || !teamContext.id) return;
-
 		try {
 			setIsLoading(true);
 			if (user.stores.length > 0) {
 				if (selectedStore === null) {
 					await removeUserFromStore({
-						team_id: teamContext.id,
 						store_id: user.stores[0].id,
 						user_id: user.id,
 					});
@@ -219,7 +186,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 					selectedStore !== user.stores[0].id
 				)
 					await addUserToStore({
-						team_id: teamContext.id,
 						user_id: user.id,
 						store_id: selectedStore,
 					});
@@ -227,12 +193,11 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 
 			await updateUserRole({
 				user_id: user.id,
-				team_id: teamContext.id,
 				newRole: selectedRole,
 			});
 
 			showMessage({
-				message: 'Usuário atualizado',
+				message: strings.View_UserDetails_Alert_User_Updated,
 				type: 'info',
 			});
 
@@ -246,16 +211,10 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, pop, selectedRole, selectedStore, teamContext.id, user]);
+	}, [pop, selectedRole, selectedStore, user]);
 
 	useEffect(() => {
 		loadData();
-	}, []);
-
-	useEffect(() => {
-		return () => {
-			setIsMounted(false);
-		};
 	}, []);
 
 	const enableManager = useMemo(() => {
@@ -263,7 +222,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 			return true;
 		}
 		return false;
-	}, []);
+	}, [authContext.user, enableManagerTools, isMyself]);
 
 	const handleOnRoleChange = useCallback((value: string) => {
 		if (value.toLowerCase() === 'supervisor') {
@@ -274,108 +233,165 @@ const UserDetails: React.FC<UserDetailsProps> = ({
 		setSelectedRole('repositor');
 	}, []);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	const handleOnStoreChange = useCallback((value: string) => {
+		setSelectedStore(value);
+	}, []);
+
+	const appBarActions = useMemo(() => {
+		if (enableManager && !isLoading) {
+			return [
+				{
+					icon: 'content-save-outline',
+					onPress: handleUpdate,
+				},
+			];
+		}
+		return [];
+	}, [enableManager, handleUpdate, isLoading]);
+
+	const moreMenuItems = useMemo(() => {
+		if (enableManager && !isLoading) {
+			return [
+				{
+					title: strings.View_UserDetails_Action_RemoverUser,
+					leadingIcon: 'account-minus-outline',
+					onPress: handleRemoveUser,
+				},
+			];
+		}
+
+		return [];
+	}, [enableManager, handleRemoveUser, isLoading]);
+
+	return (
 		<Container>
 			<Header
 				title={strings.View_UserDetails_PageTitle}
 				noDrawer
-				appBarActions={
-					enableManager
-						? [
-								{
-									icon: 'content-save-outline',
-									onPress: handleUpdate,
-								},
-						  ]
-						: []
-				}
-				moreMenuItems={
-					enableManager
-						? [
-								{
-									title: 'Remover',
-									leadingIcon: 'account-minus-outline',
-									onPress: handleRemoveUser,
-								},
-						  ]
-						: []
-				}
+				appBarActions={appBarActions}
+				moreMenuItems={moreMenuItems}
 			/>
 
-			<PageContent>
-				{!!user.name && !!user.lastName && (
-					<UserName>{`${user.name} ${user.lastName}`}</UserName>
-				)}
+			{isLoading ? (
+				<Loading />
+			) : (
+				<ScrollView>
+					<PageContent>
+						{!!user.name && !!user.lastName && (
+							<UserName>{`${user.name} ${user.lastName}`}</UserName>
+						)}
 
-				<UserInfo>{user.email}</UserInfo>
-				<UserInfo>{userRole}</UserInfo>
+						<UserInfo>{user.email}</UserInfo>
 
-				{userIsPending && enableManagerTools && (
-					<CodeDetails>
-						<CodeTitle>
-							{strings.View_UserDetails_Code_Title}
-						</CodeTitle>
-						<CodeContainer onPress={handleCopyCode}>
-							<Code>{user.code}</Code>
-						</CodeContainer>
-					</CodeDetails>
-				)}
+						{userIsPending && enableManagerTools && (
+							<CodeDetails>
+								<CodeTitle>
+									{strings.View_UserDetails_Code_Title}
+								</CodeTitle>
+								<CodeContainer onPress={handleCopyCode}>
+									<Code>{user.code}</Code>
+								</CodeContainer>
+							</CodeDetails>
+						)}
 
-				{enableManagerTools &&
-					authContext.user &&
-					!isMyself &&
-					!userIsPending && (
-						<>
-							<PickerContainer style={{ marginTop: 10 }}>
-								<Picker
-									items={stores}
-									onValueChange={handleOnChange}
-									value={selectedStore}
-									placeholder={{
-										label: 'Atribuir a uma loja',
-										value: null,
-									}}
-								/>
-							</PickerContainer>
+						{enableManagerTools &&
+							authContext.user &&
+							!isMyself &&
+							!userIsPending && (
+								<>
+									<SettingContainer>
+										<SettingTitle>
+											{
+												strings.View_UserDetails_Setting_UserRole_Title
+											}
+										</SettingTitle>
 
-							<SettingContainer>
-								<SettingTitle>
-									Escolha o cargo do usuário
-								</SettingTitle>
+										<SettingDescription>
+											{
+												strings.View_UserDetails_Setting_UserRole_Description
+											}
+										</SettingDescription>
 
-								<SettingDescription>
-									Escolha com base nas responsabilidades dos
-									usuários.
-								</SettingDescription>
+										<SettingDescription>
+											<RoleText>
+												{
+													strings.View_UserDetails_Setting_UserRole_Repositor
+												}
+											</RoleText>
+											:{' '}
+											{
+												strings.View_UserDetails_Setting_UserRole_Description_Repositor
+											}
+										</SettingDescription>
+										<SettingDescription>
+											<RoleText>
+												{
+													strings.View_UserDetails_Setting_UserRole_Supervisor
+												}
+											</RoleText>
+											:{' '}
+											{
+												strings.View_UserDetails_Setting_UserRole_Description_Supervisor
+											}
+										</SettingDescription>
 
-								<SettingDescription>
-									<RoleText>Repositor</RoleText>: gerencie
-									produtos com acesso básico.
-								</SettingDescription>
-								<SettingDescription>
-									<RoleText>Supervisor</RoleText>: controle
-									completo, incluindo exclusão de produtos.
-								</SettingDescription>
+										<RadioButtonGroup
+											onValueChange={handleOnRoleChange}
+											value={selectedRole}
+										>
+											<RadioButtonItem
+												label={
+													strings.View_UserDetails_Setting_UserRole_Repositor
+												}
+												value="repositor"
+											/>
+											<RadioButtonItem
+												label={
+													strings.View_UserDetails_Setting_UserRole_Supervisor
+												}
+												value="supervisor"
+											/>
+										</RadioButtonGroup>
+									</SettingContainer>
 
-								<RadioButtonGroup
-									onValueChange={handleOnRoleChange}
-									value={selectedRole}
-								>
-									<RadioButtonItem
-										label="Repositor"
-										value="repositor"
-									/>
-									<RadioButtonItem
-										label="Supervisor"
-										value="supervisor"
-									/>
-								</RadioButtonGroup>
-							</SettingContainer>
-						</>
-					)}
-			</PageContent>
+									<SettingContainer>
+										<SettingTitle>
+											{
+												strings.View_UserDetails_Setting_UserStore_Title
+											}
+										</SettingTitle>
+
+										<SettingDescription>
+											{
+												strings.View_UserDetails_Setting_UserStore_Description
+											}
+										</SettingDescription>
+
+										<RadioButtonGroup
+											onValueChange={handleOnStoreChange}
+											value={selectedStore}
+										>
+											<RadioButtonItem
+												value="noStore"
+												label={
+													strings.View_UserDetails_Setting_UserStore_NoStore
+												}
+											/>
+
+											{stores.map(store => (
+												<RadioButtonItem
+													key={store.key}
+													value={store.value}
+													label={store.label}
+												/>
+											))}
+										</RadioButtonGroup>
+									</SettingContainer>
+								</>
+							)}
+					</PageContent>
+				</ScrollView>
+			)}
 		</Container>
 	);
 };
