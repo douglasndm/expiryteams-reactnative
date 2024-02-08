@@ -1,37 +1,47 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
+
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
 interface removeUserFromStoreProps {
-    user_id: string;
-    team_id: string;
-    store_id: string;
+	user_id: string;
+	store_id: string;
 }
 
 interface addUserToStoreProps {
-    user_id: string;
-    team_id: string;
-    store_id: string;
+	user_id: string;
+	store_id: string;
 }
 
 async function addUserToStore({
-    user_id,
-    store_id,
-    team_id,
+	user_id,
+	store_id,
 }: addUserToStoreProps): Promise<void> {
-    await api.post(`/team/${team_id}/stores/${store_id}/users`, {
-        user_id,
-    });
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.post(`/team/${currentTeam.id}/stores/${store_id}/users`, {
+		user_id,
+	});
 }
 
 async function removeUserFromStore({
-    user_id,
-    team_id,
-    store_id,
+	user_id,
+	store_id,
 }: removeUserFromStoreProps): Promise<void> {
-    await api.delete(`/team/${team_id}/stores/${store_id}/users`, {
-        data: {
-            user_id,
-        },
-    });
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.delete(`/team/${currentTeam.id}/stores/${store_id}/users`, {
+		data: {
+			user_id,
+		},
+	});
 }
 
 export { addUserToStore, removeUserFromStore };

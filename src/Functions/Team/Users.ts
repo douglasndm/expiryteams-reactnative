@@ -70,7 +70,6 @@ export async function getAllUsersFromTeam(): Promise<Array<IUserInTeam>> {
 
 interface putUserInTeamProps {
 	user_email: string;
-	team_id: string;
 }
 
 interface putUserInTeamResponse {
@@ -83,10 +82,15 @@ interface putUserInTeamResponse {
 
 export async function putUserInTeam({
 	user_email,
-	team_id,
 }: putUserInTeamProps): Promise<putUserInTeamResponse> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const response = await api.post<putUserInTeamResponse>(
-		`/team/${team_id}/manager/user`,
+		`/team/${currentTeam.id}/manager/user`,
 		{
 			email: user_email,
 		}
@@ -118,24 +122,26 @@ export async function enterTeamCode({
 			code,
 		});
 	} catch (err) {
-		if (err.message === 'Network Error') {
-			throw new Error(err);
-		} else if (err.response.data.message === 'Code is not valid') {
+		if (err.response.data.message === 'Code is not valid') {
 			throw new Error(strings.Function_Team_JoinTeam_InvalidCode);
 		} else {
-			throw new Error(err);
+			throw err;
 		}
 	}
 }
 
 interface removeUserFromTeamProps {
-	team_id: string;
 	user_id: string;
 }
 
 export async function removeUserFromTeam({
-	team_id,
 	user_id,
 }: removeUserFromTeamProps): Promise<void> {
-	await api.delete(`/team/${team_id}/manager/user/${user_id}`);
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.delete(`/team/${currentTeam.id}/manager/user/${user_id}`);
 }
