@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import { clearSelectedteam } from '@teams/Functions/Team/SelectedTeam';
@@ -8,9 +10,8 @@ import Loading from '@components/Loading';
 
 import { useTeam } from '@teams/Contexts/TeamContext';
 
-import { reset } from '@teams/References/Navigation';
-
 const Logout: React.FC = () => {
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 	const teamContext = useTeam();
 
 	const handleLogout = useCallback(async () => {
@@ -23,8 +24,11 @@ const Logout: React.FC = () => {
 			}
 
 			reset({
-				routeHandler: 'Auth',
-				routesNames: ['Login'],
+				routes: [
+					{
+						name: 'Login',
+					},
+				],
 			});
 		} catch (err) {
 			if (err instanceof Error)
@@ -33,7 +37,7 @@ const Logout: React.FC = () => {
 					type: 'danger',
 				});
 		}
-	}, [teamContext]);
+	}, [reset, teamContext]);
 
 	useEffect(() => {
 		handleLogout();

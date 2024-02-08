@@ -67,7 +67,6 @@ async function errorsHandler(error: any): Promise<void> {
 					// Device not allowed, login anywhere else
 					await destroySession();
 					reset({
-						routeHandler: 'Auth',
 						routesNames: ['Login'],
 					});
 

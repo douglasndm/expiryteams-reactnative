@@ -82,16 +82,9 @@ type RoutesParams = {
 	VerifyEmail;
 	DeleteTeam;
 	DeleteUser;
-};
 
-type AuthRoutes = {
 	Intro;
 	Login;
 	ForgotPassword;
 	CreateAccount;
-};
-
-type DrawerParams = {
-	Routes;
-	Auth;
 };

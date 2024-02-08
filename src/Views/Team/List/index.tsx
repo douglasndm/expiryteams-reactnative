@@ -219,14 +219,7 @@ const List: React.FC = () => {
 			reset({
 				routes: [
 					{
-						name: 'Routes',
-						state: {
-							routes: [
-								{
-									name: 'Home',
-								},
-							],
-						},
+						name: 'Home',
 					},
 				],
 			});

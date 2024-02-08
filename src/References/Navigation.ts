@@ -1,54 +1,38 @@
 import { createRef } from 'react';
 import { NavigationContainerRef } from '@react-navigation/native';
 
-export const navigationRef = createRef<NavigationContainerRef>();
+export const navigationRef = createRef<NavigationContainerRef<RoutesParams>>();
 
 interface NavigateProps {
-    routeHandler?: 'Routes' | 'Auth';
-    routeName: string;
-    params?: any;
+	routeName: string;
+	params?: any;
 }
 
-export function navigate({
-    routeHandler = 'Routes',
-    routeName,
-    params,
-}: NavigateProps): void {
-    navigationRef.current?.navigate(routeHandler, {
-        screen: routeName,
-        params,
-    });
+export function navigate({ routeName, params }: NavigateProps): void {
+	navigationRef.current?.navigate({
+		screen: routeName,
+		params,
+	});
 }
 
 interface ResetProps {
-    routeHandler?: 'Routes' | 'Auth';
-    routesNames: string[];
+	routesNames: string[];
 }
 
-export function reset({
-    routeHandler = 'Routes',
-    routesNames,
-}: ResetProps): void {
-    interface Props {
-        name: string;
-    }
+export function reset({ routesNames }: ResetProps): void {
+	interface Props {
+		name: string;
+	}
 
-    const routes: Array<Props> = [];
+	const routes: Array<Props> = [];
 
-    routesNames.forEach(route => {
-        routes.push({
-            name: route,
-        });
-    });
+	routesNames.forEach(route => {
+		routes.push({
+			name: route,
+		});
+	});
 
-    navigationRef.current?.reset({
-        routes: [
-            {
-                name: routeHandler,
-                state: {
-                    routes,
-                },
-            },
-        ],
-    });
+	navigationRef.current?.reset({
+		routes,
+	});
 }
