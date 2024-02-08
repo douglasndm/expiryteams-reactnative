@@ -99,6 +99,14 @@ const Routes: React.FC = () => {
 				return false;
 			case 'Settings':
 				return false;
+			case 'Intro':
+				return false;
+			case 'Login':
+				return false;
+			case 'ForgotPassword':
+				return false;
+			case 'CreateAccount':
+				return false;
 			default:
 				return true;
 		}
