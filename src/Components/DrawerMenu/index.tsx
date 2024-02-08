@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
-import { DrawerContentComponentProps } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '@teams/Locales';
 
@@ -18,10 +19,8 @@ import {
 
 import UserInfo from './UserInfo';
 
-const DrawerMenu: React.FC<DrawerContentComponentProps> = (
-	props: DrawerContentComponentProps
-) => {
-	const { navigation } = props;
+const DrawerMenu: React.FC = () => {
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const teamContext = useTeam();
 
@@ -34,49 +33,54 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 	}, [teamContext]);
 
 	const navigateToHome = useCallback(() => {
-		navigation.navigate('Home', {});
-	}, [navigation]);
+		navigate('Home', {});
+	}, [navigate]);
 
 	const navigateToAddProduct = useCallback(() => {
-		navigation.navigate('AddProduct', {});
-	}, [navigation]);
+		navigate('AddProduct', {});
+	}, [navigate]);
 
 	const navigateToCategories = useCallback(() => {
-		navigation.navigate('ListCategory');
-	}, [navigation]);
+		navigate('ListCategory');
+	}, [navigate]);
 
 	const navigateToBrands = useCallback(() => {
-		navigation.navigate('BrandList');
-	}, [navigation]);
+		navigate('BrandList');
+	}, [navigate]);
 
 	const navigateToStores = useCallback(() => {
-		navigation.navigate('StoreList');
-	}, [navigation]);
+		navigate('StoreList');
+	}, [navigate]);
 
 	const navigateToExport = useCallback(() => {
-		navigation.navigate('Export');
-	}, [navigation]);
+		navigate('Export');
+	}, [navigate]);
 
 	const handleNavigateToTeam = useCallback(() => {
-		navigation.navigate('ViewTeam');
-	}, [navigation]);
+		navigate('ViewTeam');
+	}, [navigate]);
 
 	const handleNavigateToTeamLogs = useCallback(() => {
-		navigation.navigate('TeamLogs');
-	}, [navigation]);
+		navigate('TeamLogs');
+	}, [navigate]);
 
 	const handleNavigateToSettings = useCallback(() => {
-		navigation.navigate('Settings');
-	}, [navigation]);
+		navigate('Settings');
+	}, [navigate]);
+
 	const handleNavigateToAbout = useCallback(() => {
-		navigation.navigate('About');
-	}, [navigation]);
+		navigate('About');
+	}, [navigate]);
+
+	const handleNavigateToTest = useCallback(() => {
+		navigate('Test');
+	}, [navigate]);
 
 	return (
 		<PageContainer>
 			<Container>
 				<MainMenuContainer>
-					<UserInfo navigate={navigation.navigate} />
+					<UserInfo navigate={navigate} />
 
 					<DrawerSection>
 						<MenuItemContainer onPress={navigateToHome}>
@@ -179,9 +183,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 					</MenuItemContainer>
 
 					{__DEV__ && (
-						<MenuItemContainer
-							onPress={() => navigation.navigate('Test')}
-						>
+						<MenuItemContainer onPress={handleNavigateToTest}>
 							<MenuContent>
 								<Icons name="bug-outline" />
 								<MenuItemText>

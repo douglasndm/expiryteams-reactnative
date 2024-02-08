@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '@teams/Locales';
 
@@ -21,11 +23,8 @@ import {
 	DefaultUserPhoto,
 } from './styles';
 
-interface InfoProps {
-	navigate: (route: string) => void;
-}
-
-const Info: React.FC<InfoProps> = ({ navigate }: InfoProps) => {
+const Info: React.FC = () => {
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 	const { user } = useAuth();
 	const teamContext = useTeam();
 

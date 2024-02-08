@@ -26,7 +26,7 @@ import './Functions/Team/Subscriptions';
 import './Functions/PushNotifications';
 import { getAllUserPreferences } from './Functions/UserPreferences';
 
-import Routes from './Routes/DrawerContainer';
+import Routes from './routes';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 import DefaultPrefs from './Contexts/DefaultPreferences';

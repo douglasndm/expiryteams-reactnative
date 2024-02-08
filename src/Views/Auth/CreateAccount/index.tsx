@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
@@ -6,8 +8,6 @@ import strings from '@teams/Locales';
 
 import { createAccount } from '@teams/Functions/Auth/Account';
 import { createSeassion } from '@teams/Functions/Auth/Session';
-
-import { reset } from '@teams/References/Navigation';
 
 import Header from '@components/Header';
 import Input from '@components/InputText';
@@ -17,6 +17,8 @@ import { FormContainer } from '../Login/styles';
 import { Container, PageContent } from './styles';
 
 const CreateAccount: React.FC = () => {
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
+
 	const [isMounted, setIsMounted] = useState(true);
 
 	const [name, setName] = useState<string>('');
@@ -110,8 +112,7 @@ const CreateAccount: React.FC = () => {
 			});
 
 			reset({
-				routeHandler: 'Routes',
-				routesNames: ['VerifyEmail'],
+				routes: [{ name: 'VerifyEmail' }],
 			});
 		} catch (err) {
 			if (err instanceof Error)
@@ -122,7 +123,7 @@ const CreateAccount: React.FC = () => {
 		} finally {
 			setIsCreating(false);
 		}
-	}, [email, isMounted, lastName, name, password, passwordConfirm]);
+	}, [email, isMounted, lastName, name, password, passwordConfirm, reset]);
 
 	useEffect(() => {
 		return () => {
@@ -193,7 +194,7 @@ const CreateAccount: React.FC = () => {
 					/>
 
 					<Button
-						text={strings.View_CreateAccount_Button_CreateAccount}
+						title={strings.View_CreateAccount_Button_CreateAccount}
 						onPress={handleCreateAccount}
 						isLoading={isCreating}
 					/>

@@ -40,7 +40,7 @@ import {
 
 const Login: React.FC = () => {
 	const { navigate, reset } =
-		useNavigation<StackNavigationProp<AuthRoutes>>();
+		useNavigation<StackNavigationProp<RoutesParams>>();
 	const { initializing } = useAuth();
 
 	const teamContext = useTeam();
@@ -55,7 +55,7 @@ const Login: React.FC = () => {
 		try {
 			setIsLoading(true);
 
-			let routeName = 'Home';
+			let routeName: 'Home' | 'ViewTeam' | 'TeamList' = 'Home';
 
 			const user = auth().currentUser;
 
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
 						if (role === 'manager') {
 							routeName = 'ViewTeam';
 						} else {
-							routeName = 'ListTeam';
+							routeName = 'TeamList';
 						}
 					}
 				} else {
@@ -79,14 +79,7 @@ const Login: React.FC = () => {
 				reset({
 					routes: [
 						{
-							name: 'Routes',
-							state: {
-								routes: [
-									{
-										name: routeName,
-									},
-								],
-							},
+							name: routeName,
 						},
 					],
 				});
