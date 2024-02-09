@@ -159,9 +159,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 							product={product}
 							imagePath={imagePath}
 							enableStore
-							storeName={
-								teamContext.roleInTeam?.store?.name || undefined
-							}
 						/>
 					)}
 
