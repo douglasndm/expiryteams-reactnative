@@ -1,7 +1,6 @@
 import axios from 'axios';
 import EnvConfig from 'react-native-config';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
-import crashlytics from '@react-native-firebase/crashlytics';
 import auth from '@react-native-firebase/auth';
 import appCheck from '@react-native-firebase/app-check';
 
@@ -28,10 +27,7 @@ api.interceptors.request.use(async config => {
 			const { token } = await appCheck().getToken();
 			config.headers['X-Firebase-AppCheck'] = token;
 		} catch (error) {
-			console.log(error);
-			if (error instanceof Error) {
-				crashlytics().recordError(error);
-			}
+			console.error(error);
 		}
 	}
 	return config;

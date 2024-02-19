@@ -1,5 +1,4 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@teams/Locales';
 
@@ -33,14 +32,6 @@ export async function login({
 			firebaseUser: fuser,
 			localUser: user,
 		};
-
-		await Promise.all([
-			Crashlytics().setUserId(user.id),
-			Crashlytics().setAttributes({
-				email: user.email,
-				firebaseId: fuser.uid,
-			}),
-		]);
 
 		return response;
 	} catch (err) {

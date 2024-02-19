@@ -26,7 +26,6 @@
     "@react-native-firebase/app": "18.5.0",
     "@react-native-firebase/app-check": "18.5.0",
     "@react-native-firebase/auth": "18.5.0",
-    "@react-native-firebase/crashlytics": "18.5.0",
     "@react-native-firebase/dynamic-links": "18.5.0",
     "@react-native-firebase/in-app-messaging": "18.5.0",
     "@react-native-firebase/installations": "18.5.0",
