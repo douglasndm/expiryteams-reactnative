@@ -123,24 +123,17 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, []);
 
 	const loadData = useCallback(async () => {
-		if (!isMounted) return;
-		if (!teamContext.id) {
-			return;
-		}
 		try {
 			setIsLoading(true);
 
 			const prod = await getProduct({
 				productId,
-				team_id: teamContext.id,
 			});
 
 			setName(prod.name);
 			setCode(prod.code);
 
-			const response = await getExtraInfoForProducts({
-				team_id: teamContext.id,
-			});
+			const response = await getExtraInfoForProducts();
 
 			const categoriesArray: Array<IPickerItem> = [];
 
@@ -244,10 +237,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, productId, teamContext.id]);
+	}, [productId]);
 
 	const updateProd = useCallback(async () => {
-		if (!isMounted || !teamContext.id) return;
 		if (!name || name.trim() === '') {
 			setNameFieldError(true);
 			return;
@@ -258,7 +250,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		try {
 			setIsLoading(true);
 			await updateProduct({
-				team_id: teamContext.id,
 				product: {
 					id: productId,
 					name,
@@ -281,7 +272,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 			if (!!photoPath && photoFailed === false) {
 				await uploadImage({
-					team_id: teamContext.id,
 					product_id: productId,
 					path: photoPath,
 				});
@@ -308,7 +298,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		}
 	}, [
 		code,
-		isMounted,
 		name,
 		navigate,
 		photoFailed,
@@ -317,15 +306,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		selectedBrand,
 		selectedCategory,
 		selectedStore,
-		teamContext.id,
 	]);
 
 	const handleDeleteProduct = useCallback(async () => {
-		if (!isMounted || !teamContext.id) return;
 		try {
 			setIsLoading(true);
 			await deleteProduct({
-				team_id: teamContext.id,
 				product_id: productId,
 			});
 
@@ -347,17 +333,17 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			setDeleteComponentVisible(false);
 			setIsLoading(false);
 		}
-	}, [isMounted, productId, reset, teamContext.id]);
+	}, [productId, reset]);
 
 	const handleOnPhotoPress = useCallback(() => {
-		if (!product.thumbnail) return;
+		if (!product || !product.thumbnail) return;
 
 		if (product.thumbnail) {
 			navigate('PhotoView', {
 				product_id: productId,
 			});
 		}
-	}, [navigate, product?.thumbnail, productId]);
+	}, [navigate, product, productId]);
 
 	const handleOnCodeRead = useCallback((codeRead: string) => {
 		setCode(codeRead);

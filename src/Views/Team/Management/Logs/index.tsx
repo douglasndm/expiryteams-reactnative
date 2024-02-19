@@ -3,8 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import { useTeam } from '@teams/Contexts/TeamContext';
-
 import {
 	getFormattedLogText,
 	getTeamLogs,
@@ -18,17 +16,14 @@ import { Container, Content, LogCard, LogText } from './styles';
 
 const Logs: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
-	const teamContext = useTeam();
 
 	const [refreshing, setRefreshing] = useState<boolean>(false);
 	const [logs, setLogs] = useState<ILog[]>([]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
-
 		try {
 			setRefreshing(true);
-			const response = await getTeamLogs({ team_id: teamContext.id });
+			const response = await getTeamLogs();
 
 			setLogs(response);
 		} catch (err) {
@@ -41,7 +36,7 @@ const Logs: React.FC = () => {
 		} finally {
 			setRefreshing(false);
 		}
-	}, [teamContext.id]);
+	}, []);
 
 	useEffect(() => {
 		loadData();

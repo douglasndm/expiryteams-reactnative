@@ -12,7 +12,6 @@ import {
 } from '@teams/Functions/Team/SelectedTeam';
 
 interface TeamContextData {
-	id: string | null;
 	name: string | null;
 	active: boolean | null;
 	roleInTeam: {
@@ -31,7 +30,6 @@ interface TeamContextData {
 const TeamContext = createContext<Partial<TeamContextData>>({});
 
 const TeamProvider: React.FC = ({ children }: any) => {
-	const [id, setId] = useState<string | null>(null);
 	const [name, setName] = useState<string | null>(null);
 	const [active, setActive] = useState<boolean | null>(null);
 
@@ -48,7 +46,6 @@ const TeamProvider: React.FC = ({ children }: any) => {
 		if (response) {
 			const { team, role, status } = response.userRole;
 
-			setId(team.id);
 			setName(team.name);
 			setActive(team.isActive);
 			setRoleInTeam({
@@ -73,7 +70,6 @@ const TeamProvider: React.FC = ({ children }: any) => {
 	const clearTeam = useCallback(async () => {
 		Promise.all([
 			await clearSelectedteam(),
-			setId(null),
 			setName(null),
 			setActive(null),
 			setRoleInTeam(null),
@@ -83,7 +79,6 @@ const TeamProvider: React.FC = ({ children }: any) => {
 	return (
 		<TeamContext.Provider
 			value={{
-				id,
 				name,
 				active,
 				roleInTeam,

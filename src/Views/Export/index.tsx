@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import DocumentPicker from 'react-native-document-picker';
 
@@ -28,7 +29,7 @@ import {
 } from '@views/Export/styles';
 
 const Export: React.FC = () => {
-	const { reset } = useNavigation();
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const teamContext = useTeam();
 
@@ -36,16 +37,10 @@ const Export: React.FC = () => {
 	const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
 
 	const handleImport = useCallback(async () => {
-		if (!teamContext.id) {
-			return;
-		}
-
 		try {
 			setIsImporting(true);
 
-			await importExportFileFromApp({
-				team_id: teamContext.id,
-			});
+			await importExportFileFromApp();
 
 			showMessage({
 				message: 'Produtos importados',
@@ -69,25 +64,19 @@ const Export: React.FC = () => {
 		} finally {
 			setIsImporting(false);
 		}
-	}, [reset, teamContext.id]);
+	}, [reset]);
 
 	const handleExportToExcel = useCallback(async () => {
-		if (!teamContext.id) return;
-
 		try {
 			setIsExcelLoading(true);
 
 			const getProducts = async () =>
 				getAllProducts({
-					team_id: teamContext.id || '',
 					removeCheckedBatches: false,
 				});
-			const getBrands = async () =>
-				getAllBrands({ team_id: teamContext.id || '' });
-			const getCategories = async () =>
-				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
-			const getStores = async () =>
-				getAllStoresFromTeam({ team_id: teamContext.id || '' });
+			const getBrands = async () => getAllBrands();
+			const getCategories = async () => getAllCategoriesFromTeam();
+			const getStores = async () => getAllStoresFromTeam();
 
 			await exportToExcel({
 				getProducts,
@@ -111,7 +100,7 @@ const Export: React.FC = () => {
 		} finally {
 			setIsExcelLoading(false);
 		}
-	}, [teamContext.id]);
+	}, []);
 
 	return (
 		<Container>
@@ -127,7 +116,7 @@ const Export: React.FC = () => {
 						</ExportExplain>
 
 						<Button
-							text="Selecionar arquivo"
+							title="Selecionar arquivo"
 							onPress={handleImport}
 							isLoading={isImporting}
 						/>
@@ -140,7 +129,7 @@ const Export: React.FC = () => {
 					</ExportExplain>
 
 					<Button
-						text={strings.View_Export_Button_ExportExcel}
+						title={strings.View_Export_Button_ExportExcel}
 						onPress={handleExportToExcel}
 						isLoading={isExcelLoading}
 					/>

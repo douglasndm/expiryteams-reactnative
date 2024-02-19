@@ -5,8 +5,6 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
 
-import { useTeam } from '@teams/Contexts/TeamContext';
-
 import { deleteBrand, getAllBrands, updateBrand } from '@teams/Functions/Brand';
 
 import Loading from '@components/Loading';
@@ -28,8 +26,6 @@ const Edit: React.FC = () => {
 	const { params } = useRoute();
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-	const teamContext = useTeam();
-
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [name, setName] = useState<string | undefined>(undefined);
@@ -40,13 +36,10 @@ const Edit: React.FC = () => {
 	const routeParams = params as Props;
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 
-			const response = await getAllBrands({
-				team_id: teamContext.id,
-			});
+			const response = await getAllBrands();
 
 			const brand = response.find(b => b.id === routeParams.brand_id);
 
@@ -60,7 +53,7 @@ const Edit: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.brand_id, teamContext.id]);
+	}, [routeParams.brand_id]);
 
 	useEffect(() => {
 		loadData();
@@ -72,7 +65,6 @@ const Edit: React.FC = () => {
 	}, []);
 
 	const handleUpdate = useCallback(async () => {
-		if (!teamContext.id) return;
 		if (!name) {
 			setErrorName('Digite o nome da marca');
 			return;
@@ -83,7 +75,6 @@ const Edit: React.FC = () => {
 				id: routeParams.brand_id,
 				name,
 			},
-			team_id: teamContext.id,
 		});
 
 		showMessage({
@@ -99,14 +90,12 @@ const Edit: React.FC = () => {
 				},
 			],
 		});
-	}, [teamContext.id, name, routeParams.brand_id, reset]);
+	}, [name, routeParams.brand_id, reset]);
 
 	const handleDeleteBrand = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			await deleteBrand({
 				brand_id: routeParams.brand_id,
-				team_id: teamContext.id,
 			});
 
 			showMessage({
@@ -129,7 +118,7 @@ const Edit: React.FC = () => {
 					type: 'danger',
 				});
 		}
-	}, [reset, routeParams.brand_id, teamContext.id]);
+	}, [reset, routeParams.brand_id]);
 
 	const handleSwitchShowDelete = useCallback(() => {
 		setDeleteComponentVisible(prevState => !prevState);

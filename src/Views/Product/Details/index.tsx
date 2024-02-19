@@ -6,8 +6,6 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
 
-import { useTeam } from '@teams/Contexts/TeamContext';
-
 import { getProduct } from '@teams/Functions/Products/Product';
 import { imageExistsLocally, getLocally } from '@utils/Images/GetLocally';
 import { saveLocally } from '@utils/Images/SaveLocally';
@@ -37,8 +35,6 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-	const teamContext = useTeam();
-
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const productId = useMemo(() => {
@@ -54,12 +50,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 			const response = await getProduct({
 				productId,
-				team_id: teamContext.id,
 			});
 
 			setProduct(response);
@@ -72,7 +66,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [productId, teamContext.id]);
+	}, [productId]);
 
 	const handleImage = useCallback(async () => {
 		if (!product) return;

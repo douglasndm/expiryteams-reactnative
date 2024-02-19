@@ -1,15 +1,19 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
+
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
 interface deleteStoreProps {
-    store_id: string;
-    team_id: string;
+	store_id: string;
 }
 
-async function deleteStore({
-    store_id,
-    team_id,
-}: deleteStoreProps): Promise<void> {
-    await api.delete<IStore>(`/team/${team_id}/stores/${store_id}`);
+async function deleteStore({ store_id }: deleteStoreProps): Promise<void> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.delete<IStore>(`/team/${currentTeam.id}/stores/${store_id}`);
 }
 
 export { deleteStore };

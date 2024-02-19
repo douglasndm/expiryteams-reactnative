@@ -28,13 +28,13 @@ const ViewTeam: React.FC = () => {
 	const teamContext = useTeam();
 
 	const isManager = useMemo(() => {
-		if (teamContext.id) {
-			if (teamContext.roleInTeam?.role.toLowerCase() === 'manager') {
+		if (teamContext.roleInTeam) {
+			if (teamContext.roleInTeam.role.toLowerCase() === 'manager') {
 				return true;
 			}
 		}
 		return false;
-	}, [teamContext.id, teamContext.roleInTeam]);
+	}, [teamContext.roleInTeam]);
 
 	const handleNavigateToMembers = useCallback(() => {
 		navigate('ListUsersFromTeam');

@@ -41,15 +41,14 @@ const ListUsers: React.FC = () => {
 
 	const teamContext = useTeam();
 
-	const [isMounted, setIsMounted] = useState(true);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const role = useMemo(() => {
-		if (teamContext.id) {
-			return teamContext.roleInTeam?.role.toLowerCase();
+		if (teamContext.roleInTeam) {
+			return teamContext.roleInTeam.role.toLowerCase();
 		}
 		return 'repositor';
-	}, [teamContext.id, teamContext.roleInTeam]);
+	}, [teamContext.roleInTeam]);
 
 	const [newUserEmail, setNewUserEmail] = useState<string | undefined>();
 	const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -121,8 +120,6 @@ const ListUsers: React.FC = () => {
 	}, []);
 
 	const handleAddUser = useCallback(async () => {
-		if (!isMounted || !teamContext.id) return;
-
 		try {
 			if (!newUserEmail) {
 				setInputHasError(true);
@@ -135,7 +132,6 @@ const ListUsers: React.FC = () => {
 
 			const userInTeam = await putUserInTeam({
 				user_email: newUserEmail,
-				team_id: teamContext.id,
 			});
 
 			const newUser: IUserInTeam = {
@@ -146,7 +142,7 @@ const ListUsers: React.FC = () => {
 				email: userInTeam.user.email,
 				role: userInTeam.role,
 				code: userInTeam.code,
-				stores: [],
+				store: null,
 				status: 'Pending',
 			};
 
@@ -173,7 +169,7 @@ const ListUsers: React.FC = () => {
 		} finally {
 			setIsAdding(false);
 		}
-	}, [isMounted, teamContext.id, newUserEmail, users, navigate]);
+	}, [newUserEmail, users, navigate]);
 
 	const handleNavigateToUser = useCallback(
 		(user: IUserInTeam) => {
@@ -189,10 +185,6 @@ const ListUsers: React.FC = () => {
 
 		return unsubscribe;
 	}, [addListener, loadData]);
-
-	useEffect(() => {
-		return () => setIsMounted(false);
-	}, []);
 
 	interface renderProps {
 		item: IUserInTeam;

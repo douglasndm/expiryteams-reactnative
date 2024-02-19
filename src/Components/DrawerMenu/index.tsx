@@ -137,7 +137,7 @@ const DrawerMenu: React.FC = () => {
 						</MenuContent>
 					</MenuItemContainer>
 
-					{!!teamContext.id && (
+					{!!teamContext.name && (
 						<MenuItemContainer onPress={handleNavigateToTeam}>
 							<MenuContent>
 								<Icons name="briefcase-outline" />

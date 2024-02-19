@@ -1,25 +1,25 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
+
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
 interface getExtraInformationsForProductResponse {
-    availableBrands: IBrand[];
-    availableCategories: ICategory[];
-    availableStores: IStore[];
+	availableBrands: IBrand[];
+	availableCategories: ICategory[];
+	availableStores: IStore[];
 }
 
-interface getExtraInfoForProductsProps {
-    team_id: string;
-}
+async function getExtraInfoForProducts(): Promise<getExtraInformationsForProductResponse> {
+	const currentTeam = await getCurrentTeam();
 
-async function getExtraInfoForProducts({
-    team_id,
-}: getExtraInfoForProductsProps): Promise<
-    getExtraInformationsForProductResponse
-> {
-    const response = await api.get<getExtraInformationsForProductResponse>(
-        `/team/${team_id}/products/extrainfo`
-    );
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
 
-    return response.data;
+	const response = await api.get<getExtraInformationsForProductResponse>(
+		`/team/${currentTeam.id}/products/extrainfo`
+	);
+
+	return response.data;
 }
 
 export { getExtraInfoForProducts };

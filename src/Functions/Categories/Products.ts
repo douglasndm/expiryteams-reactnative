@@ -1,9 +1,10 @@
 import api from '@teams/Services/API';
 
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
+
 import { fixProductsDates } from '../Products/Products';
 
 interface getAllProductsFromCategoryProps {
-	team_id: string;
 	category_id: string;
 }
 
@@ -13,11 +14,16 @@ interface getAllProductsFromCategoryResponse {
 }
 
 export async function getAllProductsFromCategory({
-	team_id,
 	category_id,
 }: getAllProductsFromCategoryProps): Promise<getAllProductsFromCategoryResponse> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const { data } = await api.get<getAllProductsFromCategoryResponse>(
-		`/team/${team_id}/categories/${category_id}/products`
+		`/team/${currentTeam.id}/categories/${category_id}/products`
 	);
 
 	const products = fixProductsDates(data.products);

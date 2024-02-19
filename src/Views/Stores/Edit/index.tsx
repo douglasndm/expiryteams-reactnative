@@ -3,8 +3,6 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import strings from '@teams/Locales';
 
-import { useTeam } from '@teams/Contexts/TeamContext';
-
 import { getAllStoresFromTeam } from '@teams/Functions/Team/Stores/AllStores';
 import { updateStore } from '@teams/Functions/Team/Stores/Update';
 import { deleteStore } from '@teams/Functions/Team/Stores/Delete';
@@ -28,8 +26,6 @@ const Edit: React.FC = () => {
 	const { params } = useRoute();
 	const { reset } = useNavigation();
 
-	const teamContext = useTeam();
-
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [name, setName] = useState<string | undefined>(undefined);
@@ -40,13 +36,10 @@ const Edit: React.FC = () => {
 	const routeParams = params as Props;
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 
-			const response = await getAllStoresFromTeam({
-				team_id: teamContext.id,
-			});
+			const response = await getAllStoresFromTeam();
 
 			const store = response.find(sto => sto.id === routeParams.store_id);
 
@@ -60,7 +53,7 @@ const Edit: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.store_id, teamContext.id]);
+	}, [routeParams.store_id]);
 
 	useEffect(() => {
 		loadData();
@@ -72,7 +65,6 @@ const Edit: React.FC = () => {
 	}, []);
 
 	const handleUpdate = useCallback(async () => {
-		if (!teamContext.id) return;
 		if (!name) {
 			setErrorName(strings.View_Store_Edit_Error_EmtpyName);
 			return;
@@ -80,7 +72,6 @@ const Edit: React.FC = () => {
 
 		await updateStore({
 			store_id: routeParams.store_id,
-			team_id: teamContext.id,
 			name,
 		});
 
@@ -97,14 +88,12 @@ const Edit: React.FC = () => {
 				},
 			],
 		});
-	}, [teamContext.id, name, routeParams.store_id, reset]);
+	}, [name, routeParams.store_id, reset]);
 
 	const handleDeleteStore = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			await deleteStore({
 				store_id: routeParams.store_id,
-				team_id: teamContext.id,
 			});
 
 			showMessage({
@@ -127,7 +116,7 @@ const Edit: React.FC = () => {
 					type: 'danger',
 				});
 		}
-	}, [reset, routeParams.store_id, teamContext.id]);
+	}, [reset, routeParams.store_id]);
 
 	const handleSwitchShowDelete = useCallback(() => {
 		setDeleteComponentVisible(prevState => !prevState);

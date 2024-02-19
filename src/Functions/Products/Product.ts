@@ -1,56 +1,72 @@
 import api from '@teams/Services/API';
 
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 import { removeLocalImage } from '@utils/Images/RemoveLocally';
 
 interface getProductProps {
 	productId: string;
-	team_id: string;
 }
 
 export async function getProduct({
 	productId,
-	team_id,
 }: getProductProps): Promise<IProduct> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const response = await api.get<IProduct>(
-		`/team/${team_id}/products/${productId}`
+		`/team/${currentTeam.id}/products/${productId}`
 	);
 
 	return response.data;
 }
 
 interface createProductProps {
-	team_id: string;
 	product: Omit<IProduct, 'id' | 'categories'>;
 	category: string | undefined;
 }
 
 export async function createProduct({
-	team_id,
 	product,
 	category,
 }: createProductProps): Promise<IProduct> {
-	const response = await api.post<IProduct>(`/team/${team_id}/products`, {
-		name: product.name,
-		code: product.code,
-		brand_id: product.brand,
-		store_id: product.store,
-		category_id: category,
-	});
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.post<IProduct>(
+		`/team/${currentTeam.id}/products`,
+		{
+			name: product.name,
+			code: product.code,
+			brand_id: product.brand,
+			store_id: product.store,
+			category_id: category,
+		}
+	);
 
 	return response.data;
 }
 
 interface updateProductProps {
-	team_id: string;
 	product: Omit<IProduct, 'batches'>;
 }
 
 export async function updateProduct({
-	team_id,
 	product,
 }: updateProductProps): Promise<IProduct> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	const response = await api.put<IProduct>(
-		`/team/${team_id}/products/${product.id}`,
+		`/team/${currentTeam.id}/products/${product.id}`,
 		{
 			name: product.name,
 			code: product.code,
@@ -64,14 +80,20 @@ export async function updateProduct({
 }
 
 interface deleteProductProps {
-	team_id: string;
 	product_id: string;
 }
 
 export async function deleteProduct({
-	team_id,
 	product_id,
 }: deleteProductProps): Promise<void> {
-	await api.delete<IProduct>(`/team/${team_id}/products/${product_id}`);
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.delete<IProduct>(
+		`/team/${currentTeam.id}/products/${product_id}`
+	);
 	removeLocalImage(product_id);
 }

@@ -2,15 +2,21 @@ import { Platform } from 'react-native';
 
 import api from '@teams/Services/API';
 
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 import { removeLocalImage } from '@utils/Images/RemoveLocally';
 
 interface uploadImageProps {
-	team_id: string;
 	product_id: string;
 	path: string;
 }
 async function uploadImage(props: uploadImageProps): Promise<void> {
-	const { team_id, product_id, path } = props;
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const { product_id, path } = props;
 
 	// Verificar a plataforma para construir o objeto Blob ou FormData corretamente
 	const formData = new FormData();
@@ -36,7 +42,7 @@ async function uploadImage(props: uploadImageProps): Promise<void> {
 	}
 
 	await api.post(
-		`/team/${team_id}/upload/product/${product_id}/image`,
+		`/team/${currentTeam.id}/upload/product/${product_id}/image`,
 		formData,
 		{
 			headers: {

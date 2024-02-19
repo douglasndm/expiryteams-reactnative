@@ -1,97 +1,96 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
 
-import { getSelectedTeam } from '../Team/SelectedTeam';
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
-export async function getAllCategoriesFromTeam({
-    team_id,
-}: getAllCategoriesProps): Promise<Array<ICategory>> {
-    const response = await api.get<Array<ICategory>>(
-        `/team/${team_id}/categories`
-    );
+export async function getAllCategoriesFromTeam(): Promise<Array<ICategory>> {
+	const currentTeam = await getCurrentTeam();
 
-    return response.data;
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.get<Array<ICategory>>(
+		`/team/${currentTeam.id}/categories`
+	);
+
+	return response.data;
 }
 
 interface getCategoryProps {
-    category_id: string;
+	category_id: string;
 }
 
 export async function getCategory({
-    category_id,
+	category_id,
 }: getCategoryProps): Promise<ICategory> {
-    const selectedTeam = await getSelectedTeam();
+	const categories = await getAllCategoriesFromTeam();
 
-    if (!selectedTeam) {
-        throw new Error('Team is not selected');
-    }
+	const cat = categories.find(c => c.id === category_id);
 
-    const categories = await getAllCategoriesFromTeam({
-        team_id: selectedTeam.userRole.team.id,
-    });
+	if (!cat) {
+		throw new Error('Category not found');
+	}
 
-    const cat = categories.find(c => c.id === category_id);
-
-    if (!cat) {
-        throw new Error('Category not found');
-    }
-
-    return cat;
-}
-
-interface getAllCategoriesProps {
-    team_id: string;
+	return cat;
 }
 
 interface createCategoryProps {
-    name: string;
-    team_id: string;
+	name: string;
 }
 
 export async function createCategory({
-    name,
-    team_id,
+	name,
 }: createCategoryProps): Promise<ICategory> {
-    const response = await api.post<ICategory>(`/team/${team_id}/categories`, {
-        name,
-    });
+	const currentTeam = await getCurrentTeam();
 
-    return response.data;
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.post<ICategory>(
+		`/team/${currentTeam.id}/categories`,
+		{
+			name,
+		}
+	);
+
+	return response.data;
 }
 
 interface updateCategoryProps {
-    category: ICategory;
+	category: ICategory;
 }
 export async function updateCategory({
-    category,
+	category,
 }: updateCategoryProps): Promise<ICategory> {
-    const selectedTeam = await getSelectedTeam();
+	const currentTeam = await getCurrentTeam();
 
-    if (!selectedTeam) {
-        throw new Error('Team is not selected');
-    }
-    const response = await api.put<ICategory>(
-        `/team/${selectedTeam.userRole.team.id}/categories/${category.id}`,
-        {
-            name: category.name,
-        }
-    );
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
 
-    return response.data;
+	const response = await api.put<ICategory>(
+		`/team/${currentTeam.id}/categories/${category.id}`,
+		{
+			name: category.name,
+		}
+	);
+
+	return response.data;
 }
 
 interface deleteCategoryProps {
-    category_id: string;
+	category_id: string;
 }
 
 export async function deleteCategory({
-    category_id,
+	category_id,
 }: deleteCategoryProps): Promise<void> {
-    const selectedTeam = await getSelectedTeam();
+	const currentTeam = await getCurrentTeam();
 
-    if (!selectedTeam) {
-        throw new Error('Team is not selected');
-    }
-    await api.delete(
-        `/team/${selectedTeam.userRole.team.id}/categories/${category_id}`
-    );
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await api.delete(`/team/${currentTeam.id}/categories/${category_id}`);
 }

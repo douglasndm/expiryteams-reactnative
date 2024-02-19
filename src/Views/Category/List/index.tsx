@@ -19,14 +19,10 @@ const CategoryList: React.FC = () => {
 	const [categories, setCategories] = useState<ICategory[]>([]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
-
 		try {
 			setIsLoading(true);
 
-			const cats = await getAllCategoriesFromTeam({
-				team_id: teamContext.id,
-			});
+			const cats = await getAllCategoriesFromTeam();
 
 			setCategories(cats);
 		} catch (err) {
@@ -38,18 +34,15 @@ const CategoryList: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [teamContext.id]);
+	}, []);
 
 	const createCategoryProgress = useCallback(
 		async (name: string) => {
-			if (!teamContext.id) return;
-
 			try {
 				setIsAdding(true);
 
 				const newCategory = await createCategory({
 					name,
-					team_id: teamContext.id,
 				});
 
 				setCategories([...categories, newCategory]);
@@ -57,7 +50,7 @@ const CategoryList: React.FC = () => {
 				setIsAdding(false);
 			}
 		},
-		[categories, teamContext.id]
+		[categories]
 	);
 
 	const isManager = useMemo(() => {

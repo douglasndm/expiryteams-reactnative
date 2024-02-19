@@ -80,4 +80,7 @@ export const RadioButtonGroup = styled(RadioPaper.Group)``;
 export const RadioButtonItem = styled(RadioPaper.Item).attrs(props => ({
 	color: props.theme.colors.accent,
 	uncheckedColor: props.theme.colors.subText,
+	labelStyle: {
+		color: props.theme.colors.productCardText,
+	},
 }))``;

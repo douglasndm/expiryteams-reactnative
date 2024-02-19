@@ -144,13 +144,17 @@ export function sortProductsByBatchesExpDate({
 
 interface deleteManyProductsProps {
 	productsIds: Array<string>;
-	team_id: string;
 }
 export async function deleteManyProducts({
 	productsIds,
-	team_id,
 }: deleteManyProductsProps): Promise<void> {
-	await API.delete(`/team/${team_id}/products`, {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	await API.delete(`/team/${currentTeam.id}/products`, {
 		data: {
 			productsIds,
 		},

@@ -93,12 +93,10 @@ const CategoryView: React.FC = () => {
 	const [products, setProducts] = useState<IProduct[]>([]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 
 			const prods = await getAllProductsFromCategory({
-				team_id: teamContext.id,
 				category_id: routeParams.id,
 			});
 
@@ -112,7 +110,7 @@ const CategoryView: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.id, teamContext.id]);
+	}, [routeParams.id]);
 
 	useEffect(() => {
 		setProductsSearch(products);
@@ -132,8 +130,7 @@ const CategoryView: React.FC = () => {
 				});
 
 			const getBrands = async () => getAllBrands();
-			const getCategories = async () =>
-				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
+			const getCategories = async () => getAllCategoriesFromTeam();
 			const getStores = async () => getAllStoresFromTeam();
 
 			await exportToExcel({
@@ -163,7 +160,7 @@ const CategoryView: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.id, teamContext.id]);
+	}, [routeParams.id]);
 
 	useEffect(() => {
 		loadData();
@@ -203,15 +200,10 @@ const CategoryView: React.FC = () => {
 			if (idsToDelete.length <= 0) return;
 
 			try {
-				if (!teamContext.id) {
-					return;
-				}
-
 				const ids = idsToDelete.map(id => String(id));
 
 				await deleteManyProducts({
 					productsIds: ids,
-					team_id: teamContext.id,
 				});
 
 				await loadData();
@@ -223,7 +215,7 @@ const CategoryView: React.FC = () => {
 					});
 			}
 		},
-		[loadData, teamContext.id]
+		[loadData]
 	);
 
 	const handleSwitchSelectMode = useCallback(() => {

@@ -86,7 +86,6 @@ const View: React.FC = () => {
 	}, [teamContext.roleInTeam]);
 
 	const loadData = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			setIsLoading(true);
 
@@ -104,7 +103,7 @@ const View: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.brand_id, teamContext.id]);
+	}, [routeParams.brand_id]);
 
 	useEffect(() => {
 		setProductsSearch(products);
@@ -123,8 +122,7 @@ const View: React.FC = () => {
 					removeCheckedBatches: false,
 				});
 			const getBrands = async () => getAllBrands();
-			const getCategories = async () =>
-				getAllCategoriesFromTeam({ team_id: teamContext.id || '' });
+			const getCategories = async () => getAllCategoriesFromTeam();
 			const getStores = async () => getAllStoresFromTeam();
 
 			await exportToExcel({
@@ -154,7 +152,7 @@ const View: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [routeParams.brand_id, teamContext.id]);
+	}, [routeParams.brand_id]);
 
 	useEffect(() => {
 		loadData();
@@ -194,15 +192,10 @@ const View: React.FC = () => {
 			if (idsToDelete.length <= 0) return;
 
 			try {
-				if (!teamContext.id) {
-					return;
-				}
-
 				const ids = idsToDelete.map(id => String(id));
 
 				await deleteManyProducts({
 					productsIds: ids,
-					team_id: teamContext.id,
 				});
 
 				await loadData();
@@ -214,7 +207,7 @@ const View: React.FC = () => {
 					});
 			}
 		},
-		[loadData, teamContext.id]
+		[loadData]
 	);
 
 	const handleSwitchSelectMode = useCallback(() => {
