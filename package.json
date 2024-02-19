@@ -1,7 +1,7 @@
 {
   "name": "expirybusiness",
-  "version": "1.10.4",
-  "build": "136",
+  "version": "1.10.5",
+  "build": "138",
   "private": true,
   "scripts": {
     "build": "./build.sh",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "*",
     "@react-native-async-storage/async-storage": "^1.18.2",
-    "@react-native-clipboard/clipboard": "^1.8.4",
+    "@react-native-clipboard/clipboard": "*",
     "@react-native-community/blur": "^4.2.0",
     "@react-native-community/netinfo": "*",
     "@react-native-community/push-notification-ios": "^1.11.0",
@@ -55,6 +55,7 @@
     "react-native-date-picker": "4.3.3",
     "react-native-device-info": "^10.0.2",
     "react-native-document-picker": "^8.1.1",
+    "react-native-drawer-layout": "*",
     "react-native-fast-image": "^8.5.11",
     "react-native-flash-message": "^0.3.1",
     "react-native-format-currency": "^0.0.3",
