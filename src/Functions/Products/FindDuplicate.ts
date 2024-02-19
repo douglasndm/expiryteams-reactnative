@@ -1,33 +1,39 @@
-import api from '~/Services/API';
+import api from '@teams/Services/API';
+
+import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 
 interface isProductDuplicateProps {
-    name: string;
-    code?: string;
-    team_id: string;
-    store_id?: string;
+	name: string;
+	code?: string;
+	store_id?: string;
 }
 
 interface isProductDuplicateResponse {
-    isDuplicate: boolean;
-    product_id?: string;
+	isDuplicate: boolean;
+	product_id?: string;
 }
 
 async function findDuplicate({
-    name,
-    code,
-    team_id,
-    store_id,
+	name,
+	code,
+	store_id,
 }: isProductDuplicateProps): Promise<isProductDuplicateResponse> {
-    const response = await api.post<isProductDuplicateResponse>(
-        `/team/${team_id}/products/duplicate`,
-        {
-            name,
-            code,
-            store_id,
-        }
-    );
+	const currentTeam = await getCurrentTeam();
 
-    return response.data;
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const response = await api.get<isProductDuplicateResponse>(
+		`/team/${currentTeam.id}/products/duplicate`,
+		{
+			name,
+			code,
+			store_id,
+		}
+	);
+
+	return response.data;
 }
 
 export { findDuplicate };

@@ -223,19 +223,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	});
 
 	const loadData = useCallback(async () => {
-		if (!isMounted) return;
-		if (!teamContext.id) {
-			showMessage({
-				message: 'Team is not selected',
-				type: 'danger',
-			});
-			return;
-		}
 		try {
 			setIsLoading(true);
-			const response = await getExtraInfoForProducts({
-				team_id: teamContext.id,
-			});
+			const response = await getExtraInfoForProducts();
 
 			const categoriesArray: Array<ICategoryItem> = [];
 			response.availableCategories.forEach(cat =>
@@ -293,7 +283,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted, teamContext]);
+	}, [teamContext]);
 
 	const handleSwitchFindModal = useCallback(() => {
 		setShowProdFindedModal(!showProdFindedModal);
@@ -335,13 +325,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	}, [amount, batch, duplicateId, expDate, price, replace]);
 
 	const findDuplicateProducts = useCallback(async () => {
-		if (!teamContext.id) return;
 		try {
 			if (!name) return;
 			const isDuplicate = await findDuplicate({
 				name,
 				code,
-				team_id: teamContext.id,
 				store_id: selectedStore || undefined,
 			});
 
@@ -352,7 +340,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				console.log(err.message);
 			}
 		}
-	}, [code, name, selectedStore, teamContext.id]);
+	}, [code, name, selectedStore]);
 
 	const handleCodeBlur = useCallback(
 		(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -369,9 +357,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	}, [loadData]);
 
 	const handleSave = useCallback(async () => {
-		if (!teamContext.id) {
-			return;
-		}
 		if (!name || name.trim() === '') {
 			setNameFieldError(true);
 			return;
@@ -394,7 +379,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			}
 
 			const createdProduct = await createProduct({
-				team_id: teamContext.id,
 				product: {
 					name,
 					code,
@@ -418,7 +402,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 			if (!!photoPath) {
 				await uploadImage({
-					team_id: teamContext.id,
 					product_id: createdProduct.id,
 					path: photoPath,
 				});
@@ -444,7 +427,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			setIsLoading(false);
 		}
 	}, [
-		teamContext.id,
 		name,
 		nameFieldError,
 		codeFieldError,
