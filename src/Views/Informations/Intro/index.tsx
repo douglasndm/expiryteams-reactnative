@@ -47,7 +47,7 @@ const slides: ISlide[] = [
 		key: '4',
 		title: strings.View_Intro_Slide4_Title,
 		text: strings.View_Intro_Slide4_Description,
-		image: require('@teams/Assets/Logo.png'),
+		image: require('@assets/Images/Logo.png'),
 		backgroundColor: '#5856d6',
 	},
 ];

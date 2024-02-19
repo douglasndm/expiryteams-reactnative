@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
 
-import LogoImg from '~/Assets/Logo.png';
+import LogoImg from '@assets/Images/Logo.png';
 
 export const Container = styled.ScrollView.attrs(() => ({
 	contentContainerStyle: { flexGrow: 1 },
