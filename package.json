@@ -13,10 +13,11 @@
     "postinstall": "patch-package",
     "check-dependencies": "rnx-align-deps",
     "fix-dependencies": "rnx-align-deps --write",
-    "bugsnag:upload-android": "./node_modules/.bin/bugsnag-cli upload react-native-android"
+    "bugsnag:upload-android": "bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab && bugsnag-cli upload react-native-android"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "*",
+    "@bugsnag/plugin-react-navigation": "*",
     "@bugsnag/react-native": "*",
     "@react-native-async-storage/async-storage": "^1.18.2",
     "@react-native-clipboard/clipboard": "*",
@@ -89,6 +90,8 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@bugsnag/cli": "*",
+    "@bugsnag/source-maps": "*",
     "@rnx-kit/align-deps": "^2.0.3",
     "@types/crypto-js": "^3.1.47",
     "@types/react-native-push-notification": "^5.0.5",
