@@ -129,7 +129,7 @@ const EnterTeam: React.FC = () => {
 				</InputContainer>
 			</CodeContaider>
 			<Button
-				text="Entrar no time"
+				title="Entrar no time"
 				onPress={handleSubmitCode}
 				isLoading={isAddingCode}
 			/>

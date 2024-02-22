@@ -168,24 +168,7 @@ const List: React.FC = () => {
 
 		if (team.team) {
 			if (role !== 'manager' && status === 'pending') {
-				reset({
-					routes: [
-						{
-							name: 'Routes',
-							state: {
-								routes: [
-									{
-										name: 'ListTeam',
-									},
-									{
-										name: 'EnterTeam',
-										params: { userRole: team },
-									},
-								],
-							},
-						},
-					],
-				});
+				navigate('EnterTeam', { userRole: team });
 				return;
 			}
 

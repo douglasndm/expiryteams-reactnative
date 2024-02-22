@@ -23,7 +23,7 @@ import EditBatch from '@teams/Views/Batch/Edit';
 import ProductDetails from '@teams/Views/Product/Details';
 import Settings from '@teams/Views/Settings';
 import About from '@teams/Views/About';
-import NoInternet from '@views/Informations/Errors/NoInternet';
+import NoInternet from '@views/Information/Errors/NoInternet';
 import PhotoView from '@views/Product/PhotoView';
 
 import BatchView from '@teams/Views/Batch/View';
