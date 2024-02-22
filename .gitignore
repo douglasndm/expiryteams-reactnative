@@ -1,5 +1,7 @@
 .env
 
+dist/
+
 # google-services.json
 # firebase.json
 

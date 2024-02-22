@@ -1,7 +1,7 @@
 {
   "name": "expirybusiness",
-  "version": "1.10.5",
-  "build": "138",
+  "version": "1.10.6",
+  "build": "139",
   "private": true,
   "scripts": {
     "build": "./build.sh",
@@ -12,10 +12,12 @@
     "test": "jest",
     "postinstall": "patch-package",
     "check-dependencies": "rnx-align-deps",
-    "fix-dependencies": "rnx-align-deps --write"
+    "fix-dependencies": "rnx-align-deps --write",
+    "bugsnag:upload-android": "./node_modules/.bin/bugsnag-cli upload react-native-android"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "*",
+    "@bugsnag/react-native": "*",
     "@react-native-async-storage/async-storage": "^1.18.2",
     "@react-native-clipboard/clipboard": "*",
     "@react-native-community/blur": "^4.2.0",

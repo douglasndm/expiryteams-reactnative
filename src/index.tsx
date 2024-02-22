@@ -15,27 +15,37 @@ import CodePush from 'react-native-code-push';
 import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
 
-import './Locales';
+import '@teams/Locales';
 
+import { Bugsnag } from '@services/Bugsnag';
 import '@services/Firebase/AppCheck';
-import './Services/Analytics';
-import './Services/RemoteConfig';
-import DeepLinking from './Services/DeepLinking';
+import '@teams/Services/Analytics';
+import '@teams/Services/RemoteConfig';
+import DeepLinking from '@teams/Services/DeepLinking';
 
-import './Functions/Team/Subscriptions';
-import './Functions/PushNotifications';
-import { getAllUserPreferences } from './Functions/UserPreferences';
+import '@teams/Functions/Team/Subscriptions';
+import '@teams/Functions/PushNotifications';
+import { getAllUserPreferences } from '@teams/Functions/UserPreferences';
 
-import Routes from './routes';
+import RenderError from '@views/Information/Errors/Render';
 
-import PreferencesContext from './Contexts/PreferencesContext';
-import DefaultPrefs from './Contexts/DefaultPreferences';
-import { AuthProvider } from './Contexts/AuthContext';
-import { TeamProvider } from './Contexts/TeamContext';
+import Routes from '@teams/routes';
 
-import { navigationRef } from './References/Navigation';
+import PreferencesContext from '@teams/Contexts/PreferencesContext';
+import DefaultPrefs from '@teams/Contexts/DefaultPreferences';
+import { AuthProvider } from '@teams/Contexts/AuthContext';
+import { TeamProvider } from '@teams/Contexts/TeamContext';
+
+import { navigationRef } from '@teams/References/Navigation';
 
 screens.enableScreens(true);
+
+const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
+const { createNavigationContainer } = Bugsnag.getPlugin('reactNavigation');
+// The returned BugsnagNavigationContainer has exactly the same usage
+// except now it tracks route information to send with your error reports
+const BugsnagNavigationContainer =
+	createNavigationContainer(NavigationContainer);
 
 const App: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -89,27 +99,32 @@ const App: React.FC = () => {
 	return isLoading ? (
 		<ActivityIndicator size="large" />
 	) : (
-		<PreferencesContext.Provider value={prefes}>
-			<ThemeProvider theme={preferences.appTheme}>
-				<PaperProvider>
-					<NavigationContainer
-						ref={navigationRef}
-						linking={DeepLinking}
-						onStateChange={handleOnScreenChange}
-					>
-						<AuthProvider>
-							<TeamProvider>
-								<StatusBar />
-								<Routes />
+		<BugsnagNavigationContainer
+			ref={navigationRef}
+			linking={DeepLinking}
+			onStateChange={handleOnScreenChange}
+		>
+			<ErrorBoundary FallbackComponent={RenderError}>
+				<PreferencesContext.Provider value={prefes}>
+					<ThemeProvider theme={preferences.appTheme}>
+						<PaperProvider>
+							<AuthProvider>
+								<TeamProvider>
+									<StatusBar />
+									<Routes />
 
-								<AskReview />
-							</TeamProvider>
-						</AuthProvider>
-					</NavigationContainer>
-					<FlashMessage duration={7000} statusBarHeight={50} />
-				</PaperProvider>
-			</ThemeProvider>
-		</PreferencesContext.Provider>
+									<AskReview />
+								</TeamProvider>
+							</AuthProvider>
+							<FlashMessage
+								duration={7000}
+								statusBarHeight={50}
+							/>
+						</PaperProvider>
+					</ThemeProvider>
+				</PreferencesContext.Provider>
+			</ErrorBoundary>
+		</BugsnagNavigationContainer>
 	);
 };
 
