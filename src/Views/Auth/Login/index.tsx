@@ -196,7 +196,7 @@ const Login: React.FC = () => {
 					<LoginForm>
 						<Input
 							value={email}
-							onChange={handleEmailChange}
+							onChangeText={handleEmailChange}
 							placeholder={
 								strings.View_Login_InputText_Email_Placeholder
 							}
@@ -207,7 +207,7 @@ const Login: React.FC = () => {
 
 						<Input
 							value={password}
-							onChange={handlePasswordChange}
+							onChangeText={handlePasswordChange}
 							placeholder={
 								strings.View_Login_InputText_Password_Placeholder
 							}

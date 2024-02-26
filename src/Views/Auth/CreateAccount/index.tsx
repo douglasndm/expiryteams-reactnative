@@ -143,7 +143,7 @@ const CreateAccount: React.FC = () => {
 						autoCorrect={false}
 						autoCapitalize="words"
 						value={name}
-						onChange={handleNameChange}
+						onChangeText={handleNameChange}
 						contentStyle={{ marginBottom: 7 }}
 					/>
 
@@ -154,7 +154,7 @@ const CreateAccount: React.FC = () => {
 						autoCorrect={false}
 						autoCapitalize="words"
 						value={lastName}
-						onChange={handleLastNameChange}
+						onChangeText={handleLastNameChange}
 						contentStyle={{ marginBottom: 7 }}
 					/>
 
@@ -165,7 +165,7 @@ const CreateAccount: React.FC = () => {
 						autoCorrect={false}
 						autoCapitalize="none"
 						value={email}
-						onChange={handleEmailChange}
+						onChangeText={handleEmailChange}
 						contentStyle={{ marginBottom: 7 }}
 					/>
 
@@ -177,7 +177,7 @@ const CreateAccount: React.FC = () => {
 						autoCapitalize="none"
 						isPassword
 						value={password}
-						onChange={handlePasswordChange}
+						onChangeText={handlePasswordChange}
 						contentStyle={{ marginBottom: 7 }}
 					/>
 
@@ -189,7 +189,7 @@ const CreateAccount: React.FC = () => {
 						autoCapitalize="none"
 						isPassword
 						value={passwordConfirm}
-						onChange={handlePasswordConfirmChange}
+						onChangeText={handlePasswordConfirmChange}
 						contentStyle={{ marginBottom: 7 }}
 					/>
 
