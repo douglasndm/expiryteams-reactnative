@@ -53,13 +53,18 @@ async function uploadImage(props: uploadImageProps): Promise<void> {
 }
 
 interface removeImageProps {
-	team_id: string;
 	product_id: string;
 }
 
 async function removeImage(props: removeImageProps): Promise<void> {
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
 	await api.delete(
-		`/team/${props.team_id}/upload/product/${props.product_id}/image`
+		`/team/${currentTeam.id}/upload/product/${props.product_id}/image`
 	);
 
 	await removeLocalImage(props.product_id);

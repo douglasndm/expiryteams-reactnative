@@ -26,8 +26,9 @@ import Loading from '@components/Loading';
 import Header from '@components/Header';
 import Camera from '@components/Camera';
 import BarCodeReader from '@components/BarCodeReader';
-import InputText from '@components/InputText';
 import Dialog from '@components/Dialog';
+
+import ProductName from '@views/Product/Add/Components/Inputs/ProductName';
 
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
@@ -36,16 +37,12 @@ import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
 import {
 	Container,
 	PageContent,
-	InputGroup,
 	InputContainer,
-	InputTextContainer,
-	InputTextTip,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
 	ImageContainer,
 	ProductImageContainer,
 	ProductImage,
-	CameraButtonContainer,
 } from '@views/Product/Add/styles';
 
 import {
@@ -67,8 +64,6 @@ interface RequestParams {
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	const { reset, navigate } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const [isMounted, setIsMounted] = useState(true);
 
 	const teamContext = useTeam();
 
@@ -104,8 +99,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	);
 	const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 	const [selectedStore, setSelectedStore] = useState<string | null>(null);
-
-	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 	const [showMenu, setShowMenu] = useState(false);
@@ -240,8 +233,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, [productId]);
 
 	const updateProd = useCallback(async () => {
-		if (!name || name.trim() === '') {
-			setNameFieldError(true);
+		if (name.trim() === '') {
 			return;
 		}
 
@@ -377,27 +369,19 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, []);
 
 	const handleRemovePhoto = useCallback(async () => {
-		if (!teamContext.id) return;
 		setShowMenu(false);
 		setPhotoPath('');
 
 		await removeImage({
-			team_id: teamContext.id,
 			product_id: productId,
 		});
 
 		await removeLocalImage(productId);
-	}, [productId, teamContext.id]);
+	}, [productId]);
 
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
-
-	useEffect(() => {
-		return () => {
-			setIsMounted(false);
-		};
-	}, []);
 
 	return enableCamera ? (
 		<Camera
@@ -472,33 +456,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 							)}
 
 							<InputContainer>
-								<InputGroup>
-									<InputTextContainer>
-										<InputText
-											placeholder={
-												strings.View_EditProduct_InputPlacehoder_Name
-											}
-											value={name}
-											onChange={(value: string) => {
-												setName(value);
-												setNameFieldError(false);
-											}}
-										/>
-									</InputTextContainer>
-
-									<CameraButtonContainer
-										onPress={switchCameraEnable}
-									>
-										<Icon name="camera-outline" size={36} />
-									</CameraButtonContainer>
-								</InputGroup>
-								{nameFieldError && (
-									<InputTextTip>
-										{
-											strings.View_EditProduct_Error_EmptyProductName
-										}
-									</InputTextTip>
-								)}
+								<ProductName
+									name={name}
+									setName={setName}
+									handleEnableCamera={switchCameraEnable}
+								/>
 
 								<InputCodeTextContainer>
 									<InputCodeText

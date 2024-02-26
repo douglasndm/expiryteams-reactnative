@@ -1,20 +1,12 @@
-import React, {
-	useState,
-	useEffect,
-	useCallback,
-	useMemo,
-	useContext,
-} from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@teams/Locales';
 
 import BarCodeReader from '@components/BarCodeReader';
 import Header from '@components/Header';
-import InputText from '@components/InputText';
 import Dialog from '@components/Dialog';
 
 import PreferencesContext from '@teams/Contexts/PreferencesContext';
@@ -34,14 +26,19 @@ import Loading from '@components/Loading';
 import Camera from '@components/Camera';
 import PaddingComponent from '@components/PaddingComponent';
 
+import ProductName from '@views/Product/Add/Components/Inputs/ProductName';
+import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
+import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
+import BatchPrice from '@views/Product/Add/Components/Inputs/BatchPrice';
+import BatchExpDate from '@views/Product/Add/Components/Inputs/BatchExpDate';
+
 import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
 
-import FillModal from '@shared/Views/Product/Add/Components/FillModal';
+import FillModal from '@views/Product/Add/Components/FillModal';
 
 import {
-	CameraButtonContainer,
 	ImageContainer,
 	ProductImage,
 	ProductImageContainer,
@@ -50,21 +47,16 @@ import {
 	Container,
 	PageContent,
 	InputContainer,
-	InputTextContainer,
 	InputTextTip,
-	Currency,
 	InputGroup,
 	MoreInformationsContainer,
-	MoreInformationsTitle,
-	ExpDateGroup,
-	ExpDateLabel,
-	CustomDatePicker,
 	InputCodeTextContainer,
 	Icon,
 	InputTextLoading,
 	InputCodeText,
 	InputTextIconContainer,
 	Content,
+	MoreInformationsTitle,
 } from './styles';
 
 interface Request {
@@ -82,53 +74,30 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const { replace, navigate } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
+	const { brand, category, store, code: routeCode } = route.params;
+
 	const { preferences } = useContext(PreferencesContext);
 	const teamContext = useTeam();
 
-	const [isMounted, setIsMounted] = useState(true);
-
-	const locale = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'en-US';
-		}
-		return 'pt-BR';
-	}, []);
-	const currency = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'USD';
-		}
-
-		return 'BRL';
-	}, []);
-
 	const [name, setName] = useState('');
 	const [batch, setBatch] = useState('');
-	const [amount, setAmount] = useState('');
+	const [amount, setAmount] = useState<number | null>(null);
 	const [price, setPrice] = useState<number | null>(null);
 	const [expDate, setExpDate] = useState(new Date());
 	const [photoPath, setPhotoPath] = useState('');
 
+	const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
+		return brand || null;
+	});
+
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(
 		() => {
-			if (route.params && route.params.category) {
-				return route.params.category;
-			}
-			return null;
+			return category || null;
 		}
 	);
 
-	const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
-		if (route.params && route.params.brand) {
-			return route.params.brand;
-		}
-		return null;
-	});
-
 	const [selectedStore, setSelectedStore] = useState<string | null>(() => {
-		if (route.params && route.params.store) {
-			return route.params.store;
-		}
-		return null;
+		return store || null;
 	});
 
 	const [categories, setCategories] = useState<Array<IPickerItem>>([]);
@@ -146,7 +115,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const [showProdFindedModal, setShowProdFindedModal] = useState(false);
 	const [showModalDuplicate, setShowModalDuplicate] = useState(false);
 
-	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 	const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
 	const [duplicateId, setDuplicateId] = useState('');
 
@@ -215,9 +183,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	);
 
 	const [code, setCode] = useState(() => {
-		if (route.params.code) {
-			findProductByEAN(route.params.code);
-			return route.params.code;
+		if (routeCode) {
+			findProductByEAN(routeCode);
+			return routeCode;
 		}
 		return '';
 	});
@@ -357,12 +325,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	}, [loadData]);
 
 	const handleSave = useCallback(async () => {
-		if (!name || name.trim() === '') {
-			setNameFieldError(true);
-			return;
-		}
-
-		if (nameFieldError) {
+		if (name.trim() === '') {
 			return;
 		}
 
@@ -428,7 +391,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		}
 	}, [
 		name,
-		nameFieldError,
 		codeFieldError,
 		selectedCategory,
 		code,
@@ -441,14 +403,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		photoPath,
 		replace,
 	]);
-
-	const handleAmountChange = useCallback((value: string) => {
-		const regex = /^[0-9\b]+$/;
-
-		if (value === '' || regex.test(value)) {
-			setAmount(value);
-		}
-	}, []);
 
 	const handleSwitchCodeReader = useCallback(() => {
 		setIsBarCodeEnabled(prevState => !prevState);
@@ -477,32 +431,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		setEnableCamera(false);
 	}, []);
 
-	const handleNameChange = useCallback((value: string) => {
-		setName(value);
-		setNameFieldError(false);
-	}, []);
-
 	const handleCodeChange = useCallback((value: string) => {
 		setCode(value);
 		setCodeFieldError(false);
-	}, []);
-
-	const handlePriceChange = useCallback((value: number) => {
-		if (value <= 0) {
-			setPrice(null);
-			return;
-		}
-		setPrice(value);
-	}, []);
-
-	const handleDateChange = useCallback((value: Date) => {
-		setExpDate(value);
-	}, []);
-
-	useEffect(() => {
-		return () => {
-			setIsMounted(false);
-		};
 	}, []);
 
 	return enableCamera ? (
@@ -549,35 +480,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 								)}
 
 								<InputContainer>
-									<InputGroup>
-										<InputTextContainer
-											hasError={nameFieldError}
-										>
-											<InputText
-												placeholder={
-													strings.View_AddProduct_InputPlacehoder_Name
-												}
-												value={name}
-												onChange={handleNameChange}
-											/>
-										</InputTextContainer>
-
-										<CameraButtonContainer
-											onPress={switchCameraEnable}
-										>
-											<Icon
-												name="camera-outline"
-												size={36}
-											/>
-										</CameraButtonContainer>
-									</InputGroup>
-									{nameFieldError && (
-										<InputTextTip>
-											{
-												strings.View_AddProduct_AlertTypeProductName
-											}
-										</InputTextTip>
-									)}
+									<ProductName
+										name={name}
+										setName={setName}
+										handleEnableCamera={switchCameraEnable}
+									/>
 
 									<InputCodeTextContainer
 										hasError={codeFieldError}
@@ -634,46 +541,19 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 										</MoreInformationsTitle>
 
 										<InputGroup>
-											<InputTextContainer
-												style={{
-													flex: 5,
-													marginRight: 10,
-												}}
-											>
-												<InputText
-													placeholder={
-														strings.View_AddProduct_InputPlacehoder_Batch
-													}
-													value={batch}
-													onChange={value =>
-														setBatch(value)
-													}
-												/>
-											</InputTextContainer>
-											<InputTextContainer>
-												<InputText
-													contentStyle={{ flex: 4 }}
-													placeholder={
-														strings.View_AddProduct_InputPlacehoder_Amount
-													}
-													keyboardType="numeric"
-													value={String(amount)}
-													onChange={
-														handleAmountChange
-													}
-												/>
-											</InputTextContainer>
+											<ProductBatch
+												batch={batch}
+												setBatch={setBatch}
+											/>
+											<ProductCount
+												amount={amount}
+												setAmount={setAmount}
+											/>
 										</InputGroup>
 
-										<Currency
-											value={price}
-											onChangeValue={handlePriceChange}
-											delimiter={
-												currency === 'BRL' ? ',' : '.'
-											}
-											placeholder={
-												strings.View_AddProduct_InputPlacehoder_UnitPrice
-											}
+										<BatchPrice
+											price={price}
+											setPrice={setPrice}
 										/>
 
 										<CategorySelect
@@ -706,22 +586,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 										)}
 									</MoreInformationsContainer>
 
-									<ExpDateGroup>
-										<ExpDateLabel>
-											{
-												strings.View_AddProduct_CalendarTitle
-											}
-										</ExpDateLabel>
-
-										<CustomDatePicker
-											accessibilityLabel={
-												strings.View_AddProduct_CalendarAccessibilityDescription
-											}
-											date={expDate}
-											onDateChange={handleDateChange}
-											locale={locale}
-										/>
-									</ExpDateGroup>
+									<BatchExpDate
+										expDate={expDate}
+										setExpDate={setExpDate}
+									/>
 								</InputContainer>
 							</PageContent>
 
