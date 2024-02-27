@@ -207,7 +207,7 @@ const List: React.FC = () => {
 				],
 			});
 		}
-	}, [reset, role, status, team, teamContext]);
+	}, [navigate, reset, role, status, team, teamContext]);
 
 	const switchShowMenu = useCallback(() => {
 		setShowMenu(prevValue => {

@@ -2,7 +2,7 @@ import { destroySession } from '@teams/Functions/Auth/Session';
 
 import strings from '@teams/Locales';
 
-import { reset } from '@teams/References/Navigation';
+import navigationRef from '@teams/References/Navigation';
 
 import { clearSelectedteam } from '@teams/Functions/Team/SelectedTeam';
 import { clearCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
@@ -41,16 +41,13 @@ async function errorsHandler(error: any): Promise<void> {
 
 			switch (errorCode) {
 				case 3:
-					reset({
-						routesNames: ['Logout'],
-					});
+					navigationRef.reset('Logout');
 					break;
 
 				case 7:
 					// User was not found
-					reset({
-						routesNames: ['Logout'],
-					});
+
+					navigationRef.reset('Logout');
 					break;
 
 				case 17:
@@ -58,17 +55,15 @@ async function errorsHandler(error: any): Promise<void> {
 					// could be removed or manager deleted the team
 					await clearSelectedteam();
 					await clearCurrentTeam();
-					reset({
-						routesNames: ['TeamList'],
-					});
+					navigationRef.reset('TeamList');
+
 					break;
 
 				case 22:
 					// Device not allowed, login anywhere else
 					await destroySession();
-					reset({
-						routesNames: ['Login'],
-					});
+
+					navigationRef.reset('Login');
 
 					break;
 

@@ -29,7 +29,6 @@ function reset(
 	routeName: keyof RootNavigationParamList,
 	params?: RootNavigationParamList[keyof RootNavigationParamList]
 ) {
-	console.log(navigatorRef);
 	navigatorRef?.dispatch(
 		CommonActions.reset({
 			index: 0,
