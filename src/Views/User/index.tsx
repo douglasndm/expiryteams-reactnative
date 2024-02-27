@@ -24,7 +24,6 @@ import {
 const User: React.FC = () => {
 	const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-	const [isMounted, setIsMounted] = useState(true);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
@@ -40,7 +39,6 @@ const User: React.FC = () => {
 		useState<boolean>(false);
 
 	const loadData = useCallback(async () => {
-		if (!isMounted) return;
 		try {
 			setIsLoading(true);
 
@@ -57,10 +55,9 @@ const User: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [isMounted]);
+	}, []);
 
 	const handleUpdate = useCallback(async () => {
-		if (!isMounted) return;
 		setIsUpdating(true);
 
 		try {
@@ -144,15 +141,7 @@ const User: React.FC = () => {
 		} finally {
 			setIsUpdating(false);
 		}
-	}, [
-		isMounted,
-		lastName,
-		name,
-		newPassword,
-		newPasswordConfi,
-		password,
-		pop,
-	]);
+	}, [lastName, name, newPassword, newPasswordConfi, password, pop]);
 
 	const handleNameChange = useCallback((value: string) => {
 		setName(value);
@@ -180,10 +169,6 @@ const User: React.FC = () => {
 
 	useEffect(() => {
 		loadData();
-
-		return () => {
-			setIsMounted(false);
-		};
 	}, []);
 
 	return (
@@ -207,7 +192,7 @@ const User: React.FC = () => {
 					<InputGroup>
 						<Input
 							value={name}
-							onChange={handleNameChange}
+							onChangeText={handleNameChange}
 							placeholder={
 								strings.View_Profile_InputText_Placeholder_Name
 							}
@@ -226,7 +211,7 @@ const User: React.FC = () => {
 								strings.View_Profile_InputText_Placeholder_LastName
 							}
 							value={lastName}
-							onChange={handleLastNameChange}
+							onChangeText={handleLastNameChange}
 						/>
 					</InputGroup>
 
@@ -239,7 +224,7 @@ const User: React.FC = () => {
 								strings.View_Profile_InputText_Placeholder_Password
 							}
 							value={password}
-							onChange={handlePasswordChange}
+							onChangeText={handlePasswordChange}
 							isPassword
 						/>
 					</InputGroup>
@@ -250,7 +235,7 @@ const User: React.FC = () => {
 								strings.View_Profile_InputText_Placeholder_NewPassword
 							}
 							value={newPassword}
-							onChange={handleNewPasswordChange}
+							onChangeText={handleNewPasswordChange}
 							hasError={newPasswordError}
 							isPassword
 						/>
@@ -267,7 +252,7 @@ const User: React.FC = () => {
 								strings.View_Profile_InputText_Placeholder_ConfirNewPassword
 							}
 							value={newPasswordConfi}
-							onChange={handleNewPasswordConfiChange}
+							onChangeText={handleNewPasswordConfiChange}
 							hasError={newPasswordConfiError}
 							isPassword
 						/>
