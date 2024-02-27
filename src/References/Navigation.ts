@@ -1,38 +1,46 @@
-import { createRef } from 'react';
-import { NavigationContainerRef } from '@react-navigation/native';
+// navigation.ts
 
-export const navigationRef = createRef<NavigationContainerRef<RoutesParams>>();
+import {
+	CommonActions,
+	NavigationContainerRef,
+} from '@react-navigation/native';
 
-interface NavigateProps {
-	routeName: string;
-	params?: any;
+type RootNavigationParamList = {
+	[key: string]: undefined;
+	// Defina as rotas disponíveis aqui
+};
+
+let navigatorRef: NavigationContainerRef<RootNavigationParamList>;
+
+function setTopLevelNavigator(
+	ref: NavigationContainerRef<RootNavigationParamList>
+) {
+	navigatorRef = ref;
 }
 
-export function navigate({ routeName, params }: NavigateProps): void {
-	navigationRef.current?.navigate({
-		screen: routeName,
-		params,
-	});
+function navigate(
+	routeName: keyof RootNavigationParamList,
+	params?: RootNavigationParamList[keyof RootNavigationParamList]
+) {
+	navigatorRef?.navigate(routeName, params);
 }
 
-interface ResetProps {
-	routesNames: string[];
+function reset(
+	routeName: keyof RootNavigationParamList,
+	params?: RootNavigationParamList[keyof RootNavigationParamList]
+) {
+	console.log(navigatorRef);
+	navigatorRef?.dispatch(
+		CommonActions.reset({
+			index: 0,
+			routes: [{ name: routeName, params }],
+		})
+	);
 }
+// Adicione outras funções de navegação conforme necessário
 
-export function reset({ routesNames }: ResetProps): void {
-	interface Props {
-		name: string;
-	}
-
-	const routes: Array<Props> = [];
-
-	routesNames.forEach(route => {
-		routes.push({
-			name: route,
-		});
-	});
-
-	navigationRef.current?.reset({
-		routes,
-	});
-}
+export default {
+	navigate,
+	reset,
+	setTopLevelNavigator,
+};

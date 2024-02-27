@@ -36,7 +36,7 @@ import DefaultPrefs from '@teams/Contexts/DefaultPreferences';
 import { AuthProvider } from '@teams/Contexts/AuthContext';
 import { TeamProvider } from '@teams/Contexts/TeamContext';
 
-import { navigationRef } from '@teams/References/Navigation';
+import navigationRef from '@teams/References/Navigation';
 
 screens.enableScreens(true);
 
@@ -100,7 +100,7 @@ const App: React.FC = () => {
 		<ActivityIndicator size="large" />
 	) : (
 		<BugsnagNavigationContainer
-			ref={navigationRef}
+			ref={navigationRef.setTopLevelNavigator}
 			linking={DeepLinking}
 			onStateChange={handleOnScreenChange}
 		>
