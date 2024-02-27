@@ -75,7 +75,7 @@ const Home: React.FC = () => {
 		}
 
 		return [];
-	}, []);
+	}, [reset]);
 
 	const hasPermission = useMemo(() => {
 		if (!teamContext.roleInTeam) return false;
@@ -113,15 +113,10 @@ const Home: React.FC = () => {
 			if (idsToDelete.length <= 0) return;
 
 			try {
-				if (!teamContext.id) {
-					return;
-				}
-
 				const ids = idsToDelete.map(id => String(id));
 
 				await deleteManyProducts({
 					productsIds: ids,
-					team_id: teamContext.id,
 				});
 
 				await initialLoad();
@@ -133,37 +128,33 @@ const Home: React.FC = () => {
 					});
 			}
 		},
-		[initialLoad, teamContext.id]
+		[initialLoad]
 	);
 
-	const handleSearch = useCallback(
-		async (query?: string) => {
-			if (!teamContext.id || !query) return;
-			setSearchString(query);
+	const handleSearch = useCallback(async (query?: string) => {
+		if (!query) return;
+		setSearchString(query);
 
-			if (query.trim() !== '') {
-				const arrayDate = query.split('/');
-				const maybeDate = parseISO(
-					`${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
-				);
-				const isValidDate = isValid(maybeDate);
+		if (query.trim() !== '') {
+			const arrayDate = query.split('/');
+			const maybeDate = parseISO(
+				`${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
+			);
+			const isValidDate = isValid(maybeDate);
 
-				let search = query.trim();
+			let search = query.trim();
 
-				if (isValidDate) {
-					search = format(maybeDate, 'yyyy-MM-dd');
-				}
-
-				const response = await getSearchProducts({
-					team_id: teamContext.id,
-					query: search,
-				});
-
-				setProductsSearch(response);
+			if (isValidDate) {
+				search = format(maybeDate, 'yyyy-MM-dd');
 			}
-		},
-		[teamContext.id]
-	);
+
+			const response = await getSearchProducts({
+				query: search,
+			});
+
+			setProductsSearch(response);
+		}
+	}, []);
 
 	const onSearchChange = useCallback(
 		async (q: string) => {

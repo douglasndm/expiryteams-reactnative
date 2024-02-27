@@ -80,9 +80,6 @@ const Team: React.FC = () => {
 	const handleDeleteTeam = useCallback(async () => {
 		try {
 			setIsDeleting(true);
-			if (!teamContext.id) {
-				throw new Error('Team is not selected');
-			}
 
 			await deleteTeam();
 
@@ -103,7 +100,7 @@ const Team: React.FC = () => {
 		} finally {
 			setIsDeleting(false);
 		}
-	}, [reset, teamContext.id]);
+	}, [reset]);
 
 	const handleGoToStore = useCallback(async () => {
 		if (activesSubs) {

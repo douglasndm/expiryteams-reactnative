@@ -6,7 +6,6 @@ import { getCurrentTeam } from '@teams/Utils/Settings/CurrentTeam';
 import { sortBatches } from '@utils/Product/Batches';
 
 interface searchProductsProps {
-	team_id: string;
 	removeCheckedBatches?: boolean;
 	query: string;
 }
@@ -73,10 +72,16 @@ export async function getAllProducts({
 }
 
 async function searchProducts(props: searchProductsProps): Promise<IProduct[]> {
-	const { team_id, removeCheckedBatches, query } = props;
+	const currentTeam = await getCurrentTeam();
+
+	if (!currentTeam) {
+		throw new Error('Team is not selected');
+	}
+
+	const { removeCheckedBatches, query } = props;
 
 	const { data } = await API.get<ISearchResponse>(
-		`/team/${team_id}/products/search`,
+		`/team/${currentTeam.id}/products/search`,
 		{
 			params: {
 				removeCheckedBatches: removeCheckedBatches || false,
