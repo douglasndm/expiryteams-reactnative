@@ -209,12 +209,12 @@ const Home: React.FC = () => {
 			/>
 
 			<ListProds
-				products={productsSearch}
-				onRefresh={initialLoad}
-				isRefreshing={isLoading}
-				listRef={listRef}
 				ref={listProdsRef}
+				products={productsSearch}
+				listRef={listRef}
 				handleDeleteMany={hasPermission ? handleDeleteMany : undefined}
+				isRefreshing={isLoading}
+				onRefresh={initialLoad}
 				setSelectModeOnParent={
 					hasPermission ? setSelectMode : undefined
 				}

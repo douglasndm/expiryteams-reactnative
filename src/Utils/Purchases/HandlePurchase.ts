@@ -6,6 +6,8 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '@teams/Locales';
 
 import { getCurrentTeam } from '../Settings/CurrentTeam';
+import { clearSubscription } from '../Subscriptions/ClearCache';
+import { getCurrentSubscription } from '../Subscriptions/GetCurrent';
 
 async function handlePurchase(): Promise<boolean> {
 	const currentTeam = await getCurrentTeam();
@@ -28,6 +30,11 @@ async function handlePurchase(): Promise<boolean> {
 				message: strings.Util_HandlePurchase_Alert_Subscription_Success,
 				type: 'info',
 			});
+
+			await clearSubscription();
+
+			// This is to force server to update the subscription
+			await getCurrentSubscription();
 
 			if (!__DEV__) {
 				Analytics().logEvent('user_subscribed_successfully');

@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { format, parseISO } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
@@ -21,6 +23,8 @@ import {
 } from './styles';
 
 const Subscriptions: React.FC = () => {
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
+
 	const [subscription, setSubscription] =
 		useState<ITeamSubscription | null>();
 
@@ -63,8 +67,24 @@ const Subscriptions: React.FC = () => {
 	}, []);
 
 	const handleNavigatePurchase = useCallback(async () => {
-		await handlePurchase();
-	}, []);
+		try {
+			setIsLoading(true);
+			await handlePurchase();
+
+			reset({
+				routes: [{ name: 'Home' }],
+			});
+		} catch (error) {
+			if (error instanceof Error) {
+				showMessage({
+					message: error.message,
+					type: 'danger',
+				});
+			}
+		} finally {
+			setIsLoading(false);
+		}
+	}, [reset]);
 
 	return isLoading ? (
 		<Loading />
