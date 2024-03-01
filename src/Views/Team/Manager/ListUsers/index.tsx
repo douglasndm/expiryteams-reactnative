@@ -251,7 +251,7 @@ const ListUsers: React.FC = () => {
 						<InputTextContainer hasError={inputHasError}>
 							<InputText
 								value={newUserEmail || ''}
-								onChange={handleOnTextChange}
+								onChangeText={handleOnTextChange}
 								keyboardType="email-address"
 								autoCapitalize="none"
 								placeholder={

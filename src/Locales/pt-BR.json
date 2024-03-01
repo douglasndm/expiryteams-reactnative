@@ -154,6 +154,10 @@
     "View_AddProduct_InputAccessibility_Code": "Campo para digitar o código do produto",
     "View_AddProduct_MoreInformation_Label": "Mais informações",
     "View_AddProduct_Tip_DuplicateProduct": "Já existe um produto cadastrado com o mesmo código. Clique aqui para adicionar um lote ao produto existente",
+    "View_AddProduct_FillInfo_Modal_Title": "Completar infomações?",
+    "View_AddProduct_FillInfo_Modal_Description": "Este produto pode ser algumas informações completadas automáticamente, gostaria de completar as informações?",
+    "View_AddProduct_FillInfo_Modal_Yes": "Sim",
+    "View_AddProduct_FillInfo_Modal_No": "Não",
 
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
     "View_EditBatch_PageTitle": "Atualizar lote",

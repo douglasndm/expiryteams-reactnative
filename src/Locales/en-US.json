@@ -155,6 +155,10 @@
     "View_AddProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_AddProduct_MoreInformation_Label": "More informations",
     "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
+    "View_AddProduct_FillInfo_Modal_Title": "Fill informations?",
+    "View_AddProduct_FillInfo_Modal_Description": "This product has some informations that can be filled, do you want to fill it?",
+    "View_AddProduct_FillInfo_Modal_Yes": "Yes",
+    "View_AddProduct_FillInfo_Modal_No": "No",
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
     "View_EditBatch_PageTitle": "Update batch",

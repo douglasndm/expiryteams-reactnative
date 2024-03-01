@@ -36,8 +36,6 @@ import BrandSelect from '@teams/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@teams/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@teams/Components/Product/Inputs/Pickers/Store';
 
-import FillModal from '@views/Product/Add/Components/FillModal';
-
 import {
 	ImageContainer,
 	ProductImage,
@@ -593,10 +591,23 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 								</InputContainer>
 							</PageContent>
 
-							<FillModal
+							<Dialog
+								visible={showProdFindedModal}
+								title={
+									strings.View_AddProduct_FillInfo_Modal_Title
+								}
+								description={
+									strings.View_AddProduct_FillInfo_Modal_Description
+								}
+								cancelText={
+									strings.View_AddProduct_FillInfo_Modal_No
+								}
+								confirmText={
+									strings.View_AddProduct_FillInfo_Modal_Yes
+								}
 								onConfirm={handleCompleteInfo}
-								show={showProdFindedModal}
-								setShow={handleSwitchFindModal}
+								onDismiss={handleSwitchFindModal}
+								onCancel={handleSwitchFindModal}
 							/>
 							<PaddingComponent />
 						</Content>

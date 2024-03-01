@@ -159,7 +159,7 @@ const User: React.FC = () => {
 					)}
 
 					<Button
-						text="Checar se assinatura foi cancelada"
+						title="Checar se assinatura foi cancelada"
 						isLoading={isCheckingTeams}
 						onPress={handleReCheckTeams}
 					/>
@@ -177,12 +177,12 @@ const User: React.FC = () => {
 					<InputText
 						placeholder="Sua senha"
 						value={password}
-						onChange={handlePasswordChange}
+						onChangeText={handlePasswordChange}
 						isPassword
 					/>
 
 					<Button
-						text="Apagar conta"
+						title="Apagar conta"
 						onPress={handleDelete}
 						isLoading={isDeleting}
 						contentStyle={{ backgroundColor: '#b00c17' }}

@@ -107,7 +107,7 @@ const Edit: React.FC = () => {
 				<InputGroup>
 					<Input
 						value={name}
-						onChange={handleNameChange}
+						onChangeText={handleNameChange}
 						placeholder={
 							strings.View_TeamEdit_Input_Placeholder_TeamName
 						}
