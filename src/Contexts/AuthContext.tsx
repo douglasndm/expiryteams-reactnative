@@ -1,84 +1,95 @@
 import React, {
-    useState,
-    useEffect,
-    useCallback,
-    createContext,
-    useContext,
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useMemo,
+	createContext,
+	ReactNode,
 } from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
-import api from '~/Services/API';
+import api from '@teams/Services/API';
 
 interface AuthContextData {
-    user: FirebaseAuthTypes.User | null;
-    token: string | null;
-    signed: boolean;
-    initializing: boolean;
+	user: FirebaseAuthTypes.User | null;
+	token: string | null;
+	signed: boolean;
+	initializing: boolean;
 }
 
 const AuthContext = createContext<Partial<AuthContextData>>({});
 
-const AuthProvider: React.FC = ({ children }: any) => {
-    const [initializing, setInitializing] = useState(true);
+interface AuthProviderProps {
+	children: ReactNode;
+}
 
-    const [isSigned, setIsSigned] = useState<boolean>(false);
-    const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+	const [initializing, setInitializing] = useState(true);
+	const [isSigned, setIsSigned] = useState<boolean>(false);
 
-    const onAuthStateChanged = useCallback(
-        async (loggedUser: FirebaseAuthTypes.User | null) => {
-            if (loggedUser) {
-                setUser(loggedUser);
-                setIsSigned(true);
+	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
-                if (!loggedUser.email) {
-                    throw new Error('Email is required');
-                }
+	const onAuthStateChanged = useCallback(
+		async (loggedUser: FirebaseAuthTypes.User | null) => {
+			if (loggedUser) {
+				setUser(loggedUser);
+				setIsSigned(true);
 
-                const token = await loggedUser.getIdToken();
+				if (!loggedUser.email) {
+					throw new Error('Email is required');
+				}
 
-                api.defaults.headers.common.Authorization = `Baerer ${token}`;
-            } else {
-                setIsSigned(false);
-                setUser(null);
-            }
+				const token = await loggedUser.getIdToken();
 
-            setInitializing(false);
-        },
-        []
-    );
+				api.defaults.headers.common.Authorization = `Baerer ${token}`;
+			} else {
+				setIsSigned(false);
+				setUser(null);
+			}
 
-    const onUserChanged = useCallback(
-        (changedUser: FirebaseAuthTypes.User | null) => {
-            if (changedUser) {
-                setUser(changedUser);
-            }
-        },
-        []
-    );
+			setInitializing(false);
+		},
+		[]
+	);
 
-    useEffect(() => {
-        const subscriber = auth().onUserChanged(onUserChanged);
+	const onUserChanged = useCallback(
+		(changedUser: FirebaseAuthTypes.User | null) => {
+			if (changedUser) {
+				setUser(changedUser);
+			}
+		},
+		[]
+	);
 
-        return subscriber;
-    }, []);
+	useEffect(() => {
+		const subscriber = auth().onUserChanged(onUserChanged);
 
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		return subscriber;
+	}, [onUserChanged]);
 
-        return subscriber;
-    }, []);
+	useEffect(() => {
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 
-    return (
-        <AuthContext.Provider value={{ signed: isSigned, user, initializing }}>
-            {children}
-        </AuthContext.Provider>
-    );
+		return subscriber;
+	}, [onAuthStateChanged]);
+
+	const authContextValue = useMemo(
+		() => ({ signed: isSigned, user, initializing }),
+		[isSigned, user, initializing]
+	);
+
+	return (
+		<AuthContext.Provider value={authContextValue}>
+			{children}
+		</AuthContext.Provider>
+	);
 };
 
 function useAuth(): Partial<AuthContextData> {
-    const context = useContext(AuthContext);
+	const context = useContext(AuthContext);
 
-    return context;
+	return context;
 }
 
 export { AuthProvider, useAuth };

@@ -2,8 +2,10 @@ import React, {
 	useState,
 	useEffect,
 	useCallback,
+	useMemo,
 	useContext,
 	createContext,
+	ReactNode,
 } from 'react';
 
 import {
@@ -11,12 +13,12 @@ import {
 	clearSelectedteam,
 } from '@teams/Functions/Team/SelectedTeam';
 
-interface TeamContextData {
+interface ITeamContext {
 	name: string | null;
 	active: boolean | null;
 	roleInTeam: {
 		role: 'repositor' | 'supervisor' | 'manager';
-		status: 'pending' | 'completed';
+		status: 'pending' | 'completed' | null;
 		store: {
 			id: string;
 			name: string;
@@ -27,16 +29,17 @@ interface TeamContextData {
 	isLoading: boolean;
 }
 
-const TeamContext = createContext<Partial<TeamContextData>>({});
+const TeamContext = createContext<Partial<ITeamContext>>({});
 
-const TeamProvider: React.FC = ({ children }: any) => {
-	const [name, setName] = useState<string | null>(null);
-	const [active, setActive] = useState<boolean | null>(null);
+interface TeamProviderProps {
+	children: ReactNode;
+}
 
-	const [roleInTeam, setRoleInTeam] = useState<{
-		role: 'repositor' | 'supervisor' | 'manager';
-		status: 'pending' | 'completed';
-	} | null>(null);
+const TeamProvider: React.FC<TeamProviderProps> = ({ children }) => {
+	const [name, setName] = useState<ITeamContext['name']>(null);
+	const [active, setActive] = useState<ITeamContext['active']>(null);
+	const [roleInTeam, setRoleInTeam] =
+		useState<ITeamContext['roleInTeam']>(null);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -76,23 +79,26 @@ const TeamProvider: React.FC = ({ children }: any) => {
 		]);
 	}, []);
 
+	const contextValue = useMemo(
+		() => ({
+			name,
+			active,
+			roleInTeam,
+			reload,
+			isLoading,
+			clearTeam,
+		}),
+		[name, active, roleInTeam, reload, isLoading, clearTeam]
+	);
+
 	return (
-		<TeamContext.Provider
-			value={{
-				name,
-				active,
-				roleInTeam,
-				reload,
-				isLoading,
-				clearTeam,
-			}}
-		>
+		<TeamContext.Provider value={contextValue}>
 			{children}
 		</TeamContext.Provider>
 	);
 };
 
-function useTeam(): Partial<TeamContextData> {
+function useTeam(): Partial<ITeamContext> {
 	const context = useContext(TeamContext);
 
 	return context;
