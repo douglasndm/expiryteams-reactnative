@@ -102,7 +102,9 @@ android {
         versionCode computeVersionCode()
         versionName computeVersionName()
 
-        resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
+        manifestPlaceholders = [
+            bugsnagApiKey: project.env.get("BUGSNAG_API_KEY")
+        ]
     }
 
     signingConfigs {

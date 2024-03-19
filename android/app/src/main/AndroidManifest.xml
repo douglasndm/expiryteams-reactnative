@@ -34,7 +34,8 @@
         <data android:scheme="expiryteams"/>
       </intent-filter>
     </activity>
-    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="@strings/BUGSNAG_API_KEY" />
+
+    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="${bugsnagApiKey}"/>
 
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/primary"/>
