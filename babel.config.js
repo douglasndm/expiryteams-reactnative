@@ -21,7 +21,7 @@ module.exports = {
 					'@services': '../shared/src/Services',
 					'@styles': '../shared/src/Styles',
 					'@utils': '../shared/src/Utils',
-					'@teams': './src',
+					'@teams': '../teams/src',
 				},
 			},
 		],
