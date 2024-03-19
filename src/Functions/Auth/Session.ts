@@ -1,10 +1,13 @@
+import messaging from '@react-native-firebase/messaging';
+
+import { getDeviceId } from '@services/DeviceID';
+
 import api from '@teams/Services/API';
-import { getDeviceId } from '@teams/Services/DeviceID';
 
 import { clearSelectedteam } from '../Team/SelectedTeam';
 import { logoutFirebase } from './Firebase';
 
-interface SessionResponse {
+export interface SessionResponse {
 	id: string;
 	name: string | null;
 	lastName: string | null;
@@ -25,14 +28,11 @@ interface SessionResponse {
 async function createSeassion(): Promise<SessionResponse> {
 	const deviceId = await getDeviceId();
 
-	let firebaseToken;
-	if (deviceId.firebase_messaging) {
-		firebaseToken = deviceId.firebase_messaging;
-	}
+	const token = await messaging().getToken();
 
 	const response = await api.post<SessionResponse>(`/sessions`, {
-		deviceId: deviceId.device_uuid,
-		firebaseToken,
+		deviceId,
+		firebaseToken: token,
 	});
 
 	return response.data;
@@ -43,4 +43,4 @@ export async function destroySession(): Promise<void> {
 	await logoutFirebase();
 }
 
-export { createSeassion, SessionResponse };
+export { createSeassion };

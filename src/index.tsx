@@ -19,8 +19,9 @@ import '@teams/Locales';
 
 import { Bugsnag } from '@services/Bugsnag';
 import '@services/Firebase/AppCheck';
+import '@services/Firebase/RemoteConfig';
+
 import '@teams/Services/Analytics';
-import '@teams/Services/RemoteConfig';
 import DeepLinking from '@teams/Services/DeepLinking';
 
 import '@teams/Functions/Team/Subscriptions';
